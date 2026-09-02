@@ -1,0 +1,1210 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="google8073cfacc72a7cb3" />
+    <title>Vestify Pro - Cloud Mining & Affiliate Network</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="manifest" href="manifest.json">
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js')
+      .then((reg) => console.log('SW Registered!', reg))
+      .catch((err) => console.log('SW Error:', err));
+  }
+
+  function requestNotification() {
+    if ('Notification' in window) {
+      Notification.requestPermission().then((perm) => {
+        if (perm === 'granted') {
+          new Notification('Vestify Pro', {
+            body: 'Notifications Enabled Successfully!',
+            icon: './192.png'
+          });
+        }
+      });
+    }
+  }
+
+  function updateAppBadge(count) {
+    if ('setAppBadge' in navigator) {
+      navigator.setAppBadge(count);
+    }
+  }
+
+  window.addEventListener('load', () => {
+    requestNotification();
+    updateAppBadge(1);
+  });
+</script>
+    
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: #040814; color: #ffffff; min-height: 100vh; padding-bottom: 100px; overflow-x: hidden; }
+        
+        .bg-glow-1 { position: fixed; width: 350px; height: 350px; background: radial-gradient(circle, rgba(255, 65, 108, 0.12) 0%, rgba(0,0,0,0) 70%); top: -50px; left: -50px; z-index: -1; pointer-events: none; }
+        .bg-glow-2 { position: fixed; width: 450px; height: 450px; background: radial-gradient(circle, rgba(56, 189, 248, 0.1) 0%, rgba(0,0,0,0) 70%); bottom: 100px; right: -100px; z-index: -1; pointer-events: none; }
+
+        #authScreen, #secretAdminScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #040814; z-index: 99999; display: flex; align-items: center; justify-content: center; padding: 20px; overflow-y: auto; }
+        .auth-container, .admin-container { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 28px; padding: 35px 24px; width: 100%; max-width: 420px; text-align: center; backdrop-filter: blur(25px); box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        .auth-tabs { display: flex; gap: 10px; margin-bottom: 25px; background: rgba(255,255,255,0.03); padding: 6px; border-radius: 14px; }
+        .auth-tab-btn { flex: 1; padding: 12px; border-radius: 10px; border: none; background: transparent; color: #94a3b8; font-weight: 700; cursor: pointer; transition: all 0.3s; }
+        .auth-tab-btn.active { background: linear-gradient(135deg, #ff416c, #ff4b2b); color: white; box-shadow: 0 4px 15px rgba(255,65,108,0.3); }
+        
+        .google-auth-btn { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: white; font-weight: 700; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 15px; transition: background 0.2s; }
+        .google-auth-btn:hover { background: rgba(255,255,255,0.07); }
+
+        .vestify-header { padding: 18px 16px; background: rgba(11, 21, 40, 0.5); backdrop-filter: blur(15px); border-bottom: 1px solid rgba(255, 255, 255, 0.04); position: sticky; top: 0; z-index: 100; }
+        .brand-row { display: flex; justify-content: space-between; align-items: center; }
+        .logo-block { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+        .logo-icon { width: 40px; height: 40px; background: linear-gradient(135deg, #ff416c, #ff4b2b); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 800; }
+        .logo-text h1 { font-size: 18px; font-weight: 800; letter-spacing: 1px; }
+
+        .stats-dashboard { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 24px; padding: 22px; margin: 20px 16px; position: relative; }
+        .live-tag { position: absolute; top: 12px; right: 16px; background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16,185,129,0.3); font-size: 10px; padding: 2px 8px; border-radius: 20px; font-weight: 700; }
+        
+        .quick-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 0 16px 20px 16px; }
+        .action-btn { padding: 12px 6px; border-radius: 14px; border: none; font-size: 12px; font-weight: 700; color: white; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px; transition: transform 0.2s; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); }
+        .action-btn i { font-size: 16px; }
+        .btn-deposit { color: #10b981; }
+        .btn-withdraw { color: #3b82f6; }
+        .btn-transfer { color: #eab308; }
+        .action-btn:active { transform: scale(0.95); }
+
+        .plan-tabs-row { display: flex; gap: 8px; padding: 0 16px; margin-bottom: 12px; overflow-x: auto; white-space: nowrap; }
+        .plan-tab-trigger { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); padding: 8px 16px; border-radius: 20px; font-size: 12px; color: #94a3b8; font-weight: 700; cursor: pointer; }
+        .plan-tab-trigger.active-tab { background: #38bdf8; color: #040814; border-color: #38bdf8; }
+
+        .plans-grid { display: none; flex-direction: column; gap: 12px; padding: 0 16px; }
+        .plans-grid.active-grid { display: flex; }
+        
+        .plan-card { background: rgba(15, 23, 42, 0.4); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px; padding: 16px; display: flex; align-items: center; gap: 14px; position: relative; overflow: hidden; }
+        .plan-card::after { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: #38bdf8; }
+        .plan-card.special-border::after { background: #eab308; }
+        .plan-card.offer-border::after { background: #a855f7; }
+        
+        .plan-node-img { width: 55px; height: 55px; border-radius: 12px; object-fit: cover; border: 1px solid rgba(255,255,255,0.1); background: #0b111e; }
+        .plan-details { flex: 1; }
+        .plan-details h4 { font-size: 14px; font-weight: 700; color: white; display: flex; align-items: center; gap: 6px; }
+        .plan-details p { font-size: 11px; color: #64748b; margin-top: 3px; line-height: 1.4; }
+        .plan-details span { color: #10b981; font-weight: 700; }
+        
+        .buy-plan-btn { padding: 8px 16px; background: linear-gradient(135deg, #ff416c, #ff4b2b); border: none; border-radius: 10px; color: white; font-weight: 700; font-size: 12px; cursor: pointer; box-shadow: 0 4px 10px rgba(255,65,108,0.2); }
+        .buy-plan-btn:active { transform: scale(0.95); }
+
+        .app-view-page { display: none; padding: 0 16px; }
+        .app-view-page.active-page { display: block; }
+        .history-card { background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.04); padding: 14px; border-radius: 16px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+
+        .salary-bar-container { background: rgba(255,255,255,0.04); border-radius: 10px; height: 10px; width: 100%; margin-top: 8px; overflow: hidden; position: relative; }
+        .salary-bar-fill { height: 100%; background: linear-gradient(90deg, #38bdf8, #3b82f6); width: 0%; transition: width 0.5s ease; }
+
+        .spin-box-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); padding: 25px 20px; border-radius: 24px; text-align: center; margin-top: 15px; position: relative; background: linear-gradient(180deg, rgba(255,65,108,0.03) 0%, rgba(4,8,24,0) 100%); }
+        .wheel-outer { width: 150px; height: 150px; border: 4px dashed #ff416c; border-radius: 50%; margin: 15px auto; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 13px; color: white; background: rgba(255,65,108,0.05); text-shadow: 0 0 10px #ff416c; box-shadow: inset 0 0 15px rgba(255,65,108,0.2); transition: transform 3s cubic-bezier(0.1, 0.8, 0.1, 1); }
+
+        .info-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px; padding: 16px; margin-bottom: 12px; }
+        .info-card h4 { font-size: 14px; color: #38bdf8; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+        .info-card p { font-size: 12px; color: #94a3b8; line-height: 1.6; }
+        
+        .faq-item { border-bottom: 1px solid rgba(255,255,255,0.04); padding: 12px 0; cursor: pointer; }
+        .faq-item:last-child { border: none; }
+        .faq-q { font-size: 13px; font-weight: 700; color: white; display: flex; justify-content: space-between; align-items: center; }
+        .faq-a { font-size: 12px; color: #64748b; margin-top: 6px; display: none; line-height: 1.5; }
+
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 70px; background: rgba(4, 8, 20, 0.95); backdrop-filter: blur(20px); border-top: 1px solid rgba(255, 255, 255, 0.05); display: flex; justify-content: space-around; align-items: center; z-index: 999; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: #64748b; text-decoration: none; font-size: 10px; font-weight: 600; cursor: pointer; transition: color 0.2s; }
+        .nav-item.active { color: #38bdf8; }
+
+        .premium-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 4, 10, 0.9); backdrop-filter: blur(12px); z-index: 10000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; padding: 20px; }
+        .premium-modal.modal-open { opacity: 1; pointer-events: auto; }
+        .modal-content { background: #0b111e; border: 1px solid rgba(255, 255, 255, 0.08); width: 100%; max-width: 380px; border-radius: 24px; padding: 22px; text-align: center; position: relative; }
+        .modal-input { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); background: rgba(0,0,0,0.3); color: white; font-size: 13px; margin-top: 10px; outline: none; }
+        .close-modal-btn { position: absolute; top: 14px; right: 14px; color: #64748b; font-size: 20px; cursor: pointer; }
+
+        .reward-toast { position: fixed; top: 25px; left: 50%; transform: translateX(-50%) translateY(-100px); background: #10b981; padding: 12px 20px; border-radius: 16px; z-index: 11000; font-weight: 700; font-size: 13px; transition: transform 0.3s ease; box-shadow: 0 10px 25px rgba(16,185,129,0.3); text-align: center; width: max-content; max-width: 90%; }
+        .reward-toast.toast-show { transform: translateX(-50%) translateY(0); }
+        .section-title { font-size:11px; color:#94a3b8; margin:24px 16px 10px 16px; text-transform:uppercase; letter-spacing: 1px; font-weight: 800; display: flex; align-items: center; gap: 6px; }
+    </style>
+</head>
+<body>
+
+    <div class="bg-glow-1"></div>
+    <div class="bg-glow-2"></div>
+
+    <div id="rewardToast" class="reward-toast">Alert Notification Node</div>
+
+    <div id="authScreen">
+        <div class="auth-container">
+            <h2 style="font-weight: 800; background: linear-gradient(135deg, #fff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 1px;">VESTIFY PRO</h2>
+            <p style="font-size: 11px; color: #64748b; margin-bottom: 20px;">Quantum Cryptographic Cloud Mining Core</p>
+            
+            <div class="auth-tabs">
+                <button id="tabLogin" class="auth-tab-btn active" onclick="switchAuthTab('login')">Sign In</button>
+                <button id="tabRegister" class="auth-tab-btn" onclick="switchAuthTab('register')">Sign Up</button>
+            </div>
+            
+            <input type="text" id="authUsername" class="modal-input" placeholder="Unique User Identifier (Username)" style="margin-top:0; display:none;">
+            <input type="email" id="authEmail" class="modal-input" placeholder="Account Email Address">
+            <input type="password" id="authPassword" class="modal-input" placeholder="Security Protocol Password">
+            <input type="text" id="authReferralInput" class="modal-input" placeholder="Referral Code Invitation (Optional)">
+            
+            <button class="buy-plan-btn" onclick="handleAuthAction()" style="width:100%; margin-top:20px; padding:14px; border-radius:12px; font-size:13px; letter-spacing:0.5px;">INITIALIZE CORE PORTAL</button>
+            
+            <div style="margin: 15px 0; color: #64748b; font-size: 11px; font-weight: 700;">OR PROVIDE GOOGLE PASS TOKEN</div>
+            
+            <button class="google-auth-btn" onclick="executeGoogleAuthenticationLink()">
+                <img src="https://img.icons8.com/color/48/000000/google-logo.png" width="18" alt=""> Continue via Google Cloud Link
+            </button>
+        </div>
+    </div>
+
+    <div id="secretAdminScreen" style="display: none;">
+        <div class="admin-container" style="max-width: 450px; background: #070d19; border: 1px solid rgba(255,255,255,0.1);">
+            <div class="close-modal-btn" onclick="closeAdminPortal()" style="position: static; text-align: right; margin-bottom: 10px;">&times; Close Admin</div>
+            <h3 style="color: #ff416c; font-weight: 800; margin-bottom: 5px;"><i class="fa-solid fa-user-shield"></i> Secret Admin Panel</h3>
+            <p style="font-size: 11px; color: #64748b; margin-bottom: 20px;">Manual Verification & System Override Engine</p>
+            
+            <input type="password" id="adminSecretKeyField" class="modal-input" placeholder="Enter System Admin Secret Passkey" style="margin-top:0;">
+            <button class="buy-plan-btn" onclick="authenticateAdminSystemKey()" style="width:100%; margin:12px 0; padding:10px;">Verify Superuser Auth</button>
+            
+            <div id="adminContentBody" style="display: none; margin-top: 20px; text-align: left; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; max-height: 400px; overflow-y: auto;">
+                <div class="auth-tabs" style="margin-bottom: 15px;">
+                    <button id="adminTabDep" class="auth-tab-btn active" onclick="switchAdminSubView('deposits')">Deposits</button>
+                    <button id="adminTabWith" class="auth-tab-btn" onclick="switchAdminSubView('withdrawals')">Withdrawals</button>
+                    <button id="adminTabUsers" class="auth-tab-btn" onclick="switchAdminSubView('users')">Users</button>
+                </div>
+
+                <div id="adminDepositsSection">
+                    <h5 style="font-size: 13px; color: #38bdf8; margin-bottom: 10px;">Pending Client Deposits</h5>
+                    <div id="adminPendingDepositsTrack" style="font-size: 12px; display: flex; flex-direction: column; gap: 8px;">Awaiting verification bypass...</div>
+                </div>
+
+                <div id="adminWithdrawalsSection" style="display: none;">
+                    <h5 style="font-size: 13px; color: #eab308; margin-bottom: 10px;">Pending Client Withdrawals</h5>
+                    <div id="adminPendingWithdrawalsTrack" style="font-size: 12px; display: flex; flex-direction: column; gap: 8px;">Awaiting verification bypass...</div>
+                </div>
+
+                <div id="adminUsersSection" style="display: none;">
+                    <h5 style="font-size: 13px; color: #10b981; margin-bottom: 10px;">Platform User Accounts & Balance Manager</h5>
+                    <div id="adminUsersTrack" style="font-size: 12px; display: flex; flex-direction: column; gap: 8px;">Loading user database...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="vestify-header">
+        <div class="brand-row">
+            <div class="logo-block" onclick="registerAdminLogoTap()">
+                <div class="logo-icon"><i class="fa-solid fa-microchip"></i></div>
+                <div class="logo-text">
+                    <h1>VESTIFY PRO</h1>
+                    <p style="font-size:10px; color:#38bdf8; font-weight: 700;">Cloud Fire Cluster Arrays</p>
+                </div>
+            </div>
+            <button class="buy-plan-btn" onclick="triggerSignOut()" style="background:rgba(239,68,68,0.1); color:#ef4444; font-size:11px; padding:6px 12px; border:1px solid rgba(239,68,68,0.2); box-shadow: none;">Exit Account</button>
+        </div>
+    </div>
+
+    <div id="pageHome" class="app-view-page active-page">
+        <div class="stats-dashboard" style="background: linear-gradient(135deg, rgba(56,189,248,0.06), rgba(15,23,42,0.8)); border-color: rgba(56,189,248,0.2);">
+            <span class="live-tag"><i class="fa-solid fa-bolt"></i> Matrix Online</span>
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                <div style="width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #38bdf8, #3b82f6); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 15px; color: #040814;" id="userAvatarInitial">V</div>
+                <div>
+                    <h4 style="font-size: 15px; font-weight: 800; color: white;" id="lblHeaderUsername">Loading...</h4>
+                    <p style="font-size: 10px; color: #38bdf8; font-weight: 700;" id="lblUserLevelBadge">Executive Tier Level 1</p>
+                </div>
+            </div>
+            <p style="font-size:11px; color:#64748b; margin-top: 6px;">Liquid Network Asset Pool</p>
+            <h2 style="font-size:28px; margin-top:2px; font-weight:800; color:white;">Rs. <span id="assetDisplay">0.00</span></h2>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.05); font-size: 11px;">
+                <span style="color:#94a3b8;">Active Rigs Deployed: <b id="minerDisplay" style="color:#38bdf8;">0 Nodes</b></span>
+                <span style="color:#10b981;">Total Yield Generated: <b id="lblTotalYieldGenerated">Rs. 0.00</b></span>
+            </div>
+        </div>
+
+        <div class="quick-actions">
+            <button class="action-btn btn-deposit" onclick="openDepositModal()"><i class="fa-solid fa-wallet"></i>Deposit</button>
+            <button class="action-btn btn-withdraw" onclick="openWithdrawModal()"><i class="fa-solid fa-money-bill-transfer"></i>Payout</button>
+            <button class="action-btn btn-transfer" onclick="openTransferModal()"><i class="fa-solid fa-paper-plane"></i>Transfer</button>
+        </div>
+
+        <div class="section-title"><i class="fa-solid fa-server"></i> Cloud Computing Sub-Stations</div>
+        <div class="plan-tabs-row">
+            <div class="plan-tab-trigger active-tab" id="tbNorm" onclick="switchPlanCategory('gridNormal', 'tbNorm')">Normal Pods</div>
+            <div class="plan-tab-trigger" id="tbSpec" onclick="switchPlanCategory('gridSpecial', 'tbSpec')">Special Rigs</div>
+            <div class="plan-tab-trigger" id="tbOffr" onclick="switchPlanCategory('gridOffers', 'tbOffr')">Exclusive Offers</div>
+        </div>
+
+        <div class="plans-grid active-grid" id="gridNormal">
+            <div class="plan-card">
+                <img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Node Array">
+                <div class="plan-details">
+                    <h4>Pod Alpha-1 <i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:10px;"></i></h4>
+                    <p>Cost: <b>Rs. 200</b> | Daily: <span>Rs. 16/Day</span></p>
+                    <p style="color:#94a3b8; font-size:10px;">Total Profit: <b>Rs. 480 (30 Days)</b></p>
+                </div>
+                <button class="buy-plan-btn" onclick="leaseHardwareNode('Pod Alpha-1', 200, 16)">Lease</button>
+            </div>
+            <div class="plan-card">
+                <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Node Array">
+                <div class="plan-details">
+                    <h4>Pod Alpha-2 <i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:10px;"></i></h4>
+                    <p>Cost: <b>Rs. 500</b> | Daily: <span>Rs. 42/Day</span></p>
+                    <p style="color:#94a3b8; font-size:10px;">Total Profit: <b>Rs. 1,260 (30 Days)</b></p>
+                </div>
+                <button class="buy-plan-btn" onclick="leaseHardwareNode('Pod Alpha-2', 500, 42)">Lease</button>
+            </div>
+            <div class="plan-card">
+                <img src="https://images.unsplash.com/photo-1563770660941-20978e870e26?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Node Array">
+                <div class="plan-details">
+                    <h4>Pod Alpha-3 <i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:10px;"></i></h4>
+                    <p>Cost: <b>Rs. 800</b> | Daily: <span>Rs. 70/Day</span></p>
+                    <p style="color:#94a3b8; font-size:10px;">Total Profit: <b>Rs. 2,100 (30 Days)</b></p>
+                </div>
+                <button class="buy-plan-btn" onclick="leaseHardwareNode('Pod Alpha-3', 800, 70)">Lease</button>
+            </div>
+            <div class="plan-card">
+                <img src="https://images.unsplash.com/photo-1600132806370-bf17e65e942f?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Node Array">
+                <div class="plan-details">
+                    <h4>Pod Alpha-4 <i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:10px;"></i></h4>
+                    <p>Cost: <b>Rs. 1,200</b> | Daily: <span>Rs. 105/Day</span></p>
+                    <p style="color:#94a3b8; font-size:10px;">Total Profit: <b>Rs. 3,150 (30 Days)</b></p>
+                </div>
+                <button class="buy-plan-btn" onclick="leaseHardwareNode('Pod Alpha-4', 1200, 105)">Lease</button>
+            </div>
+            <div class="plan-card">
+                <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Node Array">
+                <div class="plan-details">
+                    <h4>Pod Alpha-5 <i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:10px;"></i></h4>
+                    <p>Cost: <b>Rs. 1,600</b> | Daily: <span>Rs. 145/Day</span></p>
+                    <p style="color:#94a3b8; font-size:10px;">Total Profit: <b>Rs. 4,350 (30 Days)</b></p>
+                </div>
+                <button class="buy-plan-btn" onclick="leaseHardwareNode('Pod Alpha-5', 1600, 145)">Lease</button>
+            </div>
+            <div class="plan-card">
+                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Node Array">
+                <div class="plan-details">
+                    <h4>Pod Alpha-6 <i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:10px;"></i></h4>
+                    <p>Cost: <b>Rs. 2,000</b> | Daily: <span>Rs. 185/Day</span></p>
+                    <p style="color:#94a3b8; font-size:10px;">Total Profit: <b>Rs. 5,550 (30 Days)</b></p>
+                </div>
+                <button class="buy-plan-btn" onclick="leaseHardwareNode('Pod Alpha-6', 2000, 185)">Lease</button>
+            </div>
+            <div class="plan-card">
+                <img src="https://images.unsplash.com/photo-1621761191319-c6fb62004040?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Node Array">
+                <div class="plan-details">
+                    <h4>Pod Alpha-7 <i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:10px;"></i></h4>
+                    <p>Cost: <b>Rs. 2,500</b> | Daily: <span>Rs. 235/Day</span></p>
+                    <p style="color:#94a3b8; font-size:10px;">Total Profit: <b>Rs. 7,050 (30 Days)</b></p>
+                </div>
+                <button class="buy-plan-btn" onclick="leaseHardwareNode('Pod Alpha-7', 2500, 235)">Lease</button>
+            </div>
+        </div>
+
+        <div class="plans-grid" id="gridSpecial">
+            <div class="plan-card special-border">
+                <img src="https://images.unsplash.com/photo-1640340434855-6084b1f4901c?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Rig Setup">
+                <div class="plan-details">
+                    <h4>Rig Stratum-1 <i class="fa-solid fa-crown" style="color:#eab308; font-size:10px;"></i></h4>
+                    <p>Cost: <b>Rs. 4,000</b> | Daily: <span>Rs. 380/Day</span></p>
+                    <p style="color:#94a3b8; font-size:10px;">Total Profit: <b>Rs. 11,400 (30 Days)</b></p>
+                </div>
+                <button class="buy-plan-btn" style="background: linear-gradient(135deg, #eab308, #ca8a04);" onclick="leaseHardwareNode('Rig Stratum-1', 4000, 380)">Lease</button>
+            </div>
+            <div class="plan-card special-border">
+                <img src="https://images.unsplash.com/photo-1624996379697-f01d168b1a52?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Rig Setup">
+                <div class="plan-details">
+                    <h4>Rig Stratum-2 <i class="fa-solid fa-crown" style="color:#eab308; font-size:10px;"></i></h4>
+                    <p>Cost: <b>Rs. 6,000</b> | Daily: <span>Rs. 580/Day</span></p>
+                    <p style="color:#94a3b8; font-size:10px;">Total Profit: <b>Rs. 17,400 (30 Days)</b></p>
+                </div>
+                <button class="buy-plan-btn" style="background: linear-gradient(135deg, #eab308, #ca8a04);" onclick="leaseHardwareNode('Rig Stratum-2', 6000, 580)">Lease</button>
+            </div>
+            <div class="plan-card special-border">
+                <img src="https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Rig Setup">
+                <div class="plan-details">
+                    <h4>Rig Stratum-3 <i class="fa-solid fa-crown" style="color:#eab308; font-size:10px;"></i></h4>
+                    <p>Cost: <b>Rs. 9,000</b> | Daily: <span>Rs. 890/Day</span></p>
+                    <p style="color:#94a3b8; font-size:10px;">Total Profit: <b>Rs. 26,700 (30 Days)</b></p>
+                </div>
+                <button class="buy-plan-btn" style="background: linear-gradient(135deg, #eab308, #ca8a04);" onclick="leaseHardwareNode('Rig Stratum-3', 9000, 890)">Lease</button>
+            </div>
+            <div class="plan-card special-border">
+                <img src="https://images.unsplash.com/photo-1601597111158-2fceff292cdc?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Rig Setup">
+                <div class="plan-details">
+                    <h4>Rig Stratum-4 <i class="fa-solid fa-crown" style="color:#eab308; font-size:10px;"></i></h4>
+                    <p>Cost: <b>Rs. 12,000</b> | Daily: <span>Rs. 1,220/Day</span></p>
+                    <p style="color:#94a3b8; font-size:10px;">Total Profit: <b>Rs. 36,600 (30 Days)</b></p>
+                </div>
+                <button class="buy-plan-btn" style="background: linear-gradient(135deg, #eab308, #ca8a04);" onclick="leaseHardwareNode('Rig Stratum-4', 12000, 1220)">Lease</button>
+            </div>
+            <div class="plan-card special-border">
+                <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Rig Setup">
+                <div class="plan-details">
+                    <h4>Rig Stratum-5 <i class="fa-solid fa-crown" style="color:#eab308; font-size:10px;"></i></h4>
+                    <p>Cost: <b>Rs. 15,000</b> | Daily: <span>Rs. 1,550/Day</span></p>
+                    <p style="color:#94a3b8; font-size:10px;">Total Profit: <b>Rs. 46,500 (30 Days)</b></p>
+                </div>
+                <button class="buy-plan-btn" style="background: linear-gradient(135deg, #eab308, #ca8a04);" onclick="leaseHardwareNode('Rig Stratum-5', 15000, 1550)">Lease</button>
+            </div>
+            <div class="plan-card special-border">
+                <img src="https://images.unsplash.com/photo-1468495244123-6c6c332eeece?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Rig Setup">
+                <div class="plan-details">
+                    <h4>Rig Stratum-6 <i class="fa-solid fa-crown" style="color:#eab308; font-size:10px;"></i></h4>
+                    <p>Cost: <b>Rs. 18,000</b> | Daily: <span>Rs. 1,900/Day</span></p>
+                    <p style="color:#94a3b8; font-size:10px;">Total Profit: <b>Rs. 57,000 (30 Days)</b></p>
+                </div>
+                <button class="buy-plan-btn" style="background: linear-gradient(135deg, #eab308, #ca8a04);" onclick="leaseHardwareNode('Rig Stratum-6', 18000, 1900)">Lease</button>
+            </div>
+            <div class="plan-card special-border">
+                <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Rig Setup">
+                <div class="plan-details">
+                    <h4>Rig Stratum-7 <i class="fa-solid fa-crown" style="color:#eab308; font-size:10px;"></i></h4>
+                    <p>Cost: <b>Rs. 20,000</b> | Daily: <span>Rs. 2,150/Day</span></p>
+                    <p style="color:#94a3b8; font-size:10px;">Total Profit: <b>Rs. 64,500 (30 Days)</b></p>
+                </div>
+                <button class="buy-plan-btn" style="background: linear-gradient(135deg, #eab308, #ca8a04);" onclick="leaseHardwareNode('Rig Stratum-7', 20000, 2150)">Lease</button>
+            </div>
+        </div>
+
+        <div class="plans-grid" id="gridOffers">
+            <div class="plan-card offer-border">
+                <img src="https://images.unsplash.com/photo-1639322537228-f710d846310a?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Overdrive Array">
+                <div class="plan-details">
+                    <h4>Matrix Overdrive-1 <i class="fa-solid fa-bolt-lightning" style="color:#a855f7; font-size:10px;"></i></h4>
+                    <p>Cost: <b>Rs. 30,000</b> | Daily: <span>Rs. 3,400/Day</span></p>
+                    <p style="color:#94a3b8; font-size:10px;">Total Profit: <b>Rs. 102,000 (30 Days)</b></p>
+                </div>
+                <button class="buy-plan-btn" style="background: linear-gradient(135deg, #a855f7, #7c3aed);" onclick="leaseHardwareNode('Matrix Overdrive-1', 30000, 3400)">Lease</button>
+            </div>
+            <div class="plan-card offer-border">
+                <img src="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Overdrive Array">
+                <div class="plan-details">
+                    <h4>Matrix Overdrive-2 <i class="fa-solid fa-bolt-lightning" style="color:#a855f7; font-size:10px;"></i></h4>
+                    <p>Cost: <b>Rs. 50,000</b> | Daily: <span>Rs. 6,000/Day</span></p>
+                    <p style="color:#94a3b8; font-size:10px;">Total Profit: <b>Rs. 180,000 (30 Days)</b></p>
+                </div>
+                <button class="buy-plan-btn" style="background: linear-gradient(135deg, #a855f7, #7c3aed);" onclick="leaseHardwareNode('Matrix Overdrive-2', 50000, 6000)">Lease</button>
+            </div>
+            <div class="plan-card offer-border">
+                <img src="https://images.unsplash.com/photo-1631553127988-347f8976b3f7?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Overdrive Array">
+                <div class="plan-details">
+                    <h4>Matrix Overdrive-3 <i class="fa-solid fa-bolt-lightning" style="color:#a855f7; font-size:10px;"></i></h4>
+                    <p>Cost: <b>Rs. 75,000</b> | Daily: <span>Rs. 9,500/Day</span></p>
+                    <p style="color:#94a3b8; font-size:10px;">Total Profit: <b>Rs. 285,000 (30 Days)</b></p>
+                </div>
+                <button class="buy-plan-btn" style="background: linear-gradient(135deg, #a855f7, #7c3aed);" onclick="leaseHardwareNode('Matrix Overdrive-3', 75000, 9500)">Lease</button>
+            </div>
+            <div class="plan-card offer-border">
+                <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Overdrive Array">
+                <div class="plan-details">
+                    <h4>Matrix Overdrive-4 <i class="fa-solid fa-bolt-lightning" style="color:#a855f7; font-size:10px;"></i></h4>
+                    <p>Cost: <b>Rs. 100,000</b> | Daily: <span>Rs. 13,500/Day</span></p>
+                    <p style="color:#94a3b8; font-size:10px;">Total Profit: <b>Rs. 405,000 (30 Days)</b></p>
+                </div>
+                <button class="buy-plan-btn" style="background: linear-gradient(135deg, #a855f7, #7c3aed);" onclick="leaseHardwareNode('Matrix Overdrive-4', 100000, 13500)">Lease</button>
+            </div>
+        </div>
+
+        <div class="section-title"><i class="fa-solid fa-hourglass-half"></i> Yield Distribution Cycle</div>
+        <div class="history-card" style="margin: 0; background: rgba(56,189,248,0.03); border-color: rgba(56,189,248,0.2);">
+            <div>
+                <span style="font-size:13px; font-weight:700; color:#38bdf8;">Next Block Reward Sync Cut-down</span>
+                <p style="font-size:11px; color:#64748b;">Automated hardware cluster execution track & yield cut-down timer</p>
+            </div>
+            <span id="countdownTimerClock" style="font-size:15px; font-weight:800; color:#38bdf8; letter-spacing:1px;">24:00:00</span>
+        </div>
+
+        <div class="spin-box-card">
+            <h4>🎉 Lucky Core Daily Bonus Engine 🎉</h4>
+            <p style="font-size:11px; color:#64748b; margin-top:3px;">Spin once every 24 hours interval to match token payouts</p>
+            <div class="wheel-outer" id="luckyBonusWheel"><i class="fa-solid fa-circle-radiation fa-spin" style="font-size: 24px; color:#ff416c;"></i></div>
+            <button class="buy-plan-btn" onclick="triggerLuckyCoreSpin()" style="padding:11px 28px; font-size:13px; border-radius:12px;">LAUNCH REWARD SPIN</button>
+        </div>
+    </div>
+
+    <div id="pageAffiliate" class="app-view-page">
+        <div class="stats-dashboard" style="margin: 20px 0; background: linear-gradient(135deg, rgba(56,189,248,0.05), rgba(4,8,20,0.2)); border-color: rgba(56,189,248,0.15);">
+            <h3 style="color:#38bdf8; font-size:15px; margin-bottom:12px;"><i class="fa-solid fa-network-wired"></i> Affiliate Program Hub</h3>
+            
+            <p style="font-size:11px; color:#64748b;">Your Premium Invitation Node</p>
+            <div style="background:rgba(0,0,0,0.3); padding:10px; border-radius:12px; display:flex; justify-content:space-between; align-items:center; margin-top:5px;">
+                <span id="lblDisplayInviteLink" style="font-size:12px; color:#94a3b8; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:75%;">Awaiting link...</span>
+                <button class="plan-tab-trigger" onclick="copyUserReferralLink()" style="padding:4px 10px; font-size:11px;">Copy Link</button>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:15px; text-align:left;">
+                <div style="background:rgba(255,255,255,0.02); padding:12px; border-radius:14px; border:1px solid rgba(255,255,255,0.04);">
+                    <span style="font-size:11px; color:#64748b;">Total Joined Network</span>
+                    <h3 id="cntTotalRefers" style="font-size:20px; color:white; margin-top:2px;">0 Users</h3>
+                </div>
+                <div style="background:rgba(16,185,129,0.02); padding:12px; border-radius:14px; border:1px solid rgba(16,185,129,0.1);">
+                    <span style="font-size:11px; color:#64748b;">Active Depositors</span>
+                    <h3 id="cntActiveDepositors" style="font-size:20px; color:#10b981; margin-top:2px;">0 Active</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-title" style="margin-left:0;"><i class="fa-solid fa-sack-dollar"></i> Network Salary Matrix Targets</div>
+        
+        <div class="history-card" style="margin-left:0; flex-direction:column; align-items:flex-start; padding:16px;">
+            <div style="display:flex; justify-content:space-between; width:100%;">
+                <b>Weekly Basic Salary Module</b>
+                <span style="color:#38bdf8; font-weight:700;">Rs. 2,500 / Wk</span>
+            </div>
+            <p style="font-size:11px; color:#64748b; margin-top:2px;">Requirement: 10 Active Network Depositors</p>
+            <div class="salary-bar-container"><div id="barWeeklyProgress" class="salary-bar-fill"></div></div>
+            <span id="lblWeeklyProgressTxt" style="font-size:11px; color:#94a3b8; margin-top:5px; font-weight:600;">Progress: 0 / 10</span>
+        </div>
+
+        <div class="history-card" style="margin-left:0; flex-direction:column; align-items:flex-start; padding:16px;">
+            <div style="display:flex; justify-content:space-between; width:100%;">
+                <b>Monthly Elite Executive Tier</b>
+                <span style="color:#a855f7; font-weight:700;">Rs. 15,000 / Mo</span>
+            </div>
+            <p style="font-size:11px; color:#64748b; margin-top:2px;">Requirement: 50 Active Network Depositors</p>
+            <div class="salary-bar-container"><div id="barMonthlyProgress" class="salary-bar-fill" style="background:linear-gradient(90deg, #a855f7, #6366f1);"></div></div>
+            <span id="lblMonthlyProgressTxt" style="font-size:11px; color:#94a3b8; margin-top:5px; font-weight:600;">Progress: 0 / 50</span>
+        </div>
+    </div>
+
+    <div id="pageHistory" class="app-view-page">
+        <div class="section-title" style="margin-left:0;"><i class="fa-solid fa-list"></i> Structural Financial & Updates Logs</div>
+        <div id="userHistoryRecordsList" style="margin-bottom: 25px;">Awaiting system payload matrix data streams...</div>
+    </div>
+
+    <div id="pageLegalHub" class="app-view-page">
+        <div class="section-title" style="margin-left:0;"><i class="fa-solid fa-building"></i> Corporate Infrastructure Details</div>
+        <div class="info-card">
+            <h4>Vestify Pro Mining Global LLC</h4>
+            <p><b>Registered Location:</b> 10 Anson Road, #22-02 International Plaza, Singapore 079903</p>
+            <p style="margin-top: 8px;"><b>Support Contact Email:</b> <a href="mailto:webhub262@gmail.com" style="color:#38bdf8; text-decoration:none;">webhub262@gmail.com</a></p>
+            <p style="margin-top: 8px;">Vestify Pro operates a decentralized liquid server matrix array across high-capacity data clusters. By purchasing processing hardware node leases, clients directly trigger secure computing operations that extract stable financial yield variables from multi-chain crypto protocols safely and seamlessly.</p>
+        </div>
+
+        <div class="section-title" style="margin-left:0;"><i class="fa-solid fa-shield-halved"></i> Data Security & Privacy Policy</div>
+        <div class="info-card">
+            <h4>Security Cryptographic Standard Node</h4>
+            <p>We log profile corporate email addresses and matching transaction metadata within isolated multi-tenant Firebase servers. Vestify Pro enforces complete end-to-end security loops: user balance tokens, internal wallet P2P routing lanes, and withdrawal records remain private, decentralized, and completely safe from external third-party inspection blocks.</p>
+        </div>
+
+        <div class="section-title" style="margin-left:0;"><i class="fa-solid fa-circle-question"></i> Interactive Client FAQ Engine</div>
+        <div class="info-card" style="padding: 5px 16px;">
+            <div class="faq-item" onclick="toggleFaqVisibility(this)">
+                <div class="faq-q">What is the minimum deposit boundary? <i class="fa-solid fa-chevron-down"></i></div>
+                <div class="faq-a">The baseline barrier entry asset is Rs. 200 PKR. Transactions outside this threshold balance will be rejected by the backend processing block pipelines.</div>
+            </div>
+            <div class="faq-item" onclick="toggleFaqVisibility(this)">
+                <div class="faq-q">How does the internal wallet P2P transfer operate? <i class="fa-solid fa-chevron-down"></i></div>
+                <div class="faq-a">Simply open the P2P transfer layer modal inside your home screen, fill out the target matching profile username identifier, specify your transfer capitals, and link the transaction instantly without any tax cuts!</div>
+            </div>
+            <div class="faq-item" onclick="toggleFaqVisibility(this)">
+                <div class="faq-q">When do processing yields sync up? <i class="fa-solid fa-chevron-down"></i></div>
+                <div class="faq-a">Leased mining rigs run non-stop inside our cloud cluster arrays. Automated yield distributions map into client active ledger tokens precisely when the block timer clears every 24-hour cycle.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <div class="nav-item active" id="nvHome" onclick="routeToView('pageHome', 'nvHome')"><i class="fa-solid fa-house"></i><span>Home</span></div>
+        <div class="nav-item" id="nvAffiliate" onclick="routeToView('pageAffiliate', 'nvAffiliate')"><i class="fa-solid fa-users-gear"></i><span>Network Center</span></div>
+        <div class="nav-item" id="nvHistory" onclick="routeToView('pageHistory', 'nvHistory')"><i class="fa-solid fa-receipt"></i><span>Ledger Logs</span></div>
+        <div class="nav-item" id="nvLegal" onclick="routeToView('pageLegalHub', 'nvLegal')"><i class="fa-solid fa-folder-open"></i><span>Info Hub</span></div>
+    </div>
+
+    <div id="depositModal" class="premium-modal">
+        <div class="modal-content" style="max-width:400px; text-align:left;">
+            <div class="close-modal-btn" onclick="closeModal('depositModal')">&times;</div>
+            <h4 style="margin-bottom:12px; color:white; text-align:center;">Secure PKR Deposit Core</h4>
+            
+            <input type="number" id="pkrDepositInput" class="modal-input" placeholder="Enter Deposit Amount (PKR)" oninput="updateDepositCalculations()">
+            
+            <div style="background: rgba(16, 185, 129, 0.05); padding: 10px; border-radius: 12px; margin-top: 10px; font-size:12px;">
+                <div style="display:flex; justify-content:space-between; color:#94a3b8;"><span>Applicable Deposit Bonus:</span> <b id="lblBonusPKR" style="color:#10b981;">Rs. 0 (8% / 4%)</b></div>
+                <div style="display:flex; justify-content:space-between; color:white; font-weight:800; margin-top:4px;"><span>Total Credited Node:</span> <b id="lblTotalCreditedPKR" style="color:#38bdf8;">Rs. 0</b></div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px;">
+                <button id="chkEasyPaisa" class="action-btn" onclick="selectDepositGatewayChannel('EasyPaisa')" style="border-color:#10b981; font-size:10px;"><i class="fa-solid fa-mobile-screen" style="color:#10b981;"></i>EasyPaisa</button>
+                <button id="chkJazzCash" class="action-btn" onclick="selectDepositGatewayChannel('JazzCash')" style="font-size:10px;"><i class="fa-solid fa-wallet" style="color:#eab308;"></i>JazzCash</button>
+                <button id="chkUSDT" class="action-btn" onclick="selectDepositGatewayChannel('USDT')" style="font-size:10px;"><i class="fa-solid fa-circle-dollar-to-slot" style="color:#26a17b;"></i>Binance</button>
+            </div>
+
+            <div style="background:rgba(0,0,0,0.2); padding:10px; border-radius:10px; margin-top:12px; display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <span id="lblAccountTitleType" style="font-size:10px; color:#64748b; text-transform:uppercase;">EasyPaisa Account</span>
+                    <h4 id="txtMerchantAccountNo" style="font-size:13px; color:white;">03379827882</h4>
+                </div>
+                <button class="plan-tab-trigger" onclick="copyMerchantAccountToken()" style="padding:2px 8px; font-size:10px;">Copy</button>
+            </div>
+            
+            <div style="font-size:11px; margin-top:8px; display:flex; justify-content:space-between;"><span>Exact Amount Due:</span> <b id="txtPayableExactAmount" style="color:#ff416c;">Rs. 0</b></div>
+
+            <input type="text" id="depositTxIDInput" class="modal-input" placeholder="Enter Transaction Reference ID (TID)">
+            <button class="buy-plan-btn" onclick="submitPkrDepositToFirebase()" style="width:100%; margin-top:12px; padding:12px;">LOG PAYLOAD TRANS</button>
+        </div>
+    </div>
+
+    <div id="withdrawModal" class="premium-modal">
+        <div class="modal-content">
+            <div class="close-modal-btn" onclick="closeModal('withdrawModal')">&times;</div>
+            <h4>Secure Dividend Extraction</h4>
+            <input type="text" id="withdrawTitle" class="modal-input" placeholder="Account Holder Title Name">
+            <input type="text" id="withdrawNumber" class="modal-input" placeholder="Account Target Number">
+            <input type="number" id="withdrawAmount" class="modal-input" placeholder="Amount (PKR)">
+            <button class="buy-plan-btn" onclick="dispatchWithdrawalToCloud()" style="width:100%; margin-top:12px; padding:12px; background:#3b82f6; box-shadow:none;">DISPATCH CASH OUT</button>
+        </div>
+    </div>
+
+    <div id="transferModal" class="premium-modal">
+        <div class="modal-content">
+            <div class="close-modal-btn" onclick="closeModal('transferModal')">&times;</div>
+            <h4 style="color:#eab308;"><i class="fa-solid fa-paper-plane"></i> Instant Wallet P2P Transfer</h4>
+            <input type="text" id="transferTargetUsername" class="modal-input" placeholder="Recipient Account Username Identifier">
+            <input type="number" id="transferAmount" class="modal-input" placeholder="Transfer Capital Amount (PKR)">
+            <button class="buy-plan-btn" onclick="executeP2PInternalTransfer()" style="width:100%; margin-top:14px; padding:12px; background:linear-gradient(135deg, #eab308, #ca8a04); box-shadow:none;">EXECUTE TRANSFER LINK</button>
+        </div>
+    </div>
+
+    <div style="position: fixed; bottom: 85px; right: 20px; z-index: 9999;">
+        <a href="https://chat.whatsapp.com/D6QqMvZFBqLE4Hu4MsYEL5?s=cl&p=a&mlu=4" target="_blank" style="text-decoration: none;">
+            <div style="background: #25d366; width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.4); cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="white">
+                    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397 0 12.008 0c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 12.004-11.95 12.004-.003 0-.005 0-.007 0-2.001-.001-3.972-.5-5.733-1.448L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.623-1.023-5.09-2.885-6.948C16.528 2.008 14.07 1 11.642 1 6.215 1 1.794 5.366 1.79 10.793c-.001 1.701.462 3.361 1.342 4.804l-.101.54-1.028 3.756 3.841-1.002.553-.328z"/>
+                </svg>
+            </div>
+        </a>
+    </div>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyC5KSe58eq1PIY5FmDhGUuL8DzoJFD9sd0",
+            authDomain: "vestify-pro.firebaseapp.com",
+            databaseURL: "https://vestify-pro-default-rtdb.firebaseio.com",
+            projectId: "vestify-pro",
+            storageBucket: "vestify-pro.firebasestorage.app",
+            messagingSenderId: "751526243854",
+            appId: "1:751526243854:web:d91e582190bbc8d3be165f"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        let currentUserId = null;
+        let userCurrentBalance = 0.00;
+        let totalActiveCoresCount = 0;
+        let currentAuthTabMode = "login";
+        let activeGatewayChannel = "EasyPaisa";
+        let userCustomUsernameToken = "";
+        let adminLogoTapCountTracker = 0;
+
+        const paymentGatewayMerchantConfig = {
+            "EasyPaisa": { number: "03379827882", title: "EasyPaisa Central Node" },
+            "JazzCash": { number: "03705519562", title: "JazzCash Central Node" },
+            "USDT": { number: "COMING SOON", title: "Binance Crypto Target (TRC20)" }
+        };
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            if(params.has('ref')) {
+                document.getElementById('authReferralInput').value = params.get('ref');
+            }
+        });
+
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                currentUserId = user.uid;
+                document.getElementById('authScreen').style.display = 'none';
+                syncProfileRealtimeMetrics();
+                syncUserLedgerTracks();
+                initializeCountdownClockTicker();
+            } else {
+                currentUserId = null;
+                document.getElementById('authScreen').style.display = 'flex';
+            }
+        });
+
+        window.switchAuthTab = function(mode) {
+            currentAuthTabMode = mode;
+            document.getElementById('tabLogin').classList.toggle('active', mode === 'login');
+            document.getElementById('tabRegister').classList.toggle('active', mode === 'register');
+            document.getElementById('authUsername').style.display = mode === 'register' ? 'block' : 'none';
+        }
+
+        window.handleAuthAction = function() {
+            const email = document.getElementById('authEmail').value.trim();
+            const pass = document.getElementById('authPassword').value;
+            const username = document.getElementById('authUsername').value.trim().toLowerCase();
+            const sponsorCode = document.getElementById('authReferralInput').value.trim().toLowerCase();
+
+            if(!email || !pass) { triggerToastDisplay("Parameters missing inside payload execution loops."); return; }
+
+            if(currentAuthTabMode === "register") {
+                if(!username) { triggerToastDisplay("Please state a unique username."); return; }
+                
+                db.collection("users").where("username", "==", username).get().then(snap => {
+                    if(!snap.empty) { throw new Error("Username already locked inside server blocks."); }
+                    return auth.createUserWithEmailAndPassword(email, pass);
+                }).then(cred => {
+                    let userPayload = {
+                        uid: cred.user.uid,
+                        balance: 0.00,
+                        minersCount: 0,
+                        email: email,
+                        username: username,
+                        hasSpunToday: false,
+                        referredBy: sponsorCode || "none",
+                        hasDepositedBefore: false,
+                        totalYieldEarned: 0.00,
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                        lastYieldSyncTimestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    };
+                    return db.collection("users").doc(cred.user.uid).set(userPayload);
+                }).then(() => {
+                    triggerToastDisplay("Registry Protocol Saved Successfully!");
+                }).catch(e => triggerToastDisplay(e.message || e));
+            } else {
+                auth.signInWithEmailAndPassword(email, pass)
+                    .then(() => triggerToastDisplay("Terminal Secured & Unlocked!"))
+                    .catch(e => triggerToastDisplay(e.message));
+            }
+        }
+
+        window.executeGoogleAuthenticationLink = function() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider).then(result => {
+                const user = result.user;
+                const userRef = db.collection("users").doc(user.uid);
+                
+                userRef.get().then(doc => {
+                    if(!doc.exists) {
+                        let computedRandomUsername = "user_" + user.email.split('@')[0] + Math.floor(Math.random()*100);
+                        const params = new URLSearchParams(window.location.search);
+                        let sponsorCode = params.get('ref') || "none";
+
+                        userRef.set({
+                            uid: user.uid,
+                            balance: 0.00,
+                            minersCount: 0,
+                            email: user.email,
+                            username: computedRandomUsername,
+                            hasSpunToday: false,
+                            referredBy: sponsorCode,
+                            hasDepositedBefore: false,
+                            totalYieldEarned: 0.00,
+                            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                            lastYieldSyncTimestamp: firebase.firestore.FieldValue.serverTimestamp()
+                        }).then(() => triggerToastDisplay("Google Node Linked & Profile Saved!"));
+                    } else {
+                        triggerToastDisplay("Google Session Key Match Found!");
+                    }
+                });
+            }).catch(err => triggerToastDisplay(err.message));
+        }
+
+        window.triggerSignOut = function() { auth.signOut(); }
+
+        function syncProfileRealtimeMetrics() {
+            db.collection("users").doc(currentUserId).onSnapshot(doc => {
+                if(doc.exists) {
+                    const d = doc.data();
+                    userCurrentBalance = d.balance || 0.00;
+                    totalActiveCoresCount = d.minersCount || 0;
+                    userCustomUsernameToken = d.username || "void_node";
+                    
+                    document.getElementById('assetDisplay').innerText = userCurrentBalance.toLocaleString('en-US',{minimumFractionDigits:2});
+                    document.getElementById('minerDisplay').innerText = `${totalActiveCoresCount} Nodes`;
+                    document.getElementById('lblHeaderUsername').innerText = userCustomUsernameToken;
+                    document.getElementById('userAvatarInitial').innerText = userCustomUsernameToken.charAt(0).toUpperCase();
+                    document.getElementById('lblTotalYieldGenerated').innerText = "Rs. " + (d.totalYieldEarned || 0.00).toLocaleString('en-US',{minimumFractionDigits:2});
+                    
+                    let calculatedLevel = "Executive Tier Level 1";
+                    if(totalActiveCoresCount >= 10 || userCurrentBalance >= 20000) calculatedLevel = "Elite Diamond Tier Level 3";
+                    else if(totalActiveCoresCount >= 5 || userCurrentBalance >= 5000) calculatedLevel = "Advanced Pro Tier Level 2";
+                    document.getElementById('lblUserLevelBadge').innerText = calculatedLevel;
+
+                    let rootOriginLink = window.location.origin + window.location.pathname;
+                    document.getElementById('lblDisplayInviteLink').innerText = `${rootOriginLink}?ref=${userCustomUsernameToken}`;
+                    
+                    calculateNetworkHierarchyAnalytics(userCustomUsernameToken);
+                    executeProfessionalLazyYieldSync(currentUserId, d);
+                }
+            });
+        }
+
+        function executeProfessionalLazyYieldSync(uid, userData) {
+            const lastSyncDate = userData.lastYieldSyncTimestamp ? userData.lastYieldSyncTimestamp.toDate() : null;
+            const currentTime = new Date();
+
+            if (!lastSyncDate) return;
+
+            const elapsedMilliseconds = currentTime - lastSyncDate;
+            const absolutePassedDays = Math.floor(elapsedMilliseconds / (24 * 60 * 60 * 1000));
+
+            if (absolutePassedDays >= 1) {
+                db.collection("leases").where("userId", "==", uid).get().then(snapshot => {
+                    if (snapshot.empty) {
+                        db.collection("users").doc(uid).update({
+                            lastYieldSyncTimestamp: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                        return;
+                    }
+
+                    let cumulativeProfitPerDay = 0;
+                    snapshot.forEach(leaseDoc => {
+                        cumulativeProfitPerDay += (leaseDoc.data().dailyYield || 0);
+                    });
+
+                    let globalCalculatedProfitToken = cumulativeProfitPerDay * absolutePassedDays;
+
+                    if (globalCalculatedProfitToken > 0) {
+                        const operationalBatch = db.batch();
+                        const userRef = db.collection("users").doc(uid);
+
+                        operationalBatch.update(userRef, {
+                            balance: firebase.firestore.FieldValue.increment(globalCalculatedProfitToken),
+                            totalYieldEarned: firebase.firestore.FieldValue.increment(globalCalculatedProfitToken),
+                            lastYieldSyncTimestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                            hasSpunToday: false
+                        });
+
+                        const logRef = db.collection("deposits").doc();
+                        operationalBatch.set(logRef, {
+                            userId: uid,
+                            amount: globalCalculatedProfitToken,
+                            transactionId: "YIELD-" + Math.floor(100000 + Math.random() * 900000),
+                            gatewayChannel: `Cloud Yield (${absolutePassedDays} Days Sync)`,
+                            status: "approved",
+                            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+
+                        operationalBatch.commit().then(() => {
+                            triggerToastDisplay(`+Rs. ${globalCalculatedProfitToken} Automatic Profit Credited for ${absolutePassedDays} days! ⚡`);
+                        });
+                    }
+                });
+            }
+        }
+
+        window.leaseHardwareNode = function(name, price, dailyProfitValue) {
+            if(userCurrentBalance < price) { triggerToastDisplay("Balance capital threshold exceeded."); return; }
+            
+            const operationalBatch = db.batch();
+            const userRef = db.collection("users").doc(currentUserId);
+            
+            operationalBatch.update(userRef, {
+                balance: userCurrentBalance - price, 
+                minersCount: totalActiveCoresCount + 1,
+                hasDepositedBefore: true
+            });
+
+            const newLeaseRef = db.collection("leases").doc();
+            operationalBatch.set(newLeaseRef, {
+                userId: currentUserId,
+                planName: name,
+                cost: price,
+                dailyYield: dailyProfitValue,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            });
+
+            operationalBatch.commit().then(() => {
+                triggerToastDisplay(`Successfully leased ${name}! Node operations are live with 100% safe principal guarantee.`);
+            }).catch(err => triggerToastDisplay(err));
+        }
+
+        function calculateNetworkHierarchyAnalytics(usernameToken) {
+            db.collection("users").where("referredBy", "==", usernameToken).onSnapshot(snap => {
+                let totalInvitesJoined = snap.size;
+                let activeDepositorsCount = 0;
+
+                snap.forEach(doc => {
+                    if(doc.data().hasDepositedBefore === true) {
+                        activeDepositorsCount++;
+                    }
+                });
+
+                document.getElementById('cntTotalRefers').innerText = `${totalInvitesJoined} Users`;
+                document.getElementById('cntActiveDepositors').innerText = `${activeDepositorsCount} Active`;
+
+                let weeklyPct = Math.min((activeDepositorsCount / 10) * 100, 100);
+                document.getElementById('barWeeklyProgress').style.width = `${weeklyPct}%`;
+                document.getElementById('lblWeeklyProgressTxt').innerText = `Progress: ${activeDepositorsCount} / 10`;
+
+                let monthlyPct = Math.min((activeDepositorsCount / 50) * 100, 100);
+                document.getElementById('barMonthlyProgress').style.width = `${monthlyPct}%`;
+                document.getElementById('lblMonthlyProgressTxt').innerText = `Progress: ${activeDepositorsCount} / 50`;
+            });
+        }
+
+        window.copyUserReferralLink = function() {
+            let text = document.getElementById('lblDisplayInviteLink').innerText;
+            navigator.clipboard.writeText(text);
+            triggerToastDisplay("Referral tracking link copied! 🚀");
+        }
+
+        window.updateDepositCalculations = function() {
+            let amt = parseFloat(document.getElementById('pkrDepositInput').value) || 0;
+            
+            db.collection("users").doc(currentUserId).get().then(doc => {
+                let hasDepositedBefore = doc.exists ? (doc.data().hasDepositedBefore || false) : false;
+                let bonusRate = hasDepositedBefore ? 0.04 : 0.08;
+                let bonusLabelText = hasDepositedBefore ? "4% Subsequent Bonus" : "8% First Deposit Bonus";
+                
+                let bonus = amt * bonusRate;
+                let total = amt + bonus;
+
+                document.getElementById('lblBonusPKR').innerText = `Rs. ${bonus.toLocaleString()} (${bonusLabelText})`;
+                document.getElementById('lblTotalCreditedPKR').innerText = "Rs. " + total.toLocaleString();
+                
+                if(activeGatewayChannel === "USDT") {
+                    document.getElementById('txtPayableExactAmount').innerText = `$${(amt / 300).toFixed(2)} USDT (~Rs. ${amt})`;
+                } else {
+                    document.getElementById('txtPayableExactAmount').innerText = "Rs. " + amt.toLocaleString();
+                }
+            });
+        }
+
+        window.copyMerchantAccountToken = function() {
+            let num = document.getElementById('txtMerchantAccountNo').innerText;
+            if(num.includes("COMING SOON")) { triggerToastDisplay("Configure wallet destination first!"); return; }
+            navigator.clipboard.writeText(num);
+            triggerToastDisplay("Merchant account string token saved to memory!");
+        }
+
+        window.submitPkrDepositToFirebase = function() {
+            const inputVal = parseFloat(document.getElementById('pkrDepositInput').value);
+            const tid = document.getElementById('depositTxIDInput').value.trim();
+
+            if(isNaN(inputVal) || inputVal < 200) { triggerToastDisplay("Minimum asset barrier is Rs. 200."); return; }
+            if(!tid || tid.length < 11 || tid.length > 12) { triggerToastDisplay("Invalid TID bounds (11-12 digits required)."); return; }
+
+            db.collection("deposits").add({
+                userId: currentUserId, amount: inputVal, gatewayChannel: activeGatewayChannel,
+                transactionId: tid, status: "pending", timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => {
+                closeModal('depositModal'); triggerToastDisplay("Transaction mapped to verification pipeline array.");
+                document.getElementById('pkrDepositInput').value = ""; document.getElementById('depositTxIDInput').value = "";
+            });
+        }
+
+        window.executeP2PInternalTransfer = function() {
+            const targetUserField = document.getElementById('transferTargetUsername').value.trim().toLowerCase();
+            const amountField = parseFloat(document.getElementById('transferAmount').value);
+
+            if(!targetUserField || isNaN(amountField) || amountField <= 0) { triggerToastDisplay("Complete parameters properly."); return; }
+            if(amountField > userCurrentBalance) { triggerToastDisplay("Insufficient balance inside core wallet node."); return; }
+
+            db.collection("users").where("username", "==", targetUserField).get().then(snapshot => {
+                if(snapshot.empty) { throw new Error("Target user address tag match not found inside cloud database."); }
+                
+                const targetDocNode = snapshot.docs[0];
+                const destUid = targetDocNode.id;
+                const destCurrentBalance = targetDocNode.data().balance || 0;
+
+                if(destUid === currentUserId) { throw new Error("Self loop network operations are block forbidden."); }
+
+                const operationalBatch = db.batch();
+                operationalBatch.update(db.collection("users").doc(currentUserId), { balance: userCurrentBalance - amountField });
+                operationalBatch.update(db.collection("users").doc(destUid), { balance: destCurrentBalance + amountField });
+                
+                const sendLogRef = db.collection("deposits").doc();
+                operationalBatch.set(sendLogRef, {
+                    userId: currentUserId, amount: amountField, transactionId: "P2P-OUT-" + Math.floor(Math.random()*10000),
+                    gatewayChannel: "Internal Transfer Out", status: "approved", timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                return operationalBatch.commit();
+            }).then(() => {
+                closeModal('transferModal');
+                triggerToastDisplay(`Dispatched Rs. ${amountField} safely to network user!`);
+                document.getElementById('transferTargetUsername').value = "";
+                document.getElementById('transferAmount').value = "";
+            }).catch(err => triggerToastDisplay(err.message || err));
+        }
+
+        window.dispatchWithdrawalToCloud = function() {
+            const title = document.getElementById('withdrawTitle').value.trim();
+            const targetNo = document.getElementById('withdrawNumber').value.trim();
+            const amt = parseFloat(document.getElementById('withdrawAmount').value);
+
+            if(!title || !targetNo || isNaN(amt) || amt > userCurrentBalance) { triggerToastDisplay("Invalid ledger configurations."); return; }
+
+            db.collection("users").doc(currentUserId).update({ balance: userCurrentBalance - amt }).then(() => {
+                return db.collection("withdrawals").add({
+                    userId: currentUserId, title: title, targetNo: targetNo, amount: amt, status: "pending",
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            }).then(() => { 
+                closeModal('withdrawModal'); 
+                triggerToastDisplay("Withdraw transaction buffered into queue."); 
+                document.getElementById('withdrawTitle').value = "";
+                document.getElementById('withdrawNumber').value = "";
+                document.getElementById('withdrawAmount').value = "";
+            });
+        }
+
+        window.triggerLuckyCoreSpin = function() {
+            db.collection("users").doc(currentUserId).get().then(doc => {
+                if(doc.data().hasSpunToday) { triggerToastDisplay("Limit reached: 1 cycle per day interval."); return; }
+                
+                const matrixPrizes = [5, 10, 4, 8, 10, 1, 3, 5, 7, 6, 2, 1, 6, 8];
+                const winToken = matrixPrizes[Math.floor(Math.random() * matrixPrizes.length)];
+                const wheel = document.getElementById('luckyBonusWheel');
+                
+                wheel.style.transform = "rotate(1440deg)";
+                setTimeout(() => {
+                    db.collection("users").doc(currentUserId).update({
+                        balance: userCurrentBalance + winToken, hasSpunToday: true
+                    }).then(() => {
+                        triggerToastDisplay(`Success! Injected +Rs. ${winToken} to main balance matrix.`);
+                        wheel.style.transform = "rotate(0deg)";
+                    });
+                }, 3000);
+            });
+        }
+
+        function syncUserLedgerTracks() {
+            db.collection("deposits").where("userId", "==", currentUserId).onSnapshot(depSnap => {
+                db.collection("withdrawals").where("userId", "==", currentUserId).onSnapshot(withSnap => {
+                    let html = "";
+                    let recordsArray = [];
+                    
+                    depSnap.forEach(doc => {
+                        const d = doc.data();
+                        let recordDate = d.timestamp ? d.timestamp.toDate() : new Date();
+                        recordsArray.push({
+                            type: 'deposit',
+                            amount: d.amount,
+                            identifier: d.transactionId || 'INBOUND',
+                            channel: d.gatewayChannel,
+                            status: d.status,
+                            date: recordDate
+                        });
+                    });
+
+                    withSnap.forEach(doc => {
+                        const w = doc.data();
+                        let recordDate = w.timestamp ? w.timestamp.toDate() : new Date();
+                        recordsArray.push({
+                            type: 'withdrawal',
+                            amount: w.amount,
+                            identifier: `${w.targetNo} (${w.title})`,
+                            channel: 'Withdrawal Payout',
+                            status: w.status,
+                            date: recordDate
+                        });
+                    });
+
+                    recordsArray.sort((a, b) => b.date - a.date);
+
+                    recordsArray.forEach(item => {
+                        let colorStr = item.status === 'approved' ? '#10b981' : (item.status === 'rejected' ? '#ef4444' : '#eab308');
+                        let formattedDateString = item.date.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+                        
+                        if(item.type === 'deposit') {
+                            html += `<div class="history-card">
+                                <div>
+                                    <b style="color:#10b981;">+Rs. ${item.amount.toLocaleString()}</b>
+                                    <p style="font-size:12px; color:white; margin-top:2px;">${item.identifier} <span style="font-size:10px; color:#38bdf8;">[${item.channel}]</span></p>
+                                    <p style="font-size:10px; color:#64748b; margin-top:2px;"><i class="fa-regular fa-clock"></i> ${formattedDateString}</p>
+                                </div>
+                                <span style="font-size:11px; font-weight:700; color: ${colorStr}; background:rgba(255,255,255,0.03); padding:4px 8px; border-radius:8px;">${item.status.toUpperCase()}</span>
+                            </div>`;
+                        } else {
+                            html += `<div class="history-card">
+                                <div>
+                                    <b style="color:#ef4444;">-Rs. ${item.amount.toLocaleString()}</b>
+                                    <p style="font-size:12px; color:white; margin-top:2px;">Payout Target: ${item.identifier}</p>
+                                    <p style="font-size:10px; color:#64748b; margin-top:2px;"><i class="fa-regular fa-clock"></i> ${formattedDateString}</p>
+                                </div>
+                                <span style="font-size:11px; font-weight:700; color: ${colorStr}; background:rgba(255,255,255,0.03); padding:4px 8px; border-radius:8px;">WITHDRAW ${item.status.toUpperCase()}</span>
+                            </div>`;
+                        }
+                    });
+
+                    document.getElementById('userHistoryRecordsList').innerHTML = html || "Financial tracks void inside data ledger loops.";
+                });
+            });
+        }
+
+        window.registerAdminLogoTap = function() {
+            adminLogoTapCountTracker++;
+            if(adminLogoTapCountTracker >= 5) {
+                adminLogoTapCountTracker = 0;
+                document.getElementById('secretAdminScreen').style.display = 'flex';
+                triggerToastDisplay("Bypassing UI... Admin Protocol Detected.");
+            }
+        }
+        
+        window.closeAdminPortal = function() {
+            document.getElementById('secretAdminScreen').style.display = 'none';
+            document.getElementById('adminContentBody').style.display = 'none';
+            document.getElementById('adminSecretKeyField').value = "";
+        }
+
+        window.authenticateAdminSystemKey = function() {
+            const key = document.getElementById('adminSecretKeyField').value;
+            if(key === "vestify786") {
+                document.getElementById('adminContentBody').style.display = 'block';
+                triggerToastDisplay("Access Granted. Cluster Overrides Activated.");
+                loadAdminPendingDepositsArray();
+                loadAdminPendingWithdrawalsArray();
+                loadAdminUsersArray();
+            } else {
+                triggerToastDisplay("Invalid System Security Token Variable Key!");
+            }
+        }
+
+        window.switchAdminSubView = function(mode) {
+            document.getElementById('adminTabDep').classList.toggle('active', mode === 'deposits');
+            document.getElementById('adminTabWith').classList.toggle('active', mode === 'withdrawals');
+            document.getElementById('adminTabUsers').classList.toggle('active', mode === 'users');
+            document.getElementById('adminDepositsSection').style.display = mode === 'deposits' ? 'block' : 'none';
+            document.getElementById('adminWithdrawalsSection').style.display = mode === 'withdrawals' ? 'block' : 'none';
+            document.getElementById('adminUsersSection').style.display = mode === 'users' ? 'block' : 'none';
+        }
+
+        function loadAdminPendingDepositsArray() {
+            db.collection("deposits").where("status", "==", "pending").onSnapshot(snap => {
+                let html = "";
+                if(snap.empty) { html = "<div style='color:#64748b; padding:10px;'>No pending deposits inside pools.</div>"; }
+                snap.forEach(doc => {
+                    const d = doc.data();
+                    html += `<div style="background:rgba(255,255,255,0.02); padding:12px; border-radius:14px; border:1px solid rgba(255,255,255,0.05); margin-bottom:8px;">
+                        <p>Client UID: <b>${d.userId.substring(0,8)}...</b></p>
+                        <p>Amount: <b style="color:#10b981;">Rs. ${d.amount}</b> | Channel: ${d.gatewayChannel}</p>
+                        <p>TID Ref: <span style="color:#38bdf8;">${d.transactionId}</span></p>
+                        <div style="display:flex; gap:8px; margin-top:8px;">
+                            <button class="buy-plan-btn" style="flex:1; padding:6px; font-size:11px; background:#10b981; box-shadow:none;" onclick="approveDepositFromAdmin('${doc.id}', '${d.userId}', ${d.amount})">Approve</button>
+                            <button class="buy-plan-btn" style="flex:1; padding:6px; font-size:11px; background:#ef4444; box-shadow:none;" onclick="rejectDepositFromAdmin('${doc.id}')">Reject</button>
+                        </div>
+                    </div>`;
+                });
+                document.getElementById('adminPendingWithdrawalsTrack').innerHTML = html;
+            });
+        }
+
+        window.approveWithdrawalFromAdmin = function(docId) {
+            db.collection("withdrawals").doc(docId).update({ status: "approved" }).then(() => {
+                triggerToastDisplay("Withdrawal dispatch success! 💸");
+            }).catch(err => triggerToastDisplay(err.message));
+        }
+
+        window.rejectWithdrawalFromAdmin = function(docId, targetUid, refundAmount) {
+            const userRef = db.collection("users").doc(targetUid);
+            
+            db.runTransaction(transaction => {
+                return transaction.get(userRef).then(userDoc => {
+                    if (!userDoc.exists) { throw new Error("Target user missing."); }
+                    let currentBal = userDoc.data().balance || 0;
+                    transaction.update(userRef, { balance: currentBal + refundAmount });
+                    transaction.update(db.collection("withdrawals").doc(docId), { status: "rejected" });
+                });
+            }).then(() => {
+                triggerToastDisplay("Withdrawal Rejected & Capital Safely Refunded! 🎯");
+            }).catch(err => triggerToastDisplay("Error: " + err.message));
+        }
+
+        function loadAdminUsersArray() {
+            db.collection("users").onSnapshot(snap => {
+                let html = "";
+                if(snap.empty) { html = "<div style='color:#64748b; padding:10px;'>No registered users found.</div>"; }
+                snap.forEach(doc => {
+                    const u = doc.data();
+                    html += `<div style="background:rgba(255,255,255,0.02); padding:12px; border-radius:14px; border:1px solid rgba(255,255,255,0.05); margin-bottom:8px;">
+                        <p>Username: <b style="color:#38bdf8;">${u.username || 'N/A'}</b> | Email: ${u.email || 'N/A'}</p>
+                        <p>Balance: <b style="color:#10b981;">Rs. ${u.balance || 0}</b> | Active Rigs: ${u.minersCount || 0}</p>
+                        <div style="display:flex; gap:8px; margin-top:8px;">
+                            <input type="number" id="adminAddBal_${doc.id}" class="modal-input" placeholder="Amount" style="margin-top:0; padding:6px; flex:1;">
+                            <button class="buy-plan-btn" style="padding:6px 12px; font-size:11px; background:#10b981; box-shadow:none;" onclick="adminModifyUserBalance('${doc.id}', true)">Add</button>
+                            <button class="buy-plan-btn" style="padding:6px 12px; font-size:11px; background:#ef4444; box-shadow:none;" onclick="adminModifyUserBalance('${doc.id}', false)">Deduct</button>
+                        </div>
+                    </div>`;
+                });
+                document.getElementById('adminUsersTrack').innerHTML = html;
+            });
+        }
+
+        window.adminModifyUserBalance = function(targetUid, isAddition) {
+            let inputFieldVal = parseFloat(document.getElementById(`adminAddBal_${targetUid}`).value);
+            if(isNaN(inputFieldVal) || inputFieldVal <= 0) { triggerToastDisplay("Enter a valid amount."); return; }
+
+            const userRef = db.collection("users").doc(targetUid);
+            db.runTransaction(transaction => {
+                return transaction.get(userRef).then(userDoc => {
+                    if (!userDoc.exists) { throw new Error("User not found."); }
+                    let currentBal = userDoc.data().balance || 0;
+                    let newBal = isAddition ? (currentBal + inputFieldVal) : Math.max(0, currentBal - inputFieldVal);
+                    transaction.update(userRef, { balance: newBal });
+                });
+            }).then(() => {
+                triggerToastDisplay(`User balance successfully ${isAddition ? 'credited' : 'deducted'}!`);
+                document.getElementById(`adminAddBal_${targetUid}`).value = "";
+            }).catch(err => triggerToastDisplay("Error: " + err.message));
+        }
+
+        window.selectDepositGatewayChannel = function(channel) {
+            activeGatewayChannel = channel;
+            document.querySelectorAll('#depositModal .action-btn').forEach(b => b.style.borderColor = "rgba(255,255,255,0.05)");
+            
+            if(channel === "EasyPaisa") document.getElementById('chkEasyPaisa').style.borderColor = "#10b981";
+            if(channel === "JazzCash") document.getElementById('chkJazzCash').style.borderColor = "#eab308";
+            if(channel === "USDT") document.getElementById('chkUSDT').style.borderColor = "#26a17b";
+
+            const configurationNode = paymentGatewayMerchantConfig[channel];
+            document.getElementById('lblAccountTitleType').innerText = configurationNode.title;
+            document.getElementById('txtMerchantAccountNo').innerText = configurationNode.number;
+            
+            updateDepositCalculations();
+        }
+
+        function initializeCountdownClockTicker() {
+            setInterval(() => {
+                const clock = new Date();
+                const h = 23 - clock.getHours(); const m = 59 - clock.getMinutes(); const s = 59 - clock.getSeconds();
+                document.getElementById('countdownTimerClock').innerText = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+            }, 1000);
+        }
+
+        window.switchPlanCategory = function(gridId, tabId) {
+            document.querySelectorAll('.plans-grid').forEach(g => g.classList.remove('active-grid'));
+            document.querySelectorAll('.plan-tab-trigger').forEach(t => t.classList.remove('active-tab'));
+            document.getElementById(gridId).classList.add('active-grid');
+            document.getElementById(tabId).classList.add('active-tab');
+        }
+
+        window.routeToView = function(pId, nId) {
+            document.querySelectorAll('.app-view-page').forEach(p=>p.classList.remove('active-page'));
+            document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+            document.getElementById(pId).classList.add('active-page'); document.getElementById(nId).classList.add('active');
+        }
+
+        window.toggleFaqVisibility = function(element) {
+            const answerNode = element.querySelector('.faq-a');
+            const iconNode = element.querySelector('.faq-q i');
+            const isVisible = answerNode.style.display === 'block';
+            
+            answerNode.style.display = isVisible ? 'none' : 'block';
+            iconNode.style.transform = isVisible ? 'rotate(0deg)' : 'rotate(180deg)';
+        }
+
+        window.openDepositModal = function() { document.getElementById('depositModal').classList.add('modal-open'); selectDepositGatewayChannel('EasyPaisa'); }
+        window.openWithdrawModal = function() { document.getElementById('withdrawModal').classList.add('modal-open'); }
+        window.openTransferModal = function() { document.getElementById('transferModal').classList.add('modal-open'); }
+        window.closeModal = function(mId) { document.getElementById(mId).classList.remove('modal-open'); }
+
+        function triggerToastDisplay(textString) {
+            const toastNode = document.getElementById('rewardToast');
+            toastNode.innerText = textString;
+            toastNode.classList.add('toast-show');
+            setTimeout(() => { toastNode.classList.remove('toast-show'); }, 3500);
+        }
+    </script>
+</body>
+</html>
