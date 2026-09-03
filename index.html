@@ -64,6 +64,9 @@
         .logo-icon { width: 40px; height: 40px; background: linear-gradient(135deg, #ff416c, #ff4b2b); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 800; }
         .logo-text h1 { font-size: 18px; font-weight: 800; letter-spacing: 1px; }
 
+        .broadcast-ticker-banner { background: linear-gradient(135deg, rgba(255,65,108,0.15), rgba(255,75,43,0.05)); border: 1px solid rgba(255,65,108,0.3); border-radius: 16px; padding: 12px 16px; margin: 16px 16px 0 16px; display: flex; align-items: center; gap: 12px; animation: pulseGlow 2s infinite; }
+        @keyframes pulseGlow { 0% { box-shadow: 0 0 0 0 rgba(255,65,108, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(255,65,108, 0); } 100% { box-shadow: 0 0 0 0 rgba(255,65,108, 0); } }
+
         .stats-dashboard { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 24px; padding: 22px; margin: 20px 16px; position: relative; }
         .live-tag { position: absolute; top: 12px; right: 16px; background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16,185,129,0.3); font-size: 10px; padding: 2px 8px; border-radius: 20px; font-weight: 700; }
         
@@ -207,7 +210,7 @@
                 <div id="adminNodesSection" style="display: none;">
                     <h5 style="font-size: 13px; color: #a855f7; margin-bottom: 10px;">Mining Nodes Price, Yield & Duration Configurator</h5>
                     <div style="display: flex; flex-direction: column; gap: 10px;">
-                        <input type="text" id="editNodeName" class="modal-input" placeholder="Node Name (e.g., Pod Alpha-1)" style="margin-top:0;">
+                        <input type="text" id="editNodeName" class="modal-input" placeholder="Node Name ID (e.g., Pod Alpha-1)" style="margin-top:0;">
                         <input type="number" id="editNodePrice" class="modal-input" placeholder="New Lease Cost (PKR)" style="margin-top:0;">
                         <input type="number" id="editNodeDaily" class="modal-input" placeholder="New Daily Yield Profit (PKR)" style="margin-top:0;">
                         <input type="number" id="editNodeDuration" class="modal-input" placeholder="Duration Cycle (Days, e.g., 30)" style="margin-top:0;">
@@ -259,6 +262,15 @@
     </div>
 
     <div id="pageHome" class="app-view-page active-page">
+        <!-- Broadcast Viewer Box Ticker Banner -->
+        <div id="liveBroadcastTickerContainer" class="broadcast-ticker-banner" style="display: none;">
+            <i class="fa-solid fa-bullhorn" style="font-size: 18px; color: #ff416c;"></i>
+            <div style="flex: 1; overflow: hidden;">
+                <b id="tickerBroadcastTitle" style="font-size: 12px; color: #fff; display: block;">System Announcement</b>
+                <p id="tickerBroadcastMsg" style="font-size: 11px; color: #cbd5e1; margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"></p>
+            </div>
+        </div>
+
         <div class="stats-dashboard" style="background: linear-gradient(135deg, rgba(56,189,248,0.06), rgba(15,23,42,0.8)); border-color: rgba(56,189,248,0.2);">
             <span class="live-tag"><i class="fa-solid fa-bolt"></i> Matrix Online</span>
             <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
@@ -290,74 +302,74 @@
         </div>
 
         <div class="plans-grid active-grid" id="gridNormal">
-            <div class="plan-card" id="nodeCard-Pod Alpha-1">
+            <div class="plan-card" id="nodeCard-Pod Alpha-1" data-node-id="Pod Alpha-1">
                 <img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Node Array">
                 <div class="plan-details">
                     <h4 class="node-title-txt">Pod Alpha-1 <i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:10px;"></i></h4>
                     <p>Cost: <b class="node-cost-txt">Rs. 200</b> | Daily: <span class="node-daily-txt">Rs. 16/Day</span></p>
                     <p style="color:#64748b; font-size:10px;">Duration: <span class="node-dur-txt">30</span> Days Cycle</p>
                 </div>
-                <button class="buy-plan-btn" onclick="leaseHardwareNode('Pod Alpha-1', 200, 16)">Lease</button>
+                <button class="buy-plan-btn node-lease-btn" onclick="leaseHardwareNode('Pod Alpha-1', 200, 16)">Lease</button>
             </div>
-            <div class="plan-card" id="nodeCard-Pod Alpha-2">
+            <div class="plan-card" id="nodeCard-Pod Alpha-2" data-node-id="Pod Alpha-2">
                 <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Node Array">
                 <div class="plan-details">
                     <h4 class="node-title-txt">Pod Alpha-2 <i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:10px;"></i></h4>
                     <p>Cost: <b class="node-cost-txt">Rs. 500</b> | Daily: <span class="node-daily-txt">Rs. 42/Day</span></p>
                     <p style="color:#64748b; font-size:10px;">Duration: <span class="node-dur-txt">30</span> Days Cycle</p>
                 </div>
-                <button class="buy-plan-btn" onclick="leaseHardwareNode('Pod Alpha-2', 500, 42)">Lease</button>
+                <button class="buy-plan-btn node-lease-btn" onclick="leaseHardwareNode('Pod Alpha-2', 500, 42)">Lease</button>
             </div>
-            <div class="plan-card" id="nodeCard-Pod Alpha-3">
+            <div class="plan-card" id="nodeCard-Pod Alpha-3" data-node-id="Pod Alpha-3">
                 <img src="https://images.unsplash.com/photo-1563770660941-20978e870e26?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Node Array">
                 <div class="plan-details">
                     <h4 class="node-title-txt">Pod Alpha-3 <i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:10px;"></i></h4>
                     <p>Cost: <b class="node-cost-txt">Rs. 800</b> | Daily: <span class="node-daily-txt">Rs. 70/Day</span></p>
                     <p style="color:#64748b; font-size:10px;">Duration: <span class="node-dur-txt">30</span> Days Cycle</p>
                 </div>
-                <button class="buy-plan-btn" onclick="leaseHardwareNode('Pod Alpha-3', 800, 70)">Lease</button>
+                <button class="buy-plan-btn node-lease-btn" onclick="leaseHardwareNode('Pod Alpha-3', 800, 70)">Lease</button>
             </div>
-            <div class="plan-card" id="nodeCard-Pod Alpha-4">
+            <div class="plan-card" id="nodeCard-Pod Alpha-4" data-node-id="Pod Alpha-4">
                 <img src="https://images.unsplash.com/photo-1600132806370-bf17e65e942f?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Node Array">
                 <div class="plan-details">
                     <h4 class="node-title-txt">Pod Alpha-4 <i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:10px;"></i></h4>
                     <p>Cost: <b class="node-cost-txt">Rs. 1,200</b> | Daily: <span class="node-daily-txt">Rs. 105/Day</span></p>
                     <p style="color:#64748b; font-size:10px;">Duration: <span class="node-dur-txt">30</span> Days Cycle</p>
                 </div>
-                <button class="buy-plan-btn" onclick="leaseHardwareNode('Pod Alpha-4', 1200, 105)">Lease</button>
+                <button class="buy-plan-btn node-lease-btn" onclick="leaseHardwareNode('Pod Alpha-4', 1200, 105)">Lease</button>
             </div>
         </div>
 
         <div class="plans-grid" id="gridSpecial">
-            <div class="plan-card special-border" id="nodeCard-Rig Stratum-1">
+            <div class="plan-card special-border" id="nodeCard-Rig Stratum-1" data-node-id="Rig Stratum-1">
                 <img src="https://images.unsplash.com/photo-1640340434855-6084b1f4901c?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Rig Setup">
                 <div class="plan-details">
                     <h4 class="node-title-txt">Rig Stratum-1 <i class="fa-solid fa-crown" style="color:#eab308; font-size:10px;"></i></h4>
                     <p>Cost: <b class="node-cost-txt">Rs. 4,000</b> | Daily: <span class="node-daily-txt">Rs. 380/Day</span></p>
                     <p style="color:#64748b; font-size:10px;">Duration: <span class="node-dur-txt">30</span> Days Cycle</p>
                 </div>
-                <button class="buy-plan-btn" style="background: linear-gradient(135deg, #eab308, #ca8a04);" onclick="leaseHardwareNode('Rig Stratum-1', 4000, 380)">Lease</button>
+                <button class="buy-plan-btn node-lease-btn" style="background: linear-gradient(135deg, #eab308, #ca8a04);" onclick="leaseHardwareNode('Rig Stratum-1', 4000, 380)">Lease</button>
             </div>
-            <div class="plan-card special-border" id="nodeCard-Rig Stratum-2">
+            <div class="plan-card special-border" id="nodeCard-Rig Stratum-2" data-node-id="Rig Stratum-2">
                 <img src="https://images.unsplash.com/photo-1624996379697-f01d168b1a52?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Rig Setup">
                 <div class="plan-details">
                     <h4 class="node-title-txt">Rig Stratum-2 <i class="fa-solid fa-crown" style="color:#eab308; font-size:10px;"></i></h4>
                     <p>Cost: <b class="node-cost-txt">Rs. 6,000</b> | Daily: <span class="node-daily-txt">Rs. 580/Day</span></p>
                     <p style="color:#64748b; font-size:10px;">Duration: <span class="node-dur-txt">30</span> Days Cycle</p>
                 </div>
-                <button class="buy-plan-btn" style="background: linear-gradient(135deg, #eab308, #ca8a04);" onclick="leaseHardwareNode('Rig Stratum-2', 6000, 580)">Lease</button>
+                <button class="buy-plan-btn node-lease-btn" style="background: linear-gradient(135deg, #eab308, #ca8a04);" onclick="leaseHardwareNode('Rig Stratum-2', 6000, 580)">Lease</button>
             </div>
         </div>
 
         <div class="plans-grid" id="gridOffers">
-            <div class="plan-card offer-border" id="nodeCard-Matrix Overdrive-1">
+            <div class="plan-card offer-border" id="nodeCard-Matrix Overdrive-1" data-node-id="Matrix Overdrive-1">
                 <img src="https://images.unsplash.com/photo-1639322537228-f710d846310a?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Overdrive Array">
                 <div class="plan-details">
                     <h4 class="node-title-txt">Matrix Overdrive-1 <i class="fa-solid fa-bolt-lightning" style="color:#a855f7; font-size:10px;"></i></h4>
                     <p>Cost: <b class="node-cost-txt">Rs. 30,000</b> | Daily: <span class="node-daily-txt">Rs. 3,400/Day</span></p>
                     <p style="color:#64748b; font-size:10px;">Duration: <span class="node-dur-txt">30</span> Days Cycle</p>
                 </div>
-                <button class="buy-plan-btn" style="background: linear-gradient(135deg, #a855f7, #7c3aed);" onclick="leaseHardwareNode('Matrix Overdrive-1', 30000, 3400)">Lease</button>
+                <button class="buy-plan-btn node-lease-btn" style="background: linear-gradient(135deg, #a855f7, #7c3aed);" onclick="leaseHardwareNode('Matrix Overdrive-1', 30000, 3400)">Lease</button>
             </div>
         </div>
 
@@ -565,6 +577,8 @@
             if(params.has('ref')) {
                 document.getElementById('authReferralInput').value = params.get('ref');
             }
+            initializeRealtimeBroadcastListener();
+            initializeRealtimeNodeConfigSync();
         });
 
         auth.onAuthStateChanged(user => {
@@ -1219,163 +1233,219 @@
         window.adminToggleBlockStatus = function(targetUid, currentlyBlocked) {
             db.collection("users").doc(targetUid).update({ isBlocked: !currentlyBlocked }).then(() => {
                 logAdminAuditAction(`Toggled block status for user UID ${targetUid.substring(0,6)} to ${!currentlyBlocked}`);
-                triggerToastDisplay(`User account ${!currentlyBlocked ? 'blocked' : 'unblocked'} successfully!`);
+                triggerToastDisplay(`User account block status updated.`);
             });
         }
 
-        // 4. NODE CONFIGURATOR (Price, Yield & Duration)
+        // 4. FIXED NODE CONFIGURATION PERSISTENCE & DYNAMIC SYNCING
         window.saveNodeConfigOverride = function() {
-            let nodeName = document.getElementById('editNodeName').value.trim();
-            let newPrice = parseFloat(document.getElementById('editNodePrice').value);
-            let newDaily = parseFloat(document.getElementById('editNodeDaily').value);
-            let newDuration = parseInt(document.getElementById('editNodeDuration').value);
+            const nodeNameId = document.getElementById('editNodeName').value.trim();
+            const newPrice = parseFloat(document.getElementById('editNodePrice').value);
+            const newDaily = parseFloat(document.getElementById('editNodeDaily').value);
+            const newDuration = parseInt(document.getElementById('editNodeDuration').value);
 
-            if(!nodeName || isNaN(newPrice) || isNaN(newDaily) || isNaN(newDuration)) {
-                triggerToastDisplay("Please fill all node parameters correctly.");
-                return;
-            }
+            if(!nodeNameId) { triggerToastDisplay("Please enter the exact Node Name (e.g., Pod Alpha-1)."); return; }
+            if(isNaN(newPrice) || isNaN(newDaily) || isNaN(newDuration)) { triggerToastDisplay("Please fill all configuration parameter fields correctly."); return; }
 
-            let cardNode = document.getElementById(`nodeCard-${nodeName}`);
-            if(cardNode) {
-                cardNode.querySelector('.node-cost-txt').innerText = `Rs. ${newPrice.toLocaleString()}`;
-                cardNode.querySelector('.node-daily-txt').innerText = `Rs. ${newDaily.toLocaleString()}/Day`;
-                cardNode.querySelector('.node-dur-txt').innerText = newDuration;
-                
-                let leaseBtn = cardNode.querySelector('.buy-plan-btn');
-                leaseBtn.setAttribute('onclick', `leaseHardwareNode('${nodeName}', ${newPrice}, ${newDaily})`);
-
-                logAdminAuditAction(`Updated node parameters for ${nodeName}: Cost=${newPrice}, Daily=${newDaily}, Duration=${newDuration}d`);
-                triggerToastDisplay(`Node '${nodeName}' configuration successfully updated!`);
+            db.collection("node_configs").doc(nodeNameId).set({
+                nodeId: nodeNameId,
+                cost: newPrice,
+                dailyYield: newDaily,
+                duration: newDuration,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            }, { merge: true }).then(() => {
+                logAdminAuditAction(`Updated node configuration parameters for ${nodeNameId}`);
+                triggerToastDisplay(`Node configurations saved to Firestore successfully!`);
                 document.getElementById('editNodeName').value = "";
                 document.getElementById('editNodePrice').value = "";
                 document.getElementById('editNodeDaily').value = "";
                 document.getElementById('editNodeDuration').value = "";
-            } else {
-                triggerToastDisplay("Node name not found in current UI list. Check exact spelling.");
-            }
+            }).catch(err => triggerToastDisplay("Error saving config: " + err.message));
         }
 
-        // 5. BROADCAST & NOTIFICATION CENTER
-        window.dispatchGlobalBroadcast = function() {
-            const title = document.getElementById('broadcastTitleInput').value.trim();
-            const message = document.getElementById('broadcastMessageInput').value.trim();
+        function initializeRealtimeNodeConfigSync() {
+            db.collection("node_configs").onSnapshot(snapshot => {
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const nodeId = data.nodeId || doc.id;
+                    const cardElem = document.getElementById(`nodeCard-${nodeId}`);
+                    if(cardElem) {
+                        const costElem = cardElem.querySelector('.node-cost-txt');
+                        const dailyElem = cardElem.querySelector('.node-daily-txt');
+                        const durElem = cardElem.querySelector('.node-dur-txt');
+                        const leaseBtn = cardElem.querySelector('.node-lease-btn');
 
-            if(!title || !message) { triggerToastDisplay("Provide both title and message."); return; }
+                        if(costElem && data.cost !== undefined) costElem.innerText = `Rs. ${data.cost.toLocaleString()}`;
+                        if(dailyElem && data.dailyYield !== undefined) dailyElem.innerText = `Rs. ${data.dailyYield}/Day`;
+                        if(durElem && data.duration !== undefined) durElem.innerText = data.duration;
 
-            db.collection("broadcasts").add({
-                title: title,
-                message: message,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            }).then(() => {
-                logAdminAuditAction(`Dispatched global broadcast: "${title}"`);
-                triggerToastDisplay("Broadcast sent successfully to all registered users!");
-                document.getElementById('broadcastTitleInput').value = "";
-                document.getElementById('broadcastMessageInput').value = "";
-            });
-        }
-
-        // 6. DETAILED ANALYTICS & REVENUE REPORTS
-        function loadAdminAnalyticsReports() {
-            db.collection("users").get().then(userSnap => {
-                let totalUsers = userSnap.size;
-                db.collection("deposits").where("status", "==", "approved").get().then(depSnap => {
-                    let totalRev = 0;
-                    depSnap.forEach(d => { totalRev += (d.data().amount || 0); });
-
-                    document.getElementById('repDAU').innerText = Math.max(1, Math.floor(totalUsers * 0.4));
-                    document.getElementById('repWAU').innerText = Math.max(1, Math.floor(totalUsers * 0.7));
-                    document.getElementById('repMAU').innerText = totalUsers;
-                    document.getElementById('repTotalRevenue').innerText = "Rs. " + totalRev.toLocaleString();
+                        if(leaseBtn && data.cost !== undefined && data.dailyYield !== undefined) {
+                            leaseBtn.setAttribute('onclick', `leaseHardwareNode('${nodeId}', ${data.cost}, ${data.dailyYield})`);
+                        }
+                    }
                 });
             });
         }
 
-        // 7. SECURITY & AUDIT LOGS
+        // 5. FIXED BROADCAST MESSAGE VISIBILITY BUG & TICKER BANNER
+        window.dispatchGlobalBroadcast = function() {
+            const title = document.getElementById('broadcastTitleInput').value.trim();
+            const message = document.getElementById('broadcastMessageInput').value.trim();
+
+            if(!title || !message) { triggerToastDisplay("Please enter both broadcast title and message text."); return; }
+
+            db.collection("global_broadcasts").add({
+                title: title,
+                message: message,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => {
+                logAdminAuditAction("Dispatched global broadcast: " + title);
+                triggerToastDisplay("Global broadcast sent successfully to all user dashboards!");
+                document.getElementById('broadcastTitleInput').value = "";
+                document.getElementById('broadcastMessageInput').value = "";
+            }).catch(err => triggerToastDisplay("Broadcast error: " + err.message));
+        }
+
+        function initializeRealtimeBroadcastListener() {
+            db.collection("global_broadcasts").orderBy("timestamp", "desc").limit(1).onSnapshot(snapshot => {
+                const bannerContainer = document.getElementById('liveBroadcastTickerContainer');
+                const titleElem = document.getElementById('tickerBroadcastTitle');
+                const msgElem = document.getElementById('tickerBroadcastMsg');
+
+                if(!snapshot.empty) {
+                    const latestBroadcast = snapshot.docs[0].data();
+                    if(titleElem && msgElem && bannerContainer) {
+                        titleElem.innerText = latestBroadcast.title || "Platform Announcement";
+                        msgElem.innerText = latestBroadcast.message || "";
+                        bannerContainer.style.display = "flex";
+                        
+                        // Also trigger a subtle toast alert for new announcements
+                        triggerToastDisplay(`New Broadcast: ${latestBroadcast.title}`);
+                    }
+                } else {
+                    if(bannerContainer) bannerContainer.style.display = "none";
+                }
+            }, error => {
+                console.log("Broadcast listener sync notice:", error);
+            });
+        }
+
+        // 6. ANALYTICS REPORTS
+        function loadAdminAnalyticsReports() {
+            db.collection("users").get().then(snap => {
+                let totalCount = snap.size;
+                let activeToday = 0;
+                let activeWeek = 0;
+                let now = new Date();
+
+                let revCount = 0;
+                db.collection("deposits").where("status", "==", "approved").get().then(depSnap => {
+                    depSnap.forEach(d => { revCount += (d.data().amount || 0); });
+                    document.getElementById('repTotalRevenue').innerText = `Rs. ${revCount.toLocaleString()}`;
+                });
+
+                snap.forEach(doc => {
+                    let d = doc.data();
+                    if(d.timestamp) {
+                        let tDate = d.timestamp.toDate();
+                        let diffDays = (now - tDate) / (1000 * 60 * 60 * 24);
+                        if(diffDays <= 1) activeToday++;
+                        if(diffDays <= 7) activeWeek++;
+                    }
+                });
+
+                document.getElementById('repDAU').innerText = activeToday;
+                document.getElementById('repWAU').innerText = activeWeek;
+                document.getElementById('repMAU').innerText = totalCount;
+            });
+        }
+
+        // 7. AUDIT LOGS
         function logAdminAuditAction(actionDescription) {
-            db.collection("auditLogs").add({
+            db.collection("admin_audit_logs").add({
                 action: actionDescription,
-                admin: "SuperAdmin",
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
             });
         }
 
         function loadAdminAuditLogs() {
-            db.collection("auditLogs").orderBy("timestamp", "desc").limit(20).onSnapshot(snap => {
+            db.collection("admin_audit_logs").orderBy("timestamp", "desc").limit(20).onSnapshot(snap => {
                 let html = "";
-                if(snap.empty) { html = "<div style='color:#64748b;'>No audit logs recorded yet.</div>"; }
+                if(snap.empty) { html = "<div>No audit logs recorded yet.</div>"; }
                 snap.forEach(doc => {
-                    const l = doc.data();
-                    let dateStr = l.timestamp ? l.timestamp.toDate().toLocaleTimeString() : "Just now";
-                    html += `<div style="background:rgba(255,255,255,0.02); padding:8px 10px; border-radius:8px; border-left:3px solid #ef4444;">
-                        <b style="color:white;">${l.action}</b>
-                        <p style="font-size:9px; color:#64748b; margin-top:2px;">${dateStr} - By ${l.admin}</p>
+                    let d = doc.data();
+                    let tStr = d.timestamp ? d.timestamp.toDate().toLocaleTimeString() : 'Just now';
+                    html += `<div style="background:rgba(255,255,255,0.01); padding:6px 10px; border-radius:8px; border-left:2px solid #ef4444; margin-bottom:4px;">
+                        <span style="color:#94a3b8; font-size:9px;">[${tStr}]</span> <span style="color:#fff;">${d.action}</span>
                     </div>`;
                 });
                 document.getElementById('adminAuditLogsFeed').innerHTML = html;
             });
         }
 
-        window.selectDepositGatewayChannel = function(channel) {
-            activeGatewayChannel = channel;
-            document.querySelectorAll('#depositModal .action-btn').forEach(b => b.style.borderColor = "rgba(255,255,255,0.05)");
+        // NAVIGATION & MODAL HELPERS
+        window.routeToView = function(pageId, navId) {
+            document.querySelectorAll('.app-view-page').forEach(p => p.classList.remove('active-page'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             
-            if(channel === "EasyPaisa") document.getElementById('chkEasyPaisa').style.borderColor = "#10b981";
-            if(channel === "JazzCash") document.getElementById('chkJazzCash').style.borderColor = "#eab308";
-            if(channel === "USDT") document.getElementById('chkUSDT').style.borderColor = "#26a17b";
+            document.getElementById(pageId).classList.add('active-page');
+            document.getElementById(navId).classList.add('active');
 
-            const configurationNode = paymentGatewayMerchantConfig[channel];
-            document.getElementById('lblAccountTitleType').innerText = configurationNode.title;
-            document.getElementById('txtMerchantAccountNo').innerText = configurationNode.number;
+            let pageTitleMap = { 'pageHome': 'Home View', 'pageAffiliate': 'Network Center', 'pageHistory': 'Ledger Logs', 'pageLegalHub': 'Info Hub' };
+            updateLivePresenceActivity(pageTitleMap[pageId] || 'Dashboard');
+        }
+
+        window.switchPlanCategory = function(gridId, triggerId) {
+            document.querySelectorAll('.plans-grid').forEach(g => g.classList.remove('active-grid'));
+            document.querySelectorAll('.plan-tab-trigger').forEach(t => t.classList.remove('active-tab'));
             
+            document.getElementById(gridId).classList.add('active-grid');
+            document.getElementById(triggerId).classList.add('active-tab');
+        }
+
+        window.openDepositModal = function() { document.getElementById('depositModal').classList.add('modal-open'); updateDepositCalculations(); }
+        window.openWithdrawModal = function() { document.getElementById('withdrawModal').classList.add('modal-open'); }
+        window.openTransferModal = function() { document.getElementById('transferModal').classList.add('modal-open'); }
+        window.closeModal = function(modalId) { document.getElementById(modalId).classList.remove('modal-open'); }
+
+        window.selectDepositGatewayChannel = function(chName) {
+            activeGatewayChannel = chName;
+            ['chkEasyPaisa', 'chkJazzCash', 'chkUSDT'].forEach(id => {
+                document.getElementById(id).style.borderColor = "rgba(255,255,255,0.05)";
+            });
+            let targetBtnId = chName === 'EasyPaisa' ? 'chkEasyPaisa' : (chName === 'JazzCash' ? 'chkJazzCash' : 'chkUSDT');
+            document.getElementById(targetBtnId).style.borderColor = "#10b981";
+
+            let conf = paymentGatewayMerchantConfig[chName];
+            document.getElementById('lblAccountTitleType').innerText = `${chName} Account`;
+            document.getElementById('txtMerchantAccountNo').innerText = conf.number;
             updateDepositCalculations();
         }
 
+        window.toggleFaqVisibility = function(faqItemElem) {
+            const answerElem = faqItemElem.querySelector('.faq-a');
+            const isVisible = answerElem.style.display === 'block';
+            answerElem.style.display = isVisible ? 'none' : 'block';
+        }
+
+        function triggerToastDisplay(textMsg) {
+            const toast = document.getElementById('rewardToast');
+            toast.innerText = textMsg;
+            toast.classList.add('toast-show');
+            setTimeout(() => { toast.classList.remove('toast-show'); }, 3500);
+        }
+
         function initializeCountdownClockTicker() {
+            let totalSecondsTotal = 24 * 3600;
             setInterval(() => {
-                const clock = new Date();
-                const h = 23 - clock.getHours(); const m = 59 - clock.getMinutes(); const s = 59 - clock.getSeconds();
-                document.getElementById('countdownTimerClock').innerText = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+                totalSecondsTotal--;
+                if(totalSecondsTotal <= 0) totalSecondsTotal = 24 * 3600;
+                let hrs = Math.floor(totalSecondsTotal / 3600);
+                let mins = Math.floor((totalSecondsTotal % 3600) / 60);
+                let secs = totalSecondsTotal % 60;
+                document.getElementById('countdownTimerClock').innerText = 
+                    `${hrs.toString().padStart(2,'0')}:${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
             }, 1000);
-        }
-
-        window.switchPlanCategory = function(gridId, tabId) {
-            document.querySelectorAll('.plans-grid').forEach(g => g.classList.remove('active-grid'));
-            document.querySelectorAll('.plan-tab-trigger').forEach(t => t.classList.remove('active-tab'));
-            document.getElementById(gridId).classList.add('active-grid');
-            document.getElementById(tabId).classList.add('active-tab');
-        }
-
-        window.routeToView = function(pId, nId) {
-            document.querySelectorAll('.app-view-page').forEach(p=>p.classList.remove('active-page'));
-            document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-            document.getElementById(pId).classList.add('active-page'); document.getElementById(nId).classList.add('active');
-            
-            let pageTitle = "Home View";
-            if(pId === 'pageAffiliate') pageTitle = "Affiliate Hub";
-            if(pId === 'pageHistory') pageTitle = "Ledger Logs";
-            if(pId === 'pageLegalHub') pageTitle = "Info Hub";
-            updateLivePresenceActivity(pageTitle);
-        }
-
-        window.toggleFaqVisibility = function(element) {
-            const answerNode = element.querySelector('.faq-a');
-            const iconNode = element.querySelector('.faq-q i');
-            const isVisible = answerNode.style.display === 'block';
-            
-            answerNode.style.display = isVisible ? 'none' : 'block';
-            iconNode.style.transform = isVisible ? 'rotate(0deg)' : 'rotate(180deg)';
-        }
-
-        window.openDepositModal = function() { document.getElementById('depositModal').classList.add('modal-open'); selectDepositGatewayChannel('EasyPaisa'); }
-        window.openWithdrawModal = function() { document.getElementById('withdrawModal').classList.add('modal-open'); }
-        window.openTransferModal = function() { document.getElementById('transferModal').classList.add('modal-open'); }
-        window.closeModal = function(mId) { document.getElementById(mId).classList.remove('modal-open'); }
-
-        function triggerToastDisplay(textString) {
-            const toastNode = document.getElementById('rewardToast');
-            toastNode.innerText = textString;
-            toastNode.classList.add('toast-show');
-            setTimeout(() => { toastNode.classList.remove('toast-show'); }, 3500);
         }
     </script>
 </body>
