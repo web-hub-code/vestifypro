@@ -162,8 +162,9 @@
         </div>
     </div>
 
+    <!-- SECRET ADMIN PANEL -->
     <div id="secretAdminScreen" style="display: none;">
-        <div class="admin-container" style="max-width: 450px; background: #070d19; border: 1px solid rgba(255,255,255,0.1);">
+        <div class="admin-container" style="max-width: 480px; background: #070d19; border: 1px solid rgba(255,255,255,0.1);">
             <div class="close-modal-btn" onclick="closeAdminPortal()" style="position: static; text-align: right; margin-bottom: 10px;">&times; Close Admin</div>
             <h3 style="color: #ff416c; font-weight: 800; margin-bottom: 5px;"><i class="fa-solid fa-user-shield"></i> Secret Admin Panel</h3>
             <p style="font-size: 11px; color: #64748b; margin-bottom: 20px;">Manual Verification & System Override Engine</p>
@@ -171,11 +172,12 @@
             <input type="password" id="adminSecretKeyField" class="modal-input" placeholder="Enter System Admin Secret Passkey" style="margin-top:0;">
             <button class="buy-plan-btn" onclick="authenticateAdminSystemKey()" style="width:100%; margin:12px 0; padding:10px;">Verify Superuser Auth</button>
             
-            <div id="adminContentBody" style="display: none; margin-top: 20px; text-align: left; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; max-height: 400px; overflow-y: auto;">
-                <div class="auth-tabs" style="margin-bottom: 15px;">
-                    <button id="adminTabDep" class="auth-tab-btn active" onclick="switchAdminSubView('deposits')">Deposits</button>
-                    <button id="adminTabWith" class="auth-tab-btn" onclick="switchAdminSubView('withdrawals')">Withdrawals</button>
-                    <button id="adminTabUsers" class="auth-tab-btn" onclick="switchAdminSubView('users')">Users</button>
+            <div id="adminContentBody" style="display: none; margin-top: 20px; text-align: left; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; max-height: 450px; overflow-y: auto;">
+                <div class="auth-tabs" style="margin-bottom: 15px; display: flex; flex-wrap: wrap; gap: 5px;">
+                    <button id="adminTabDep" class="auth-tab-btn active" onclick="switchAdminSubView('deposits')" style="font-size: 11px; padding: 8px;">Deposits</button>
+                    <button id="adminTabWith" class="auth-tab-btn" onclick="switchAdminSubView('withdrawals')" style="font-size: 11px; padding: 8px;">Payouts</button>
+                    <button id="adminTabUsers" class="auth-tab-btn" onclick="switchAdminSubView('users')" style="font-size: 11px; padding: 8px;">Users</button>
+                    <button id="adminTabNodes" class="auth-tab-btn" onclick="switchAdminSubView('nodes')" style="font-size: 11px; padding: 8px;">Edit Nodes</button>
                 </div>
 
                 <div id="adminDepositsSection">
@@ -191,6 +193,18 @@
                 <div id="adminUsersSection" style="display: none;">
                     <h5 style="font-size: 13px; color: #10b981; margin-bottom: 10px;">Platform User Accounts & Balance Manager</h5>
                     <div id="adminUsersTrack" style="font-size: 12px; display: flex; flex-direction: column; gap: 8px;">Loading user database...</div>
+                </div>
+
+                <!-- NEW ADMIN FEATURE: EDIT & ADD MINING NODES -->
+                <div id="adminNodesSection" style="display: none;">
+                    <h5 style="font-size: 13px; color: #a855f7; margin-bottom: 10px;">Mining Nodes Price & Profit Configurator</h5>
+                    <p style="font-size: 10px; color: #64748b; margin-bottom: 10px;">Live UI node parameters editor override.</p>
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <input type="text" id="editNodeName" class="modal-input" placeholder="Node Name (e.g., Pod Alpha-1)" style="margin-top:0;">
+                        <input type="number" id="editNodePrice" class="modal-input" placeholder="New Lease Cost (PKR)" style="margin-top:0;">
+                        <input type="number" id="editNodeDaily" class="modal-input" placeholder="New Daily Yield Profit (PKR)" style="margin-top:0;">
+                        <button class="buy-plan-btn" onclick="saveNodeConfigOverride()" style="background:linear-gradient(135deg, #a855f7, #7c3aed); padding:10px;">Update Node Parameters</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -241,173 +255,74 @@
         </div>
 
         <div class="plans-grid active-grid" id="gridNormal">
-            <div class="plan-card">
+            <div class="plan-card" id="nodeCard-Pod Alpha-1">
                 <img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Node Array">
                 <div class="plan-details">
-                    <h4>Pod Alpha-1 <i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:10px;"></i></h4>
-                    <p>Cost: <b>Rs. 200</b> | Daily: <span>Rs. 16/Day</span></p>
-                    <p style="color:#94a3b8; font-size:10px;">Total Profit: <b>Rs. 480 (30 Days)</b></p>
+                    <h4 class="node-title-txt">Pod Alpha-1 <i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:10px;"></i></h4>
+                    <p>Cost: <b class="node-cost-txt">Rs. 200</b> | Daily: <span class="node-daily-txt">Rs. 16/Day</span></p>
+                    <p style="color:#64748b; font-size:10px;">Duration: 30 Days Cycle</p>
                 </div>
                 <button class="buy-plan-btn" onclick="leaseHardwareNode('Pod Alpha-1', 200, 16)">Lease</button>
             </div>
-            <div class="plan-card">
+            <div class="plan-card" id="nodeCard-Pod Alpha-2">
                 <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Node Array">
                 <div class="plan-details">
-                    <h4>Pod Alpha-2 <i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:10px;"></i></h4>
-                    <p>Cost: <b>Rs. 500</b> | Daily: <span>Rs. 42/Day</span></p>
-                    <p style="color:#94a3b8; font-size:10px;">Total Profit: <b>Rs. 1,260 (30 Days)</b></p>
+                    <h4 class="node-title-txt">Pod Alpha-2 <i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:10px;"></i></h4>
+                    <p>Cost: <b class="node-cost-txt">Rs. 500</b> | Daily: <span class="node-daily-txt">Rs. 42/Day</span></p>
+                    <p style="color:#64748b; font-size:10px;">Duration: 30 Days Cycle</p>
                 </div>
                 <button class="buy-plan-btn" onclick="leaseHardwareNode('Pod Alpha-2', 500, 42)">Lease</button>
             </div>
-            <div class="plan-card">
+            <div class="plan-card" id="nodeCard-Pod Alpha-3">
                 <img src="https://images.unsplash.com/photo-1563770660941-20978e870e26?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Node Array">
                 <div class="plan-details">
-                    <h4>Pod Alpha-3 <i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:10px;"></i></h4>
-                    <p>Cost: <b>Rs. 800</b> | Daily: <span>Rs. 70/Day</span></p>
-                    <p style="color:#94a3b8; font-size:10px;">Total Profit: <b>Rs. 2,100 (30 Days)</b></p>
+                    <h4 class="node-title-txt">Pod Alpha-3 <i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:10px;"></i></h4>
+                    <p>Cost: <b class="node-cost-txt">Rs. 800</b> | Daily: <span class="node-daily-txt">Rs. 70/Day</span></p>
+                    <p style="color:#64748b; font-size:10px;">Duration: 30 Days Cycle</p>
                 </div>
                 <button class="buy-plan-btn" onclick="leaseHardwareNode('Pod Alpha-3', 800, 70)">Lease</button>
             </div>
-            <div class="plan-card">
+            <div class="plan-card" id="nodeCard-Pod Alpha-4">
                 <img src="https://images.unsplash.com/photo-1600132806370-bf17e65e942f?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Node Array">
                 <div class="plan-details">
-                    <h4>Pod Alpha-4 <i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:10px;"></i></h4>
-                    <p>Cost: <b>Rs. 1,200</b> | Daily: <span>Rs. 105/Day</span></p>
-                    <p style="color:#94a3b8; font-size:10px;">Total Profit: <b>Rs. 3,150 (30 Days)</b></p>
+                    <h4 class="node-title-txt">Pod Alpha-4 <i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:10px;"></i></h4>
+                    <p>Cost: <b class="node-cost-txt">Rs. 1,200</b> | Daily: <span class="node-daily-txt">Rs. 105/Day</span></p>
+                    <p style="color:#64748b; font-size:10px;">Duration: 30 Days Cycle</p>
                 </div>
                 <button class="buy-plan-btn" onclick="leaseHardwareNode('Pod Alpha-4', 1200, 105)">Lease</button>
-            </div>
-            <div class="plan-card">
-                <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Node Array">
-                <div class="plan-details">
-                    <h4>Pod Alpha-5 <i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:10px;"></i></h4>
-                    <p>Cost: <b>Rs. 1,600</b> | Daily: <span>Rs. 145/Day</span></p>
-                    <p style="color:#94a3b8; font-size:10px;">Total Profit: <b>Rs. 4,350 (30 Days)</b></p>
-                </div>
-                <button class="buy-plan-btn" onclick="leaseHardwareNode('Pod Alpha-5', 1600, 145)">Lease</button>
-            </div>
-            <div class="plan-card">
-                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Node Array">
-                <div class="plan-details">
-                    <h4>Pod Alpha-6 <i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:10px;"></i></h4>
-                    <p>Cost: <b>Rs. 2,000</b> | Daily: <span>Rs. 185/Day</span></p>
-                    <p style="color:#94a3b8; font-size:10px;">Total Profit: <b>Rs. 5,550 (30 Days)</b></p>
-                </div>
-                <button class="buy-plan-btn" onclick="leaseHardwareNode('Pod Alpha-6', 2000, 185)">Lease</button>
-            </div>
-            <div class="plan-card">
-                <img src="https://images.unsplash.com/photo-1621761191319-c6fb62004040?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Node Array">
-                <div class="plan-details">
-                    <h4>Pod Alpha-7 <i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:10px;"></i></h4>
-                    <p>Cost: <b>Rs. 2,500</b> | Daily: <span>Rs. 235/Day</span></p>
-                    <p style="color:#94a3b8; font-size:10px;">Total Profit: <b>Rs. 7,050 (30 Days)</b></p>
-                </div>
-                <button class="buy-plan-btn" onclick="leaseHardwareNode('Pod Alpha-7', 2500, 235)">Lease</button>
             </div>
         </div>
 
         <div class="plans-grid" id="gridSpecial">
-            <div class="plan-card special-border">
+            <div class="plan-card special-border" id="nodeCard-Rig Stratum-1">
                 <img src="https://images.unsplash.com/photo-1640340434855-6084b1f4901c?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Rig Setup">
                 <div class="plan-details">
-                    <h4>Rig Stratum-1 <i class="fa-solid fa-crown" style="color:#eab308; font-size:10px;"></i></h4>
-                    <p>Cost: <b>Rs. 4,000</b> | Daily: <span>Rs. 380/Day</span></p>
-                    <p style="color:#94a3b8; font-size:10px;">Total Profit: <b>Rs. 11,400 (30 Days)</b></p>
+                    <h4 class="node-title-txt">Rig Stratum-1 <i class="fa-solid fa-crown" style="color:#eab308; font-size:10px;"></i></h4>
+                    <p>Cost: <b class="node-cost-txt">Rs. 4,000</b> | Daily: <span class="node-daily-txt">Rs. 380/Day</span></p>
+                    <p style="color:#64748b; font-size:10px;">Duration: 30 Days Cycle</p>
                 </div>
                 <button class="buy-plan-btn" style="background: linear-gradient(135deg, #eab308, #ca8a04);" onclick="leaseHardwareNode('Rig Stratum-1', 4000, 380)">Lease</button>
             </div>
-            <div class="plan-card special-border">
+            <div class="plan-card special-border" id="nodeCard-Rig Stratum-2">
                 <img src="https://images.unsplash.com/photo-1624996379697-f01d168b1a52?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Rig Setup">
                 <div class="plan-details">
-                    <h4>Rig Stratum-2 <i class="fa-solid fa-crown" style="color:#eab308; font-size:10px;"></i></h4>
-                    <p>Cost: <b>Rs. 6,000</b> | Daily: <span>Rs. 580/Day</span></p>
-                    <p style="color:#94a3b8; font-size:10px;">Total Profit: <b>Rs. 17,400 (30 Days)</b></p>
+                    <h4 class="node-title-txt">Rig Stratum-2 <i class="fa-solid fa-crown" style="color:#eab308; font-size:10px;"></i></h4>
+                    <p>Cost: <b class="node-cost-txt">Rs. 6,000</b> | Daily: <span class="node-daily-txt">Rs. 580/Day</span></p>
+                    <p style="color:#64748b; font-size:10px;">Duration: 30 Days Cycle</p>
                 </div>
                 <button class="buy-plan-btn" style="background: linear-gradient(135deg, #eab308, #ca8a04);" onclick="leaseHardwareNode('Rig Stratum-2', 6000, 580)">Lease</button>
-            </div>
-            <div class="plan-card special-border">
-                <img src="https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Rig Setup">
-                <div class="plan-details">
-                    <h4>Rig Stratum-3 <i class="fa-solid fa-crown" style="color:#eab308; font-size:10px;"></i></h4>
-                    <p>Cost: <b>Rs. 9,000</b> | Daily: <span>Rs. 890/Day</span></p>
-                    <p style="color:#94a3b8; font-size:10px;">Total Profit: <b>Rs. 26,700 (30 Days)</b></p>
-                </div>
-                <button class="buy-plan-btn" style="background: linear-gradient(135deg, #eab308, #ca8a04);" onclick="leaseHardwareNode('Rig Stratum-3', 9000, 890)">Lease</button>
-            </div>
-            <div class="plan-card special-border">
-                <img src="https://images.unsplash.com/photo-1601597111158-2fceff292cdc?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Rig Setup">
-                <div class="plan-details">
-                    <h4>Rig Stratum-4 <i class="fa-solid fa-crown" style="color:#eab308; font-size:10px;"></i></h4>
-                    <p>Cost: <b>Rs. 12,000</b> | Daily: <span>Rs. 1,220/Day</span></p>
-                    <p style="color:#94a3b8; font-size:10px;">Total Profit: <b>Rs. 36,600 (30 Days)</b></p>
-                </div>
-                <button class="buy-plan-btn" style="background: linear-gradient(135deg, #eab308, #ca8a04);" onclick="leaseHardwareNode('Rig Stratum-4', 12000, 1220)">Lease</button>
-            </div>
-            <div class="plan-card special-border">
-                <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Rig Setup">
-                <div class="plan-details">
-                    <h4>Rig Stratum-5 <i class="fa-solid fa-crown" style="color:#eab308; font-size:10px;"></i></h4>
-                    <p>Cost: <b>Rs. 15,000</b> | Daily: <span>Rs. 1,550/Day</span></p>
-                    <p style="color:#94a3b8; font-size:10px;">Total Profit: <b>Rs. 46,500 (30 Days)</b></p>
-                </div>
-                <button class="buy-plan-btn" style="background: linear-gradient(135deg, #eab308, #ca8a04);" onclick="leaseHardwareNode('Rig Stratum-5', 15000, 1550)">Lease</button>
-            </div>
-            <div class="plan-card special-border">
-                <img src="https://images.unsplash.com/photo-1468495244123-6c6c332eeece?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Rig Setup">
-                <div class="plan-details">
-                    <h4>Rig Stratum-6 <i class="fa-solid fa-crown" style="color:#eab308; font-size:10px;"></i></h4>
-                    <p>Cost: <b>Rs. 18,000</b> | Daily: <span>Rs. 1,900/Day</span></p>
-                    <p style="color:#94a3b8; font-size:10px;">Total Profit: <b>Rs. 57,000 (30 Days)</b></p>
-                </div>
-                <button class="buy-plan-btn" style="background: linear-gradient(135deg, #eab308, #ca8a04);" onclick="leaseHardwareNode('Rig Stratum-6', 18000, 1900)">Lease</button>
-            </div>
-            <div class="plan-card special-border">
-                <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Rig Setup">
-                <div class="plan-details">
-                    <h4>Rig Stratum-7 <i class="fa-solid fa-crown" style="color:#eab308; font-size:10px;"></i></h4>
-                    <p>Cost: <b>Rs. 20,000</b> | Daily: <span>Rs. 2,150/Day</span></p>
-                    <p style="color:#94a3b8; font-size:10px;">Total Profit: <b>Rs. 64,500 (30 Days)</b></p>
-                </div>
-                <button class="buy-plan-btn" style="background: linear-gradient(135deg, #eab308, #ca8a04);" onclick="leaseHardwareNode('Rig Stratum-7', 20000, 2150)">Lease</button>
             </div>
         </div>
 
         <div class="plans-grid" id="gridOffers">
-            <div class="plan-card offer-border">
+            <div class="plan-card offer-border" id="nodeCard-Matrix Overdrive-1">
                 <img src="https://images.unsplash.com/photo-1639322537228-f710d846310a?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Overdrive Array">
                 <div class="plan-details">
-                    <h4>Matrix Overdrive-1 <i class="fa-solid fa-bolt-lightning" style="color:#a855f7; font-size:10px;"></i></h4>
-                    <p>Cost: <b>Rs. 30,000</b> | Daily: <span>Rs. 3,400/Day</span></p>
-                    <p style="color:#94a3b8; font-size:10px;">Total Profit: <b>Rs. 102,000 (30 Days)</b></p>
+                    <h4 class="node-title-txt">Matrix Overdrive-1 <i class="fa-solid fa-bolt-lightning" style="color:#a855f7; font-size:10px;"></i></h4>
+                    <p>Cost: <b class="node-cost-txt">Rs. 30,000</b> | Daily: <span class="node-daily-txt">Rs. 3,400/Day</span></p>
+                    <p style="color:#64748b; font-size:10px;">Duration: 30 Days Cycle</p>
                 </div>
                 <button class="buy-plan-btn" style="background: linear-gradient(135deg, #a855f7, #7c3aed);" onclick="leaseHardwareNode('Matrix Overdrive-1', 30000, 3400)">Lease</button>
-            </div>
-            <div class="plan-card offer-border">
-                <img src="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Overdrive Array">
-                <div class="plan-details">
-                    <h4>Matrix Overdrive-2 <i class="fa-solid fa-bolt-lightning" style="color:#a855f7; font-size:10px;"></i></h4>
-                    <p>Cost: <b>Rs. 50,000</b> | Daily: <span>Rs. 6,000/Day</span></p>
-                    <p style="color:#94a3b8; font-size:10px;">Total Profit: <b>Rs. 180,000 (30 Days)</b></p>
-                </div>
-                <button class="buy-plan-btn" style="background: linear-gradient(135deg, #a855f7, #7c3aed);" onclick="leaseHardwareNode('Matrix Overdrive-2', 50000, 6000)">Lease</button>
-            </div>
-            <div class="plan-card offer-border">
-                <img src="https://images.unsplash.com/photo-1631553127988-347f8976b3f7?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Overdrive Array">
-                <div class="plan-details">
-                    <h4>Matrix Overdrive-3 <i class="fa-solid fa-bolt-lightning" style="color:#a855f7; font-size:10px;"></i></h4>
-                    <p>Cost: <b>Rs. 75,000</b> | Daily: <span>Rs. 9,500/Day</span></p>
-                    <p style="color:#94a3b8; font-size:10px;">Total Profit: <b>Rs. 285,000 (30 Days)</b></p>
-                </div>
-                <button class="buy-plan-btn" style="background: linear-gradient(135deg, #a855f7, #7c3aed);" onclick="leaseHardwareNode('Matrix Overdrive-3', 75000, 9500)">Lease</button>
-            </div>
-            <div class="plan-card offer-border">
-                <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Overdrive Array">
-                <div class="plan-details">
-                    <h4>Matrix Overdrive-4 <i class="fa-solid fa-bolt-lightning" style="color:#a855f7; font-size:10px;"></i></h4>
-                    <p>Cost: <b>Rs. 100,000</b> | Daily: <span>Rs. 13,500/Day</span></p>
-                    <p style="color:#94a3b8; font-size:10px;">Total Profit: <b>Rs. 405,000 (30 Days)</b></p>
-                </div>
-                <button class="buy-plan-btn" style="background: linear-gradient(135deg, #a855f7, #7c3aed);" onclick="leaseHardwareNode('Matrix Overdrive-4', 100000, 13500)">Lease</button>
             </div>
         </div>
 
@@ -421,7 +336,7 @@
         </div>
 
         <div class="spin-box-card">
-            <h4>🎉 Lucky Core Daily Bonus Engine 🎉</h4>
+            <h4><i class="fa-solid fa-dharmachakra"></i> Lucky Core Daily Bonus Engine</h4>
             <p style="font-size:11px; color:#64748b; margin-top:3px;">Spin once every 24 hours interval to match token payouts</p>
             <div class="wheel-outer" id="luckyBonusWheel"><i class="fa-solid fa-circle-radiation fa-spin" style="font-size: 24px; color:#ff416c;"></i></div>
             <button class="buy-plan-btn" onclick="triggerLuckyCoreSpin()" style="padding:11px 28px; font-size:13px; border-radius:12px;">LAUNCH REWARD SPIN</button>
@@ -785,7 +700,7 @@
                         });
 
                         operationalBatch.commit().then(() => {
-                            triggerToastDisplay(`+Rs. ${globalCalculatedProfitToken} Automatic Profit Credited for ${absolutePassedDays} days! ⚡`);
+                            triggerToastDisplay(`+Rs. ${globalCalculatedProfitToken} Automatic Profit Credited for ${absolutePassedDays} days!`);
                         });
                     }
                 });
@@ -814,7 +729,7 @@
             });
 
             operationalBatch.commit().then(() => {
-                triggerToastDisplay(`Successfully leased ${name}! Node operations are live with 100% safe principal guarantee.`);
+                triggerToastDisplay(`Successfully leased ${name}! Node operations are live.`);
             }).catch(err => triggerToastDisplay(err));
         }
 
@@ -845,7 +760,7 @@
         window.copyUserReferralLink = function() {
             let text = document.getElementById('lblDisplayInviteLink').innerText;
             navigator.clipboard.writeText(text);
-            triggerToastDisplay("Referral tracking link copied! 🚀");
+            triggerToastDisplay("Referral tracking link copied!");
         }
 
         window.updateDepositCalculations = function() {
@@ -1065,9 +980,12 @@
             document.getElementById('adminTabDep').classList.toggle('active', mode === 'deposits');
             document.getElementById('adminTabWith').classList.toggle('active', mode === 'withdrawals');
             document.getElementById('adminTabUsers').classList.toggle('active', mode === 'users');
+            document.getElementById('adminTabNodes').classList.toggle('active', mode === 'nodes');
+
             document.getElementById('adminDepositsSection').style.display = mode === 'deposits' ? 'block' : 'none';
             document.getElementById('adminWithdrawalsSection').style.display = mode === 'withdrawals' ? 'block' : 'none';
             document.getElementById('adminUsersSection').style.display = mode === 'users' ? 'block' : 'none';
+            document.getElementById('adminNodesSection').style.display = mode === 'nodes' ? 'block' : 'none';
         }
 
         function loadAdminPendingDepositsArray() {
@@ -1086,19 +1004,65 @@
                         </div>
                     </div>`;
                 });
+                document.getElementById('adminPendingDepositsTrack').innerHTML = html;
+            });
+        }
+
+        window.approveDepositFromAdmin = function(docId, targetUid, depositAmount) {
+            const userRef = db.collection("users").doc(targetUid);
+            db.runTransaction(transaction => {
+                return transaction.get(userRef).then(userDoc => {
+                    if (!userDoc.exists) { throw new Error("User missing."); }
+                    let d = userDoc.data();
+                    let currentBal = d.balance || 0;
+                    let hasDepBefore = d.hasDepositedBefore || false;
+                    let bonusMultiplier = hasDepBefore ? 0.04 : 0.08;
+                    let finalCreditedAmount = depositAmount + (depositAmount * bonusMultiplier);
+
+                    transaction.update(userRef, {
+                        balance: currentBal + finalCreditedAmount,
+                        hasDepositedBefore: true
+                    });
+                    transaction.update(db.collection("deposits").doc(docId), { status: "approved" });
+                });
+            }).then(() => {
+                triggerToastDisplay("Deposit Approved & Capital Credited Successfully!");
+            }).catch(err => triggerToastDisplay("Error: " + err.message));
+        }
+
+        window.rejectDepositFromAdmin = function(docId) {
+            db.collection("deposits").doc(docId).update({ status: "rejected" }).then(() => {
+                triggerToastDisplay("Deposit transaction marked as rejected.");
+            });
+        }
+
+        function loadAdminPendingWithdrawalsArray() {
+            db.collection("withdrawals").where("status", "==", "pending").onSnapshot(snap => {
+                let html = "";
+                if(snap.empty) { html = "<div style='color:#64748b; padding:10px;'>No pending payouts found.</div>"; }
+                snap.forEach(doc => {
+                    const w = doc.data();
+                    html += `<div style="background:rgba(255,255,255,0.02); padding:12px; border-radius:14px; border:1px solid rgba(255,255,255,0.05); margin-bottom:8px;">
+                        <p>Title: <b>${w.title}</b> | No: ${w.targetNo}</p>
+                        <p>Payout Amount: <b style="color:#eab308;">Rs. ${w.amount}</b></p>
+                        <div style="display:flex; gap:8px; margin-top:8px;">
+                            <button class="buy-plan-btn" style="flex:1; padding:6px; font-size:11px; background:#10b981; box-shadow:none;" onclick="approveWithdrawalFromAdmin('${doc.id}')">Approve</button>
+                            <button class="buy-plan-btn" style="flex:1; padding:6px; font-size:11px; background:#ef4444; box-shadow:none;" onclick="rejectWithdrawalFromAdmin('${doc.id}', '${w.userId}', ${w.amount})">Reject & Refund</button>
+                        </div>
+                    </div>`;
+                });
                 document.getElementById('adminPendingWithdrawalsTrack').innerHTML = html;
             });
         }
 
         window.approveWithdrawalFromAdmin = function(docId) {
             db.collection("withdrawals").doc(docId).update({ status: "approved" }).then(() => {
-                triggerToastDisplay("Withdrawal dispatch success! 💸");
+                triggerToastDisplay("Withdrawal dispatch success!");
             }).catch(err => triggerToastDisplay(err.message));
         }
 
         window.rejectWithdrawalFromAdmin = function(docId, targetUid, refundAmount) {
             const userRef = db.collection("users").doc(targetUid);
-            
             db.runTransaction(transaction => {
                 return transaction.get(userRef).then(userDoc => {
                     if (!userDoc.exists) { throw new Error("Target user missing."); }
@@ -1107,7 +1071,7 @@
                     transaction.update(db.collection("withdrawals").doc(docId), { status: "rejected" });
                 });
             }).then(() => {
-                triggerToastDisplay("Withdrawal Rejected & Capital Safely Refunded! 🎯");
+                triggerToastDisplay("Withdrawal Rejected & Capital Safely Refunded!");
             }).catch(err => triggerToastDisplay("Error: " + err.message));
         }
 
@@ -1147,6 +1111,35 @@
                 triggerToastDisplay(`User balance successfully ${isAddition ? 'credited' : 'deducted'}!`);
                 document.getElementById(`adminAddBal_${targetUid}`).value = "";
             }).catch(err => triggerToastDisplay("Error: " + err.message));
+        }
+
+        // NEW FEATURE: ADMIN EDIT NODES DYNAMICALLY
+        window.saveNodeConfigOverride = function() {
+            let nodeName = document.getElementById('editNodeName').value.trim();
+            let newPrice = parseFloat(document.getElementById('editNodePrice').value);
+            let newDaily = parseFloat(document.getElementById('editNodeDaily').value);
+
+            if(!nodeName || isNaN(newPrice) || isNaN(newDaily)) {
+                triggerToastDisplay("Please fill all node parameters correctly.");
+                return;
+            }
+
+            let cardNode = document.getElementById(`nodeCard-${nodeName}`);
+            if(cardNode) {
+                cardNode.querySelector('.node-cost-txt').innerText = `Rs. ${newPrice.toLocaleString()}`;
+                cardNode.querySelector('.node-daily-txt').innerText = `Rs. ${newDaily.toLocaleString()}/Day`;
+                
+                // Update button lease params dynamically
+                let leaseBtn = cardNode.querySelector('.buy-plan-btn');
+                leaseBtn.setAttribute('onclick', `leaseHardwareNode('${nodeName}', ${newPrice}, ${newDaily})`);
+
+                triggerToastDisplay(`Node '${nodeName}' configuration successfully updated!`);
+                document.getElementById('editNodeName').value = "";
+                document.getElementById('editNodePrice').value = "";
+                document.getElementById('editNodeDaily').value = "";
+            } else {
+                triggerToastDisplay("Node name not found in current UI list. Check exact spelling.");
+            }
         }
 
         window.selectDepositGatewayChannel = function(channel) {
