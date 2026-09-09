@@ -1078,7 +1078,6 @@
             document.getElementById('adminAuditSection').style.display = mode === 'audit' ? 'block' : 'none';
         }
 
-        // 1. LIVE TRACKER IMPLEMENTATION
         function loadAdminLiveTracker() {
             db.collection("presence").onSnapshot(snap => {
                 let html = "";
@@ -1097,7 +1096,6 @@
             });
         }
 
-        // 2. LEDGER / TRANSACTION APPROVALS
         function loadAdminPendingDepositsArray() {
             db.collection("deposits").where("status", "==", "pending").onSnapshot(snap => {
                 let html = "<h6 style='color:#38bdf8; margin-bottom:6px;'>Pending Deposits</h6>";
@@ -1188,7 +1186,6 @@
             }).catch(err => triggerToastDisplay("Error: " + err.message));
         }
 
-        // 3. ADVANCED USER MANAGEMENT (Block, Unblock, Balance Adjust)
         function loadAdminUsersArray() {
             db.collection("users").onSnapshot(snap => {
                 let html = "";
@@ -1237,7 +1234,6 @@
             });
         }
 
-        // 4. FIXED NODE CONFIGURATION PERSISTENCE & DYNAMIC SYNCING
         window.saveNodeConfigOverride = function() {
             const nodeNameId = document.getElementById('editNodeName').value.trim();
             const newPrice = parseFloat(document.getElementById('editNodePrice').value);
@@ -1287,7 +1283,6 @@
             });
         }
 
-        // 5. FIXED BROADCAST MESSAGE VISIBILITY BUG & TICKER BANNER
         window.dispatchGlobalBroadcast = function() {
             const title = document.getElementById('broadcastTitleInput').value.trim();
             const message = document.getElementById('broadcastMessageInput').value.trim();
@@ -1318,8 +1313,6 @@
                         titleElem.innerText = latestBroadcast.title || "Platform Announcement";
                         msgElem.innerText = latestBroadcast.message || "";
                         bannerContainer.style.display = "flex";
-                        
-                        // Also trigger a subtle toast alert for new announcements
                         triggerToastDisplay(`New Broadcast: ${latestBroadcast.title}`);
                     }
                 } else {
@@ -1330,7 +1323,6 @@
             });
         }
 
-        // 6. ANALYTICS REPORTS
         function loadAdminAnalyticsReports() {
             db.collection("users").get().then(snap => {
                 let totalCount = snap.size;
@@ -1360,7 +1352,6 @@
             });
         }
 
-        // 7. AUDIT LOGS
         function logAdminAuditAction(actionDescription) {
             db.collection("admin_audit_logs").add({
                 action: actionDescription,
@@ -1383,68 +1374,87 @@
             });
         }
 
-        // NAVIGATION & MODAL HELPERS
-        window.routeToView = function(pageId, navId) {
-            document.querySelectorAll('.app-view-page').forEach(p => p.classList.remove('active-page'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            
-            document.getElementById(pageId).classList.add('active-page');
-            document.getElementById(navId).classList.add('active');
-
-            let pageTitleMap = { 'pageHome': 'Home View', 'pageAffiliate': 'Network Center', 'pageHistory': 'Ledger Logs', 'pageLegalHub': 'Info Hub' };
-            updateLivePresenceActivity(pageTitleMap[pageId] || 'Dashboard');
+        function triggerToastDisplay(message) {
+            const toast = document.getElementById('rewardToast');
+            toast.innerText = message;
+            toast.classList.add('toast-show');
+            setTimeout(() => {
+                toast.classList.remove('toast-show');
+            }, 3500);
         }
 
-        window.switchPlanCategory = function(gridId, triggerId) {
+        function openDepositModal() {
+            document.getElementById('depositModal').classList.add('modal-open');
+            updateDepositCalculations();
+            updateLivePresenceActivity("Deposit Modal");
+        }
+
+        function openWithdrawModal() {
+            document.getElementById('withdrawModal').classList.add('modal-open');
+            updateLivePresenceActivity("Withdraw Modal");
+        }
+
+        function openTransferModal() {
+            document.getElementById('transferModal').classList.add('modal-open');
+            updateLivePresenceActivity("Transfer Modal");
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('modal-open');
+            updateLivePresenceActivity("Home View");
+        }
+
+        function switchPlanCategory(gridId, tabId) {
             document.querySelectorAll('.plans-grid').forEach(g => g.classList.remove('active-grid'));
             document.querySelectorAll('.plan-tab-trigger').forEach(t => t.classList.remove('active-tab'));
-            
             document.getElementById(gridId).classList.add('active-grid');
-            document.getElementById(triggerId).classList.add('active-tab');
+            document.getElementById(tabId).classList.add('active-tab');
         }
 
-        window.openDepositModal = function() { document.getElementById('depositModal').classList.add('modal-open'); updateDepositCalculations(); }
-        window.openWithdrawModal = function() { document.getElementById('withdrawModal').classList.add('modal-open'); }
-        window.openTransferModal = function() { document.getElementById('transferModal').classList.add('modal-open'); }
-        window.closeModal = function(modalId) { document.getElementById(modalId).classList.remove('modal-open'); }
+        function routeToView(pageId, navId) {
+            document.querySelectorAll('.app-view-page').forEach(p => p.classList.remove('active-page'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active-page');
+            document.getElementById(navId).classList.add('active');
+            
+            let readableName = "Home View";
+            if(pageId === 'pageAffiliate') readableName = "Network Center";
+            else if(pageId === 'pageHistory') readableName = "Ledger Logs";
+            else if(pageId === 'pageLegalHub') readableName = "Info Hub";
+            updateLivePresenceActivity(readableName);
+        }
 
-        window.selectDepositGatewayChannel = function(chName) {
-            activeGatewayChannel = chName;
-            ['chkEasyPaisa', 'chkJazzCash', 'chkUSDT'].forEach(id => {
-                document.getElementById(id).style.borderColor = "rgba(255,255,255,0.05)";
+        function selectDepositGatewayChannel(channelName) {
+            activeGatewayChannel = channelName;
+            ['EasyPaisa', 'JazzCash', 'USDT'].forEach(c => {
+                let btn = document.getElementById(c === 'USDT' ? 'chkUSDT' : (c === 'JazzCash' ? 'chkJazzCash' : 'chkEasyPaisa'));
+                if(btn) btn.style.borderColor = c === channelName ? '#10b981' : 'rgba(255,255,255,0.05)';
             });
-            let targetBtnId = chName === 'EasyPaisa' ? 'chkEasyPaisa' : (chName === 'JazzCash' ? 'chkJazzCash' : 'chkUSDT');
-            document.getElementById(targetBtnId).style.borderColor = "#10b981";
-
-            let conf = paymentGatewayMerchantConfig[chName];
-            document.getElementById('lblAccountTitleType').innerText = `${chName} Account`;
-            document.getElementById('txtMerchantAccountNo').innerText = conf.number;
+            const cfg = paymentGatewayMerchantConfig[channelName];
+            document.getElementById('lblAccountTitleType').innerText = `${channelName} Account`;
+            document.getElementById('txtMerchantAccountNo').innerText = cfg.number;
             updateDepositCalculations();
         }
 
-        window.toggleFaqVisibility = function(faqItemElem) {
-            const answerElem = faqItemElem.querySelector('.faq-a');
-            const isVisible = answerElem.style.display === 'block';
-            answerElem.style.display = isVisible ? 'none' : 'block';
-        }
-
-        function triggerToastDisplay(textMsg) {
-            const toast = document.getElementById('rewardToast');
-            toast.innerText = textMsg;
-            toast.classList.add('toast-show');
-            setTimeout(() => { toast.classList.remove('toast-show'); }, 3500);
+        function toggleFaqVisibility(element) {
+            const answerDiv = element.querySelector('.faq-a');
+            const isVisible = answerDiv.style.display === 'block';
+            answerDiv.style.display = isVisible ? 'none' : 'block';
         }
 
         function initializeCountdownClockTicker() {
-            let totalSecondsTotal = 24 * 3600;
+            let totalSeconds = 24 * 3600;
             setInterval(() => {
-                totalSecondsTotal--;
-                if(totalSecondsTotal <= 0) totalSecondsTotal = 24 * 3600;
-                let hrs = Math.floor(totalSecondsTotal / 3600);
-                let mins = Math.floor((totalSecondsTotal % 3600) / 60);
-                let secs = totalSecondsTotal % 60;
-                document.getElementById('countdownTimerClock').innerText = 
-                    `${hrs.toString().padStart(2,'0')}:${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
+                let hours = Math.floor(totalSeconds / 3600);
+                let minutes = Math.floor((totalSeconds % 3600) / 60);
+                let seconds = totalSeconds % 60;
+                
+                let timeStr = `${String(hours).padStart(2,'0')}:${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}`;
+                const clockElem = document.getElementById('countdownTimerClock');
+                if(clockElem) clockElem.innerText = timeStr;
+                
+                totalSeconds--;
+                if(totalSeconds < 0) totalSeconds = 24 * 3600;
             }, 1000);
         }
     </script>
