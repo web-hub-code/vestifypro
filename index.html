@@ -3,19 +3,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-site-verification" content="googled6b6ebdecbbc4a08" />
+    
+    <!-- Title Tag -->
     <title>Vestify Pro - Cloud Mining & Affiliate Network</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Vestify Pro is a secure cloud mining and affiliate network platform. Earn daily crypto yields, track investments, and manage your network easily.">
+    <meta name="keywords" content="Vestify Pro, Crypto Mining, Cloud Mining, Daily Yield, Crypto Dashboard, Affiliate Rewards, WebHub">
+    <meta name="robots" content="index, follow">
+
+    <!-- Canonical Link -->
+    <link rel="canonical" href="https://web-hub-code.github.io/vestifypro/" />
+
+    <!-- Open Graph (Social Sharing Cards) -->
+    <meta property="og:title" content="Vestify Pro - Cloud Mining & Affiliate Network">
+    <meta property="og:description" content="Earn daily crypto yields and manage your network assets with Vestify Pro.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://web-hub-code.github.io/vestifypro/">
+
+    <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="manifest" href="manifest.json">
+
+    <!-- Firebase Scripts -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.js')
-      .then((reg) => console.log('SW Registered!', reg))
-      .catch((err) => console.log('SW Error:', err));
-  }
+
+    <!-- Service Worker Script -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./sw.js')
+          .then((reg) => console.log('SW Registered!', reg))
+          .catch((err) => console.log('SW Error:', err));
+      }
+    </script>
+</head>
 
   function requestNotification() {
     if ('Notification' in window) {
