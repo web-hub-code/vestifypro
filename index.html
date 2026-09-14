@@ -1507,17 +1507,12 @@
         'payments': 'Payment Setup',
         'broadcast': 'Broadcast',
         'analytics': 'Reports',
-        'support': 'Support Tickets' // Added this missing label
+        'support': 'Support Tickets',
     };
-    
-    const labelEl = document.getElementById('currentAdminActiveFeatureLabel');
-    if(labelEl) labelEl.innerText = `Active: ${labels[viewName] || viewName}`;
-
-    // Automatically load tickets when switching to the support view
-    if(viewName === 'support') {
-        loadAdminSupportTicketsStream();
-    }
-};
+            
+            const labelEl = document.getElementById('currentAdminActiveFeatureLabel');
+            if(labelEl) labelEl.innerText = `Active: ${labels[viewName] || viewName}`;
+        };
         function loadAdminPendingDepositsArray() {
             db.collection("deposits").where("status", "==", "pending").onSnapshot(snap => {
                 let html = "<h6 style='color:#38bdf8; margin-bottom:6px;'>Pending Deposits</h6>";
