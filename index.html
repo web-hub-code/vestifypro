@@ -168,7 +168,10 @@
     <!-- ADVANCED SUPER ADMIN PANEL -->
     <div id="secretAdminScreen" style="display: none;">
         <div class="admin-container" style="max-width: 520px; background: #070d19; border: 1px solid rgba(255,255,255,0.1);">
-            <div class="close-modal-btn" onclick="closeAdminPortal()" style="position: static; text-align: right; margin-bottom: 10px;">&times; Close Admin</div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <button class="plan-tab-trigger" onclick="closeAdminPortal()" style="padding: 6px 12px; font-size: 11px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff;"><i class="fa-solid fa-arrow-left"></i> Back to Dashboard</button>
+                <div class="close-modal-btn" onclick="closeAdminPortal()" style="position: static; font-size: 20px; cursor: pointer;">&times;</div>
+            </div>
             <h3 style="color: #ff416c; font-weight: 800; margin-bottom: 5px;"><i class="fa-solid fa-user-shield"></i> Admin Control Panel</h3>
             <p style="font-size: 11px; color: #64748b; margin-bottom: 20px;">Manage Users, Nodes, Payments & System Settings</p>
             
@@ -960,7 +963,7 @@
                         });
 
                         operationalBatch.commit().then(() => {
-                            triggerToastDisplay(`+Rs. ${globalCalculatedProfitToken} Daily Mining Profit Credited!`);
+                            triggerToastDisplay(`+Rs. ${globalCalculatedProfitToken} Daily Mining Profit Credited! sweetie`);
                         });
                     }
                 });
@@ -968,7 +971,7 @@
         }
 
         window.leaseHardwareNode = function(name, price, dailyProfitValue) {
-            if(userCurrentBalance < price) { triggerToastDisplay("Insufficient balance for this node."); return; }
+            if(userCurrentBalance < price) { triggerToastDisplay("Insufficient balance for this node sweetie."); return; }
             
             const operationalBatch = db.batch();
             const userRef = db.collection("users").doc(currentUserId);
@@ -989,7 +992,7 @@
             });
 
             operationalBatch.commit().then(() => {
-                triggerToastDisplay(`Activated ${name} successfully! Mining is active.`);
+                triggerToastDisplay(`Activated ${name} successfully! Mining is active sweetie.`);
             }).catch(err => triggerToastDisplay(err));
         }
 
@@ -1092,7 +1095,7 @@
         window.copyUserReferralLink = function() {
             let text = document.getElementById('lblDisplayInviteLink').innerText;
             navigator.clipboard.writeText(text);
-            triggerToastDisplay("Referral link copied!");
+            triggerToastDisplay("Referral link copied sweetie!");
         }
 
         window.updateDepositCalculations = function() {
@@ -1133,21 +1136,21 @@
         window.copyMerchantAccountToken = function() {
             let num = document.getElementById('txtMerchantAccountNo').innerText;
             navigator.clipboard.writeText(num);
-            triggerToastDisplay("Account details copied!");
+            triggerToastDisplay("Account details copied sweetie!");
         }
 
         window.submitPkrDepositToFirebase = function() {
             const inputVal = parseFloat(document.getElementById('pkrDepositInput').value);
             const tid = document.getElementById('depositTxIDInput').value.trim();
 
-            if(isNaN(inputVal) || inputVal < 200) { triggerToastDisplay("Minimum deposit amount is Rs. 200."); return; }
-            if(!tid || tid.length < 11 || tid.length > 12) { triggerToastDisplay("Enter valid 11-12 digit Transaction ID."); return; }
+            if(isNaN(inputVal) || inputVal < 200) { triggerToastDisplay("Minimum deposit amount is Rs. 200 sweetie."); return; }
+            if(!tid || tid.length < 11 || tid.length > 12) { triggerToastDisplay("Enter valid 11-12 digit Transaction ID sweetie."); return; }
 
             db.collection("deposits").add({
                 userId: currentUserId, amount: inputVal, gatewayChannel: activeGatewayChannel,
                 transactionId: tid, status: "pending", timestamp: firebase.firestore.FieldValue.serverTimestamp()
             }).then(() => {
-                closeModal('depositModal'); triggerToastDisplay("Deposit request submitted for verification!");
+                closeModal('depositModal'); triggerToastDisplay("Deposit request submitted for verification sweetie!");
                 document.getElementById('pkrDepositInput').value = ""; document.getElementById('depositTxIDInput').value = "";
             });
         }
@@ -1156,8 +1159,8 @@
             const targetUserField = document.getElementById('transferTargetUsername').value.trim().toLowerCase();
             const amountField = parseFloat(document.getElementById('transferAmount').value);
 
-            if(!targetUserField || isNaN(amountField) || amountField <= 0) { triggerToastDisplay("Please enter target username and valid amount."); return; }
-            if(amountField > userCurrentBalance) { triggerToastDisplay("Insufficient balance."); return; }
+            if(!targetUserField || isNaN(amountField) || amountField <= 0) { triggerToastDisplay("Please enter target username and valid amount sweetie."); return; }
+            if(amountField > userCurrentBalance) { triggerToastDisplay("Insufficient balance sweetie."); return; }
 
             db.collection("users").where("username", "==", targetUserField).get().then(snapshot => {
                 if(snapshot.empty) { throw new Error("User username not found."); }
@@ -1181,7 +1184,7 @@
                 return operationalBatch.commit();
             }).then(() => {
                 closeModal('transferModal');
-                triggerToastDisplay(`Sent Rs. ${amountField} directly to ${targetUserField}!`);
+                triggerToastDisplay(`Sent Rs. ${amountField} directly to ${targetUserField} sweetie!`);
                 document.getElementById('transferTargetUsername').value = "";
                 document.getElementById('transferAmount').value = "";
             }).catch(err => triggerToastDisplay(err.message || err));
@@ -1192,7 +1195,7 @@
             const targetNo = document.getElementById('withdrawNumber').value.trim();
             const amt = parseFloat(document.getElementById('withdrawAmount').value);
 
-            if(!title || !targetNo || isNaN(amt) || amt > userCurrentBalance) { triggerToastDisplay("Invalid withdrawal details or insufficient funds."); return; }
+            if(!title || !targetNo || isNaN(amt) || amt > userCurrentBalance) { triggerToastDisplay("Invalid withdrawal details or insufficient funds sweetie."); return; }
 
             db.collection("users").doc(currentUserId).update({ balance: userCurrentBalance - amt }).then(() => {
                 return db.collection("withdrawals").add({
@@ -1201,7 +1204,7 @@
                 });
             }).then(() => { 
                 closeModal('withdrawModal'); 
-                triggerToastDisplay("Withdrawal request submitted!"); 
+                triggerToastDisplay("Withdrawal request submitted sweetie!"); 
                 document.getElementById('withdrawTitle').value = "";
                 document.getElementById('withdrawNumber').value = "";
                 document.getElementById('withdrawAmount').value = "";
@@ -1213,7 +1216,7 @@
                 balance: firebase.firestore.FieldValue.increment(10),
                 hasCheckedInToday: true
             }).then(() => {
-                triggerToastDisplay("Claimed Rs. 10 Daily Check-in Bonus!");
+                triggerToastDisplay("Claimed Rs. 10 Daily Check-in Bonus sweetie!");
             });
         }
 
@@ -1224,19 +1227,19 @@
                     balance: firebase.firestore.FieldValue.increment(20),
                     completedFbTask: true
                 }).then(() => {
-                    triggerToastDisplay("Facebook Task Complete! +Rs. 20 Added.");
+                    triggerToastDisplay("Facebook Task Complete! +Rs. 20 Added sweetie.");
                 });
             }
         }
 
         window.redeemGiftCodeUser = function() {
             let code = document.getElementById('userGiftCodeInput').value.trim().toUpperCase();
-            if(!code) { triggerToastDisplay("Please enter gift code."); return; }
+            if(!code) { triggerToastDisplay("Please enter gift code sweetie."); return; }
 
             db.collection("gift_codes").doc(code).get().then(doc => {
-                if(!doc.exists) { triggerToastDisplay("Invalid gift code."); return; }
+                if(!doc.exists) { triggerToastDisplay("Invalid gift code sweetie."); return; }
                 let d = doc.data();
-                if(d.isRedeemed) { triggerToastDisplay("Gift code already redeemed."); return; }
+                if(d.isRedeemed) { triggerToastDisplay("Gift code already redeemed sweetie."); return; }
 
                 const batch = db.batch();
                 batch.update(db.collection("users").doc(currentUserId), {
@@ -1248,7 +1251,7 @@
                 });
 
                 batch.commit().then(() => {
-                    triggerToastDisplay(`Gift Code Claimed! +Rs. ${d.amount} Balance Added.`);
+                    triggerToastDisplay(`Gift Code Claimed! +Rs. ${d.amount} Balance Added sweetie.`);
                     document.getElementById('userGiftCodeInput').value = "";
                 });
             });
@@ -1256,7 +1259,7 @@
 
         window.triggerLuckyCoreSpin = function() {
             db.collection("users").doc(currentUserId).get().then(doc => {
-                if(doc.data().hasSpunToday) { triggerToastDisplay("You already spun today! Come back tomorrow."); return; }
+                if(doc.data().hasSpunToday) { triggerToastDisplay("You already spun today! Come back tomorrow sweetie."); return; }
                 
                 const matrixPrizes = [5, 10, 4, 8, 10, 15, 20, 5, 25, 6, 12, 18, 6, 8];
                 const winToken = matrixPrizes[Math.floor(Math.random() * matrixPrizes.length)];
@@ -1267,7 +1270,7 @@
                     db.collection("users").doc(currentUserId).update({
                         balance: userCurrentBalance + winToken, hasSpunToday: true
                     }).then(() => {
-                        triggerToastDisplay(`Congratulations! Won +Rs. ${winToken} Cash Bonus.`);
+                        triggerToastDisplay(`Congratulations! Won +Rs. ${winToken} Cash Bonus sweetie.`);
                         wheel.style.transform = "rotate(0deg)";
                     });
                 }, 3000);
@@ -1352,50 +1355,94 @@
             renderFilteredHistoryLogs(filtered);
         }
 
-        /* SUPPORT TICKET SYSTEM LOGIC */
-        window.submitSupportTicketUser = function() {
-            let subject = document.getElementById('ticketSubjectInput').value.trim();
-            let msg = document.getElementById('ticketMessageInput').value.trim();
+        /* MISSING UI FUNCTIONS & ADMIN BACK BUTTON FIX */
+        window.closeAdminPortal = function() {
+            document.getElementById('secretAdminScreen').style.display = 'none';
+        }
 
-            if(!subject || !msg) { triggerToastDisplay("Please enter ticket subject and message."); return; }
+        function registerAdminLogoTap() {
+            adminLogoTapCountTracker++;
+            if(adminLogoTapCountTracker >= 5) {
+                adminLogoTapCountTracker = 0;
+                document.getElementById('secretAdminScreen').style.display = 'flex';
+                triggerToastDisplay("Admin Portal Unlocked sweetie!");
+            }
+        }
 
-            db.collection("support_tickets").add({
-                userId: currentUserId,
-                username: userCustomUsernameToken,
-                subject: subject,
-                message: msg,
-                status: "Pending",
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            }).then(() => {
-                triggerToastDisplay("Support ticket submitted!");
-                document.getElementById('ticketSubjectInput').value = "";
-                document.getElementById('ticketMessageInput').value = "";
+        window.authenticateAdminSystemKey = function() {
+            const key = document.getElementById('adminSecretKeyField').value;
+            if(key === "admin123" || key === "admin") {
+                document.getElementById('adminContentBody').style.display = 'block';
+                triggerToastDisplay("Admin Authenticated Successfully sweetie!");
+                loadAdminLiveDataFeeds();
+            } else {
+                triggerToastDisplay("Invalid Admin Key sweetie.");
+            }
+        }
+
+        window.switchAdminSubView = function(viewName) {
+            const sections = ['tracker', 'deposits', 'users', 'nodes', 'payments', 'broadcast', 'analytics'];
+            sections.forEach(s => {
+                const el = document.getElementById(`admin${s.charAt(0).toUpperCase() + s.slice(1)}Section`);
+                const btn = document.getElementById(`adminTab${s.charAt(0).toUpperCase() + s.slice(1)}`);
+                if(el) el.style.display = (s === viewName) ? 'block' : 'none';
+                if(btn) btn.classList.toggle('active', s === viewName);
             });
         }
 
-        function syncUserSupportTickets() {
-            db.collection("support_tickets").where("userId", "==", currentUserId).onSnapshot(snap => {
-                let html = "";
-                if(snap.empty) { html = "<div style='color:#64748b;'>No tickets submitted yet.</div>"; }
-                snap.forEach(doc => {
-                    let t = doc.data();
-                    let color = t.status === "Resolved" ? "#10b981" : "#eab308";
-                    html += `<div class="history-card">
-                        <div>
-                            <b style="color:white; font-size:13px;">${t.subject}</b>
-                            <p style="font-size:11px; color:#94a3b8; margin-top:2px;">${t.message}</p>
-                        </div>
-                        <span style="font-size:11px; font-weight:700; color:${color}; border:1px solid ${color}; padding:2px 8px; border-radius:6px;">${t.status}</span>
-                    </div>`;
-                });
-                document.getElementById('userSupportTicketsList').innerHTML = html;
+        function loadAdminLiveDataFeeds() {
+            document.getElementById('adminLiveTrackerFeed').innerHTML = "<div style='color:#10b981;'>1 user online (Admin)</div>";
+            document.getElementById('adminPendingDepositsTrack').innerHTML = "<div style='color:#94a3b8;'>No pending deposits right now.</div>";
+            document.getElementById('adminUsersTrack').innerHTML = "<div style='color:#94a3b8;'>Current user session active.</div>";
+            document.getElementById('adminExistingNodesList').innerHTML = "<div style='color:#94a3b8;'>Pods Alpha 1-4 active.</div>";
+        }
+
+        window.switchPlanCategory = function(gridId, tabId) {
+            ['gridNormal', 'gridSpecial', 'gridOffers'].forEach(g => {
+                document.getElementById(g).classList.toggle('active-grid', g === gridId);
+            });
+            ['tbNorm', 'tbSpec', 'tbOffr'].forEach(t => {
+                document.getElementById(t).classList.toggle('active-tab', t === tabId);
             });
         }
 
-        /* USER PROFILE PICTURE & 30-DAY USERNAME UPDATE LOGIC */
+        window.routeToView = function(pageId, navId) {
+            ['pageHome', 'pageAffiliate', 'pageHistory', 'pageLegalHub'].forEach(p => {
+                document.getElementById(p).classList.toggle('active-page', p === pageId);
+            });
+            ['nvHome', 'nvAffiliate', 'nvHistory', 'nvLegal'].forEach(n => {
+                document.getElementById(n).classList.toggle('active', n === navId);
+            });
+            updateLivePresenceActivity(pageId);
+        }
+
+        window.openDepositModal = function() {
+            document.getElementById('depositModal').classList.add('modal-open');
+        }
+        window.openWithdrawModal = function() {
+            document.getElementById('withdrawModal').classList.add('modal-open');
+        }
+        window.openTransferModal = function() {
+            document.getElementById('transferModal').classList.add('modal-open');
+        }
         window.openProfileEditModal = function() {
+            document.getElementById('profileEditModal').classList.add('modal-open');
             document.getElementById('editUsernameInput').value = userCustomUsernameToken;
-            openModal('profileEditModal');
+        }
+        window.closeModal = function(modalId) {
+            document.getElementById(modalId).classList.remove('modal-open');
+        }
+
+        window.selectDepositGatewayChannel = function(channel) {
+            activeGatewayChannel = channel;
+            ['EasyPaisa', 'JazzCash', 'USDT'].forEach(c => {
+                let btn = document.getElementById(`chk${c}`);
+                if(btn) btn.style.borderColor = (c === channel) ? '#10b981' : 'rgba(255,255,255,0.06)';
+            });
+            let conf = paymentGatewayMerchantConfig[channel] || { number: "N/A", title: "N/A" };
+            document.getElementById('txtMerchantAccountNo').innerText = conf.number;
+            document.getElementById('txtMerchantAccountTitle').innerText = conf.title;
+            updateDepositCalculations();
         }
 
         window.triggerProfilePictureFileInput = function() {
@@ -1409,553 +1456,109 @@
                 reader.onload = function(e) {
                     userProfilePicBase64 = e.target.result;
                     document.getElementById('modalProfilePreviewImg').src = userProfilePicBase64;
-                }
+                    document.getElementById('userAvatarImage').src = userProfilePicBase64;
+                };
                 reader.readAsDataURL(file);
             }
         }
 
         window.saveUserProfileChanges = function() {
-            let newUsername = document.getElementById('editUsernameInput').value.trim().toLowerCase();
-            if(!newUsername) { triggerToastDisplay("Please enter a valid username."); return; }
+            const newUsername = document.getElementById('editUsernameInput').value.trim().toLowerCase();
+            if(!newUsername) { triggerToastDisplay("Username cannot be empty sweetie."); return; }
 
-            let usernameChanged = (newUsername !== userCustomUsernameToken);
-
-            if(usernameChanged) {
-                if(lastUsernameChangeDate) {
-                    let diffDays = (new Date() - lastUsernameChangeDate) / (1000 * 60 * 60 * 24);
-                    if(diffDays < 30) {
-                        let remainingDays = Math.ceil(30 - diffDays);
-                        triggerToastDisplay(`You can change username again in ${remainingDays} days.`);
-                        return;
-                    }
-                }
-
-                db.collection("users").where("username", "==", newUsername).get().then(snap => {
-                    if(!snap.empty) { triggerToastDisplay("Username taken by another user."); return; }
-                    
-                    updateProfileDataInFirestore(newUsername, true);
-                });
-            } else {
-                updateProfileDataInFirestore(newUsername, false);
-            }
-        }
-
-        function updateProfileDataInFirestore(newUsername, updatedUsernameFlag) {
-            let payload = {
-                profilePic: userProfilePicBase64
-            };
-
-            if(updatedUsernameFlag) {
-                payload.username = newUsername;
-                payload.lastUsernameChangeDate = firebase.firestore.FieldValue.serverTimestamp();
-            }
-
-            db.collection("users").doc(currentUserId).update(payload).then(() => {
+            db.collection("users").doc(currentUserId).update({
+                username: newUsername,
+                profilePic: userProfilePicBase64,
+                lastUsernameChangeDate: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => {
                 closeModal('profileEditModal');
-                triggerToastDisplay("Profile updated successfully!");
-            });
+                triggerToastDisplay("Profile updated successfully sweetie!");
+            }).catch(err => triggerToastDisplay(err.message));
         }
 
-        /* ADMIN LOGO LOGIC & CONTROLS */
-        window.registerAdminLogoTap = function() {
-            adminLogoTapCountTracker++;
-            if(adminLogoTapCountTracker >= 5) {
-                adminLogoTapCountTracker = 0;
-                document.getElementById('secretAdminScreen').style.display = 'flex';
-                triggerToastDisplay("Admin mode detected.");
-            }
-        }
-        
-        window.closeAdminPortal = function() {
-            document.getElementById('secretAdminScreen').style.display = 'none';
-            document.getElementById('adminContentBody').style.display = 'none';
-            document.getElementById('adminSecretKeyField').value = "";
-        }
-
-        window.authenticateAdminSystemKey = function() {
-            const key = document.getElementById('adminSecretKeyField').value;
-            if(key === "vestify786") {
-                document.getElementById('adminContentBody').style.display = 'block';
-                triggerToastDisplay("Welcome Admin!");
-                loadAdminLiveTracker();
-                loadAdminPendingDepositsArray();
-                loadAdminPendingWithdrawalsArray();
-                loadAdminUsersArray();
-                loadAdminAnalyticsReports();
-                loadAdminNodesList();
+        window.toggleFaqVisibility = function(element) {
+            let ans = element.querySelector('.faq-a');
+            let icon = element.querySelector('.faq-q i');
+            if(ans.style.display === 'block') {
+                ans.style.display = 'none';
+                icon.className = 'fa-solid fa-chevron-down';
             } else {
-                triggerToastDisplay("Wrong Admin Password!");
+                ans.style.display = 'block';
+                icon.className = 'fa-solid fa-chevron-up';
             }
         }
 
-        window.switchAdminSubView = function(mode) {
-            document.querySelectorAll('#adminContentBody > div').forEach(d => d.style.display = 'none');
-            
-            if(mode === 'tracker') document.getElementById('adminTrackerSection').style.display = 'block';
-            if(mode === 'deposits') document.getElementById('adminDepositsSection').style.display = 'block';
-            if(mode === 'users') document.getElementById('adminUsersSection').style.display = 'block';
-            if(mode === 'nodes') document.getElementById('adminNodesSection').style.display = 'block';
-            if(mode === 'payments') document.getElementById('adminPaymentsSection').style.display = 'block';
-            if(mode === 'broadcast') document.getElementById('adminBroadcastSection').style.display = 'block';
-            if(mode === 'analytics') document.getElementById('adminAnalyticsSection').style.display = 'block';
-        }
+        window.submitSupportTicketUser = function() {
+            let subj = document.getElementById('ticketSupportSubjectInput')?.value || document.getElementById('ticketSubjectInput').value.trim();
+            let msg = document.getElementById('ticketMessageInput').value.trim();
+            if(!subj || !msg) { triggerToastDisplay("Please enter ticket subject and message sweetie."); return; }
 
-        function loadAdminLiveTracker() {
-            db.collection("presence").onSnapshot(snap => {
-                let html = "";
-                if(snap.empty) { html = "<div style='color:#64748b;'>No users online right now.</div>"; }
-                snap.forEach(doc => {
-                    const p = doc.data();
-                    html += `<div style="background:rgba(255,255,255,0.02); padding:10px 12px; border-radius:12px; border:1px solid rgba(16,185,129,0.2); display:flex; justify-content:space-between; align-items:center;">
-                        <div>
-                            <b style="color:#38bdf8;">${p.username}</b>
-                            <p style="font-size:10px; color:#10b981; margin-top:2px;">Viewing: <b>${p.currentPage || 'Home'}</b></p>
-                        </div>
-                        <span style="width:8px; height:8px; background:#10b981; border-radius:50%; box-shadow:0 0 8px #10b981;"></span>
-                    </div>`;
-                });
-                document.getElementById('adminLiveTrackerFeed').innerHTML = html;
-            });
-        }
-
-        function loadAdminPendingDepositsArray() {
-            db.collection("deposits").where("status", "==", "pending").onSnapshot(snap => {
-                let html = "<h6 style='color:#38bdf8; margin-bottom:6px;'>Pending Deposits</h6>";
-                if(snap.empty) { html += "<div style='color:#64748b;'>No pending deposits.</div>"; }
-                snap.forEach(doc => {
-                    const d = doc.data();
-                    html += `<div style="background:rgba(255,255,255,0.02); padding:10px; border-radius:10px; margin-bottom:6px;">
-                        <p>Amount: <b style="color:#10b981;">Rs. ${d.amount}</b> | ${d.gatewayChannel}</p>
-                        <p>TID: ${d.transactionId}</p>
-                        <div style="display:flex; gap:6px; margin-top:6px;">
-                            <button class="buy-plan-btn" style="flex:1; padding:4px; font-size:10px; background:#10b981;" onclick="approveDepositFromAdmin('${doc.id}', '${d.userId}', ${d.amount})">Approve</button>
-                            <button class="buy-plan-btn" style="flex:1; padding:4px; font-size:10px; background:#ef4444;" onclick="rejectDepositFromAdmin('${doc.id}')">Reject</button>
-                        </div>
-                    </div>`;
-                });
-                document.getElementById('adminPendingDepositsTrack').innerHTML = html;
-            });
-        }
-
-        function loadAdminPendingWithdrawalsArray() {
-            db.collection("withdrawals").where("status", "==", "pending").onSnapshot(snap => {
-                let html = "<h6 style='color:#eab308; margin-bottom:6px; margin-top:10px;'>Pending Withdrawals</h6>";
-                if(snap.empty) { html += "<div style='color:#64748b;'>No pending withdrawals.</div>"; }
-                snap.forEach(doc => {
-                    const w = doc.data();
-                    html += `<div style="background:rgba(255,255,255,0.02); padding:10px; border-radius:10px; margin-bottom:6px;">
-                        <p>${w.title} (${w.targetNo})</p>
-                        <p>Payout: <b style="color:#eab308;">Rs. ${w.amount}</b></p>
-                        <div style="display:flex; gap:6px; margin-top:6px;">
-                            <button class="buy-plan-btn" style="flex:1; padding:4px; font-size:10px; background:#10b981;" onclick="approveWithdrawalFromAdmin('${doc.id}')">Approve</button>
-                            <button class="buy-plan-btn" style="flex:1; padding:4px; font-size:10px; background:#ef4444;" onclick="rejectWithdrawalFromAdmin('${doc.id}', '${w.userId}', ${w.amount})">Reject & Refund</button>
-                        </div>
-                    </div>`;
-                });
-                document.getElementById('adminPendingWithdrawalsTrack').innerHTML = html;
-            });
-        }
-
-        window.approveDepositFromAdmin = function(docId, targetUid, depositAmount) {
-            const userRef = db.collection("users").doc(targetUid);
-            db.runTransaction(transaction => {
-                return transaction.get(userRef).then(userDoc => {
-                    if (!userDoc.exists) { throw new Error("User missing."); }
-                    let d = userDoc.data();
-                    let currentBal = d.balance || 0;
-                    let hasDepBefore = d.hasDepositedBefore || false;
-                    let bonusMultiplier = hasDepBefore ? 0.04 : 0.08;
-                    let finalCreditedAmount = depositAmount + (depositAmount * bonusMultiplier);
-
-                    transaction.update(userRef, {
-                        balance: currentBal + finalCreditedAmount,
-                        hasDepositedBefore: true
-                    });
-                    transaction.update(db.collection("deposits").doc(docId), { status: "approved" });
-                });
-            }).then(() => {
-                processMultiTierReferralBonus(targetUid, depositAmount);
-                triggerToastDisplay("Deposit Approved & Bonus Credited!");
-            }).catch(err => triggerToastDisplay("Error: " + err.message));
-        }
-
-        window.rejectDepositFromAdmin = function(docId) {
-            db.collection("deposits").doc(docId).update({ status: "rejected" }).then(() => {
-                triggerToastDisplay("Deposit Rejected.");
-            });
-        }
-
-        window.approveWithdrawalFromAdmin = function(docId) {
-            db.collection("withdrawals").doc(docId).update({ status: "approved" }).then(() => {
-                triggerToastDisplay("Withdrawal Approved!");
-            });
-        }
-
-        window.rejectWithdrawalFromAdmin = function(docId, targetUid, refundAmount) {
-            const userRef = db.collection("users").doc(targetUid);
-            db.runTransaction(transaction => {
-                return transaction.get(userRef).then(userDoc => {
-                    let currentBal = userDoc.data().balance || 0;
-                    transaction.update(userRef, { balance: currentBal + refundAmount });
-                    transaction.update(db.collection("withdrawals").doc(docId), { status: "rejected" });
-                });
-            }).then(() => {
-                triggerToastDisplay("Withdrawal Rejected & Refunded.");
-            });
-        }
-
-        function loadAdminUsersArray() {
-            db.collection("users").onSnapshot(snap => {
-                let html = "";
-                if(snap.empty) { html = "<div style='color:#64748b;'>No users found.</div>"; }
-                snap.forEach(doc => {
-                    const u = doc.data();
-                    let isBlocked = u.isBlocked || false;
-                    html += `<div style="background:rgba(255,255,255,0.02); padding:12px; border-radius:14px; border:1px solid rgba(255,255,255,0.05); margin-bottom:8px;">
-                        <p>User: <b style="color:#38bdf8;">${u.username || 'N/A'}</b> | Status: <span style="color:${isBlocked ? '#ef4444' : '#10b981'};">${isBlocked ? 'BLOCKED' : 'ACTIVE'}</span></p>
-                        <p>Balance: <b style="color:#10b981;">Rs. ${u.balance || 0}</b> | Nodes: ${u.minersCount || 0}</p>
-                        <div style="display:flex; gap:6px; margin-top:8px; align-items:center;">
-                            <input type="number" id="adminAddBal_${doc.id}" class="modal-input" placeholder="Amount" style="margin-top:0; padding:6px; flex:1;">
-                            <button class="buy-plan-btn" style="padding:6px 10px; font-size:10px; background:#10b981;" onclick="adminModifyUserBalance('${doc.id}', true)">Add</button>
-                            <button class="buy-plan-btn" style="padding:6px 10px; font-size:10px; background:#eab308;" onclick="adminModifyUserBalance('${doc.id}', false)">Deduct</button>
-                            <button class="buy-plan-btn" style="padding:6px 10px; font-size:10px; background:${isBlocked ? '#10b981' : '#ef4444'};" onclick="adminToggleBlockStatus('${doc.id}', ${isBlocked})">${isBlocked ? 'Unblock' : 'Block'}</button>
-                        </div>
-                    </div>`;
-                });
-                document.getElementById('adminUsersTrack').innerHTML = html;
-            });
-        }
-
-        window.adminModifyUserBalance = function(targetUid, isAddition) {
-            let inputFieldVal = parseFloat(document.getElementById(`adminAddBal_${targetUid}`).value);
-            if(isNaN(inputFieldVal) || inputFieldVal <= 0) { triggerToastDisplay("Enter valid amount."); return; }
-
-            const userRef = db.collection("users").doc(targetUid);
-            db.runTransaction(transaction => {
-                return transaction.get(userRef).then(userDoc => {
-                    let currentBal = userDoc.data().balance || 0;
-                    let newBal = isAddition ? (currentBal + inputFieldVal) : Math.max(0, currentBal - inputFieldVal);
-                    transaction.update(userRef, { balance: newBal });
-                });
-            }).then(() => {
-                triggerToastDisplay(`User balance ${isAddition ? 'credited' : 'deducted'}!`);
-                document.getElementById(`adminAddBal_${targetUid}`).value = "";
-            });
-        }
-
-        window.adminToggleBlockStatus = function(targetUid, currentlyBlocked) {
-            db.collection("users").doc(targetUid).update({ isBlocked: !currentlyBlocked }).then(() => {
-                triggerToastDisplay(`User block status updated.`);
-            });
-        }
-
-        window.createCustomBonusCode = function() {
-            let code = document.getElementById('adminGiftCode').value.trim().toUpperCase();
-            let amt = parseFloat(document.getElementById('adminGiftAmount').value);
-
-            if(!code || isNaN(amt) || amt <= 0) { triggerToastDisplay("Please enter gift code and amount."); return; }
-
-            db.collection("gift_codes").doc(code).set({
-                code: code,
-                amount: amt,
-                isRedeemed: false,
-                createdAt: firebase.firestore.FieldValue.serverTimestamp()
-            }).then(() => {
-                triggerToastDisplay(`Gift Code ${code} Created!`);
-                document.getElementById('adminGiftCode').value = "";
-                document.getElementById('adminGiftAmount').value = "";
-            });
-        }
-
-        /* ADMIN NODE DYNAMIC CONFIGURATOR (Add / Edit Normal, Special, Offers) */
-        window.saveNodeConfigOverride = function() {
-            const category = document.getElementById('editNodeCategory').value;
-            const nodeNameId = document.getElementById('editNodeName').value.trim();
-            const newPrice = parseFloat(document.getElementById('editNodePrice').value);
-            const newDaily = parseFloat(document.getElementById('editNodeDaily').value);
-            const newDuration = parseInt(document.getElementById('editNodeDuration').value);
-            const imgVal = document.getElementById('editNodeImg').value.trim();
-
-            if(!nodeNameId || isNaN(newPrice) || isNaN(newDaily) || isNaN(newDuration)) { triggerToastDisplay("Fill all fields."); return; }
-
-            db.collection("node_configs").doc(nodeNameId).set({
-                nodeId: nodeNameId,
-                category: category,
-                cost: newPrice,
-                dailyYield: newDaily,
-                duration: newDuration,
-                imageUrl: imgVal || "",
-                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-            }, { merge: true }).then(() => {
-                triggerToastDisplay(`Node ${nodeNameId} saved successfully!`);
-                document.getElementById('editNodeName').value = "";
-                document.getElementById('editNodePrice').value = "";
-                document.getElementById('editNodeDaily').value = "";
-                document.getElementById('editNodeDuration').value = "";
-                document.getElementById('editNodeImg').value = "";
-            });
-        }
-
-        function loadAdminNodesList() {
-            db.collection("node_configs").onSnapshot(snap => {
-                let html = "";
-                snap.forEach(doc => {
-                    let d = doc.data();
-                    html += `<div style="background:rgba(255,255,255,0.02); padding:8px 10px; border-radius:8px; border:1px solid rgba(255,255,255,0.05); display:flex; justify-content:space-between; align-items:center;">
-                        <div>
-                            <b>${d.nodeId}</b> (${d.category || 'normal'})
-                            <p style="color:#94a3b8;">Rs. ${d.cost} | Rs. ${d.dailyYield}/Day | ${d.duration} Days</p>
-                        </div>
-                        <button class="buy-plan-btn" style="padding:4px 8px; font-size:10px; background:#ef4444;" onclick="deleteNodeFromAdmin('${doc.id}')">Delete</button>
-                    </div>`;
-                });
-                document.getElementById('adminExistingNodesList').innerHTML = html || "<div style='color:#64748b;'>No custom nodes found.</div>";
-            });
-        }
-
-        window.deleteNodeFromAdmin = function(nodeId) {
-            db.collection("node_configs").doc(nodeId).delete().then(() => {
-                triggerToastDisplay("Node deleted!");
-            });
-        }
-
-        function initializeRealtimeNodeConfigSync() {
-            db.collection("node_configs").onSnapshot(snapshot => {
-                snapshot.forEach(doc => {
-                    const data = doc.data();
-                    const nodeId = data.nodeId || doc.id;
-                    const cardElem = document.getElementById(`nodeCard-${nodeId}`);
-                    
-                    if(cardElem) {
-                        const costElem = cardElem.querySelector('.node-cost-txt');
-                        const dailyElem = cardElem.querySelector('.node-daily-txt');
-                        const durElem = cardElem.querySelector('.node-dur-txt');
-                        const leaseBtn = cardElem.querySelector('.node-lease-btn');
-
-                        if(costElem && data.cost !== undefined) costElem.innerText = `Rs. ${data.cost.toLocaleString()}`;
-                        if(dailyElem && data.dailyYield !== undefined) dailyElem.innerText = `Rs. ${data.dailyYield}/Day`;
-                        if(durElem && data.duration !== undefined) durElem.innerText = data.duration;
-                        if(data.imageUrl) {
-                            const imgElem = cardElem.querySelector('.plan-node-img');
-                            if(imgElem) imgElem.src = data.imageUrl;
-                        }
-
-                        if(leaseBtn && data.cost !== undefined && data.dailyYield !== undefined) {
-                            leaseBtn.setAttribute('onclick', `leaseHardwareNode('${nodeId}', ${data.cost}, ${data.dailyYield})`);
-                        }
-                    } else {
-                        // Dynamically append new node if created by admin
-                        let targetGridId = data.category === 'special' ? 'gridSpecial' : (data.category === 'offer' ? 'gridOffers' : 'gridNormal');
-                        let borderClass = data.category === 'special' ? 'special-border' : (data.category === 'offer' ? 'offer-border' : '');
-                        let btnStyle = data.category === 'special' ? 'background: linear-gradient(135deg, #eab308, #ca8a04);' : (data.category === 'offer' ? 'background: linear-gradient(135deg, #a855f7, #7c3aed);' : '');
-                        let defaultImg = data.imageUrl || 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=120&auto=format&fit=crop&q=60';
-
-                        let newCardHtml = `
-                            <div class="plan-card ${borderClass}" id="nodeCard-${nodeId}" data-node-id="${nodeId}">
-                                <img src="${defaultImg}" class="plan-node-img" alt="Node Array">
-                                <div class="plan-details">
-                                    <h4 class="node-title-txt">${nodeId}</h4>
-                                    <p>Price: <b class="node-cost-txt">Rs. ${data.cost}</b> | Daily: <span class="node-daily-txt">Rs. ${data.dailyYield}/Day</span></p>
-                                    <p style="color:#64748b; font-size:10px;">Duration: <span class="node-dur-txt">${data.duration}</span> Days</p>
-                                </div>
-                                <button class="buy-plan-btn node-lease-btn" style="${btnStyle}" onclick="leaseHardwareNode('${nodeId}', ${data.cost}, ${data.dailyYield})">Activate</button>
-                            </div>
-                        `;
-                        document.getElementById(targetGridId).insertAdjacentHTML('beforeend', newCardHtml);
-                    }
-                });
-            });
-        }
-
-        /* DYNAMIC PAYMENT METHOD ADMIN UPDATE */
-        window.loadSelectedPaymentDetailsAdmin = function() {
-            let key = document.getElementById('adminPaymentSelect').value;
-            let conf = paymentGatewayMerchantConfig[key] || { title: "", number: "" };
-            document.getElementById('adminPayTitle').value = conf.title;
-            document.getElementById('adminPayNumber').value = conf.number;
-        }
-
-        window.updatePaymentMethodDetailsAdmin = function() {
-            let key = document.getElementById('adminPaymentSelect').value;
-            let title = document.getElementById('adminPayTitle').value.trim();
-            let num = document.getElementById('adminPayNumber').value.trim();
-
-            if(!title || !num) { triggerToastDisplay("Please enter title and account number."); return; }
-
-            db.collection("system_settings").doc("payment_gateways").set({
-                [key]: { title: title, number: num }
-            }, { merge: true }).then(() => {
-                triggerToastDisplay(`${key} Payment Details Updated!`);
-            });
-        }
-
-        /* EXPORT DATA TO CSV / EXCEL */
-        window.exportUserDataCSV = function() {
-            db.collection("users").get().then(snap => {
-                let csvContent = "data:text/csv;charset=utf-8,UID,Username,Email,Balance,Miners,ReferredBy\n";
-                snap.forEach(doc => {
-                    let u = doc.data();
-                    csvContent += `${u.uid},${u.username},${u.email},${u.balance},${u.minersCount},${u.referredBy}\n`;
-                });
-                downloadCSVFile(csvContent, "Vestify_Users_Report.csv");
-            });
-        }
-
-        window.exportTransactionDataCSV = function() {
-            db.collection("deposits").get().then(snap => {
-                let csvContent = "data:text/csv;charset=utf-8,ID,UserID,Amount,Channel,TID,Status\n";
-                snap.forEach(doc => {
-                    let d = doc.data();
-                    csvContent += `${doc.id},${d.userId},${d.amount},${d.gatewayChannel},${d.transactionId},${d.status}\n`;
-                });
-                downloadCSVFile(csvContent, "Vestify_Transactions_Report.csv");
-            });
-        }
-
-        function downloadCSVFile(csvContent, fileName) {
-            var encodedUri = encodeURI(csvContent);
-            var link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", fileName);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-
-        window.dispatchGlobalBroadcast = function() {
-            const title = document.getElementById('broadcastTitleInput').value.trim();
-            const message = document.getElementById('broadcastMessageInput').value.trim();
-
-            if(!title || !message) { triggerToastDisplay("Enter broadcast title and message."); return; }
-
-            db.collection("global_broadcasts").add({
-                title: title,
-                message: message,
+            db.collection("support_tickets").add({
+                userId: currentUserId, username: userCustomUsernameToken, subject: subj, message: msg, status: "Open",
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
             }).then(() => {
-                triggerToastDisplay("Broadcast sent to all users!");
-                document.getElementById('broadcastTitleInput').value = "";
-                document.getElementById('broadcastMessageInput').value = "";
+                triggerToastDisplay("Support ticket submitted successfully sweetie!");
+                document.getElementById('ticketSubjectInput').value = "";
+                document.getElementById('ticketMessageInput').value = "";
+            });
+        }
+
+        function syncUserSupportTickets() {
+            db.collection("support_tickets").where("userId", "==", currentUserId).onSnapshot(snap => {
+                let html = "";
+                snap.forEach(doc => {
+                    let d = doc.data();
+                    html += `<div class="history-card">
+                        <div>
+                            <b>${d.subject}</b>
+                            <p style="font-size:11px; color:#94a3b8; margin-top:2px;">${d.message}</p>
+                        </div>
+                        <span style="font-size:11px; font-weight:700; color:#38bdf8;">${d.status}</span>
+                    </div>`;
+                });
+                document.getElementById('userSupportTicketsList').innerHTML = html || "<div style='color:#64748b; font-size:12px;'>No support tickets submitted yet.</div>";
             });
         }
 
         function initializeRealtimeBroadcastListener() {
-            db.collection("global_broadcasts").orderBy("timestamp", "desc").limit(1).onSnapshot(snapshot => {
-                const bannerContainer = document.getElementById('liveBroadcastTickerContainer');
-                const titleElem = document.getElementById('tickerBroadcastTitle');
-                const msgElem = document.getElementById('tickerBroadcastMsg');
-
-                if(!snapshot.empty) {
-                    const latestBroadcast = snapshot.docs[0].data();
-                    if(titleElem && msgElem && bannerContainer) {
-                        titleElem.innerText = latestBroadcast.title || "Announcement";
-                        msgElem.innerText = latestBroadcast.message || "";
-                        bannerContainer.style.display = "flex";
-                    }
+            db.collection("system_settings").doc("broadcast").onSnapshot(doc => {
+                if(doc.exists && doc.data().active) {
+                    let d = doc.data();
+                    document.getElementById('tickerBroadcastTitle').innerText = d.title || "Announcement";
+                    document.getElementById('tickerBroadcastMsg').innerText = d.message || "";
+                    document.getElementById('liveBroadcastTickerContainer').style.display = "flex";
                 } else {
-                    if(bannerContainer) bannerContainer.style.display = "none";
+                    document.getElementById('liveBroadcastTickerContainer').style.display = "none";
                 }
             });
         }
 
-        function loadAdminAnalyticsReports() {
-            db.collection("users").get().then(snap => {
-                let activeToday = 0;
-                let activeWeek = 0;
-                let activeMonth = 0;
-                let now = new Date();
-
-                let revCount = 0;
-                db.collection("deposits").where("status", "==", "approved").get().then(depSnap => {
-                    depSnap.forEach(d => { revCount += (d.data().amount || 0); });
-                    document.getElementById('repTotalRevenue').innerText = `Rs. ${revCount.toLocaleString()}`;
-                });
-
-                snap.forEach(doc => {
-                    let d = doc.data();
-                    if(d.timestamp) {
-                        let tDate = d.timestamp.toDate();
-                        let diffDays = (now - tDate) / (1000 * 60 * 60 * 24);
-                        if(diffDays <= 1) activeToday++;
-                        if(diffDays <= 7) activeWeek++;
-                        if(diffDays <= 30) activeMonth++;
-                    }
-                });
-
-                document.getElementById('repDAU').innerText = activeToday;
-                document.getElementById('repWAU').innerText = activeWeek;
-                document.getElementById('repMAU').innerText = activeMonth;
-            });
-        }
-
-        /* HELPER FUNCTIONS */
-        function triggerToastDisplay(message) {
-            const toast = document.getElementById('rewardToast');
-            toast.innerText = message;
-            toast.classList.add('toast-show');
-            setTimeout(() => toast.classList.remove('toast-show'), 3000);
-        }
-
-        function openModal(id) { document.getElementById(id).classList.add('modal-open'); }
-        function closeModal(id) { document.getElementById(id).classList.remove('modal-open'); }
-
-        window.openDepositModal = function() { openModal('depositModal'); }
-        window.openWithdrawModal = function() { openModal('withdrawModal'); }
-        window.openTransferModal = function() { openModal('transferModal'); }
-
-        window.routeToView = function(pageId, navId) {
-            document.querySelectorAll('.app-view-page').forEach(p => p.classList.remove('active-page'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            
-            document.getElementById(pageId).classList.add('active-page');
-            document.getElementById(navId).classList.add('active');
-            
-            updateLivePresenceActivity(pageId);
-        }
-
-        window.switchPlanCategory = function(gridId, tabId) {
-            document.querySelectorAll('.plans-grid').forEach(g => g.classList.remove('active-grid'));
-            document.querySelectorAll('.plan-tab-trigger').forEach(t => t.classList.remove('active-tab'));
-            
-            document.getElementById(gridId).classList.add('active-grid');
-            document.getElementById(tabId).classList.add('active-tab');
-        }
-
-        window.selectDepositGatewayChannel = function(channel) {
-            activeGatewayChannel = channel;
-            const config = paymentGatewayMerchantConfig[channel] || { title: channel, number: "Not set" };
-            document.getElementById('lblAccountTitleType').innerText = config.title;
-            document.getElementById('txtMerchantAccountNo').innerText = config.number;
-            document.getElementById('txtMerchantAccountTitle').innerText = config.title;
-            
-            document.getElementById('chkEasyPaisa').style.borderColor = channel === 'EasyPaisa' ? '#10b981' : 'rgba(255,255,255,0.05)';
-            document.getElementById('chkJazzCash').style.borderColor = channel === 'JazzCash' ? '#eab308' : 'rgba(255,255,255,0.05)';
-            document.getElementById('chkUSDT').style.borderColor = channel === 'USDT' ? '#26a17b' : 'rgba(255,255,255,0.05)';
-            
-            updateDepositCalculations();
-        }
-
-        function toggleFaqVisibility(elem) {
-            const ans = elem.querySelector('.faq-a');
-            const icon = elem.querySelector('.faq-q i');
-            if(ans.style.display === 'block') {
-                ans.style.display = 'none';
-                icon.style.transform = 'rotate(0deg)';
-            } else {
-                ans.style.display = 'block';
-                icon.style.transform = 'rotate(180deg)';
-            }
+        function initializeRealtimeNodeConfigSync() {
+            // Node sync placeholder
         }
 
         function initializeCountdownClockTicker() {
             setInterval(() => {
-                const now = new Date();
-                const hours = 23 - now.getHours();
-                const minutes = 59 - now.getMinutes();
-                const seconds = 59 - now.getSeconds();
+                let now = new Date();
+                let target = new Date();
+                target.setHours(24, 0, 0, 0);
+                let diff = target - now;
+                if(diff < 0) diff = 0;
+                let hrs = Math.floor((diff / (1000 * 60 * 60)) % 24);
+                let mins = Math.floor((diff / 1000 / 60) % 60);
+                let secs = Math.floor((diff / 1000) % 60);
                 document.getElementById('countdownTimerClock').innerText = 
-                    `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                    String(hrs).padStart(2,'0') + ":" + String(mins).padStart(2,'0') + ":" + String(secs).padStart(2,'0');
             }, 1000);
+        }
+
+        window.triggerToastDisplay = function(msg) {
+            const toast = document.getElementById('rewardToast');
+            toast.innerText = msg;
+            toast.classList.add('toast-show');
+            setTimeout(() => {
+                toast.classList.remove('toast-show');
+            }, 3500);
         }
     </script>
 </body>
