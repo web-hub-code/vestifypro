@@ -1488,17 +1488,30 @@
             }
         }
 
-        window.switchAdminSubView = function(mode) {
-            document.querySelectorAll('#adminContentBody > div').forEach(d => d.style.display = 'none');
+        window.switchAdminSubView = function(viewName) {
+            const sections = ['tracker', 'deposits', 'users', 'nodes', 'payments', 'broadcast', 'analytics'];
             
-            if(mode === 'tracker') document.getElementById('adminTrackerSection').style.display = 'block';
-            if(mode === 'deposits') document.getElementById('adminDepositsSection').style.display = 'block';
-            if(mode === 'users') document.getElementById('adminUsersSection').style.display = 'block';
-            if(mode === 'nodes') document.getElementById('adminNodesSection').style.display = 'block';
-            if(mode === 'payments') document.getElementById('adminPaymentsSection').style.display = 'block';
-            if(mode === 'broadcast') document.getElementById('adminBroadcastSection').style.display = 'block';
-            if(mode === 'analytics') document.getElementById('adminAnalyticsSection').style.display = 'block';
-        }
+            sections.forEach(sec => {
+                const el = document.getElementById('admin' + sec.charAt(0).toUpperCase() + sec.slice(1) + 'Section');
+                if(el) el.style.display = (sec === viewName) ? 'block' : 'none';
+                
+                const btn = document.getElementById('adminTab' + sec.charAt(0).toUpperCase() + sec.slice(1));
+                if(btn) btn.classList.toggle('active', sec === viewName);
+            });
+
+            const labels = {
+                'tracker': 'Live Online',
+                'deposits': 'Transactions',
+                'users': 'Users',
+                'nodes': 'Nodes Manager',
+                'payments': 'Payment Setup',
+                'broadcast': 'Broadcast',
+                'analytics': 'Reports'
+            };
+            
+            const labelEl = document.getElementById('currentAdminActiveFeatureLabel');
+            if(labelEl) labelEl.innerText = `Active: ${labels[viewName] || viewName}`;
+        };
 
         function loadAdminLiveTracker() {
             db.collection("presence").onSnapshot(snap => {
