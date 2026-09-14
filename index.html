@@ -1509,10 +1509,15 @@
         'analytics': 'Reports',
         'support': 'Support Tickets',
     };
-            
-            const labelEl = document.getElementById('currentAdminActiveFeatureLabel');
-            if(labelEl) labelEl.innerText = `Active: ${labels[viewName] || viewName}`;
-        };
+    
+    const labelEl = document.getElementById('currentAdminActiveFeatureLabel');
+    if(labelEl) labelEl.innerText = `Active: ${labels[viewName] || viewName}`;
+
+    // Yeh line lazmi add kr dena taake tab khulte hi live tickets fetch ho jayein
+    if(viewName === 'support') {
+        loadAdminSupportTicketsStream();
+    }
+};
         function loadAdminPendingDepositsArray() {
             db.collection("deposits").where("status", "==", "pending").onSnapshot(snap => {
                 let html = "<h6 style='color:#38bdf8; margin-bottom:6px;'>Pending Deposits</h6>";
