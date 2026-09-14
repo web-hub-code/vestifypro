@@ -31,28 +31,28 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
-    <!-- Service Worker Script -->
+    <!-- Service Worker & Notification Script -->
     <script>
       if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('./sw.js')
           .then((reg) => console.log('SW Registered!', reg))
           .catch((err) => console.log('SW Error:', err));
       }
-    </script>
-</head>
 
-  function requestNotification() {
-    if ('Notification' in window) {
-      Notification.requestPermission().then((perm) => {
-        if (perm === 'granted') {
-          new Notification('Vestify Pro', {
-            body: 'Notifications Enabled Successfully!',
-            icon: './192.png'
+      function requestNotification() {
+        if ('Notification' in window) {
+          Notification.requestPermission().then((perm) => {
+            if (perm === 'granted') {
+              new Notification('Vestify Pro', {
+                body: 'Notifications Enabled Successfully!',
+                icon: './192.png'
+              });
+            }
           });
         }
-      });
-    }
-  }
+      }
+    </script>
+</head>
 
   function updateAppBadge(count) {
     if ('setAppBadge' in navigator) {
