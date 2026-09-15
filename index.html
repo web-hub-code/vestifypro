@@ -432,7 +432,7 @@
                 <div class="task-icon"><i class="fa-solid fa-calendar-check"></i></div>
                 <div>
                     <b style="font-size:13px; color:white;">Daily Login Check-in</b>
-                    <p style="font-size:10px; color:#94a3b8;">Claim free Rs. 10 PKR bonus daily</p>
+                    <p style="font-size:10px; color:#94a3b8;">Claim free Rs. 5 PKR bonus daily</p>
                 </div>
             </div>
             <button class="buy-plan-btn" id="btnDailyCheckin" onclick="claimDailyCheckinBonus()" style="padding:6px 14px; font-size:11px;">Claim</button>
@@ -1213,7 +1213,7 @@
                 balance: firebase.firestore.FieldValue.increment(10),
                 hasCheckedInToday: true
             }).then(() => {
-                triggerToastDisplay("Claimed Rs. 10 Daily Check-in Bonus!");
+                triggerToastDisplay("Claimed Rs. 5 Daily Check-in Bonus!");
             });
         }
 
