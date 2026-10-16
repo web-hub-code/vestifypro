@@ -2,136 +2,311 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Under Maintenance</title>
+    <title>Vestify Pro - System Under Maintenance</title>
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            background: #040814;
             color: #ffffff;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
-            text-align: center;
+            overflow-x: hidden;
+            position: relative;
         }
 
-        .container {
-            max-width: 600px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
+        /* Vestify Pro Background Glows */
+        .bg-glow-1 {
+            position: fixed;
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(255, 65, 108, 0.2) 0%, rgba(0,0,0,0) 70%);
+            top: -50px;
+            left: -50px;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .bg-glow-2 {
+            position: fixed;
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, rgba(0,0,0,0) 70%);
+            bottom: -50px;
+            right: -50px;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .maintenance-container {
+            position: relative;
+            z-index: 10;
+            background: rgba(15, 23, 42, 0.7);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 40px 30px;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            border-radius: 28px;
+            padding: 40px 24px;
+            width: 100%;
+            max-width: 480px;
+            text-align: center;
+            backdrop-filter: blur(25px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
         }
 
-        .icon-box {
-            width: 80px;
-            height: 80px;
-            background: #3b82f6;
-            color: #ffffff;
+        .logo-block {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #ff416c, #ff4b2b);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 65, 108, 0.4);
+        }
+
+        .logo-text h1 {
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-align: left;
+        }
+
+        .logo-text p {
+            font-size: 11px;
+            color: #38bdf8;
+            font-weight: 700;
+            text-align: left;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 65, 108, 0.12);
+            color: #ff416c;
+            border: 1px solid rgba(255, 65, 108, 0.3);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #ff416c;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #ff416c;
+            animation: pulse 1.8s infinite;
+        }
+
+        .server-icon-box {
+            width: 90px;
+            height: 90px;
+            background: rgba(56, 189, 248, 0.08);
+            border: 1px solid rgba(56, 189, 248, 0.2);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 25px auto;
-            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
-            animation: pulse 2s infinite;
+            margin: 0 auto 20px auto;
+            color: #38bdf8;
+            font-size: 38px;
+            box-shadow: 0 0 25px rgba(56, 189, 248, 0.15);
         }
 
-        .icon-box svg {
-            width: 40px;
-            height: 40px;
-            fill: none;
-            stroke: currentColor;
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
+        h2 {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #ffffff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        h1 {
-            font-size: 2rem;
-            margin-bottom: 15px;
-            font-weight: 700;
-        }
-
-        p {
+        .description {
+            font-size: 13px;
             color: #94a3b8;
-            font-size: 1.05rem;
             line-height: 1.6;
-            margin-bottom: 30px;
-        }
-
-        .badge {
-            display: inline-block;
-            background: rgba(59, 130, 246, 0.15);
-            color: #60a5fa;
-            border: 1px solid rgba(59, 130, 246, 0.3);
-            padding: 8px 16px;
-            border-radius: 50px;
-            font-size: 0.9rem;
-            font-weight: 600;
             margin-bottom: 25px;
         }
 
-        .status-dot {
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            background-color: #60a5fa;
-            border-radius: 50%;
-            margin-right: 8px;
+        .info-box {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 25px;
+            text-align: left;
         }
 
-        .footer-text {
-            font-size: 0.85rem;
+        .info-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #cbd5e1;
+            padding: 6px 0;
+        }
+
+        .info-item:not(:last-child) {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .info-item span {
             color: #64748b;
-            margin-top: 20px;
+        }
+
+        .info-item b {
+            color: #38bdf8;
+        }
+
+        .support-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .btn-action {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .btn-whatsapp {
+            background: #25d366;
+            color: white;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.25);
+        }
+
+        .btn-email {
+            background: rgba(255, 255, 255, 0.04);
+            color: #38bdf8;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+
+        .btn-action:active {
+            transform: scale(0.98);
+        }
+
+        .footer-note {
+            font-size: 11px;
+            color: #64748b;
+            margin-top: 25px;
+            font-weight: 600;
         }
 
         @keyframes pulse {
             0% {
-                transform: scale(1);
-                box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(255, 65, 108, 0.7);
             }
             70% {
-                transform: scale(1.05);
-                box-shadow: 0 0 0 15px rgba(59, 130, 246, 0);
+                transform: scale(1);
+                box-shadow: 0 0 0 10px rgba(255, 65, 108, 0);
             }
             100% {
-                transform: scale(1);
-                box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(255, 65, 108, 0);
             }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="icon-box">
-            <!-- Wrench / Tools Icon -->
-            <svg viewBox="0 0 24 24">
-                <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
-            </svg>
+    <div class="bg-glow-1"></div>
+    <div class="bg-glow-2"></div>
+
+    <div class="maintenance-container">
+        <!-- Logo Header -->
+        <div class="logo-block">
+            <div class="logo-icon"><i class="fa-solid fa-microchip"></i></div>
+            <div class="logo-text">
+                <h1>VESTIFY PRO</h1>
+                <p>Cloud Mining Network</p>
+            </div>
         </div>
 
-        <div class="badge">
-            <span class="status-dot"></span> System Upgrade In Progress
+        <!-- Pulse Badge -->
+        <div>
+            <div class="status-badge">
+                <span class="pulse-dot"></span> System Upgrade In Progress
+            </div>
         </div>
 
-        <h1>We'll Be Back Soon!</h1>
-        
-        <p>Hum app ki performance aur features ko mazeed behtar banane ke liye maintenance kar rahe hain. Bohat jald app dobara live ho jaye gi.</p>
+        <!-- Animated Icon -->
+        <div class="server-icon-box">
+            <i class="fa-solid fa-server fa-spin" style="--fa-animation-duration: 12s;"></i>
+        </div>
 
-        <div class="footer-text">
-            Thank you for your patience!
+        <h2>We'll Be Right Back!</h2>
+        <p class="description">
+            Vestify Pro server optimizations aur node algorithm update ho rahe hain taakay aapki daily earnings aur security mazeed fast ho sake.
+        </p>
+
+        <!-- Status Box -->
+        <div class="info-box">
+            <div class="info-item">
+                <span>Mining Nodes Status:</span>
+                <b>Paused (Safe)</b>
+            </div>
+            <div class="info-item">
+                <span>User Balances:</span>
+                <b style="color: #10b981;">100% Safe & Encrypted</b>
+            </div>
+            <div class="info-item">
+                <span>Expected Completion:</span>
+                <b style="color: #eab308;">Under Progress</b>
+            </div>
+        </div>
+
+        <!-- Action Links -->
+        <div class="support-actions">
+            <a href="https://chat.whatsapp.com/D6QqMvZFBqLE4Hu4MsYEL5?s=cl&p=a&mlu=4" target="_blank" class="btn-action btn-whatsapp">
+                <i class="fa-brands fa-whatsapp" style="font-size: 16px;"></i> Join Official WhatsApp Group
+            </a>
+            <a href="mailto:webhub262@gmail.com" class="btn-action btn-email">
+                <i class="fa-solid fa-envelope"></i> Contact Support
+            </a>
+        </div>
+
+        <div class="footer-note">
+            Thank you for your patience! — Vestify Pro Team
         </div>
     </div>
 
