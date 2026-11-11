@@ -659,7 +659,7 @@
             <div class="close-modal-btn" onclick="closeModal('depositModal')">&times;</div>
             <h4 style="margin-bottom:12px; color:white; text-align:center;">Deposit Funds</h4>
             
-            <input type="number" id="pkrDepositInput" class="modal-input" placeholder="Enter Amount in PKR" oninput="updateDepositCalculations()">
+            <input type="number" id="pkrDepositInput" class="modal-input" placeholder="Enter Amount in PKR (Min: 200)" oninput="updateDepositCalculations()">
             
             <div style="background: rgba(16, 185, 129, 0.05); padding: 10px; border-radius: 12px; margin-top: 10px; font-size:12px;">
                 <div style="display:flex; justify-content:space-between; color:#94a3b8;"><span>Bonus Credited:</span> <b id="lblBonusPKR" style="color:#10b981;">Rs. 0 (8% / 4%)</b></div>
@@ -976,7 +976,7 @@
             });
         }
 
-        /* AVIATOR GAME MECHANICS & HIGH-RISK HOUSE EDGE */
+        /* AVIATOR CRASH GAME MECHANICS & HIGH-RISK HOUSE EDGE */
         window.setAviatorBetMultiplier = function(factor) {
             let current = parseFloat(document.getElementById('aviatorBetAmountInput').value) || 16;
             document.getElementById('aviatorBetAmountInput').value = Math.min(50000, current * factor);
@@ -988,7 +988,6 @@
 
         function calculateAviatorCrashPoint() {
             let randomRoll = Math.random();
-            // High Risk House Edge: 65% probability of early crash between 1.00x and 1.35x
             if (randomRoll < 0.65) {
                 return parseFloat((1.00 + Math.random() * 0.35).toFixed(2));
             } else if (randomRoll < 0.90) {
@@ -1151,7 +1150,7 @@
                         });
 
                         operationalBatch.commit().then(() => {
-                            triggerToastDisplay(`+Rs. ${globalCalculatedProfitToken} Daily Mining Profit Credited! sweetie`);
+                            triggerToastDisplay(`+Rs. ${globalCalculatedProfitToken} Daily Mining Profit Credited!`);
                         });
                     }
                 });
@@ -1159,7 +1158,7 @@
         }
 
         window.leaseHardwareNode = function(name, price, dailyProfitValue) {
-            if(userCurrentBalance < price) { triggerToastDisplay("Insufficient balance for this node, sweetie."); return; }
+            if(userCurrentBalance < price) { triggerToastDisplay("Insufficient balance for this node!"); return; }
             
             const operationalBatch = db.batch();
             const userRef = db.collection("users").doc(currentUserId);
@@ -1326,7 +1325,7 @@
             const inputVal = parseFloat(document.getElementById('pkrDepositInput').value);
             const tid = document.getElementById('depositTxIDInput').value.trim();
 
-            if(isNaN(inputVal) || inputVal < 200) { triggerToastDisplay("Minimum deposit amount is Rs. 200."); return; }
+            if(isNaN(inputVal) || inputVal < 200 || inputVal > 50000) { triggerToastDisplay("Minimum deposit is Rs. 200 and Maximum is Rs. 50,000."); return; }
             if(!tid || tid.length < 11 || tid.length > 12) { triggerToastDisplay("Enter valid 11-12 digit Transaction ID."); return; }
 
             db.collection("deposits").add({
@@ -1396,7 +1395,7 @@
 
         window.claimDailyCheckinBonus = function() {
             db.collection("users").doc(currentUserId).update({
-                balance: firebase.firestore.FieldValue.increment(10),
+                balance: firebase.firestore.FieldValue.increment(5),
                 hasCheckedInToday: true
             }).then(() => {
                 triggerToastDisplay("Claimed Rs. 5 Daily Check-in Bonus!");
