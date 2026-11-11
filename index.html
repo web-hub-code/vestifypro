@@ -468,7 +468,7 @@
         </div>
     </div>
 
-        <!-- PAGE 2: AVIATOR CRASH GAME MODULE -->
+            <!-- PAGE 2: AVIATOR CRASH GAME MODULE -->
     <div id="pageAviator" class="app-view-page">
         <div class="stats-dashboard" style="background: linear-gradient(135deg, rgba(255,65,108,0.08), rgba(4,8,20,0.4)); border-color: rgba(255,65,108,0.2);">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
@@ -530,7 +530,7 @@
                     <button id="aviatorActionBtn" class="buy-plan-btn" onclick="handleAviatorBetAction()" style="width:100%; padding:12px; background:linear-gradient(135deg, #ff416c, #ff4b2b); font-size:13px; font-weight:800; letter-spacing:1px;">PLACE BET (Rs. 100)</button>
                 </div>
 
-                <!-- Panel 2 (Extra Advanced Bet Box) -->
+                <!-- Panel 2 -->
                 <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); padding: 12px; border-radius: 16px;">
                     <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
                         <span style="font-size:11px; color:#a855f7; font-weight:700;">Bet Panel 2</span>
@@ -564,18 +564,13 @@
                 <span style="font-size:12px; color:white;">Bet: Rs. 1,500</span>
                 <span style="font-size:12px; color:#10b981;">Cashout @ 2.45x</span>
             </div>
-            <div class="history-card" style="margin-left:0; padding:10 seconds;">
+            <div class="history-card" style="margin-left:0; padding:10px;">
                 <span style="font-size:12px; color:#38bdf8;">AstoreTrader</span>
                 <span style="font-size:12px; color:white;">Bet: Rs. 500</span>
                 <span style="font-size:12px; color:#ef4444;">Crashed @ 1.12x</span>
             </div>
-            <div class="history-card" style="margin-left:0; padding:10px;">
-                <span style="font-size:12px; color:#38bdf8;">GilgitMiner</span>
-                <span style="font-size:12px; color:white;">Bet: Rs. 2,000</span>
-                <span style="font-size:12px; color:#10b981;">Cashout @ 5.80x</span>
-            </div>
         </div>
-    </div>
+       </div>
 
     <!-- PAGE 3: UNLIMITED MULTI-TIER REFERRAL NETWORK -->
     <div id="pageAffiliate" class="app-view-page">
@@ -811,7 +806,7 @@
         let adminLogoTapCountTracker = 0;
         let cachedUserHistoryLogs = [];
 
-                // Aviator State Variables Update
+            // Aviator State Variables
         let aviatorGameActiveState = false;
         let aviatorUserHasPlacedBet = false;
         let aviatorUserHasPlacedBet2 = false;
@@ -862,7 +857,7 @@
                     balance: userCurrentBalance - betInput
                 }).then(() => {
                     aviatorUserHasPlacedBet = true;
-                    document.getElementById('aviatorActionBtn').innerText = "CASHOUT NOW";
+                    document.getElementById('aviatorActionBtn').innerText = "CASHOUT NOW\nRs. 0.00";
                     document.getElementById('aviatorActionBtn').style.background = "linear-gradient(135deg, #10b981, #059669)";
                     triggerToastDisplay(`Bet 1 of Rs. ${betInput} placed successfully!`);
                 });
@@ -898,7 +893,7 @@
                     balance: userCurrentBalance - betInput
                 }).then(() => {
                     aviatorUserHasPlacedBet2 = true;
-                    document.getElementById('aviatorActionBtn2').innerText = "CASHOUT 2";
+                    document.getElementById('aviatorActionBtn2').innerText = "CASHOUT 2\nRs. 0.00";
                     document.getElementById('aviatorActionBtn2').style.background = "linear-gradient(135deg, #10b981, #059669)";
                     triggerToastDisplay(`Bet 2 of Rs. ${betInput} placed!`);
                 });
@@ -917,7 +912,6 @@
         function startAviatorGameLoop() {
             setInterval(() => {
                 if (!aviatorGameActiveState) {
-                    // 10 Seconds Waiting Time Set Kar Diya Gaya Hai
                     document.getElementById('aviatorStatusText').innerText = "Next round starting in 10 seconds...";
                     document.getElementById('aviatorMultiplierDisplay').innerText = "1.00x";
                     document.getElementById('aviatorPlaneIcon').style.display = 'none';
@@ -952,6 +946,16 @@
 
                             aviatorCurrentRoundMultiplier += 0.02 + (aviatorCurrentRoundMultiplier * 0.03);
                             document.getElementById('aviatorMultiplierDisplay').innerText = aviatorCurrentRoundMultiplier.toFixed(2) + "x";
+
+                            // Real-time live incrementing winning amounts on buttons
+                            if (aviatorUserHasPlacedBet) {
+                                let liveWinning1 = aviatorActiveBetAmount * aviatorCurrentRoundMultiplier;
+                                document.getElementById('aviatorActionBtn').innerText = `CASHOUT NOW\nRs. ${liveWinning1.toFixed(2)}`;
+                            }
+                            if (aviatorUserHasPlacedBet2) {
+                                let liveWinning2 = aviatorActiveBetAmount2 * aviatorCurrentRoundMultiplier;
+                                document.getElementById('aviatorActionBtn2').innerText = `CASHOUT 2\nRs. ${liveWinning2.toFixed(2)}`;
+                            }
 
                             // Auto Cashout Check Panel 1
                             if (aviatorUserHasPlacedBet && document.getElementById('autoCashoutToggle1').checked) {
@@ -1012,9 +1016,9 @@
                                 }, 2000);
                             }
                         }, 150);
-                    }, 10000); // 10 Seconds Delay
+                    }, 10000); // 10 Seconds Waiting Time
                 }
-            }, 8000);                        
+            }, 8000);
         }
         
         let paymentGatewayMerchantConfig = {
