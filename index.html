@@ -468,7 +468,7 @@
         </div>
     </div>
 
-    <!-- PAGE 2: AVIATOR CRASH GAME MODULE -->
+        <!-- PAGE 2: AVIATOR CRASH GAME MODULE -->
     <div id="pageAviator" class="app-view-page">
         <div class="stats-dashboard" style="background: linear-gradient(135deg, rgba(255,65,108,0.08), rgba(4,8,20,0.4)); border-color: rgba(255,65,108,0.2);">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
@@ -564,7 +564,7 @@
                 <span style="font-size:12px; color:white;">Bet: Rs. 1,500</span>
                 <span style="font-size:12px; color:#10b981;">Cashout @ 2.45x</span>
             </div>
-            <div class="history-card" style="margin-left:0; padding:10px;">
+            <div class="history-card" style="margin-left:0; padding:10 seconds;">
                 <span style="font-size:12px; color:#38bdf8;">AstoreTrader</span>
                 <span style="font-size:12px; color:white;">Bet: Rs. 500</span>
                 <span style="font-size:12px; color:#ef4444;">Crashed @ 1.12x</span>
@@ -811,13 +811,212 @@
         let adminLogoTapCountTracker = 0;
         let cachedUserHistoryLogs = [];
 
-        // Aviator State Variables
+                // Aviator State Variables Update
         let aviatorGameActiveState = false;
         let aviatorUserHasPlacedBet = false;
+        let aviatorUserHasPlacedBet2 = false;
         let aviatorCurrentRoundMultiplier = 1.00;
         let aviatorActiveBetAmount = 0;
+        let aviatorActiveBetAmount2 = 0;
         let aviatorCrashTargetMultiplier = 1.00;
 
+        window.setAviatorBetMultiplier = function(factor) {
+            let current = parseFloat(document.getElementById('aviatorBetAmountInput').value) || 16;
+            document.getElementById('aviatorBetAmountInput').value = Math.min(50000, current * factor);
+        }
+
+        window.setMaxAviatorBet = function() {
+            document.getElementById('aviatorBetAmountInput').value = Math.min(50000, userCurrentBalance);
+        }
+
+        function calculateAviatorCrashPoint() {
+            let randomRoll = Math.random();
+            if (randomRoll < 0.65) {
+                return parseFloat((1.00 + Math.random() * 0.35).toFixed(2));
+            } else if (randomRoll < 0.90) {
+                return parseFloat((1.36 + Math.random() * 2.14).toFixed(2));
+            } else if (randomRoll < 0.98) {
+                return parseFloat((3.51 + Math.random() * 6.50).toFixed(2));
+            } else {
+                return parseFloat((10.00 + Math.random() * 40.00).toFixed(2));
+            }
+        }
+
+        window.handleAviatorBetAction = function() {
+            let betInput = parseFloat(document.getElementById('aviatorBetAmountInput').value);
+            
+            if (isNaN(betInput) || betInput < 16 || betInput > 50000) {
+                triggerToastDisplay("Minimum bet is Rs. 16 and Maximum is Rs. 50,000.");
+                return;
+            }
+
+            if (betInput > userCurrentBalance) {
+                document.getElementById('aviatorTopUpPromptBox').style.display = 'block';
+                triggerToastDisplay("Insufficient balance! Please top up.");
+                return;
+            }
+
+            if (!aviatorGameActiveState && !aviatorUserHasPlacedBet) {
+                aviatorActiveBetAmount = betInput;
+                db.collection("users").doc(currentUserId).update({
+                    balance: userCurrentBalance - betInput
+                }).then(() => {
+                    aviatorUserHasPlacedBet = true;
+                    document.getElementById('aviatorActionBtn').innerText = "CASHOUT NOW";
+                    document.getElementById('aviatorActionBtn').style.background = "linear-gradient(135deg, #10b981, #059669)";
+                    triggerToastDisplay(`Bet 1 of Rs. ${betInput} placed successfully!`);
+                });
+            } else if (aviatorGameActiveState && aviatorUserHasPlacedBet) {
+                let winnings = aviatorActiveBetAmount * aviatorCurrentRoundMultiplier;
+                db.collection("users").doc(currentUserId).update({
+                    balance: userCurrentBalance + winnings
+                }).then(() => {
+                    triggerToastDisplay(`Cashed out! Won Rs. ${winnings.toFixed(2)}`);
+                    aviatorUserHasPlacedBet = false;
+                    document.getElementById('aviatorActionBtn').innerText = "WAITING...";
+                    document.getElementById('aviatorActionBtn').disabled = true;
+                });
+            }
+        }
+
+        window.handleAviatorBetAction2 = function() {
+            let betInput = parseFloat(document.getElementById('aviatorBetAmountInput2').value);
+            
+            if (isNaN(betInput) || betInput < 16 || betInput > 50000) {
+                triggerToastDisplay("Minimum bet is Rs. 16 and Maximum is Rs. 50,000.");
+                return;
+            }
+
+            if (betInput > userCurrentBalance) {
+                triggerToastDisplay("Insufficient balance for Bet 2!");
+                return;
+            }
+
+            if (!aviatorGameActiveState && !aviatorUserHasPlacedBet2) {
+                aviatorActiveBetAmount2 = betInput;
+                db.collection("users").doc(currentUserId).update({
+                    balance: userCurrentBalance - betInput
+                }).then(() => {
+                    aviatorUserHasPlacedBet2 = true;
+                    document.getElementById('aviatorActionBtn2').innerText = "CASHOUT 2";
+                    document.getElementById('aviatorActionBtn2').style.background = "linear-gradient(135deg, #10b981, #059669)";
+                    triggerToastDisplay(`Bet 2 of Rs. ${betInput} placed!`);
+                });
+            } else if (aviatorGameActiveState && aviatorUserHasPlacedBet2) {
+                let winnings = aviatorActiveBetAmount2 * aviatorCurrentRoundMultiplier;
+                db.collection("users").doc(currentUserId).update({
+                    balance: userCurrentBalance + winnings
+                }).then(() => {
+                    triggerToastDisplay(`Cashed out Bet 2! Won Rs. ${winnings.toFixed(2)}`);
+                    aviatorUserHasPlacedBet2 = false;
+                    document.getElementById('aviatorActionBtn2').innerText = "WAITING...";
+                });
+            }
+        }
+
+        function startAviatorGameLoop() {
+            setInterval(() => {
+                if (!aviatorGameActiveState) {
+                    // 10 Seconds Waiting Time Set Kar Diya Gaya Hai
+                    document.getElementById('aviatorStatusText').innerText = "Next round starting in 10 seconds...";
+                    document.getElementById('aviatorMultiplierDisplay').innerText = "1.00x";
+                    document.getElementById('aviatorPlaneIcon').style.display = 'none';
+                    
+                    setTimeout(() => {
+                        aviatorGameActiveState = true;
+                        aviatorCrashTargetMultiplier = calculateAviatorCrashPoint();
+                        aviatorCurrentRoundMultiplier = 1.00;
+                        
+                        if (!aviatorUserHasPlacedBet) {
+                            let currentVal = document.getElementById('aviatorBetAmountInput').value || 100;
+                            document.getElementById('aviatorActionBtn').innerText = `PLACE BET (Rs. ${currentVal})`;
+                            document.getElementById('aviatorActionBtn').style.background = "linear-gradient(135deg, #ff416c, #ff4b2b)";
+                            document.getElementById('aviatorActionBtn').disabled = false;
+                        }
+                        
+                        if (!aviatorUserHasPlacedBet2 && document.getElementById('aviatorActionBtn2')) {
+                            let currentVal2 = document.getElementById('aviatorBetAmountInput2').value || 200;
+                            document.getElementById('aviatorActionBtn2').innerText = `PLACE BET 2 (Rs. ${currentVal2})`;
+                            document.getElementById('aviatorActionBtn2').style.background = "linear-gradient(135deg, #a855f7, #7c3aed)";
+                            document.getElementById('aviatorActionBtn2').disabled = false;
+                        }
+
+                        document.getElementById('aviatorTopUpPromptBox').style.display = 'none';
+                        document.getElementById('aviatorPlaneIcon').style.display = 'block';
+
+                        let flightInterval = setInterval(() => {
+                            if (!aviatorGameActiveState) {
+                                clearInterval(flightInterval);
+                                return;
+                            }
+
+                            aviatorCurrentRoundMultiplier += 0.02 + (aviatorCurrentRoundMultiplier * 0.03);
+                            document.getElementById('aviatorMultiplierDisplay').innerText = aviatorCurrentRoundMultiplier.toFixed(2) + "x";
+
+                            // Auto Cashout Check Panel 1
+                            if (aviatorUserHasPlacedBet && document.getElementById('autoCashoutToggle1').checked) {
+                                let target1 = parseFloat(document.getElementById('autoCashoutVal1').value) || 2.00;
+                                if (aviatorCurrentRoundMultiplier >= target1) {
+                                    let winnings1 = aviatorActiveBetAmount * target1;
+                                    db.collection("users").doc(currentUserId).update({
+                                        balance: userCurrentBalance + winnings1
+                                    }).then(() => {
+                                        triggerToastDisplay(`Auto Cashout 1! Won Rs. ${winnings1.toFixed(2)}`);
+                                        aviatorUserHasPlacedBet = false;
+                                        document.getElementById('aviatorActionBtn').innerText = "WAITING...";
+                                        document.getElementById('aviatorActionBtn').disabled = true;
+                                    });
+                                }
+                            }
+
+                            // Auto Cashout Check Panel 2
+                            if (aviatorUserHasPlacedBet2 && document.getElementById('autoCashoutToggle2').checked) {
+                                let target2 = parseFloat(document.getElementById('autoCashoutVal2').value) || 3.00;
+                                if (aviatorCurrentRoundMultiplier >= target2) {
+                                    let winnings2 = aviatorActiveBetAmount2 * target2;
+                                    db.collection("users").doc(currentUserId).update({
+                                        balance: userCurrentBalance + winnings2
+                                    }).then(() => {
+                                        triggerToastDisplay(`Auto Cashout 2! Won Rs. ${winnings2.toFixed(2)}`);
+                                        aviatorUserHasPlacedBet2 = false;
+                                        document.getElementById('aviatorActionBtn2').innerText = "WAITING...";
+                                        document.getElementById('aviatorActionBtn2').disabled = true;
+                                    });
+                                }
+                            }
+
+                            if (aviatorCurrentRoundMultiplier >= aviatorCrashTargetMultiplier) {
+                                aviatorGameActiveState = false;
+                                clearInterval(flightInterval);
+                                document.getElementById('aviatorStatusText').innerText = `CRASHED @ ${aviatorCrashTargetMultiplier.toFixed(2)}x`;
+                                document.getElementById('aviatorMultiplierDisplay').style.color = "#ef4444";
+                                
+                                if (aviatorUserHasPlacedBet) {
+                                    triggerToastDisplay("Plane crashed! Bet 1 lost.");
+                                    aviatorUserHasPlacedBet = false;
+                                }
+                                if (aviatorUserHasPlacedBet2) {
+                                    triggerToastDisplay("Plane crashed! Bet 2 lost.");
+                                    aviatorUserHasPlacedBet2 = false;
+                                }
+
+                                document.getElementById('aviatorActionBtn').innerText = "WAITING...";
+                                document.getElementById('aviatorActionBtn').disabled = true;
+                                if(document.getElementById('aviatorActionBtn2')) {
+                                    document.getElementById('aviatorActionBtn2').innerText = "WAITING...";
+                                    document.getElementById('aviatorActionBtn2').disabled = true;
+                                }
+
+                                setTimeout(() => {
+                                    document.getElementById('aviatorMultiplierDisplay').style.color = "white";
+                                }, 2000);
+                            }
+                        }, 150);
+                    }, 10000); // 10 Seconds Delay
+                }
+            }, 8000);                        
+        }
+        
         let paymentGatewayMerchantConfig = {
             "EasyPaisa": { number: "03379827882", title: "EasyPaisa Account" },
             "JazzCash": { number: "03705519562", title: "JazzCash Account" },
