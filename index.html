@@ -5,11 +5,11 @@
     <meta name="google-site-verification" content="googled6b6ebdecbbc4a08" />
     
     <!-- Title Tag -->
-    <title>Vestify Pro - Cloud Mining & Earning Platform</title>
+    <title>Vestify Pro - Cloud Mining & Aviator Casino Platform</title>
 
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Vestify Pro is a secure cloud mining and referral network platform. Earn daily crypto yields, track investments, and manage your network easily.">
-    <meta name="keywords" content="Vestify Pro, Crypto Mining, Cloud Mining, Daily Yield, Crypto Dashboard, Affiliate Rewards">
+    <meta name="description" content="Vestify Pro is a secure cloud mining, Aviator crash gaming, and referral network platform. Earn daily crypto yields, track investments, and play safely.">
+    <meta name="keywords" content="Vestify Pro, Crypto Mining, Aviator Game, Cloud Mining, Daily Yield, Crypto Dashboard, Affiliate Rewards">
     <meta name="robots" content="index, follow">
 
     <!-- Fonts & Icons -->
@@ -143,7 +143,7 @@
     <div id="authScreen">
         <div class="auth-container">
             <h2 style="font-weight: 800; background: linear-gradient(135deg, #fff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 1px;">VESTIFY PRO</h2>
-            <p style="font-size: 11px; color: #64748b; margin-bottom: 20px;">Cloud Mining & Earning Platform</p>
+            <p style="font-size: 11px; color: #64748b; margin-bottom: 20px;">Cloud Mining & Casino Platform</p>
             
             <div class="auth-tabs">
                 <button id="tabLogin" class="auth-tab-btn active" onclick="switchAuthTab('login')">Sign In</button>
@@ -220,7 +220,7 @@
                     <div id="adminUsersTrack" style="font-size: 12px; display: flex; flex-direction: column; gap: 8px;">Loading users...</div>
                 </div>
 
-                <!-- 4. DYNAMIC NODE MANAGER (Add / Edit Normal, Special, Offers) -->
+                <!-- 4. DYNAMIC NODE MANAGER -->
                 <div id="adminNodesSection" style="display: none;">
                     <h5 style="font-size: 13px; color: #a855f7; margin-bottom: 10px;">Mining Nodes Configurator & Add New</h5>
                     <div style="display: flex; flex-direction: column; gap: 10px; background: rgba(255,255,255,0.02); padding: 12px; border-radius: 14px;">
@@ -288,7 +288,7 @@
                 <div class="logo-icon"><i class="fa-solid fa-microchip"></i></div>
                 <div class="logo-text">
                     <h1>VESTIFY PRO</h1>
-                    <p style="font-size:10px; color:#38bdf8; font-weight: 700;">Cloud Earning Network</p>
+                    <p style="font-size:10px; color:#38bdf8; font-weight: 700;">Cloud Earning & Casino</p>
                 </div>
             </div>
             <button class="buy-plan-btn" onclick="triggerSignOut()" style="background:rgba(239,68,68,0.15); color:#ef4444; font-size:11px; padding:6px 14px; border:1px solid rgba(239,68,68,0.3); box-shadow: none;">Log Out</button>
@@ -468,7 +468,73 @@
         </div>
     </div>
 
-    <!-- PAGE 2: UNLIMITED MULTI-TIER REFERRAL NETWORK -->
+    <!-- PAGE 2: AVIATOR CRASH GAME MODULE -->
+    <div id="pageAviator" class="app-view-page">
+        <div class="stats-dashboard" style="background: linear-gradient(135deg, rgba(255,65,108,0.08), rgba(4,8,20,0.4)); border-color: rgba(255,65,108,0.2);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                <h3 style="color:#ff416c; font-size:16px;"><i class="fa-solid fa-plane-departure"></i> Aviator Crash Game</h3>
+                <span style="font-size:11px; background:rgba(255,65,108,0.15); color:#ff416c; padding:3px 10px; border-radius:20px; font-weight:700;">Live Real-Money</span>
+            </div>
+
+            <!-- Recent Multipliers Ticker Bar -->
+            <div id="aviatorMultiplierTickerBar" style="display:flex; gap:6px; overflow-x:auto; padding-bottom:6px; margin-bottom:12px;">
+                <span style="background:rgba(56,189,248,0.1); color:#38bdf8; padding:3px 8px; border-radius:6px; font-size:11px; font-weight:700;">1.25x</span>
+                <span style="background:rgba(16,185,129,0.1); color:#10b981; padding:3px 8px; border-radius:6px; font-size:11px; font-weight:700;">3.40x</span>
+                <span style="background:rgba(239,68,68,0.1); color:#ef4444; padding:3px 8px; border-radius:6px; font-size:11px; font-weight:700;">1.02x</span>
+                <span style="background:rgba(168,85,247,0.1); color:#a855f7; padding:3px 8px; border-radius:6px; font-size:11px; font-weight:700;">12.50x</span>
+            </div>
+
+            <!-- Canvas / Flight Animation Screen -->
+            <div style="position:relative; width:100%; height:220px; background:#02050b; border-radius:18px; border:1px solid rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center; overflow:hidden;">
+                <div id="aviatorCanvasOverlay" style="text-align:center; z-index:2;">
+                    <h1 id="aviatorMultiplierDisplay" style="font-size:42px; font-weight:800; color:white; text-shadow:0 0 20px rgba(255,65,108,0.5);">1.00x</h1>
+                    <p id="aviatorStatusText" style="font-size:12px; color:#94a3b8; margin-top:4px;">Waiting for next round...</p>
+                </div>
+                <i id="aviatorPlaneIcon" class="fa-solid fa-plane" style="position:absolute; bottom:20px; left:20px; font-size:24px; color:#ff416c; transition:all 0.1s linear; display:none;"></i>
+            </div>
+
+            <!-- Betting Controls Panel -->
+            <div style="margin-top:16px; display:flex; flex-direction:column; gap:10px;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-size:11px; color:#94a3b8;">Bet Amount (Min: Rs. 16 | Max: Rs. 50,000)</span>
+                    <span style="font-size:11px; color:#38bdf8;">Balance: Rs. <span id="aviatorWalletBalanceLbl">0.00</span></span>
+                </div>
+
+                <div style="display:flex; gap:8px;">
+                    <input type="number" id="aviatorBetAmountInput" class="modal-input" placeholder="Enter Bet (Rs. 16+)" style="margin-top:0; flex:1;" value="100">
+                    <button class="plan-tab-trigger" onclick="setAviatorBetMultiplier(2)" style="padding:10px;">2x</button>
+                    <button class="plan-tab-trigger" onclick="setAviatorBetMultiplier(5)" style="padding:10px;">5x</button>
+                    <button class="plan-tab-trigger" onclick="setMaxAviatorBet()" style="padding:10px;">Max</button>
+                </div>
+
+                <!-- Action / Cashout Button -->
+                <button id="aviatorActionBtn" class="buy-plan-btn" onclick="handleAviatorBetAction()" style="width:100%; padding:14px; background:linear-gradient(135deg, #ff416c, #ff4b2b); font-size:14px; font-weight:800; letter-spacing:1px;">PLACE BET (Rs. 100)</button>
+
+                <!-- Top Up Balance Prompt Container (Shown if balance is insufficient or below Rs. 16) -->
+                <div id="aviatorTopUpPromptBox" style="display:none; background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.3); padding:10px; border-radius:12px; text-align:center; margin-top:6px;">
+                    <p style="font-size:11px; color:#ef4444; font-weight:700;">Insufficient balance or below minimum Rs. 16 limit!</p>
+                    <button class="buy-plan-btn" onclick="openDepositModal()" style="margin-top:6px; padding:8px 16px; background:#10b981; font-size:11px;">Top Up Balance Now</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Live Multiplayer Bets Feed -->
+        <div class="section-title" style="margin-left:0;"><i class="fa-solid fa-users"></i> Live Players Bets</div>
+        <div id="aviatorLivePlayersFeed" style="display:flex; flex-direction:column; gap:6px; margin-bottom:30px;">
+            <div class="history-card" style="margin-left:0; padding:10px;">
+                <span style="font-size:12px; color:#38bdf8;">CryptoKing99</span>
+                <span style="font-size:12px; color:white;">Bet: Rs. 1,500</span>
+                <span style="font-size:12px; color:#10b981;">Cashout @ 2.45x</span>
+            </div>
+            <div class="history-card" style="margin-left:0; padding:10px;">
+                <span style="font-size:12px; color:#38bdf8;">AstoreTrader</span>
+                <span style="font-size:12px; color:white;">Bet: Rs. 500</span>
+                <span style="font-size:12px; color:#ef4444;">Crashed @ 1.12x</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAGE 3: UNLIMITED MULTI-TIER REFERRAL NETWORK -->
     <div id="pageAffiliate" class="app-view-page">
         <div class="stats-dashboard" style="margin: 20px 0; background: linear-gradient(135deg, rgba(56,189,248,0.05), rgba(4,8,20,0.2)); border-color: rgba(56,189,248,0.15);">
             <h3 style="color:#38bdf8; font-size:15px; margin-bottom:12px;"><i class="fa-solid fa-network-wired"></i> Referral & Network Center</h3>
@@ -520,7 +586,7 @@
         </div>
     </div>
 
-    <!-- PAGE 3: SEARCHABLE UNLIMITED HISTORY & SUPPORT TICKETS -->
+    <!-- PAGE 4: SEARCHABLE UNLIMITED HISTORY & SUPPORT TICKETS -->
     <div id="pageHistory" class="app-view-page">
         <div class="section-title" style="margin-left:0;"><i class="fa-solid fa-list"></i> Searchable History Logs</div>
         
@@ -541,7 +607,7 @@
         <div id="userSupportTicketsList" style="margin-bottom:25px;">Loading tickets status...</div>
     </div>
 
-    <!-- PAGE 4: ABOUT, SECURITY & FAQS -->
+    <!-- PAGE 5: ABOUT, SECURITY & FAQS -->
     <div id="pageLegalHub" class="app-view-page">
         <div class="section-title" style="margin-left:0;"><i class="fa-solid fa-building"></i> Company Information</div>
         <div class="info-card">
@@ -581,6 +647,7 @@
     <!-- BOTTOM NAVIGATION BAR -->
     <div class="bottom-nav">
         <div class="nav-item active" id="nvHome" onclick="routeToView('pageHome', 'nvHome')"><i class="fa-solid fa-house"></i><span>Home</span></div>
+        <div class="nav-item" id="nvAviator" onclick="routeToView('pageAviator', 'nvAviator')"><i class="fa-solid fa-rocket"></i><span>Aviator</span></div>
         <div class="nav-item" id="nvAffiliate" onclick="routeToView('pageAffiliate', 'nvAffiliate')"><i class="fa-solid fa-users-gear"></i><span>Network</span></div>
         <div class="nav-item" id="nvHistory" onclick="routeToView('pageHistory', 'nvHistory')"><i class="fa-solid fa-receipt"></i><span>History</span></div>
         <div class="nav-item" id="nvLegal" onclick="routeToView('pageLegalHub', 'nvLegal')"><i class="fa-solid fa-folder-open"></i><span>Info Hub</span></div>
@@ -644,7 +711,7 @@
         </div>
     </div>
 
-    <!-- MODAL 4: USER PROFILE EDIT MODAL (Picture & Username with 30-day Limit) -->
+    <!-- MODAL 4: USER PROFILE EDIT MODAL -->
     <div id="profileEditModal" class="premium-modal">
         <div class="modal-content">
             <div class="close-modal-btn" onclick="closeModal('profileEditModal')">&times;</div>
@@ -701,6 +768,13 @@
         let adminLogoTapCountTracker = 0;
         let cachedUserHistoryLogs = [];
 
+        // Aviator State Variables
+        let aviatorGameActiveState = false;
+        let aviatorUserHasPlacedBet = false;
+        let aviatorCurrentRoundMultiplier = 1.00;
+        let aviatorActiveBetAmount = 0;
+        let aviatorCrashTargetMultiplier = 1.00;
+
         let paymentGatewayMerchantConfig = {
             "EasyPaisa": { number: "03379827882", title: "EasyPaisa Account" },
             "JazzCash": { number: "03705519562", title: "JazzCash Account" },
@@ -716,6 +790,7 @@
             initializeRealtimeNodeConfigSync();
             loadPaymentMethodsFromFirestore();
             startLiveMiningSimulatorCounter();
+            startAviatorGameLoop();
         });
 
         auth.onAuthStateChanged(user => {
@@ -866,6 +941,7 @@
                     document.getElementById('assetDisplay').innerText = userCurrentBalance.toLocaleString('en-US',{minimumFractionDigits:2});
                     document.getElementById('minerDisplay').innerText = `${totalActiveCoresCount} Nodes`;
                     document.getElementById('lblHeaderUsername').innerText = userCustomUsernameToken;
+                    document.getElementById('aviatorWalletBalanceLbl').innerText = userCurrentBalance.toLocaleString('en-US',{minimumFractionDigits:2});
                     
                     if(userProfilePicBase64) {
                         document.getElementById('userAvatarImage').src = userProfilePicBase64;
@@ -898,6 +974,121 @@
                     executeProfessionalLazyYieldSync(currentUserId, d);
                 }
             });
+        }
+
+        /* AVIATOR GAME MECHANICS & HIGH-RISK HOUSE EDGE */
+        window.setAviatorBetMultiplier = function(factor) {
+            let current = parseFloat(document.getElementById('aviatorBetAmountInput').value) || 16;
+            document.getElementById('aviatorBetAmountInput').value = Math.min(50000, current * factor);
+        }
+
+        window.setMaxAviatorBet = function() {
+            document.getElementById('aviatorBetAmountInput').value = Math.min(50000, userCurrentBalance);
+        }
+
+        function calculateAviatorCrashPoint() {
+            let randomRoll = Math.random();
+            // High Risk House Edge: 65% probability of early crash between 1.00x and 1.35x
+            if (randomRoll < 0.65) {
+                return parseFloat((1.00 + Math.random() * 0.35).toFixed(2));
+            } else if (randomRoll < 0.90) {
+                return parseFloat((1.36 + Math.random() * 2.14).toFixed(2));
+            } else if (randomRoll < 0.98) {
+                return parseFloat((3.51 + Math.random() * 6.50).toFixed(2));
+            } else {
+                return parseFloat((10.00 + Math.random() * 40.00).toFixed(2));
+            }
+        }
+
+        window.handleAviatorBetAction = function() {
+            let betInput = parseFloat(document.getElementById('aviatorBetAmountInput').value);
+            
+            if (isNaN(betInput) || betInput < 16 || betInput > 50000) {
+                triggerToastDisplay("Minimum bet is Rs. 16 and Maximum is Rs. 50,000.");
+                return;
+            }
+
+            if (betInput > userCurrentBalance) {
+                document.getElementById('aviatorTopUpPromptBox').style.display = 'block';
+                triggerToastDisplay("Insufficient balance! Please top up.");
+                return;
+            }
+
+            if (!aviatorGameActiveState && !aviatorUserHasPlacedBet) {
+                aviatorActiveBetAmount = betInput;
+                db.collection("users").doc(currentUserId).update({
+                    balance: userCurrentBalance - betInput
+                }).then(() => {
+                    aviatorUserHasPlacedBet = true;
+                    document.getElementById('aviatorActionBtn').innerText = "CASHOUT NOW";
+                    document.getElementById('aviatorActionBtn').style.background = "linear-gradient(135deg, #10b981, #059669)";
+                    triggerToastDisplay(`Bet of Rs. ${betInput} placed successfully!`);
+                });
+            } else if (aviatorGameActiveState && aviatorUserHasPlacedBet) {
+                let winnings = aviatorActiveBetAmount * aviatorCurrentRoundMultiplier;
+                db.collection("users").doc(currentUserId).update({
+                    balance: userCurrentBalance + winnings
+                }).then(() => {
+                    triggerToastDisplay(`Cashed out successfully! Won Rs. ${winnings.toFixed(2)}`);
+                    aviatorUserHasPlacedBet = false;
+                    document.getElementById('aviatorActionBtn').innerText = "WAIT FOR NEXT ROUND";
+                    document.getElementById('aviatorActionBtn').disabled = true;
+                });
+            }
+        }
+
+        function startAviatorGameLoop() {
+            setInterval(() => {
+                if (!aviatorGameActiveState) {
+                    document.getElementById('aviatorStatusText').innerText = "Next round starting in 3 seconds...";
+                    document.getElementById('aviatorMultiplierDisplay').innerText = "1.00x";
+                    document.getElementById('aviatorPlaneIcon').style.display = 'none';
+                    
+                    setTimeout(() => {
+                        aviatorGameActiveState = true;
+                        aviatorCrashTargetMultiplier = calculateAviatorCrashPoint();
+                        aviatorCurrentRoundMultiplier = 1.00;
+                        
+                        if (!aviatorUserHasPlacedBet) {
+                            let currentVal = document.getElementById('aviatorBetAmountInput').value || 100;
+                            document.getElementById('aviatorActionBtn').innerText = `PLACE BET (Rs. ${currentVal})`;
+                            document.getElementById('aviatorActionBtn').style.background = "linear-gradient(135deg, #ff416c, #ff4b2b)";
+                            document.getElementById('aviatorActionBtn').disabled = false;
+                        }
+                        document.getElementById('aviatorTopUpPromptBox').style.display = 'none';
+                        document.getElementById('aviatorPlaneIcon').style.display = 'block';
+
+                        let flightInterval = setInterval(() => {
+                            if (!aviatorGameActiveState) {
+                                clearInterval(flightInterval);
+                                return;
+                            }
+
+                            aviatorCurrentRoundMultiplier += 0.02 + (aviatorCurrentRoundMultiplier * 0.03);
+                            document.getElementById('aviatorMultiplierDisplay').innerText = aviatorCurrentRoundMultiplier.toFixed(2) + "x";
+
+                            if (aviatorCurrentRoundMultiplier >= aviatorCrashTargetMultiplier) {
+                                aviatorGameActiveState = false;
+                                clearInterval(flightInterval);
+                                document.getElementById('aviatorStatusText').innerText = `CRASHED @ ${aviatorCrashTargetMultiplier.toFixed(2)}x`;
+                                document.getElementById('aviatorMultiplierDisplay').style.color = "#ef4444";
+                                
+                                if (aviatorUserHasPlacedBet) {
+                                    triggerToastDisplay("Plane crashed! You lost your bet.");
+                                    aviatorUserHasPlacedBet = false;
+                                }
+
+                                document.getElementById('aviatorActionBtn').innerText = "WAITING...";
+                                document.getElementById('aviatorActionBtn').disabled = true;
+
+                                setTimeout(() => {
+                                    document.getElementById('aviatorMultiplierDisplay').style.color = "white";
+                                }, 2000);
+                            }
+                        }, 150);
+                    }, 3000);
+                }
+            }, 8000);
         }
 
         /* LIVE MINING / STAKING SIMULATOR COUNTER */
@@ -960,7 +1151,7 @@
                         });
 
                         operationalBatch.commit().then(() => {
-                            triggerToastDisplay(`+Rs. ${globalCalculatedProfitToken} Daily Mining Profit Credited!`);
+                            triggerToastDisplay(`+Rs. ${globalCalculatedProfitToken} Daily Mining Profit Credited! sweetie`);
                         });
                     }
                 });
@@ -968,7 +1159,7 @@
         }
 
         window.leaseHardwareNode = function(name, price, dailyProfitValue) {
-            if(userCurrentBalance < price) { triggerToastDisplay("Insufficient balance for this node."); return; }
+            if(userCurrentBalance < price) { triggerToastDisplay("Insufficient balance for this node, sweetie."); return; }
             
             const operationalBatch = db.batch();
             const userRef = db.collection("users").doc(currentUserId);
@@ -995,7 +1186,6 @@
 
         /* UNLIMITED MULTI-TIER REFERRAL LEVEL SYSTEM LOGIC */
         function calculateMultiTierNetworkHierarchy(userUsername) {
-            // Tier 1 Direct
             db.collection("users").where("referredBy", "==", userUsername).onSnapshot(snapLevel1 => {
                 let directCount = snapLevel1.size;
                 let activeDepositorsCount = 0;
@@ -1020,14 +1210,12 @@
             });
         }
 
-        /* MULTI-TIER REWARD AUTO-DISTRIBUTION ON APPROVED DEPOSITS */
         function processMultiTierReferralBonus(depositUserId, depositAmount) {
             db.collection("users").doc(depositUserId).get().then(userDoc => {
                 if(!userDoc.exists) return;
                 let level1Referrer = userDoc.data().referredBy;
                 if(!level1Referrer || level1Referrer === "none") return;
 
-                // Tier 1 Reward (10%)
                 db.collection("users").where("username", "==", level1Referrer).get().then(snapL1 => {
                     if(snapL1.empty) return;
                     let docL1 = snapL1.docs[0];
@@ -1044,7 +1232,6 @@
                         gatewayChannel: `Tier 1 Commission (${userDoc.data().username})`, status: "approved", timestamp: firebase.firestore.FieldValue.serverTimestamp()
                     });
 
-                    // Tier 2 Search
                     let level2Referrer = docL1.data().referredBy;
                     if(!level2Referrer || level2Referrer === "none") return;
 
@@ -1064,7 +1251,6 @@
                             gatewayChannel: `Tier 2 Commission`, status: "approved", timestamp: firebase.firestore.FieldValue.serverTimestamp()
                         });
 
-                        // Tier 3 Search
                         let level3Referrer = docL2.data().referredBy;
                         if(!level3Referrer || level3Referrer === "none") return;
 
@@ -1498,19 +1684,6 @@
                 const btn = document.getElementById('adminTab' + sec.charAt(0).toUpperCase() + sec.slice(1));
                 if(btn) btn.classList.toggle('active', sec === viewName);
             });
-
-            const labels = {
-                'tracker': 'Live Online',
-                'deposits': 'Transactions',
-                'users': 'Users',
-                'nodes': 'Nodes Manager',
-                'payments': 'Payment Setup',
-                'broadcast': 'Broadcast',
-                'analytics': 'Reports'
-            };
-            
-            const labelEl = document.getElementById('currentAdminActiveFeatureLabel');
-            if(labelEl) labelEl.innerText = `Active: ${labels[viewName] || viewName}`;
         };
 
         function loadAdminLiveTracker() {
@@ -1680,7 +1853,6 @@
             });
         }
 
-        /* ADMIN NODE DYNAMIC CONFIGURATOR (Add / Edit Normal, Special, Offers) */
         window.saveNodeConfigOverride = function() {
             const category = document.getElementById('editNodeCategory').value;
             const nodeNameId = document.getElementById('editNodeName').value.trim();
@@ -1757,7 +1929,6 @@
                             leaseBtn.setAttribute('onclick', `leaseHardwareNode('${nodeId}', ${data.cost}, ${data.dailyYield})`);
                         }
                     } else {
-                        // Dynamically append new node if created by admin
                         let targetGridId = data.category === 'special' ? 'gridSpecial' : (data.category === 'offer' ? 'gridOffers' : 'gridNormal');
                         let borderClass = data.category === 'special' ? 'special-border' : (data.category === 'offer' ? 'offer-border' : '');
                         let btnStyle = data.category === 'special' ? 'background: linear-gradient(135deg, #eab308, #ca8a04);' : (data.category === 'offer' ? 'background: linear-gradient(135deg, #a855f7, #7c3aed);' : '');
@@ -1780,7 +1951,6 @@
             });
         }
 
-        /* DYNAMIC PAYMENT METHOD ADMIN UPDATE */
         window.loadSelectedPaymentDetailsAdmin = function() {
             let key = document.getElementById('adminPaymentSelect').value;
             let conf = paymentGatewayMerchantConfig[key] || { title: "", number: "" };
@@ -1802,7 +1972,6 @@
             });
         }
 
-        /* EXPORT DATA TO CSV / EXCEL */
         window.exportUserDataCSV = function() {
             db.collection("users").get().then(snap => {
                 let csvContent = "data:text/csv;charset=utf-8,UID,Username,Email,Balance,Miners,ReferredBy\n";
