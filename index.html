@@ -472,11 +472,11 @@
     <div id="pageAviator" class="app-view-page">
         <div class="stats-dashboard" style="background: linear-gradient(135deg, rgba(255,65,108,0.08), rgba(4,8,20,0.4)); border-color: rgba(255,65,108,0.2);">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                <h3 style="color:#ff416c; font-size:16px;"><i class="fa-solid fa-plane-departure"></i> Aviator Crash Game</h3>
-                <span style="font-size:11px; background:rgba(255,65,108,0.15); color:#ff416c; padding:3px 10px; border-radius:20px; font-weight:700;">Live Real-Money</span>
+                <h3 style="color:#ff416c; font-size:16px;"><i class="fa-solid fa-plane-departure"></i> Aviator Pro Crash</h3>
+                <span style="font-size:11px; background:rgba(255,65,108,0.15); color:#ff416c; padding:3px 10px; border-radius:20px; font-weight:700;">Live Multiplier</span>
             </div>
 
-            <!-- Recent Multipliers Ticker Bar -->
+            <!-- Recent Multipliers History Ticker Bar -->
             <div id="aviatorMultiplierTickerBar" style="display:flex; gap:6px; overflow-x:auto; padding-bottom:6px; margin-bottom:12px;">
                 <span style="background:rgba(56,189,248,0.1); color:#38bdf8; padding:3px 8px; border-radius:6px; font-size:11px; font-weight:700;">1.25x</span>
                 <span style="background:rgba(16,185,129,0.1); color:#10b981; padding:3px 8px; border-radius:6px; font-size:11px; font-weight:700;">3.40x</span>
@@ -484,42 +484,80 @@
                 <span style="background:rgba(168,85,247,0.1); color:#a855f7; padding:3px 8px; border-radius:6px; font-size:11px; font-weight:700;">12.50x</span>
             </div>
 
-            <!-- Canvas / Flight Animation Screen -->
-            <div style="position:relative; width:100%; height:220px; background:#02050b; border-radius:18px; border:1px solid rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center; overflow:hidden;">
+            <!-- Canvas / Flight Animation Screen with Dynamic Curve -->
+            <div style="position:relative; width:100%; height:230px; background:#02050b; border-radius:18px; border:1px solid rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center; overflow:hidden;">
+                <!-- SVG Flight Curve Line -->
+                <svg style="position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;" preserveAspectRatio="none">
+                    <path id="aviatorFlightCurvePath" d="M 0,230 Q 150,200 350,50" fill="none" stroke="rgba(255,65,108,0.4)" stroke-width="3" />
+                </svg>
+
                 <div id="aviatorCanvasOverlay" style="text-align:center; z-index:2;">
-                    <h1 id="aviatorMultiplierDisplay" style="font-size:42px; font-weight:800; color:white; text-shadow:0 0 20px rgba(255,65,108,0.5);">1.00x</h1>
+                    <h1 id="aviatorMultiplierDisplay" style="font-size:44px; font-weight:800; color:white; text-shadow:0 0 20px rgba(255,65,108,0.5);">1.00x</h1>
                     <p id="aviatorStatusText" style="font-size:12px; color:#94a3b8; margin-top:4px;">Waiting for next round...</p>
                 </div>
-                <i id="aviatorPlaneIcon" class="fa-solid fa-plane" style="position:absolute; bottom:20px; left:20px; font-size:24px; color:#ff416c; transition:all 0.1s linear; display:none;"></i>
+                <i id="aviatorPlaneIcon" class="fa-solid fa-plane" style="position:absolute; bottom:30px; left:30px; font-size:26px; color:#ff416c; transition:all 0.1s linear; display:none; filter: drop-shadow(0 0 8px #ff416c);"></i>
             </div>
 
-            <!-- Betting Controls Panel -->
-            <div style="margin-top:16px; display:flex; flex-direction:column; gap:10px;">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <span style="font-size:11px; color:#94a3b8;">Bet Amount (Min: Rs. 16 | Max: Rs. 50,000)</span>
-                    <span style="font-size:11px; color:#38bdf8;">Balance: Rs. <span id="aviatorWalletBalanceLbl">0.00</span></span>
+            <!-- Wallet Balance Quick View -->
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px; font-size:12px;">
+                <span style="color:#94a3b8;">Min Bet: Rs. 16 | Max: Rs. 50,000</span>
+                <span style="color:#38bdf8; font-weight:700;">Balance: Rs. <span id="aviatorWalletBalanceLbl">0.00</span></span>
+            </div>
+
+            <!-- DUAL BETTING PANELS (Bet Panel 1 & Bet Panel 2) -->
+            <div style="display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 10px;">
+                
+                <!-- Panel 1 -->
+                <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); padding: 12px; border-radius: 16px;">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                        <span style="font-size:11px; color:#38bdf8; font-weight:700;">Bet Panel 1</span>
+                        <label style="font-size:10px; color:#94a3b8; display:flex; align-items:center; gap:4px;">
+                            <input type="checkbox" id="autoCashoutToggle1" style="accent-color:#ff416c;"> Auto Cashout
+                        </label>
+                    </div>
+
+                    <div style="display:flex; gap:8px; margin-bottom:8px;">
+                        <input type="number" id="aviatorBetAmountInput" class="modal-input" placeholder="Bet (Rs. 16+)" style="margin-top:0; flex:1;" value="100">
+                        <input type="number" id="autoCashoutVal1" class="modal-input" placeholder="2.00x" style="margin-top:0; width:75px;" value="2.00">
+                    </div>
+
+                    <div style="display:flex; gap:6px; margin-bottom:8px;">
+                        <button class="plan-tab-trigger" onclick="setAviatorBetMultiplier(2)" style="padding:6px; font-size:10px; flex:1;">2x</button>
+                        <button class="plan-tab-trigger" onclick="setAviatorBetMultiplier(5)" style="padding:10px; font-size:10px; flex:1;">5x</button>
+                        <button class="plan-tab-trigger" onclick="setMaxAviatorBet()" style="padding:10px; font-size:10px; flex:1;">Max</button>
+                    </div>
+
+                    <button id="aviatorActionBtn" class="buy-plan-btn" onclick="handleAviatorBetAction()" style="width:100%; padding:12px; background:linear-gradient(135deg, #ff416c, #ff4b2b); font-size:13px; font-weight:800; letter-spacing:1px;">PLACE BET (Rs. 100)</button>
                 </div>
 
-                <div style="display:flex; gap:8px;">
-                    <input type="number" id="aviatorBetAmountInput" class="modal-input" placeholder="Enter Bet (Rs. 16+)" style="margin-top:0; flex:1;" value="100">
-                    <button class="plan-tab-trigger" onclick="setAviatorBetMultiplier(2)" style="padding:10px;">2x</button>
-                    <button class="plan-tab-trigger" onclick="setAviatorBetMultiplier(5)" style="padding:10px;">5x</button>
-                    <button class="plan-tab-trigger" onclick="setMaxAviatorBet()" style="padding:10px;">Max</button>
+                <!-- Panel 2 (Extra Advanced Bet Box) -->
+                <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); padding: 12px; border-radius: 16px;">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                        <span style="font-size:11px; color:#a855f7; font-weight:700;">Bet Panel 2</span>
+                        <label style="font-size:10px; color:#94a3b8; display:flex; align-items:center; gap:4px;">
+                            <input type="checkbox" id="autoCashoutToggle2" style="accent-color:#a855f7;"> Auto Cashout
+                        </label>
+                    </div>
+
+                    <div style="display:flex; gap:8px; margin-bottom:8px;">
+                        <input type="number" id="aviatorBetAmountInput2" class="modal-input" placeholder="Bet (Rs. 16+)" style="margin-top:0; flex:1;" value="200">
+                        <input type="number" id="autoCashoutVal2" class="modal-input" placeholder="3.00x" style="margin-top:0; width:75px;" value="3.00">
+                    </div>
+
+                    <button id="aviatorActionBtn2" class="buy-plan-btn" onclick="handleAviatorBetAction2()" style="width:100%; padding:12px; background:linear-gradient(135deg, #a855f7, #7c3aed); font-size:13px; font-weight:800; letter-spacing:1px;">PLACE BET 2 (Rs. 200)</button>
                 </div>
 
-                <!-- Action / Cashout Button -->
-                <button id="aviatorActionBtn" class="buy-plan-btn" onclick="handleAviatorBetAction()" style="width:100%; padding:14px; background:linear-gradient(135deg, #ff416c, #ff4b2b); font-size:14px; font-weight:800; letter-spacing:1px;">PLACE BET (Rs. 100)</button>
+            </div>
 
-                <!-- Top Up Balance Prompt Container (Shown if balance is insufficient or below Rs. 16) -->
-                <div id="aviatorTopUpPromptBox" style="display:none; background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.3); padding:10px; border-radius:12px; text-align:center; margin-top:6px;">
-                    <p style="font-size:11px; color:#ef4444; font-weight:700;">Insufficient balance or below minimum Rs. 16 limit!</p>
-                    <button class="buy-plan-btn" onclick="openDepositModal()" style="margin-top:6px; padding:8px 16px; background:#10b981; font-size:11px;">Top Up Balance Now</button>
-                </div>
+            <!-- Top Up Balance Prompt Container -->
+            <div id="aviatorTopUpPromptBox" style="display:none; background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.3); padding:10px; border-radius:12px; text-align:center; margin-top:10px;">
+                <p style="font-size:11px; color:#ef4444; font-weight:700;">Insufficient balance or below minimum Rs. 16 limit!</p>
+                <button class="buy-plan-btn" onclick="openDepositModal()" style="margin-top:6px; padding:8px 16px; background:#10b981; font-size:11px;">Top Up Balance Now</button>
             </div>
         </div>
 
         <!-- Live Multiplayer Bets Feed -->
-        <div class="section-title" style="margin-left:0;"><i class="fa-solid fa-users"></i> Live Players Bets</div>
+        <div class="section-title" style="margin-left:0;"><i class="fa-solid fa-users"></i> Live Multiplayer Bets Feed</div>
         <div id="aviatorLivePlayersFeed" style="display:flex; flex-direction:column; gap:6px; margin-bottom:30px;">
             <div class="history-card" style="margin-left:0; padding:10px;">
                 <span style="font-size:12px; color:#38bdf8;">CryptoKing99</span>
@@ -530,6 +568,11 @@
                 <span style="font-size:12px; color:#38bdf8;">AstoreTrader</span>
                 <span style="font-size:12px; color:white;">Bet: Rs. 500</span>
                 <span style="font-size:12px; color:#ef4444;">Crashed @ 1.12x</span>
+            </div>
+            <div class="history-card" style="margin-left:0; padding:10px;">
+                <span style="font-size:12px; color:#38bdf8;">GilgitMiner</span>
+                <span style="font-size:12px; color:white;">Bet: Rs. 2,000</span>
+                <span style="font-size:12px; color:#10b981;">Cashout @ 5.80x</span>
             </div>
         </div>
     </div>
