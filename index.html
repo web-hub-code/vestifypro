@@ -2,25 +2,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="googled6b6ebdecbbc4a08" />
     
-    <!-- Title Tag -->
     <title>Vestify Pro - Cloud Mining & Aviator Casino Platform</title>
 
-    <!-- SEO Meta Tags -->
     <meta name="description" content="Vestify Pro is a secure cloud mining, Aviator crash gaming, and referral network platform. Earn daily crypto yields, track investments, and play safely.">
     <meta name="keywords" content="Vestify Pro, Crypto Mining, Aviator Game, Cloud Mining, Daily Yield, Crypto Dashboard, Affiliate Rewards">
     <meta name="robots" content="index, follow">
 
-    <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="manifest" href="manifest.json">
 
-    <!-- Firebase Scripts -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-functions-compat.js"></script>
 
     <script>
       if ('serviceWorker' in navigator) {
@@ -88,9 +84,8 @@
         .plan-details p { font-size: 11px; color: #94a3b8; margin-top: 3px; line-height: 1.4; }
         .plan-details span { color: #10b981; font-weight: 700; }
         
-        .buy-plan-btn { padding: 9px 18px; background: linear-gradient(135deg, #ff416c, #ff4b2b); border: none; border-radius: 12px; color: white; font-weight: 700; font-size: 12px; cursor: pointer; box-shadow: 0 4px 12px rgba(255,65,108,0.3); transition: all 0.2s; }
+        .buy-plan-btn { padding: 9px 18px; background: linear-gradient(135deg, #ff416c, #ff4b2b); border: none; border-radius: 12px; color: white; font-weight: 700; font-size: 12px; cursor: pointer; box-shadow: 0 4px 12px rgba(255,65,108,0.3); }
         .buy-plan-btn:active { transform: scale(0.95); }
-        .buy-plan-btn:disabled { opacity: 0.55; cursor: not-allowed; }
 
         .app-view-page { display: none; padding: 0 16px; }
         .app-view-page.active-page { display: block; }
@@ -129,7 +124,7 @@
         .task-card .task-info { display: flex; align-items: center; gap: 12px; }
         .task-card .task-icon { width: 38px; height: 38px; border-radius: 10px; background: rgba(56,189,248,0.1); color: #38bdf8; display: flex; align-items: center; justify-content: center; font-size: 16px; }
 
-        /* AVIATOR PRO UPGRADED STYLES */
+        /* AVIATOR STYLES */
         .aviator-wrap { margin: 16px 0; display: flex; flex-direction: column; gap: 14px; }
         .aviator-topbar { background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 18px; padding: 12px 14px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; }
         .aviator-status-pill { font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 20px; letter-spacing: 0.5px; display: inline-flex; align-items: center; gap: 6px; }
@@ -173,7 +168,6 @@
 
     <div id="rewardToast" class="reward-toast">Notification Message</div>
 
-    <!-- Hidden File Input for Profile Picture Upload -->
     <input type="file" id="profileImageFileInput" accept="image/*" style="display:none;" onchange="handleProfileImageSelect(event)">
 
     <!-- AUTHENTICATION SCREEN -->
@@ -485,16 +479,13 @@
         </div>
     </div>
 
-    <!-- PAGE 2: UPGRADED AVIATOR PRO CRASH GAME MODULE -->
+    <!-- PAGE 2: AVIATOR PRO CRASH GAME MODULE (CLIENT-SIDE / FREE TIER) -->
     <div id="pageAviator" class="app-view-page">
         <div class="aviator-wrap">
-
-            <!-- Disconnection Banner -->
             <div id="aviatorOfflineWarning" style="display:none; background:rgba(239,68,68,0.18); border:1px solid #ef4444; color:#fecaca; padding:10px 14px; border-radius:14px; font-size:12px; font-weight:700; text-align:center;">
-                <i class="fa-solid fa-wifi"></i> Internet connection lost. Reconnecting to live round server...
+                <i class="fa-solid fa-wifi"></i> Internet connection lost. Reconnecting to local game loop...
             </div>
 
-            <!-- Top Status & Utility Bar -->
             <div class="aviator-topbar">
                 <div style="display:flex; align-items:center; gap:8px;">
                     <h3 style="color:#ff416c; font-size:15px; font-weight:800;"><i class="fa-solid fa-plane-departure"></i> AVIATOR PRO</h3>
@@ -502,31 +493,23 @@
                 </div>
                 <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
                     <span style="font-size:11px; color:#94a3b8; font-weight:700;" id="aviatorRoundIdLabel">Round: --</span>
-                    <span style="font-size:11px; color:#10b981; font-weight:700;"><i class="fa-solid fa-users"></i> <span id="aviatorLivePlayerCount">0</span></span>
+                    <span style="font-size:11px; color:#10b981; font-weight:700;"><i class="fa-solid fa-users"></i> <span id="aviatorLivePlayerCount">1</span></span>
                     <button class="aviator-icon-btn" id="aviatorSoundToggleBtn" onclick="toggleAviatorSound()" title="Toggle Sound">
                         <i id="aviatorSoundIcon" class="fa-solid fa-volume-high"></i>
                     </button>
-                    <button class="aviator-icon-btn" onclick="openAviatorFairnessModal()" title="Provably Fair & Verification">
-                        <i class="fa-solid fa-shield-check" style="color:#10b981;"></i> Fair
-                    </button>
-                    <button class="aviator-icon-btn" onclick="openAviatorLimitsModal()" title="Responsible Gaming Limits">
-                        <i class="fa-solid fa-sliders" style="color:#eab308;"></i> Limits
-                    </button>
                 </div>
             </div>
 
-            <!-- Recent Crash Multiplier History Strip -->
             <div style="background:rgba(15,23,42,0.65); border:1px solid rgba(255,255,255,0.06); border-radius:14px; padding:8px 10px;">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-                    <span style="font-size:10px; color:#94a3b8; font-weight:800; letter-spacing:0.5px;">RECENT CRASH RESULTS (CLICK TO VERIFY)</span>
+                    <span style="font-size:10px; color:#94a3b8; font-weight:800; letter-spacing:0.5px;">RECENT CRASH RESULTS</span>
                     <span style="font-size:10px; color:#38bdf8; font-weight:700;">Session: <span id="aviatorSessionTimer">00:00</span></span>
                 </div>
                 <div id="aviatorMultiplierTickerBar" style="display:flex; gap:6px; overflow-x:auto; padding-bottom:2px;">
-                    <span class="aviator-pill aviator-pill-low">Loading...</span>
+                    <span class="aviator-pill aviator-pill-low">1.50x</span>
                 </div>
             </div>
 
-            <!-- Main Flight Canvas Stage -->
             <div class="aviator-stage" id="aviatorStageBox">
                 <div class="aviator-grid-bg"></div>
                 <svg id="aviatorFlightSvg" style="position:absolute; inset:0; width:100%; height:100%; pointer-events:none;" viewBox="0 0 400 250" preserveAspectRatio="none">
@@ -540,7 +523,6 @@
                     <path id="aviatorFlightCurvePath" d="" fill="none" stroke="#ff416c" stroke-width="3.5" stroke-linecap="round" />
                 </svg>
 
-                <!-- Center Multiplier & Countdown Display -->
                 <div id="aviatorCanvasOverlay" style="position:relative; z-index:3; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:12px;">
                     <div id="aviatorSubBannerText" style="font-size:11px; font-weight:800; letter-spacing:1px; color:#38bdf8; text-transform:uppercase; margin-bottom:4px;">NEXT ROUND IN</div>
                     <h1 id="aviatorMultiplierDisplay" style="font-size:50px; font-weight:800; color:#ffffff; line-height:1; text-shadow:0 0 28px rgba(255,65,108,0.6);">15.0s</h1>
@@ -550,13 +532,11 @@
                     </div>
                 </div>
 
-                <!-- Animated Plane -->
                 <div id="aviatorPlaneIcon" style="position:absolute; bottom:24px; left:24px; z-index:4; display:none; transition: left 0.08s linear, bottom 0.08s linear;">
                     <i class="fa-solid fa-jet-fighter-up" style="font-size:30px; color:#ff416c; filter: drop-shadow(0 0 12px #ff416c); transform: rotate(45deg);"></i>
                 </div>
             </div>
 
-            <!-- Wallet & Live Round Telemetry Strip -->
             <div style="background:rgba(15,23,42,0.75); border:1px solid rgba(255,255,255,0.07); border-radius:16px; padding:10px 14px; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:8px; font-size:12px;">
                 <div>
                     <span style="color:#94a3b8;">Wallet Balance:</span>
@@ -568,15 +548,12 @@
                 </div>
             </div>
 
-            <!-- Top Up Prompt -->
             <div id="aviatorTopUpPromptBox" style="display:none; background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.35); padding:10px 14px; border-radius:14px; text-align:center;">
                 <p style="font-size:11px; color:#fca5a5; font-weight:700;">Insufficient PKR wallet balance for this bet amount.</p>
                 <button class="buy-plan-btn" onclick="openDepositModal()" style="margin-top:6px; padding:7px 16px; background:#10b981; font-size:11px;">Deposit PKR Funds</button>
             </div>
 
-            <!-- DUAL INDEPENDENT BETTING PANELS -->
             <div class="aviator-panels-grid">
-
                 <!-- PANEL 1 -->
                 <div class="aviator-bet-card" id="aviatorPanelCard1">
                     <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -594,38 +571,13 @@
                         <button class="aviator-chip-btn" onclick="setAviatorQuickBet(1, 250)">250</button>
                         <button class="aviator-chip-btn" onclick="setAviatorQuickBet(1, 500)">500</button>
                         <button class="aviator-chip-btn" onclick="setAviatorQuickBet(1, 1000)">1,000</button>
-                        <button class="aviator-chip-btn" onclick="setAviatorQuickBet(1, 2500)">2,500</button>
-                        <button class="aviator-chip-btn" onclick="setAviatorQuickBet(1, 5000)">5,000</button>
-                        <button class="aviator-chip-btn" onclick="adjustAviatorBet(1, 0.5)">1/2</button>
-                        <button class="aviator-chip-btn" onclick="adjustAviatorBet(1, 2)">2x</button>
                     </div>
 
-                    <!-- Auto Bet & Auto Cashout Controls -->
-                    <div style="background:rgba(0,0,0,0.28); border:1px solid rgba(255,255,255,0.05); border-radius:12px; padding:8px 10px; display:flex; flex-direction:column; gap:6px; font-size:11px;">
-                        <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <label style="display:flex; align-items:center; gap:6px; color:#cbd5e1; cursor:pointer; font-weight:600;">
-                                <input type="checkbox" id="autoBetToggle1" onchange="toggleAutoBetPanel(1)" style="accent-color:#38bdf8;"> Auto Bet
-                            </label>
-                            <span id="autoBetStatus1" style="font-size:10px; color:#64748b; font-weight:700;">OFF</span>
-                        </div>
-                        <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
-                            <label style="display:flex; align-items:center; gap:6px; color:#cbd5e1; cursor:pointer; font-weight:600;">
-                                <input type="checkbox" id="autoCashoutToggle1" onchange="refreshAviatorPanelPreviews(1)" style="accent-color:#10b981;"> Auto Cashout
-                            </label>
-                            <div style="display:flex; align-items:center; gap:4px;">
-                                <input type="number" id="autoCashoutVal1" step="0.1" min="1.01" max="1000" value="2.00" oninput="refreshAviatorPanelPreviews(1)" class="modal-input" style="margin-top:0; width:74px; padding:5px 8px; font-size:11px; text-align:right;">
-                                <span style="color:#94a3b8; font-weight:700;">x</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Potential Winnings & Live Profit Telemetry -->
                     <div style="display:flex; justify-content:space-between; font-size:11px; color:#94a3b8; padding:0 2px;">
                         <span>Est. Payout: <b id="panel1EstPayout" style="color:#fff;">PKR 200.00</b></span>
                         <span>Live Profit: <b id="panel1LiveProfit" style="color:#10b981;">PKR 0.00</b></span>
                     </div>
 
-                    <!-- Primary Action Button -->
                     <button id="aviatorActionBtn" class="buy-plan-btn" onclick="handleAviatorPanelAction(1)" style="width:100%; padding:13px; background:linear-gradient(135deg, #ff416c, #ff4b2b); font-size:13px; font-weight:800; letter-spacing:0.6px;">
                         PLACE BET (PKR 100)
                     </button>
@@ -648,93 +600,55 @@
                         <button class="aviator-chip-btn" onclick="setAviatorQuickBet(2, 250)">250</button>
                         <button class="aviator-chip-btn" onclick="setAviatorQuickBet(2, 500)">500</button>
                         <button class="aviator-chip-btn" onclick="setAviatorQuickBet(2, 1000)">1,000</button>
-                        <button class="aviator-chip-btn" onclick="setAviatorQuickBet(2, 2500)">2,500</button>
-                        <button class="aviator-chip-btn" onclick="setAviatorQuickBet(2, 5000)">5,000</button>
-                        <button class="aviator-chip-btn" onclick="adjustAviatorBet(2, 0.5)">1/2</button>
-                        <button class="aviator-chip-btn" onclick="adjustAviatorBet(2, 2)">2x</button>
                     </div>
 
-                    <!-- Auto Bet & Auto Cashout Controls -->
-                    <div style="background:rgba(0,0,0,0.28); border:1px solid rgba(255,255,255,0.05); border-radius:12px; padding:8px 10px; display:flex; flex-direction:column; gap:6px; font-size:11px;">
-                        <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <label style="display:flex; align-items:center; gap:6px; color:#cbd5e1; cursor:pointer; font-weight:600;">
-                                <input type="checkbox" id="autoBetToggle2" onchange="toggleAutoBetPanel(2)" style="accent-color:#c084fc;"> Auto Bet
-                            </label>
-                            <span id="autoBetStatus2" style="font-size:10px; color:#64748b; font-weight:700;">OFF</span>
-                        </div>
-                        <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
-                            <label style="display:flex; align-items:center; gap:6px; color:#cbd5e1; cursor:pointer; font-weight:600;">
-                                <input type="checkbox" id="autoCashoutToggle2" onchange="refreshAviatorPanelPreviews(2)" style="accent-color:#10b981;"> Auto Cashout
-                            </label>
-                            <div style="display:flex; align-items:center; gap:4px;">
-                                <input type="number" id="autoCashoutVal2" step="0.1" min="1.01" max="1000" value="3.00" oninput="refreshAviatorPanelPreviews(2)" class="modal-input" style="margin-top:0; width:74px; padding:5px 8px; font-size:11px; text-align:right;">
-                                <span style="color:#94a3b8; font-weight:700;">x</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Potential Winnings & Live Profit Telemetry -->
                     <div style="display:flex; justify-content:space-between; font-size:11px; color:#94a3b8; padding:0 2px;">
                         <span>Est. Payout: <b id="panel2EstPayout" style="color:#fff;">PKR 600.00</b></span>
                         <span>Live Profit: <b id="panel2LiveProfit" style="color:#10b981;">PKR 0.00</b></span>
                     </div>
 
-                    <!-- Primary Action Button -->
                     <button id="aviatorActionBtn2" class="buy-plan-btn" onclick="handleAviatorPanelAction(2)" style="width:100%; padding:13px; background:linear-gradient(135deg, #a855f7, #7c3aed); font-size:13px; font-weight:800; letter-spacing:0.6px;">
                         PLACE BET 2 (PKR 200)
                     </button>
                 </div>
             </div>
 
-            <!-- Live Bets / Personal History / Stats Sub-Tabs -->
             <div class="aviator-subtabs">
-                <button class="aviator-subtab-btn active" id="avSubTabLive" onclick="switchAviatorSubTab('live')">Live Round Bets</button>
-                <button class="aviator-subtab-btn" id="avSubTabMyBets" onclick="switchAviatorSubTab('mybets')">My Bet History</button>
-                <button class="aviator-subtab-btn" id="avSubTabStats" onclick="switchAviatorSubTab('stats')">Game Stats</button>
+                <button class="aviator-subtab-btn active" id="avSubTabLive" onclick="switchAviatorSubTab('live')">Live Bets</button>
+                <button class="aviator-subtab-btn" id="avSubTabMyBets" onclick="switchAviatorSubTab('mybets')">My History</button>
+                <button class="aviator-subtab-btn" id="avSubTabStats" onclick="switchAviatorSubTab('stats')">Stats</button>
             </div>
 
-            <!-- 1. Live Round Bets Table (Real Firestore Data Only) -->
             <div id="avSectionLive" style="background:rgba(15,23,42,0.7); border:1px solid rgba(255,255,255,0.07); border-radius:18px; padding:12px;">
                 <div style="display:grid; grid-template-columns: 2fr 1.2fr 1fr 1.5fr; font-size:10px; font-weight:800; color:#94a3b8; padding-bottom:8px; border-bottom:1px solid rgba(255,255,255,0.06); text-align:center;">
                     <span style="text-align:left; padding-left:4px;">PLAYER</span>
                     <span>BET (PKR)</span>
                     <span>MULT.</span>
-                    <span>PAYOUT / STATUS</span>
+                    <span>STATUS</span>
                 </div>
                 <div id="aviatorLivePlayersFeed" style="display:flex; flex-direction:column; gap:6px; max-height:240px; overflow-y:auto; margin-top:8px;">
-                    <div style="color:#64748b; text-align:center; padding:12px; font-size:11px;">Waiting for round bets...</div>
+                    <div style="color:#64748b; text-align:center; padding:12px; font-size:11px;">No bets placed in this round yet.</div>
                 </div>
             </div>
 
-            <!-- 2. Personal Persistent Bet History -->
             <div id="avSectionMyBets" style="display:none; background:rgba(15,23,42,0.7); border:1px solid rgba(255,255,255,0.07); border-radius:18px; padding:12px;">
                 <div id="aviatorPersonalHistoryList" style="display:flex; flex-direction:column; gap:8px; max-height:300px; overflow-y:auto;">
-                    <div style="color:#64748b; text-align:center; padding:12px; font-size:11px;">Loading your persisted bet history...</div>
+                    <div style="color:#64748b; text-align:center; padding:12px; font-size:11px;">Loading bet history...</div>
                 </div>
             </div>
 
-            <!-- 3. Personal Game Statistics Dashboard -->
             <div id="avSectionStats" style="display:none; background:rgba(15,23,42,0.7); border:1px solid rgba(255,255,255,0.07); border-radius:18px; padding:14px;">
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
                     <div style="background:rgba(255,255,255,0.03); padding:12px; border-radius:14px;">
-                        <span style="font-size:10px; color:#94a3b8;">TOTAL ROUNDS PLAYED</span>
+                        <span style="font-size:10px; color:#94a3b8;">TOTAL ROUNDS</span>
                         <h4 id="statTotalRounds" style="font-size:18px; color:#fff; margin-top:3px;">0</h4>
                     </div>
                     <div style="background:rgba(255,255,255,0.03); padding:12px; border-radius:14px;">
-                        <span style="font-size:10px; color:#94a3b8;">BIGGEST WIN (PKR)</span>
+                        <span style="font-size:10px; color:#94a3b8;">BIGGEST WIN</span>
                         <h4 id="statBiggestWin" style="font-size:18px; color:#10b981; margin-top:3px;">PKR 0.00</h4>
-                    </div>
-                    <div style="background:rgba(255,255,255,0.03); padding:12px; border-radius:14px;">
-                        <span style="font-size:10px; color:#94a3b8;">BIGGEST MULTIPLIER</span>
-                        <h4 id="statBiggestMult" style="font-size:18px; color:#eab308; margin-top:3px;">0.00x</h4>
-                    </div>
-                    <div style="background:rgba(255,255,255,0.03); padding:12px; border-radius:14px;">
-                        <span style="font-size:10px; color:#94a3b8;">SESSION NET P/L</span>
-                        <h4 id="statSessionNetPL" style="font-size:18px; color:#38bdf8; margin-top:3px;">PKR 0.00</h4>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
     
@@ -918,50 +832,6 @@
         </div>
     </div>
 
-    <!-- MODAL 5: PROVABLY FAIR & ROUND VERIFICATION MODAL -->
-    <div id="aviatorFairnessModal" class="premium-modal">
-        <div class="modal-content" style="text-align:left;">
-            <div class="close-modal-btn" onclick="closeModal('aviatorFairnessModal')">&times;</div>
-            <h4 style="color:#10b981; margin-bottom:8px;"><i class="fa-solid fa-shield-check"></i> Provably Fair Verification</h4>
-            <p style="font-size:11px; color:#94a3b8; line-height:1.5; margin-bottom:10px;">
-                Every Aviator round outcome is generated on the server using <b>HMAC-SHA256(serverSeed, roundId)</b> with a disclosed <b>3.0% house edge</b>. The SHA-256 hash of the server seed is published before flight starts, and the raw seed is revealed after crash so you can verify independently using WebCrypto below.
-            </p>
-            <div style="background:rgba(0,0,0,0.35); padding:10px; border-radius:12px; font-size:11px; margin-bottom:10px;">
-                <div style="color:#64748b;">Current Round Seed Hash (Pre-Committed):</div>
-                <div id="fairCurrentHash" style="color:#38bdf8; word-break:break-all; font-family:monospace; font-size:10px; margin-top:2px;">--</div>
-            </div>
-            <label style="font-size:11px; color:#cbd5e1; font-weight:700;">Round ID to Verify</label>
-            <input type="text" id="verifyRoundIdInput" class="modal-input" placeholder="e.g. RND-1731450000000" style="margin-top:4px;">
-            <label style="font-size:11px; color:#cbd5e1; font-weight:700; display:block; margin-top:8px;">Revealed Server Seed (Hex)</label>
-            <input type="text" id="verifyServerSeedInput" class="modal-input" placeholder="Paste revealed serverSeed" style="margin-top:4px;">
-            <button class="buy-plan-btn" onclick="verifyAviatorRoundFairness()" style="width:100%; margin-top:12px; padding:11px; background:#10b981;">VERIFY CRYPTOGRAPHIC RESULT</button>
-            <div id="verifyFairnessOutput" style="margin-top:10px; font-size:11px; color:#e2e8f0; background:rgba(255,255,255,0.03); padding:10px; border-radius:10px; display:none;"></div>
-        </div>
-    </div>
-
-    <!-- MODAL 6: RESPONSIBLE GAMING & AUTOPLAY LIMITS MODAL -->
-    <div id="aviatorLimitsModal" class="premium-modal">
-        <div class="modal-content" style="text-align:left;">
-            <div class="close-modal-btn" onclick="closeModal('aviatorLimitsModal')">&times;</div>
-            <h4 style="color:#eab308; margin-bottom:8px;"><i class="fa-solid fa-sliders"></i> Autoplay & Responsible Limits</h4>
-            <p style="font-size:11px; color:#94a3b8; margin-bottom:10px;">Configure automatic stop conditions and daily/session risk caps.</p>
-
-            <label style="font-size:11px; color:#cbd5e1; font-weight:700;">Daily Betting Limit (PKR)</label>
-            <input type="number" id="limitDailyBetInput" class="modal-input" placeholder="e.g. 25000" style="margin-top:4px;">
-
-            <label style="font-size:11px; color:#cbd5e1; font-weight:700; display:block; margin-top:8px;">Session Loss Limit (PKR)</label>
-            <input type="number" id="limitSessionLossInput" class="modal-input" placeholder="e.g. 5000" style="margin-top:4px;">
-
-            <label style="font-size:11px; color:#cbd5e1; font-weight:700; display:block; margin-top:8px;">Auto-Bet Stop on Profit Target (PKR)</label>
-            <input type="number" id="limitAutoProfitStopInput" class="modal-input" placeholder="e.g. 3000" style="margin-top:4px;">
-
-            <label style="font-size:11px; color:#cbd5e1; font-weight:700; display:block; margin-top:8px;">Auto-Bet Max Consecutive Rounds</label>
-            <input type="number" id="limitAutoMaxRoundsInput" class="modal-input" placeholder="e.g. 20" style="margin-top:4px;">
-
-            <button class="buy-plan-btn" onclick="saveAviatorResponsibleLimits()" style="width:100%; margin-top:14px; padding:11px; background:linear-gradient(135deg, #eab308, #ca8a04); color:#040814;">SAVE GAMING LIMITS</button>
-        </div>
-    </div>
-
     <!-- WHATSAPP FLOATING BUTTON -->
     <div style="position: fixed; bottom: 85px; right: 20px; z-index: 9999;">
         <a href="https://chat.whatsapp.com/D6QqMvZFBqLE4Hu4MsYEL5?s=cl&p=a&mlu=4" target="_blank" style="text-decoration: none;">
@@ -988,7 +858,6 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
         const auth = firebase.auth();
-        const functions = firebase.functions();
 
         let currentUserId = null;
         let userCurrentBalance = 0.00;
@@ -1001,68 +870,36 @@
         let adminLogoTapCountTracker = 0;
         let cachedUserHistoryLogs = [];
 
+        let paymentGatewayMerchantConfig = {
+            "EasyPaisa": { number: "03379827882", title: "EasyPaisa Account" },
+            "JazzCash": { number: "03705519562", title: "JazzCash Account" },
+            "USDT": { number: "TRC20-Binance-Wallet-ID", title: "Binance USDT (TRC20)" }
+        };
+
         /* =========================================================================
-           UNIFIED SYNCHRONIZED AVIATOR PRO ENGINE (NO DUPLICATES)
+           CLIENT-SIDE FREE TIER AVIATOR ENGINE
            ========================================================================= */
         const aviatorState = {
-            roundId: null,
-            status: "BETTING", // BETTING | FLYING | CRASHED
-            bettingEndsAt: 0,
+            roundId: "RND-" + Date.now(),
+            status: "BETTING",
+            bettingEndsAt: Date.now() + 15000,
             flightStartedAt: null,
             currentMultiplier: 1.00,
-            serverSeedHash: "",
+            crashPoint: 2.00,
             soundEnabled: true,
             audioCtx: null,
             sessionStartTime: Date.now(),
             sessionWagered: 0,
             sessionNetPL: 0,
-            dailyWagered: 0,
-            limits: {
-                dailyBet: 50000,
-                sessionLoss: 25000,
-                autoProfitStop: 10000,
-                autoMaxRounds: 50
-            },
             panels: {
-                1: {
-                    activeBet: false,
-                    betAmount: 0,
-                    betId: null,
-                    autoBet: false,
-                    autoRoundsLeft: 0,
-                    autoCashoutTriggered: false,
-                    pendingRequest: false
-                },
-                2: {
-                    activeBet: false,
-                    betAmount: 0,
-                    betId: null,
-                    autoBet: false,
-                    autoRoundsLeft: 0,
-                    autoCashoutTriggered: false,
-                    pendingRequest: false
-                }
+                1: { activeBet: false, betAmount: 0 },
+                2: { activeBet: false, betAmount: 0 }
             },
-            unsubscribeRound: null,
-            unsubscribeLiveBets: null,
-            unsubscribeHistory: null,
-            unsubscribePersonal: null,
+            recentHistory: [1.45, 2.10, 1.12, 5.40, 1.85, 3.20],
+            personalBetsList: [],
             renderRaf: null,
-            tickTimer: null
+            loopInterval: null
         };
-
-        function loadSavedAviatorSettings() {
-            try {
-                const savedLimits = JSON.parse(localStorage.getItem("vestify_aviator_limits") || "null");
-                if (savedLimits) Object.assign(aviatorState.limits, savedLimits);
-                const todayKey = new Date().toISOString().slice(0, 10);
-                const dailyTrack = JSON.parse(localStorage.getItem("vestify_aviator_daily_" + todayKey) || "0");
-                aviatorState.dailyWagered = Number(dailyTrack) || 0;
-                const soundPref = localStorage.getItem("vestify_aviator_sound");
-                if (soundPref !== null) aviatorState.soundEnabled = soundPref === "true";
-                updateSoundIconUI();
-            } catch (e) {}
-        }
 
         function playAviatorTone(type) {
             if (!aviatorState.soundEnabled) return;
@@ -1079,7 +916,6 @@
 
                 const now = ctx.currentTime;
                 if (type === "bet") {
-                    osc.type = "sine";
                     osc.frequency.setValueAtTime(520, now);
                     osc.frequency.exponentialRampToValueAtTime(780, now + 0.12);
                     gain.gain.setValueAtTime(0.08, now);
@@ -1087,7 +923,6 @@
                     osc.start(now);
                     osc.stop(now + 0.15);
                 } else if (type === "takeoff") {
-                    osc.type = "triangle";
                     osc.frequency.setValueAtTime(220, now);
                     osc.frequency.exponentialRampToValueAtTime(620, now + 0.35);
                     gain.gain.setValueAtTime(0.09, now);
@@ -1095,16 +930,13 @@
                     osc.start(now);
                     osc.stop(now + 0.4);
                 } else if (type === "cashout") {
-                    osc.type = "sine";
                     osc.frequency.setValueAtTime(660, now);
                     osc.frequency.setValueAtTime(880, now + 0.09);
-                    osc.frequency.setValueAtTime(1120, now + 0.18);
                     gain.gain.setValueAtTime(0.11, now);
                     gain.gain.exponentialRampToValueAtTime(0.001, now + 0.32);
                     osc.start(now);
                     osc.stop(now + 0.34);
                 } else if (type === "crash") {
-                    osc.type = "sawtooth";
                     osc.frequency.setValueAtTime(190, now);
                     osc.frequency.exponentialRampToValueAtTime(55, now + 0.42);
                     gain.gain.setValueAtTime(0.12, now);
@@ -1117,18 +949,8 @@
 
         window.toggleAviatorSound = function() {
             aviatorState.soundEnabled = !aviatorState.soundEnabled;
-            localStorage.setItem("vestify_aviator_sound", String(aviatorState.soundEnabled));
-            updateSoundIconUI();
             triggerToastDisplay(aviatorState.soundEnabled ? "Aviator sound enabled" : "Aviator sound muted");
         };
-
-        function updateSoundIconUI() {
-            const icon = document.getElementById("aviatorSoundIcon");
-            if (icon) {
-                icon.className = aviatorState.soundEnabled ? "fa-solid fa-volume-high" : "fa-solid fa-volume-xmark";
-                icon.style.color = aviatorState.soundEnabled ? "#10b981" : "#ef4444";
-            }
-        }
 
         window.switchAviatorSubTab = function(tab) {
             const tabs = { live: ["avSubTabLive", "avSectionLive"], mybets: ["avSubTabMyBets", "avSectionMyBets"], stats: ["avSubTabStats", "avSectionStats"] };
@@ -1148,16 +970,6 @@
             }
         };
 
-        window.adjustAviatorBet = function(panel, factor) {
-            const input = document.getElementById(panel === 1 ? "aviatorBetAmountInput" : "aviatorBetAmountInput2");
-            if (input) {
-                const cur = parseFloat(input.value) || 100;
-                const next = Math.round(cur * factor);
-                input.value = Math.min(50000, Math.max(16, next));
-                refreshAviatorPanelPreviews(panel);
-            }
-        };
-
         window.setAviatorMaxBet = function(panel) {
             const input = document.getElementById(panel === 1 ? "aviatorBetAmountInput" : "aviatorBetAmountInput2");
             if (input) {
@@ -1167,29 +979,11 @@
             }
         };
 
-        window.toggleAutoBetPanel = function(panel) {
-            const checked = document.getElementById(panel === 1 ? "autoBetToggle1" : "autoBetToggle2").checked;
-            const pState = aviatorState.panels[panel];
-            pState.autoBet = checked;
-            pState.autoRoundsLeft = checked ? aviatorState.limits.autoMaxRounds : 0;
-            const statusLbl = document.getElementById(panel === 1 ? "autoBetStatus1" : "autoBetStatus2");
-            if (statusLbl) {
-                statusLbl.innerText = checked ? `ON (${pState.autoRoundsLeft} rds)` : "OFF";
-                statusLbl.style.color = checked ? "#10b981" : "#64748b";
-            }
-            if (checked && aviatorState.status === "BETTING" && !pState.activeBet) {
-                handleAviatorPanelAction(panel);
-            }
-        };
-
         window.refreshAviatorPanelPreviews = function(panel) {
             const input = document.getElementById(panel === 1 ? "aviatorBetAmountInput" : "aviatorBetAmountInput2");
-            const autoChk = document.getElementById(panel === 1 ? "autoCashoutToggle1" : "autoCashoutToggle2");
-            const autoVal = document.getElementById(panel === 1 ? "autoCashoutVal1" : "autoCashoutVal2");
             const estEl = document.getElementById(panel === 1 ? "panel1EstPayout" : "panel2EstPayout");
             const amt = parseFloat(input && input.value) || 0;
-            const mult = (autoChk && autoChk.checked) ? (parseFloat(autoVal.value) || 2.0) : 2.0;
-            if (estEl) estEl.innerText = `PKR ${(amt * mult).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            if (estEl) estEl.innerText = `PKR ${(amt * 2.0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
             updateAviatorActionButtons();
         };
 
@@ -1204,12 +998,6 @@
                 const pState = aviatorState.panels[panel];
                 const inputVal = parseFloat(input && input.value) || (panel === 1 ? 100 : 200);
 
-                if (pState.pendingRequest) {
-                    btn.disabled = true;
-                    btn.innerText = "PROCESSING...";
-                    return;
-                }
-
                 if (aviatorState.status === "BETTING") {
                     if (pState.activeBet) {
                         btn.disabled = false;
@@ -1217,17 +1005,14 @@
                         btn.innerText = `CANCEL BET (PKR ${pState.betAmount.toLocaleString()})`;
                         tag.innerText = "BET ACCEPTED";
                         tag.style.color = "#10b981";
-                        if (profitEl) profitEl.innerText = "PKR 0.00";
                     } else {
                         btn.disabled = false;
-                        btn.style.background = panel === 1
-                            ? "linear-gradient(135deg, #ff416c, #ff4b2b)"
-                            : "linear-gradient(135deg, #a855f7, #7c3aed)";
+                        btn.style.background = panel === 1 ? "linear-gradient(135deg, #ff416c, #ff4b2b)" : "linear-gradient(135deg, #a855f7, #7c3aed)";
                         btn.innerText = `PLACE BET${panel === 2 ? " 2" : ""} (PKR ${inputVal.toLocaleString()})`;
                         tag.innerText = "BETTING OPEN";
                         tag.style.color = "#38bdf8";
-                        if (profitEl) profitEl.innerText = "PKR 0.00";
                     }
+                    if (profitEl) profitEl.innerText = "PKR 0.00";
                 } else if (aviatorState.status === "FLYING") {
                     if (pState.activeBet) {
                         const livePayout = pState.betAmount * aviatorState.currentMultiplier;
@@ -1241,15 +1026,15 @@
                     } else {
                         btn.disabled = true;
                         btn.style.background = "rgba(100, 116, 139, 0.35)";
-                        btn.innerText = "BETTING CLOSED — WAIT FOR NEXT ROUND";
-                        tag.innerText = "BETTING CLOSED";
+                        btn.innerText = "BETTING CLOSED";
+                        tag.innerText = "IN FLIGHT";
                         tag.style.color = "#eab308";
                         if (profitEl) profitEl.innerText = "PKR 0.00";
                     }
                 } else {
                     btn.disabled = true;
                     btn.style.background = "rgba(100, 116, 139, 0.35)";
-                    btn.innerText = "ROUND SETTLED — NEXT ROUND SOON";
+                    btn.innerText = "ROUND SETTLED";
                     tag.innerText = "CRASHED";
                     tag.style.color = "#ef4444";
                 }
@@ -1262,33 +1047,19 @@
                 return;
             }
             const pState = aviatorState.panels[panel];
-            if (pState.pendingRequest) return;
 
-            // 1. BETTING PHASE: Place or Cancel Bet
             if (aviatorState.status === "BETTING") {
                 if (pState.activeBet) {
-                    // Cancel existing bet before betting closes
-                    pState.pendingRequest = true;
+                    userCurrentBalance += pState.betAmount;
+                    db.collection("users").doc(currentUserId).update({ balance: userCurrentBalance });
+                    pState.activeBet = false;
+                    pState.betAmount = 0;
+                    triggerToastDisplay("Bet cancelled & amount refunded.");
                     updateAviatorActionButtons();
-                    try {
-                        const cancelFn = functions.httpsCallable("cancelAviatorBet");
-                        const res = await cancelFn({ panel });
-                        pState.activeBet = false;
-                        pState.betAmount = 0;
-                        pState.betId = null;
-                        triggerToastDisplay(`Bet cancelled & PKR ${res.data.refunded} refunded.`);
-                    } catch (err) {
-                        triggerToastDisplay(err.message || "Unable to cancel bet.");
-                    } finally {
-                        pState.pendingRequest = false;
-                        updateAviatorActionButtons();
-                    }
                     return;
                 }
 
                 const input = document.getElementById(panel === 1 ? "aviatorBetAmountInput" : "aviatorBetAmountInput2");
-                const autoChk = document.getElementById(panel === 1 ? "autoCashoutToggle1" : "autoCashoutToggle2");
-                const autoVal = document.getElementById(panel === 1 ? "autoCashoutVal1" : "autoCashoutVal2");
                 const amount = parseFloat(input.value);
 
                 if (isNaN(amount) || amount < 16 || amount > 50000) {
@@ -1300,348 +1071,117 @@
                     triggerToastDisplay("Insufficient PKR wallet balance.");
                     return;
                 }
-                if (aviatorState.dailyWagered + amount > aviatorState.limits.dailyBet) {
-                    triggerToastDisplay(`Daily betting limit (PKR ${aviatorState.limits.dailyBet.toLocaleString()}) reached.`);
-                    stopAllAutoBets("Daily betting limit reached");
-                    return;
-                }
-                if (aviatorState.sessionNetPL <= -Math.abs(aviatorState.limits.sessionLoss)) {
-                    triggerToastDisplay(`Session loss limit (PKR ${aviatorState.limits.sessionLoss.toLocaleString()}) reached.`);
-                    stopAllAutoBets("Session loss limit reached");
-                    return;
-                }
 
                 document.getElementById("aviatorTopUpPromptBox").style.display = "none";
-                const autoCashout = (autoChk && autoChk.checked) ? parseFloat(autoVal.value) : null;
+                userCurrentBalance -= amount;
+                db.collection("users").doc(currentUserId).update({ balance: userCurrentBalance });
 
-                pState.pendingRequest = true;
+                pState.activeBet = true;
+                pState.betAmount = amount;
+                aviatorState.sessionWagered += amount;
+                aviatorState.sessionNetPL -= amount;
+
+                playAviatorTone("bet");
+                triggerToastDisplay(`Panel ${panel} bet confirmed: PKR ${amount.toLocaleString()}`);
                 updateAviatorActionButtons();
-                try {
-                    const placeFn = functions.httpsCallable("placeAviatorBet");
-                    const res = await placeFn({ panel, amount, autoCashout });
-                    pState.activeBet = true;
-                    pState.betAmount = amount;
-                    pState.betId = res.data.betId;
-                    pState.autoCashoutTriggered = false;
-
-                    aviatorState.sessionWagered += amount;
-                    aviatorState.sessionNetPL -= amount;
-                    aviatorState.dailyWagered += amount;
-                    const todayKey = new Date().toISOString().slice(0, 10);
-                    localStorage.setItem("vestify_aviator_daily_" + todayKey, String(aviatorState.dailyWagered));
-
-                    playAviatorTone("bet");
-                    triggerToastDisplay(`Panel ${panel} bet confirmed: PKR ${amount.toLocaleString()}`);
-                } catch (err) {
-                    triggerToastDisplay(err.message || "Bet rejected by server.");
-                } finally {
-                    pState.pendingRequest = false;
-                    updateAviatorActionButtons();
-                }
+                renderLiveBetsFeed();
                 return;
             }
 
-            // 2. FLYING PHASE: Manual Cash Out
             if (aviatorState.status === "FLYING" && pState.activeBet) {
-                pState.pendingRequest = true;
+                const payout = pState.betAmount * aviatorState.currentMultiplier;
+                userCurrentBalance += payout;
+                db.collection("users").doc(currentUserId).update({ balance: userCurrentBalance });
+
+                aviatorState.sessionNetPL += payout;
+                pState.activeBet = false;
+
+                playAviatorTone("cashout");
+                triggerToastDisplay(`CASHED OUT @ ${aviatorState.currentMultiplier.toFixed(2)}x! Won PKR ${payout.toFixed(2)}`);
+
+                aviatorState.personalBetsList.unshift({
+                    roundId: aviatorState.roundId,
+                    panel: panel,
+                    amount: pState.betAmount,
+                    multiplier: aviatorState.currentMultiplier,
+                    payout: payout,
+                    status: "won",
+                    time: new Date().toLocaleTimeString()
+                });
+                renderPersonalHistory();
                 updateAviatorActionButtons();
-                try {
-                    const cashoutFn = functions.httpsCallable("cashoutAviatorBet");
-                    const res = await cashoutFn({ panel });
-                    pState.activeBet = false;
-                    aviatorState.sessionNetPL += res.data.payout;
-                    playAviatorTone("cashout");
-                    triggerToastDisplay(`CASHED OUT @ ${res.data.multiplier.toFixed(2)}x! Won PKR ${res.data.payout.toFixed(2)} (+PKR ${res.data.netProfit.toFixed(2)})`);
-                    checkAutoBetStopConditions();
-                } catch (err) {
-                    triggerToastDisplay(err.message || "Cashout failed.");
-                } finally {
-                    pState.pendingRequest = false;
-                    updateAviatorActionButtons();
-                }
             }
         };
 
-        function stopAllAutoBets(reason) {
-            [1, 2].forEach(panel => {
-                aviatorState.panels[panel].autoBet = false;
-                const chk = document.getElementById(panel === 1 ? "autoBetToggle1" : "autoBetToggle2");
-                const lbl = document.getElementById(panel === 1 ? "autoBetStatus1" : "autoBetStatus2");
-                if (chk) chk.checked = false;
-                if (lbl) {
-                    lbl.innerText = "OFF";
-                    lbl.style.color = "#64748b";
-                }
-            });
-            if (reason) triggerToastDisplay(`Auto-Bet stopped: ${reason}`);
-        }
-
-        function checkAutoBetStopConditions() {
-            if (aviatorState.sessionNetPL >= aviatorState.limits.autoProfitStop) {
-                stopAllAutoBets(`Profit target (+PKR ${aviatorState.limits.autoProfitStop}) reached`);
-            } else if (aviatorState.sessionNetPL <= -Math.abs(aviatorState.limits.sessionLoss)) {
-                stopAllAutoBets(`Session loss limit (-PKR ${aviatorState.limits.sessionLoss}) reached`);
-            }
-        }
-
-        function startAviatorSynchronizedEngine() {
-            loadSavedAviatorSettings();
-
-            // Monitor network connectivity
-            window.addEventListener("online", () => {
-                const warn = document.getElementById("aviatorOfflineWarning");
-                if (warn) warn.style.display = "none";
-                triggerToastDisplay("Connection restored. Syncing live round...");
-            });
-            window.addEventListener("offline", () => {
-                const warn = document.getElementById("aviatorOfflineWarning");
-                if (warn) warn.style.display = "block";
-            });
-
-            // Session timer & server heartbeat tick
-            if (aviatorState.tickTimer) clearInterval(aviatorState.tickTimer);
-            aviatorState.tickTimer = setInterval(() => {
+        function startClientSideAviatorEngine() {
+            setInterval(() => {
                 const secElapsed = Math.floor((Date.now() - aviatorState.sessionStartTime) / 1000);
                 const mins = String(Math.floor(secElapsed / 60)).padStart(2, "0");
                 const secs = String(secElapsed % 60).padStart(2, "0");
                 const timerEl = document.getElementById("aviatorSessionTimer");
                 if (timerEl) timerEl.innerText = `${mins}:${secs}`;
-
-                const netEl = document.getElementById("statSessionNetPL");
-                if (netEl) {
-                    netEl.innerText = `${aviatorState.sessionNetPL >= 0 ? "+" : ""}PKR ${aviatorState.sessionNetPL.toFixed(2)}`;
-                    netEl.style.color = aviatorState.sessionNetPL >= 0 ? "#10b981" : "#ef4444";
-                }
-
-                // Drive round state transitions via server Cloud Function when phase boundary is reached
-                const now = Date.now();
-                if (
-                    !aviatorState.roundId ||
-                    (aviatorState.status === "BETTING" && now >= aviatorState.bettingEndsAt) ||
-                    (aviatorState.status === "FLYING" && aviatorState.currentMultiplier >= 1.01)
-                ) {
-                    functions.httpsCallable("aviatorRoundTick")().catch(() => {});
-                }
             }, 1000);
 
-            // Listen to server-authoritative round document
-            if (aviatorState.unsubscribeRound) aviatorState.unsubscribeRound();
-            aviatorState.unsubscribeRound = db.collection("aviator_state").doc("current").onSnapshot(doc => {
-                if (!doc.exists) {
-                    functions.httpsCallable("aviatorRoundTick")().catch(() => {});
-                    return;
-                }
+            if (aviatorState.loopInterval) clearInterval(aviatorState.loopInterval);
+            aviatorState.loopInterval = setInterval(() => {
+                const now = Date.now();
 
-                const data = doc.data();
-                const prevRoundId = aviatorState.roundId;
-                const prevStatus = aviatorState.status;
+                if (aviatorState.status === "BETTING" && now >= aviatorState.bettingEndsAt) {
+                    aviatorState.status = "FLYING";
+                    aviatorState.flightStartedAt = now;
+                    const rand = Math.random();
+                    aviatorState.crashPoint = rand < 0.15 ? 1.00 : parseFloat((1.1 + Math.random() * 8.5).toFixed(2));
+                    playAviatorTone("takeoff");
+                    updateAviatorStageBadge();
+                } else if (aviatorState.status === "FLYING") {
+                    const elapsed = (now - aviatorState.flightStartedAt) / 1000;
+                    aviatorState.currentMultiplier = 1.0 + (elapsed * elapsed * 0.18);
 
-                aviatorState.roundId = data.roundId;
-                aviatorState.status = data.status;
-                aviatorState.bettingEndsAt = data.bettingEndsAt || (Date.now() + 15000);
-                aviatorState.flightStartedAt = data.flightStartedAt || null;
-                aviatorState.serverSeedHash = data.serverSeedHash || "";
-
-                const rLabel = document.getElementById("aviatorRoundIdLabel");
-                if (rLabel) rLabel.innerText = `Round: ${data.roundId}`;
-                const hashEl = document.getElementById("fairCurrentHash");
-                if (hashEl) hashEl.innerText = aviatorState.serverSeedHash;
-
-                // New round started -> reset per-round states & trigger Auto-Bet
-                if (prevRoundId !== data.roundId) {
-                    if (data.lastCrashedRound && prevRoundId === data.lastCrashedRound.roundId) {
+                    if (aviatorState.currentMultiplier >= aviatorState.crashPoint) {
+                        aviatorState.status = "CRASHED";
                         playAviatorTone("crash");
-                        if (aviatorState.panels[1].activeBet || aviatorState.panels[2].activeBet) {
-                            triggerToastDisplay(`CRASHED @ ${Number(data.lastCrashedRound.crashPoint).toFixed(2)}x!`);
-                        }
-                    }
+                        triggerToastDisplay(`CRASHED @ ${aviatorState.crashPoint.toFixed(2)}x!`);
 
-                    [1, 2].forEach(panel => {
-                        const p = aviatorState.panels[panel];
-                        p.activeBet = false;
-                        p.betAmount = 0;
-                        p.betId = null;
-                        p.autoCashoutTriggered = false;
-                    });
-
-                    subscribeToRoundLiveBets(data.roundId);
-
-                    // Execute Auto-Bet for subsequent rounds
-                    if (data.status === "BETTING") {
                         [1, 2].forEach(panel => {
                             const p = aviatorState.panels[panel];
-                            if (p.autoBet) {
-                                if (p.autoRoundsLeft <= 0) {
-                                    stopAllAutoBets("Max consecutive auto-bet rounds reached");
-                                } else {
-                                    p.autoRoundsLeft--;
-                                    const lbl = document.getElementById(panel === 1 ? "autoBetStatus1" : "autoBetStatus2");
-                                    if (lbl) lbl.innerText = `ON (${p.autoRoundsLeft} rds)`;
-                                    setTimeout(() => handleAviatorPanelAction(panel), 400);
-                                }
+                            if (p.activeBet) {
+                                aviatorState.personalBetsList.unshift({
+                                    roundId: aviatorState.roundId,
+                                    panel: panel,
+                                    amount: p.betAmount,
+                                    multiplier: 0,
+                                    payout: 0,
+                                    status: "crashed",
+                                    time: new Date().toLocaleTimeString()
+                                });
+                                p.activeBet = false;
                             }
                         });
+
+                        aviatorState.recentHistory.unshift(aviatorState.crashPoint);
+                        if (aviatorState.recentHistory.length > 15) aviatorState.recentHistory.pop();
+                        renderRecentHistoryTicker();
+                        renderPersonalHistory();
+
+                        setTimeout(() => {
+                            aviatorState.roundId = "RND-" + Date.now();
+                            aviatorState.status = "BETTING";
+                            aviatorState.bettingEndsAt = Date.now() + 15000;
+                            aviatorState.currentMultiplier = 1.00;
+                            updateAviatorStageBadge();
+                        }, 4000);
                     }
                 }
+            }, 100);
 
-                if (prevStatus !== "FLYING" && data.status === "FLYING") {
-                    playAviatorTone("takeoff");
-                }
-
-                updateAviatorStageBadge();
-                updateAviatorActionButtons();
-            });
-
-            // Subscribe to recent crash history strip
-            if (aviatorState.unsubscribeHistory) aviatorState.unsubscribeHistory();
-            aviatorState.unsubscribeHistory = db.collection("aviator_rounds_history")
-                .orderBy("crashedAt", "desc")
-                .limit(20)
-                .onSnapshot(snap => {
-                    const tickerBar = document.getElementById("aviatorMultiplierTickerBar");
-                    if (!tickerBar) return;
-                    if (snap.empty) {
-                        tickerBar.innerHTML = `<span class="aviator-pill aviator-pill-low">No completed rounds yet</span>`;
-                        return;
-                    }
-                    let html = "";
-                    snap.forEach(doc => {
-                        const r = doc.data();
-                        const val = Number(r.crashPoint || 1.00);
-                        const cls = val >= 10 ? "aviator-pill-high" : (val >= 2 ? "aviator-pill-mid" : "aviator-pill-low");
-                        html += `<span class="aviator-pill ${cls}" onclick="prefillVerifyRound('${r.roundId}', '${r.serverSeed || ""}')" title="Click to verify round ${r.roundId}">${val.toFixed(2)}x</span>`;
-                    });
-                    tickerBar.innerHTML = html;
-                });
-
-            // Smooth 60fps animation loop for countdown & flight curve
-            if (aviatorState.renderRaf) cancelAnimationFrame(aviatorState.renderRaf);
             const renderFrame = () => {
-                renderAviatorCanvas();
+                renderAviatorCanvasUI();
                 aviatorState.renderRaf = requestAnimationFrame(renderFrame);
             };
             aviatorState.renderRaf = requestAnimationFrame(renderFrame);
         }
 
-        function subscribeToRoundLiveBets(roundId) {
-            if (aviatorState.unsubscribeLiveBets) aviatorState.unsubscribeLiveBets();
-            aviatorState.unsubscribeLiveBets = db.collection("aviator_live_bets")
-                .where("roundId", "==", roundId)
-                .onSnapshot(snap => {
-                    const feedEl = document.getElementById("aviatorLivePlayersFeed");
-                    const countEl = document.getElementById("aviatorTotalRoundBetsCount");
-                    const poolEl = document.getElementById("aviatorTotalRoundPool");
-                    const playersEl = document.getElementById("aviatorLivePlayerCount");
-
-                    let totalBets = 0;
-                    let totalPool = 0;
-                    const uniquePlayers = new Set();
-                    let html = "";
-
-                    snap.forEach(doc => {
-                        const b = doc.data();
-                        totalBets++;
-                        totalPool += Number(b.amount || 0);
-                        if (b.uid) uniquePlayers.add(b.uid);
-
-                        // Sync local panel state with authoritative Firestore bet document
-                        if (b.uid === currentUserId && [1, 2].includes(b.panel)) {
-                            const p = aviatorState.panels[b.panel];
-                            p.activeBet = b.status === "active";
-                            p.betAmount = Number(b.amount || 0);
-                            p.betId = doc.id;
-                        }
-
-                        const statusColor = b.status === "won" ? "#10b981" : (b.status === "crashed" ? "#ef4444" : "#38bdf8");
-                        const multTxt = b.status === "won" ? `${Number(b.cashoutMultiplier).toFixed(2)}x` : "--";
-                        const payoutTxt = b.status === "won"
-                            ? `+PKR ${Number(b.winnings).toFixed(2)}`
-                            : (b.status === "crashed" ? "CRASHED" : "IN PLAY");
-
-                        html += `<div style="display:grid; grid-template-columns: 2fr 1.2fr 1fr 1.5fr; font-size:11px; padding:6px 4px; border-bottom:1px solid rgba(255,255,255,0.04); align-items:center; text-align:center;">
-                            <span style="color:#e2e8f0; font-weight:700; text-align:left; padding-left:4px;">${b.username || "Player"} <span style="color:#64748b; font-size:9px;">[P${b.panel || 1}]</span></span>
-                            <span style="color:#fff;">${Number(b.amount).toLocaleString()}</span>
-                            <span style="color:#eab308; font-weight:700;">${multTxt}</span>
-                            <span style="color:${statusColor}; font-weight:800;">${payoutTxt}</span>
-                        </div>`;
-                    });
-
-                    if (feedEl) {
-                        feedEl.innerHTML = html || `<div style="color:#64748b; text-align:center; padding:12px; font-size:11px;">No bets placed in this round yet.</div>`;
-                    }
-                    if (countEl) countEl.innerText = String(totalBets);
-                    if (poolEl) poolEl.innerText = `PKR ${totalPool.toLocaleString()}`;
-                    if (playersEl) playersEl.innerText = String(uniquePlayers.size);
-                    updateAviatorActionButtons();
-                });
-        }
-
-        function subscribeToPersonalAviatorHistory(uid) {
-            if (aviatorState.unsubscribePersonal) aviatorState.unsubscribePersonal();
-            aviatorState.unsubscribePersonal = db.collection("aviator_live_bets")
-                .where("uid", "==", uid)
-                .orderBy("createdAt", "desc")
-                .limit(50)
-                .onSnapshot(snap => {
-                    const listEl = document.getElementById("aviatorPersonalHistoryList");
-                    let totalRounds = 0;
-                    let biggestWin = 0;
-                    let biggestMult = 0;
-                    let html = "";
-
-                    snap.forEach(doc => {
-                        const b = doc.data();
-                        totalRounds++;
-                        const win = Number(b.winnings || 0);
-                        const mult = Number(b.cashoutMultiplier || 0);
-                        const net = b.status === "won" ? (win - Number(b.amount || 0)) : -Number(b.amount || 0);
-                        if (win > biggestWin) biggestWin = win;
-                        if (mult > biggestMult) biggestMult = mult;
-
-                        const dt = b.createdAt ? b.createdAt.toDate().toLocaleString() : "Just now";
-                        const badgeColor = b.status === "won" ? "#10b981" : (b.status === "crashed" ? "#ef4444" : "#38bdf8");
-
-                        html += `<div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); border-radius:12px; padding:10px; display:flex; justify-content:space-between; align-items:center; font-size:11px;">
-                            <div>
-                                <div style="font-weight:800; color:#fff;">${b.roundId} <span style="color:#64748b;">(Panel ${b.panel || 1})</span></div>
-                                <div style="color:#94a3b8; margin-top:2px;">Bet: <b>PKR ${Number(b.amount).toLocaleString()}</b> | Cashout: <b>${mult > 0 ? mult.toFixed(2) + "x" : "--"}</b></div>
-                                <div style="color:#64748b; font-size:10px; margin-top:2px;">${dt}</div>
-                            </div>
-                            <div style="text-align:right;">
-                                <div style="font-weight:800; color:${badgeColor};">${b.status === "won" ? "+PKR " + win.toFixed(2) : b.status.toUpperCase()}</div>
-                                <div style="font-size:10px; color:${net >= 0 ? "#10b981" : "#ef4444"};">Net: ${net >= 0 ? "+" : ""}PKR ${net.toFixed(2)}</div>
-                            </div>
-                        </div>`;
-                    });
-
-                    if (listEl) {
-                        listEl.innerHTML = html || `<div style="color:#64748b; text-align:center; padding:14px; font-size:11px;">No personal bets recorded yet.</div>`;
-                    }
-                    const rEl = document.getElementById("statTotalRounds");
-                    const wEl = document.getElementById("statBiggestWin");
-                    const mEl = document.getElementById("statBiggestMult");
-                    if (rEl) rEl.innerText = String(totalRounds);
-                    if (wEl) wEl.innerText = `PKR ${biggestWin.toFixed(2)}`;
-                    if (mEl) mEl.innerText = `${biggestMult.toFixed(2)}x`;
-                });
-        }
-
-        function updateAviatorStageBadge() {
-            const badge = document.getElementById("aviatorRoundStateBadge");
-            if (!badge) return;
-            if (aviatorState.status === "BETTING") {
-                badge.className = "aviator-status-pill aviator-status-open";
-                badge.innerText = "BETTING OPEN";
-            } else if (aviatorState.status === "FLYING") {
-                badge.className = "aviator-status-pill aviator-status-closed";
-                badge.innerText = "BETTING CLOSED • IN FLIGHT";
-            } else {
-                badge.className = "aviator-status-pill aviator-status-crashed";
-                badge.innerText = "CRASHED";
-            }
-        }
-
-        function renderAviatorCanvas() {
+        function renderAviatorCanvasUI() {
             const multEl = document.getElementById("aviatorMultiplierDisplay");
             const subEl = document.getElementById("aviatorSubBannerText");
             const statusEl = document.getElementById("aviatorStatusText");
@@ -1665,131 +1205,104 @@
                 }
                 multEl.innerText = `${remainingSec}s`;
                 multEl.style.color = "#ffffff";
-                if (statusEl) statusEl.innerText = remainingMs > 0 ? "Place or adjust bets before countdown reaches 0.0s" : "Launching aircraft...";
+                if (statusEl) statusEl.innerText = "Place or adjust bets before countdown reaches 0.0s";
                 if (barWrap) barWrap.style.display = "block";
                 if (barFill) barFill.style.width = `${pct}%`;
-                if (planeEl) {
-                    planeEl.style.display = "none";
-                    planeEl.classList.remove("plane-flying-anim");
-                }
+                if (planeEl) planeEl.style.display = "none";
                 if (curvePath) curvePath.setAttribute("d", "");
                 if (areaPath) areaPath.setAttribute("d", "");
-            } else if (aviatorState.status === "FLYING" && aviatorState.flightStartedAt) {
-                const elapsedSec = Math.max(0, (now - aviatorState.flightStartedAt) / 1000);
-                const mult = Math.pow(Math.E, 0.065 * elapsedSec);
-                aviatorState.currentMultiplier = mult;
-
-                if (subEl) {
-                    subEl.innerText = "BETTING CLOSED • FLEW AWAY AT";
-                    subEl.style.color = "#eab308";
-                }
-                multEl.innerText = `${mult.toFixed(2)}x`;
-                multEl.style.color = mult >= 5 ? "#eab308" : (mult >= 2 ? "#38bdf8" : "#ffffff");
-                if (statusEl) statusEl.innerText = "Cash out before the plane flies away!";
+            } else if (aviatorState.status === "FLYING") {
+                multEl.innerText = `${aviatorState.currentMultiplier.toFixed(2)}x`;
+                multEl.style.color = aviatorState.currentMultiplier >= 5 ? "#eab308" : "#38bdf8";
+                if (subEl) subEl.innerText = "IN FLIGHT";
+                if (statusEl) statusEl.innerText = "Cash out before crash!";
                 if (barWrap) barWrap.style.display = "none";
 
-                // Smooth curved trajectory
-                const progress = Math.min(1, elapsedSec / 12);
+                const progress = Math.min(1, (now - aviatorState.flightStartedAt) / 10000);
                 const endX = 24 + progress * 310;
                 const endY = 220 - Math.pow(progress, 1.35) * 175;
-                const ctrlX = 24 + (endX - 24) * 0.55;
-                const ctrlY = 220;
-
-                if (curvePath) curvePath.setAttribute("d", `M 24 220 Q ${ctrlX} ${ctrlY} ${endX} ${endY}`);
-                if (areaPath) areaPath.setAttribute("d", `M 24 220 Q ${ctrlX} ${ctrlY} ${endX} ${endY} L ${endX} 250 L 24 250 Z`);
+                if (curvePath) curvePath.setAttribute("d", `M 24 220 Q ${24 + (endX-24)*0.5} 220 ${endX} ${endY}`);
+                if (areaPath) areaPath.setAttribute("d", `M 24 220 Q ${24 + (endX-24)*0.5} 220 ${endX} ${endY} L ${endX} 250 L 24 250 Z`);
 
                 if (planeEl) {
                     planeEl.style.display = "block";
-                    planeEl.classList.add("plane-flying-anim");
                     planeEl.style.left = `${(endX / 400) * 100}%`;
                     planeEl.style.bottom = `${((250 - endY) / 250) * 100}%`;
                 }
-
-                // Trigger server-verified Auto-Cashout when local multiplier crosses target
-                [1, 2].forEach(panel => {
-                    const p = aviatorState.panels[panel];
-                    const autoChk = document.getElementById(panel === 1 ? "autoCashoutToggle1" : "autoCashoutToggle2");
-                    const autoVal = document.getElementById(panel === 1 ? "autoCashoutVal1" : "autoCashoutVal2");
-                    if (p.activeBet && !p.autoCashoutTriggered && !p.pendingRequest && autoChk && autoChk.checked) {
-                        const target = parseFloat(autoVal.value) || 2.0;
-                        if (mult >= target) {
-                            p.autoCashoutTriggered = true;
-                            handleAviatorPanelAction(panel);
-                        }
-                    }
-                });
-
-                updateAviatorActionButtons();
+            } else if (aviatorState.status === "CRASHED") {
+                multEl.innerText = `${aviatorState.crashPoint.toFixed(2)}x`;
+                multEl.style.color = "#ef4444";
+                if (subEl) subEl.innerText = "CRASHED";
+                if (statusEl) statusEl.innerText = "Preparing next round...";
             }
         }
 
-        window.openAviatorFairnessModal = function() {
-            openModal("aviatorFairnessModal");
-        };
-
-        window.prefillVerifyRound = function(roundId, serverSeed) {
-            document.getElementById("verifyRoundIdInput").value = roundId || "";
-            document.getElementById("verifyServerSeedInput").value = serverSeed || "";
-            openModal("aviatorFairnessModal");
-        };
-
-        window.verifyAviatorRoundFairness = async function() {
-            const roundId = document.getElementById("verifyRoundIdInput").value.trim();
-            const serverSeed = document.getElementById("verifyServerSeedInput").value.trim();
-            const outEl = document.getElementById("verifyFairnessOutput");
-            if (!roundId || !serverSeed) {
-                triggerToastDisplay("Enter both Round ID and revealed Server Seed.");
-                return;
+        function updateAviatorStageBadge() {
+            const badge = document.getElementById("aviatorRoundStateBadge");
+            if (!badge) return;
+            if (aviatorState.status === "BETTING") {
+                badge.className = "aviator-status-pill aviator-status-open";
+                badge.innerText = "BETTING OPEN";
+            } else if (aviatorState.status === "FLYING") {
+                badge.className = "aviator-status-pill aviator-status-closed";
+                badge.innerText = "IN FLIGHT";
+            } else {
+                badge.className = "aviator-status-pill aviator-status-crashed";
+                badge.innerText = "CRASHED";
             }
-            try {
-                const enc = new TextEncoder();
-                const key = await crypto.subtle.importKey("raw", enc.encode(serverSeed), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
-                const sig = await crypto.subtle.sign("HMAC", key, enc.encode(roundId));
-                const hmacHex = Array.from(new Uint8Array(sig)).map(b => b.toString(16).padStart(2, "0")).join("");
+            updateAviatorActionButtons();
+        }
 
-                const seedHashBuf = await crypto.subtle.digest("SHA-256", enc.encode(serverSeed));
-                const seedHashHex = Array.from(new Uint8Array(seedHashBuf)).map(b => b.toString(16).padStart(2, "0")).join("");
+        function renderRecentHistoryTicker() {
+            const tickerBar = document.getElementById("aviatorMultiplierTickerBar");
+            if (!tickerBar) return;
+            let html = "";
+            aviatorState.recentHistory.forEach(val => {
+                const cls = val >= 5 ? "aviator-pill-high" : (val >= 2 ? "aviator-pill-mid" : "aviator-pill-low");
+                html += `<span class="aviator-pill ${cls}">${val.toFixed(2)}x</span>`;
+            });
+            tickerBar.innerHTML = html;
+        }
 
-                const h = parseInt(hmacHex.slice(0, 13), 16);
-                const e = Math.pow(2, 52);
-                const crashPoint = (h % 33 === 0)
-                    ? 1.00
-                    : Math.max(1.01, Math.floor(((100 * e - h) / (e - h) / 100) * 0.97 * 100) / 100);
+        function renderLiveBetsFeed() {
+            const feedEl = document.getElementById("aviatorLivePlayersFeed");
+            if (!feedEl) return;
+            let html = `<div style="display:grid; grid-template-columns: 2fr 1.2fr 1fr 1.5fr; font-size:11px; padding:6px 4px; align-items:center; text-align:center;">
+                <span style="color:#e2e8f0; font-weight:700; text-align:left;">${userCustomUsernameToken || "You"}</span>
+                <span style="color:#fff;">${aviatorState.panels[1].activeBet ? aviatorState.panels[1].betAmount : 0}</span>
+                <span style="color:#eab308; font-weight:700;">--</span>
+                <span style="color:#38bdf8; font-weight:800;">IN PLAY</span>
+            </div>`;
+            feedEl.innerHTML = html;
+        }
 
-                outEl.style.display = "block";
-                outEl.innerHTML = `
-                    <div style="color:#10b981; font-weight:800; margin-bottom:4px;">Verified Crash Point: ${crashPoint.toFixed(2)}x</div>
-                    <div style="color:#94a3b8; word-break:break-all; font-family:monospace; font-size:10px;">SHA-256(seed): ${seedHashHex}</div>
-                `;
-            } catch (err) {
-                triggerToastDisplay("Verification error: " + err.message);
-            }
-        };
+        function renderPersonalHistory() {
+            const listEl = document.getElementById("aviatorPersonalHistoryList");
+            if (!listEl) return;
+            let html = "";
+            aviatorState.personalBetsList.forEach(b => {
+                let badgeColor = b.status === "won" ? "#10b981" : "#ef4444";
+                html += `<div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); border-radius:12px; padding:10px; display:flex; justify-content:space-between; align-items:center; font-size:11px;">
+                    <div>
+                        <div style="font-weight:800; color:#fff;">${b.roundId} <span style="color:#64748b;">(Panel ${b.panel})</span></div>
+                        <div style="color:#94a3b8; margin-top:2px;">Bet: <b>PKR ${b.amount}</b> | Cashout: <b>${b.multiplier > 0 ? b.multiplier.toFixed(2) + "x" : "--"}</b></div>
+                        <div style="color:#64748b; font-size:10px; margin-top:2px;">${b.time}</div>
+                    </div>
+                    <div style="text-align:right;">
+                        <div style="font-weight:800; color:${badgeColor};">${b.status === "won" ? "+PKR " + b.payout.toFixed(2) : "CRASHED"}</div>
+                    </div>
+                </div>`;
+            });
+            listEl.innerHTML = html || `<div style="color:#64748b; text-align:center; padding:14px; font-size:11px;">No personal bets recorded yet.</div>`;
 
-        window.openAviatorLimitsModal = function() {
-            document.getElementById("limitDailyBetInput").value = aviatorState.limits.dailyBet;
-            document.getElementById("limitSessionLossInput").value = aviatorState.limits.sessionLoss;
-            document.getElementById("limitAutoProfitStopInput").value = aviatorState.limits.autoProfitStop;
-            document.getElementById("limitAutoMaxRoundsInput").value = aviatorState.limits.autoMaxRounds;
-            openModal("aviatorLimitsModal");
-        };
+            document.getElementById("statTotalRounds").innerText = String(aviatorState.personalBetsList.length);
+            let maxW = aviatorState.personalBetsList.reduce((acc, curr) => Math.max(acc, curr.payout), 0);
+            document.getElementById("statBiggestWin").innerText = `PKR ${maxW.toFixed(2)}`;
+        }
 
-        window.saveAviatorResponsibleLimits = function() {
-            aviatorState.limits.dailyBet = Math.max(16, parseFloat(document.getElementById("limitDailyBetInput").value) || 50000);
-            aviatorState.limits.sessionLoss = Math.max(16, parseFloat(document.getElementById("limitSessionLossInput").value) || 25000);
-            aviatorState.limits.autoProfitStop = Math.max(16, parseFloat(document.getElementById("limitAutoProfitStopInput").value) || 10000);
-            aviatorState.limits.autoMaxRounds = Math.max(1, parseInt(document.getElementById("limitAutoMaxRoundsInput").value, 10) || 50);
-            localStorage.setItem("vestify_aviator_limits", JSON.stringify(aviatorState.limits));
-            closeModal("aviatorLimitsModal");
-            triggerToastDisplay("Gaming & Autoplay limits saved.");
-        };
-
-        let paymentGatewayMerchantConfig = {
-            "EasyPaisa": { number: "03379827882", title: "EasyPaisa Account" },
-            "JazzCash": { number: "03705519562", title: "JazzCash Account" },
-            "USDT": { number: "TRC20-Binance-Wallet-ID", title: "Binance USDT (TRC20)" }
-        };
-
+        /* =========================================================================
+           CORE APP LOGIC & FIRESTORE SYNC
+           ========================================================================= */
         window.addEventListener('DOMContentLoaded', () => {
             const params = new URLSearchParams(window.location.search);
             if(params.has('ref')) {
@@ -1799,7 +1312,8 @@
             initializeRealtimeNodeConfigSync();
             loadPaymentMethodsFromFirestore();
             startLiveMiningSimulatorCounter();
-            startAviatorSynchronizedEngine();
+            startClientSideAviatorEngine();
+            renderRecentHistoryTicker();
         });
 
         auth.onAuthStateChanged(user => {
@@ -1809,7 +1323,6 @@
                 syncProfileRealtimeMetrics();
                 syncUserLedgerTracks();
                 syncUserSupportTickets();
-                subscribeToPersonalAviatorHistory(user.uid);
                 initializeCountdownClockTicker();
                 updateLivePresenceActivity("Home View");
             } else {
@@ -1847,7 +1360,7 @@
                 if(!username) { triggerToastDisplay("Please choose a unique username."); return; }
                 
                 db.collection("users").where("username", "==", username).get().then(snap => {
-                    if(!snap.empty) { throw new Error("Username is already taken. Choose another."); }
+                    if(!snap.empty) { throw new Error("Username is already taken."); }
                     return auth.createUserWithEmailAndPassword(email, pass);
                 }).then(cred => {
                     let userPayload = {
@@ -1922,7 +1435,7 @@
                     } else {
                         if(doc.data().isBlocked) {
                             auth.signOut();
-                            triggerToastDisplay("Account Blocked: Contact Support.");
+                            triggerToastDisplay("Account Blocked.");
                             return;
                         }
                         triggerToastDisplay("Welcome Back!");
@@ -1986,13 +1499,13 @@
             });
         }
 
-        /* LIVE MINING / STAKING SIMULATOR COUNTER */
         function startLiveMiningSimulatorCounter() {
             setInterval(() => {
                 if(currentUserId && totalActiveCoresCount > 0) {
                     let microIncrement = totalActiveCoresCount * 0.002;
                     userCurrentBalance += microIncrement;
                     document.getElementById('assetDisplay').innerText = userCurrentBalance.toLocaleString('en-US',{minimumFractionDigits:2});
+                    document.getElementById('aviatorWalletBalanceLbl').innerText = userCurrentBalance.toLocaleString('en-US',{minimumFractionDigits:2});
                 }
             }, 3000);
         }
@@ -2000,7 +1513,6 @@
         function executeProfessionalLazyYieldSync(uid, userData) {
             const lastSyncDate = userData.lastYieldSyncTimestamp ? userData.lastYieldSyncTimestamp.toDate() : null;
             const currentTime = new Date();
-
             if (!lastSyncDate) return;
 
             const elapsedMilliseconds = currentTime - lastSyncDate;
@@ -2054,7 +1566,7 @@
         }
 
         window.leaseHardwareNode = function(name, price, dailyProfitValue) {
-            if(userCurrentBalance < price) { triggerToastDisplay("Insufficient balance for this node!"); return; }
+            if(userCurrentBalance < price) { triggerToastDisplay("Insufficient balance for this node."); return; }
             
             const operationalBatch = db.batch();
             const userRef = db.collection("users").doc(currentUserId);
@@ -2079,14 +1591,15 @@
             }).catch(err => triggerToastDisplay(err));
         }
 
-        /* UNLIMITED MULTI-TIER REFERRAL LEVEL SYSTEM LOGIC */
         function calculateMultiTierNetworkHierarchy(userUsername) {
             db.collection("users").where("referredBy", "==", userUsername).onSnapshot(snapLevel1 => {
                 let directCount = snapLevel1.size;
                 let activeDepositorsCount = 0;
+                let level1Usernames = [];
 
                 snapLevel1.forEach(doc => {
                     let d = doc.data();
+                    level1Usernames.push(d.username);
                     if(d.hasDepositedBefore) activeDepositorsCount++;
                 });
 
@@ -2122,7 +1635,7 @@
 
                     db.collection("deposits").add({
                         userId: uidL1, amount: rewardL1, transactionId: "COMM-T1-" + Math.floor(100000 + Math.random()*900000),
-                        gatewayChannel: `Tier 1 Commission (${userDoc.data().username})`, status: "approved", timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                        gatewayChannel: `Tier 1 Commission`, status: "approved", timestamp: firebase.firestore.FieldValue.serverTimestamp()
                     });
 
                     let level2Referrer = docL1.data().referredBy;
@@ -2176,23 +1689,16 @@
 
         window.updateDepositCalculations = function() {
             let amt = parseFloat(document.getElementById('pkrDepositInput').value) || 0;
-            
             db.collection("users").doc(currentUserId).get().then(doc => {
                 let hasDepositedBefore = doc.exists ? (doc.data().hasDepositedBefore || false) : false;
                 let bonusRate = hasDepositedBefore ? 0.04 : 0.08;
                 let bonusLabelText = hasDepositedBefore ? "4% Bonus" : "8% First Deposit Bonus";
-                
                 let bonus = amt * bonusRate;
                 let total = amt + bonus;
 
                 document.getElementById('lblBonusPKR').innerText = `Rs. ${bonus.toLocaleString()} (${bonusLabelText})`;
                 document.getElementById('lblTotalCreditedPKR').innerText = "Rs. " + total.toLocaleString();
-                
-                if(activeGatewayChannel === "USDT") {
-                    document.getElementById('txtPayableExactAmount').innerText = `$${(amt / 300).toFixed(2)} USDT (~Rs. ${amt})`;
-                } else {
-                    document.getElementById('txtPayableExactAmount').innerText = "Rs. " + amt.toLocaleString();
-                }
+                document.getElementById('txtPayableExactAmount').innerText = "Rs. " + amt.toLocaleString();
             });
         }
 
@@ -2203,7 +1709,6 @@
                     if(data.EasyPaisa) paymentGatewayMerchantConfig.EasyPaisa = data.EasyPaisa;
                     if(data.JazzCash) paymentGatewayMerchantConfig.JazzCash = data.JazzCash;
                     if(data.USDT) paymentGatewayMerchantConfig.USDT = data.USDT;
-                    
                     selectDepositGatewayChannel(activeGatewayChannel);
                 }
             });
@@ -2219,14 +1724,14 @@
             const inputVal = parseFloat(document.getElementById('pkrDepositInput').value);
             const tid = document.getElementById('depositTxIDInput').value.trim();
 
-            if(isNaN(inputVal) || inputVal < 200 || inputVal > 50000) { triggerToastDisplay("Minimum deposit is Rs. 200 and Maximum is Rs. 50,000."); return; }
+            if(isNaN(inputVal) || inputVal < 200) { triggerToastDisplay("Minimum deposit amount is Rs. 200."); return; }
             if(!tid || tid.length < 11 || tid.length > 12) { triggerToastDisplay("Enter valid 11-12 digit Transaction ID."); return; }
 
             db.collection("deposits").add({
                 userId: currentUserId, amount: inputVal, gatewayChannel: activeGatewayChannel,
                 transactionId: tid, status: "pending", timestamp: firebase.firestore.FieldValue.serverTimestamp()
             }).then(() => {
-                closeModal('depositModal'); triggerToastDisplay("Deposit request submitted for verification!");
+                closeModal('depositModal'); triggerToastDisplay("Deposit request submitted!");
                 document.getElementById('pkrDepositInput').value = ""; document.getElementById('depositTxIDInput').value = "";
             });
         }
@@ -2240,7 +1745,6 @@
 
             db.collection("users").where("username", "==", targetUserField).get().then(snapshot => {
                 if(snapshot.empty) { throw new Error("User username not found."); }
-                
                 const targetDocNode = snapshot.docs[0];
                 const destUid = targetDocNode.id;
                 const destCurrentBalance = targetDocNode.data().balance || 0;
@@ -2261,8 +1765,6 @@
             }).then(() => {
                 closeModal('transferModal');
                 triggerToastDisplay(`Sent Rs. ${amountField} directly to ${targetUserField}!`);
-                document.getElementById('transferTargetUsername').value = "";
-                document.getElementById('transferAmount').value = "";
             }).catch(err => triggerToastDisplay(err.message || err));
         }
 
@@ -2281,9 +1783,6 @@
             }).then(() => { 
                 closeModal('withdrawModal'); 
                 triggerToastDisplay("Withdrawal request submitted!"); 
-                document.getElementById('withdrawTitle').value = "";
-                document.getElementById('withdrawNumber').value = "";
-                document.getElementById('withdrawAmount').value = "";
             });
         }
 
@@ -2298,7 +1797,6 @@
 
         window.completeSocialTask = function(taskType) {
             if(taskType === 'fb') {
-                window.open("https://facebook.com", "_blank");
                 db.collection("users").doc(currentUserId).update({
                     balance: firebase.firestore.FieldValue.increment(20),
                     completedFbTask: true
@@ -2337,7 +1835,7 @@
             db.collection("users").doc(currentUserId).get().then(doc => {
                 if(doc.data().hasSpunToday) { triggerToastDisplay("You already spun today! Come back tomorrow."); return; }
                 
-                const matrixPrizes = [5, 10, 4, 8, 10, 15, 20, 5, 25, 6, 12, 18, 6, 8];
+                const matrixPrizes = [5, 10, 4, 8, 10, 15, 20, 25, 12, 18];
                 const winToken = matrixPrizes[Math.floor(Math.random() * matrixPrizes.length)];
                 const wheel = document.getElementById('luckyBonusWheel');
                 
@@ -2353,38 +1851,24 @@
             });
         }
 
-        /* SEARCHABLE HISTORY LOGS */
         function syncUserLedgerTracks() {
             db.collection("deposits").where("userId", "==", currentUserId).onSnapshot(depSnap => {
                 db.collection("withdrawals").where("userId", "==", currentUserId).onSnapshot(withSnap => {
                     cachedUserHistoryLogs = [];
-                    
                     depSnap.forEach(doc => {
                         const d = doc.data();
-                        let recordDate = d.timestamp ? d.timestamp.toDate() : new Date();
                         cachedUserHistoryLogs.push({
-                            type: 'deposit',
-                            amount: d.amount,
-                            identifier: d.transactionId || 'DEPOSIT',
-                            channel: d.gatewayChannel,
-                            status: d.status,
-                            date: recordDate
+                            type: 'deposit', amount: d.amount, identifier: d.transactionId || 'DEPOSIT',
+                            channel: d.gatewayChannel, status: d.status, date: d.timestamp ? d.timestamp.toDate() : new Date()
                         });
                     });
-
                     withSnap.forEach(doc => {
                         const w = doc.data();
-                        let recordDate = w.timestamp ? w.timestamp.toDate() : new Date();
                         cachedUserHistoryLogs.push({
-                            type: 'withdrawal',
-                            amount: w.amount,
-                            identifier: `${w.targetNo} (${w.title})`,
-                            channel: 'Withdrawal Payout',
-                            status: w.status,
-                            date: recordDate
+                            type: 'withdrawal', amount: w.amount, identifier: `${w.targetNo} (${w.title})`,
+                            channel: 'Withdrawal Payout', status: w.status, date: w.timestamp ? w.timestamp.toDate() : new Date()
                         });
                     });
-
                     cachedUserHistoryLogs.sort((a, b) => b.date - a.date);
                     renderFilteredHistoryLogs(cachedUserHistoryLogs);
                 });
@@ -2417,38 +1901,27 @@
                     </div>`;
                 }
             });
-
             document.getElementById('userHistoryRecordsList').innerHTML = html || "<div style='color:#64748b; text-align:center;'>No history logs found.</div>";
         }
 
         window.filterUserHistoryLogs = function() {
             let query = document.getElementById('historySearchInput').value.toLowerCase();
             let filtered = cachedUserHistoryLogs.filter(item => {
-                return item.identifier.toLowerCase().includes(query) || 
-                       item.channel.toLowerCase().includes(query) || 
-                       item.status.toLowerCase().includes(query);
+                return item.identifier.toLowerCase().includes(query) || item.channel.toLowerCase().includes(query) || item.status.toLowerCase().includes(query);
             });
             renderFilteredHistoryLogs(filtered);
         }
 
-        /* SUPPORT TICKET SYSTEM LOGIC */
         window.submitSupportTicketUser = function() {
             let subject = document.getElementById('ticketSubjectInput').value.trim();
             let msg = document.getElementById('ticketMessageInput').value.trim();
-
-            if(!subject || !msg) { triggerToastDisplay("Please enter ticket subject and message."); return; }
+            if(!subject || !msg) { triggerToastDisplay("Please enter subject and message."); return; }
 
             db.collection("support_tickets").add({
-                userId: currentUserId,
-                username: userCustomUsernameToken,
-                subject: subject,
-                message: msg,
-                status: "Pending",
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                userId: currentUserId, username: userCustomUsernameToken, subject: subject, message: msg, status: "Pending", timestamp: firebase.firestore.FieldValue.serverTimestamp()
             }).then(() => {
                 triggerToastDisplay("Support ticket submitted!");
-                document.getElementById('ticketSubjectInput').value = "";
-                document.getElementById('ticketMessageInput').value = "";
+                document.getElementById('ticketSubjectInput').value = ""; document.getElementById('ticketMessageInput').value = "";
             });
         }
 
@@ -2471,15 +1944,12 @@
             });
         }
 
-        /* USER PROFILE PICTURE & 30-DAY USERNAME UPDATE LOGIC */
         window.openProfileEditModal = function() {
             document.getElementById('editUsernameInput').value = userCustomUsernameToken;
             openModal('profileEditModal');
         }
 
-        window.triggerProfilePictureFileInput = function() {
-            document.getElementById('profileImageFileInput').click();
-        }
+        window.triggerProfilePictureFileInput = function() { document.getElementById('profileImageFileInput').click(); }
 
         window.handleProfileImageSelect = function(event) {
             const file = event.target.files[0];
@@ -2498,44 +1968,23 @@
             if(!newUsername) { triggerToastDisplay("Please enter a valid username."); return; }
 
             let usernameChanged = (newUsername !== userCustomUsernameToken);
-
-            if(usernameChanged) {
-                if(lastUsernameChangeDate) {
-                    let diffDays = (new Date() - lastUsernameChangeDate) / (1000 * 60 * 60 * 24);
-                    if(diffDays < 30) {
-                        let remainingDays = Math.ceil(30 - diffDays);
-                        triggerToastDisplay(`You can change username again in ${remainingDays} days.`);
-                        return;
-                    }
+            if(usernameChanged && lastUsernameChangeDate) {
+                let diffDays = (new Date() - lastUsernameChangeDate) / (1000 * 60 * 60 * 24);
+                if(diffDays < 30) {
+                    triggerToastDisplay(`You can change username again in ${Math.ceil(30 - diffDays)} days.`);
+                    return;
                 }
-
-                db.collection("users").where("username", "==", newUsername).get().then(snap => {
-                    if(!snap.empty) { triggerToastDisplay("Username taken by another user."); return; }
-                    
-                    updateProfileDataInFirestore(newUsername, true);
-                });
-            } else {
-                updateProfileDataInFirestore(newUsername, false);
-            }
-        }
-
-        function updateProfileDataInFirestore(newUsername, updatedUsernameFlag) {
-            let payload = {
-                profilePic: userProfilePicBase64
-            };
-
-            if(updatedUsernameFlag) {
-                payload.username = newUsername;
-                payload.lastUsernameChangeDate = firebase.firestore.FieldValue.serverTimestamp();
             }
 
-            db.collection("users").doc(currentUserId).update(payload).then(() => {
+            db.collection("users").doc(currentUserId).update({
+                profilePic: userProfilePicBase64,
+                ...(usernameChanged ? { username: newUsername, lastUsernameChangeDate: firebase.firestore.FieldValue.serverTimestamp() } : {})
+            }).then(() => {
                 closeModal('profileEditModal');
                 triggerToastDisplay("Profile updated successfully!");
             });
         }
 
-        /* ADMIN LOGO LOGIC & CONTROLS */
         window.registerAdminLogoTap = function() {
             adminLogoTapCountTracker++;
             if(adminLogoTapCountTracker >= 5) {
@@ -2569,11 +2018,9 @@
 
         window.switchAdminSubView = function(viewName) {
             const sections = ['tracker', 'deposits', 'users', 'nodes', 'payments', 'broadcast', 'analytics'];
-            
             sections.forEach(sec => {
                 const el = document.getElementById('admin' + sec.charAt(0).toUpperCase() + sec.slice(1) + 'Section');
                 if(el) el.style.display = (sec === viewName) ? 'block' : 'none';
-                
                 const btn = document.getElementById('adminTab' + sec.charAt(0).toUpperCase() + sec.slice(1));
                 if(btn) btn.classList.toggle('active', sec === viewName);
             });
@@ -2590,7 +2037,7 @@
                             <b style="color:#38bdf8;">${p.username}</b>
                             <p style="font-size:10px; color:#10b981; margin-top:2px;">Viewing: <b>${p.currentPage || 'Home'}</b></p>
                         </div>
-                        <span style="width:8px; height:8px; background:#10b981; border-radius:50%; box-shadow:0 0 8px #10b981;"></span>
+                        <span style="width:8px; height:8px; background:#10b981; border-radius:50%;"></span>
                     </div>`;
                 });
                 document.getElementById('adminLiveTrackerFeed').innerHTML = html;
@@ -2643,13 +2090,9 @@
                     let d = userDoc.data();
                     let currentBal = d.balance || 0;
                     let hasDepBefore = d.hasDepositedBefore || false;
-                    let bonusMultiplier = hasDepBefore ? 0.04 : 0.08;
-                    let finalCreditedAmount = depositAmount + (depositAmount * bonusMultiplier);
+                    let finalCreditedAmount = depositAmount + (depositAmount * (hasDepBefore ? 0.04 : 0.08));
 
-                    transaction.update(userRef, {
-                        balance: currentBal + finalCreditedAmount,
-                        hasDepositedBefore: true
-                    });
+                    transaction.update(userRef, { balance: currentBal + finalCreditedAmount, hasDepositedBefore: true });
                     transaction.update(db.collection("deposits").doc(docId), { status: "approved" });
                 });
             }).then(() => {
@@ -2659,15 +2102,11 @@
         }
 
         window.rejectDepositFromAdmin = function(docId) {
-            db.collection("deposits").doc(docId).update({ status: "rejected" }).then(() => {
-                triggerToastDisplay("Deposit Rejected.");
-            });
+            db.collection("deposits").doc(docId).update({ status: "rejected" }).then(() => triggerToastDisplay("Deposit Rejected."));
         }
 
         window.approveWithdrawalFromAdmin = function(docId) {
-            db.collection("withdrawals").doc(docId).update({ status: "approved" }).then(() => {
-                triggerToastDisplay("Withdrawal Approved!");
-            });
+            db.collection("withdrawals").doc(docId).update({ status: "approved" }).then(() => triggerToastDisplay("Withdrawal Approved!"));
         }
 
         window.rejectWithdrawalFromAdmin = function(docId, targetUid, refundAmount) {
@@ -2678,25 +2117,21 @@
                     transaction.update(userRef, { balance: currentBal + refundAmount });
                     transaction.update(db.collection("withdrawals").doc(docId), { status: "rejected" });
                 });
-            }).then(() => {
-                triggerToastDisplay("Withdrawal Rejected & Refunded.");
-            });
+            }).then(() => triggerToastDisplay("Withdrawal Rejected & Refunded."));
         }
 
         function loadAdminUsersArray() {
             db.collection("users").onSnapshot(snap => {
                 let html = "";
-                if(snap.empty) { html = "<div style='color:#64748b;'>No users found.</div>"; }
                 snap.forEach(doc => {
                     const u = doc.data();
                     let isBlocked = u.isBlocked || false;
-                    html += `<div style="background:rgba(255,255,255,0.02); padding:12px; border-radius:14px; border:1px solid rgba(255,255,255,0.05); margin-bottom:8px;">
+                    html += `<div style="background:rgba(255,255,255,0.02); padding:12px; border-radius:14px; margin-bottom:8px;">
                         <p>User: <b style="color:#38bdf8;">${u.username || 'N/A'}</b> | Status: <span style="color:${isBlocked ? '#ef4444' : '#10b981'};">${isBlocked ? 'BLOCKED' : 'ACTIVE'}</span></p>
                         <p>Balance: <b style="color:#10b981;">Rs. ${u.balance || 0}</b> | Nodes: ${u.minersCount || 0}</p>
-                        <div style="display:flex; gap:6px; margin-top:8px; align-items:center;">
+                        <div style="display:flex; gap:6px; margin-top:8px;">
                             <input type="number" id="adminAddBal_${doc.id}" class="modal-input" placeholder="Amount" style="margin-top:0; padding:6px; flex:1;">
                             <button class="buy-plan-btn" style="padding:6px 10px; font-size:10px; background:#10b981;" onclick="adminModifyUserBalance('${doc.id}', true)">Add</button>
-                            <button class="buy-plan-btn" style="padding:6px 10px; font-size:10px; background:#eab308;" onclick="adminModifyUserBalance('${doc.id}', false)">Deduct</button>
                             <button class="buy-plan-btn" style="padding:6px 10px; font-size:10px; background:${isBlocked ? '#10b981' : '#ef4444'};" onclick="adminToggleBlockStatus('${doc.id}', ${isBlocked})">${isBlocked ? 'Unblock' : 'Block'}</button>
                         </div>
                     </div>`;
@@ -2713,36 +2148,28 @@
             db.runTransaction(transaction => {
                 return transaction.get(userRef).then(userDoc => {
                     let currentBal = userDoc.data().balance || 0;
-                    let newBal = isAddition ? (currentBal + inputFieldVal) : Math.max(0, currentBal - inputFieldVal);
-                    transaction.update(userRef, { balance: newBal });
+                    transaction.update(userRef, { balance: currentBal + inputFieldVal });
                 });
             }).then(() => {
-                triggerToastDisplay(`User balance ${isAddition ? 'credited' : 'deducted'}!`);
+                triggerToastDisplay("User balance updated!");
                 document.getElementById(`adminAddBal_${targetUid}`).value = "";
             });
         }
 
         window.adminToggleBlockStatus = function(targetUid, currentlyBlocked) {
-            db.collection("users").doc(targetUid).update({ isBlocked: !currentlyBlocked }).then(() => {
-                triggerToastDisplay(`User block status updated.`);
-            });
+            db.collection("users").doc(targetUid).update({ isBlocked: !currentlyBlocked }).then(() => triggerToastDisplay("Block status updated."));
         }
 
         window.createCustomBonusCode = function() {
             let code = document.getElementById('adminGiftCode').value.trim().toUpperCase();
             let amt = parseFloat(document.getElementById('adminGiftAmount').value);
-
-            if(!code || isNaN(amt) || amt <= 0) { triggerToastDisplay("Please enter gift code and amount."); return; }
+            if(!code || isNaN(amt) || amt <= 0) { triggerToastDisplay("Enter valid code & amount."); return; }
 
             db.collection("gift_codes").doc(code).set({
-                code: code,
-                amount: amt,
-                isRedeemed: false,
-                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                code: code, amount: amt, isRedeemed: false, createdAt: firebase.firestore.FieldValue.serverTimestamp()
             }).then(() => {
                 triggerToastDisplay(`Gift Code ${code} Created!`);
-                document.getElementById('adminGiftCode').value = "";
-                document.getElementById('adminGiftAmount').value = "";
+                document.getElementById('adminGiftCode').value = ""; document.getElementById('adminGiftAmount').value = "";
             });
         }
 
@@ -2757,21 +2184,8 @@
             if(!nodeNameId || isNaN(newPrice) || isNaN(newDaily) || isNaN(newDuration)) { triggerToastDisplay("Fill all fields."); return; }
 
             db.collection("node_configs").doc(nodeNameId).set({
-                nodeId: nodeNameId,
-                category: category,
-                cost: newPrice,
-                dailyYield: newDaily,
-                duration: newDuration,
-                imageUrl: imgVal || "",
-                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-            }, { merge: true }).then(() => {
-                triggerToastDisplay(`Node ${nodeNameId} saved successfully!`);
-                document.getElementById('editNodeName').value = "";
-                document.getElementById('editNodePrice').value = "";
-                document.getElementById('editNodeDaily').value = "";
-                document.getElementById('editNodeDuration').value = "";
-                document.getElementById('editNodeImg').value = "";
-            });
+                nodeId: nodeNameId, category: category, cost: newPrice, dailyYield: newDaily, duration: newDuration, imageUrl: imgVal || "", updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            }, { merge: true }).then(() => triggerToastDisplay(`Node ${nodeNameId} saved successfully!`));
         }
 
         function loadAdminNodesList() {
@@ -2779,11 +2193,8 @@
                 let html = "";
                 snap.forEach(doc => {
                     let d = doc.data();
-                    html += `<div style="background:rgba(255,255,255,0.02); padding:8px 10px; border-radius:8px; border:1px solid rgba(255,255,255,0.05); display:flex; justify-content:space-between; align-items:center;">
-                        <div>
-                            <b>${d.nodeId}</b> (${d.category || 'normal'})
-                            <p style="color:#94a3b8;">Rs. ${d.cost} | Rs. ${d.dailyYield}/Day | ${d.duration} Days</p>
-                        </div>
+                    html += `<div style="background:rgba(255,255,255,0.02); padding:8px 10px; border-radius:8px; display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                        <div><b>${d.nodeId}</b> (Rs. ${d.cost})</div>
                         <button class="buy-plan-btn" style="padding:4px 8px; font-size:10px; background:#ef4444;" onclick="deleteNodeFromAdmin('${doc.id}')">Delete</button>
                     </div>`;
                 });
@@ -2792,9 +2203,7 @@
         }
 
         window.deleteNodeFromAdmin = function(nodeId) {
-            db.collection("node_configs").doc(nodeId).delete().then(() => {
-                triggerToastDisplay("Node deleted!");
-            });
+            db.collection("node_configs").doc(nodeId).delete().then(() => triggerToastDisplay("Node deleted!"));
         }
 
         function initializeRealtimeNodeConfigSync() {
@@ -2803,42 +2212,11 @@
                     const data = doc.data();
                     const nodeId = data.nodeId || doc.id;
                     const cardElem = document.getElementById(`nodeCard-${nodeId}`);
-                    
                     if(cardElem) {
                         const costElem = cardElem.querySelector('.node-cost-txt');
                         const dailyElem = cardElem.querySelector('.node-daily-txt');
-                        const durElem = cardElem.querySelector('.node-dur-txt');
-                        const leaseBtn = cardElem.querySelector('.node-lease-btn');
-
                         if(costElem && data.cost !== undefined) costElem.innerText = `Rs. ${data.cost.toLocaleString()}`;
                         if(dailyElem && data.dailyYield !== undefined) dailyElem.innerText = `Rs. ${data.dailyYield}/Day`;
-                        if(durElem && data.duration !== undefined) durElem.innerText = data.duration;
-                        if(data.imageUrl) {
-                            const imgElem = cardElem.querySelector('.plan-node-img');
-                            if(imgElem) imgElem.src = data.imageUrl;
-                        }
-
-                        if(leaseBtn && data.cost !== undefined && data.dailyYield !== undefined) {
-                            leaseBtn.setAttribute('onclick', `leaseHardwareNode('${nodeId}', ${data.cost}, ${data.dailyYield})`);
-                        }
-                    } else {
-                        let targetGridId = data.category === 'special' ? 'gridSpecial' : (data.category === 'offer' ? 'gridOffers' : 'gridNormal');
-                        let borderClass = data.category === 'special' ? 'special-border' : (data.category === 'offer' ? 'offer-border' : '');
-                        let btnStyle = data.category === 'special' ? 'background: linear-gradient(135deg, #eab308, #ca8a04);' : (data.category === 'offer' ? 'background: linear-gradient(135deg, #a855f7, #7c3aed);' : '');
-                        let defaultImg = data.imageUrl || 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=120&auto=format&fit=crop&q=60';
-
-                        let newCardHtml = `
-                            <div class="plan-card ${borderClass}" id="nodeCard-${nodeId}" data-node-id="${nodeId}">
-                                <img src="${defaultImg}" class="plan-node-img" alt="Node Array">
-                                <div class="plan-details">
-                                    <h4 class="node-title-txt">${nodeId}</h4>
-                                    <p>Price: <b class="node-cost-txt">Rs. ${data.cost}</b> | Daily: <span class="node-daily-txt">Rs. ${data.dailyYield}/Day</span></p>
-                                    <p style="color:#64748b; font-size:10px;">Duration: <span class="node-dur-txt">${data.duration}</span> Days</p>
-                                </div>
-                                <button class="buy-plan-btn node-lease-btn" style="${btnStyle}" onclick="leaseHardwareNode('${nodeId}', ${data.cost}, ${data.dailyYield})">Activate</button>
-                            </div>
-                        `;
-                        document.getElementById(targetGridId).insertAdjacentHTML('beforeend', newCardHtml);
                     }
                 });
             });
@@ -2855,34 +2233,25 @@
             let key = document.getElementById('adminPaymentSelect').value;
             let title = document.getElementById('adminPayTitle').value.trim();
             let num = document.getElementById('adminPayNumber').value.trim();
-
-            if(!title || !num) { triggerToastDisplay("Please enter title and account number."); return; }
+            if(!title || !num) { triggerToastDisplay("Enter title and account number."); return; }
 
             db.collection("system_settings").doc("payment_gateways").set({
                 [key]: { title: title, number: num }
-            }, { merge: true }).then(() => {
-                triggerToastDisplay(`${key} Payment Details Updated!`);
-            });
+            }, { merge: true }).then(() => triggerToastDisplay(`${key} details updated!`));
         }
 
         window.exportUserDataCSV = function() {
             db.collection("users").get().then(snap => {
-                let csvContent = "data:text/csv;charset=utf-8,UID,Username,Email,Balance,Miners,ReferredBy\n";
-                snap.forEach(doc => {
-                    let u = doc.data();
-                    csvContent += `${u.uid},${u.username},${u.email},${u.balance},${u.minersCount},${u.referredBy}\n`;
-                });
+                let csvContent = "data:text/csv;charset=utf-8,UID,Username,Email,Balance\n";
+                snap.forEach(doc => { let u = doc.data(); csvContent += `${u.uid},${u.username},${u.email},${u.balance}\n`; });
                 downloadCSVFile(csvContent, "Vestify_Users_Report.csv");
             });
         }
 
         window.exportTransactionDataCSV = function() {
             db.collection("deposits").get().then(snap => {
-                let csvContent = "data:text/csv;charset=utf-8,ID,UserID,Amount,Channel,TID,Status\n";
-                snap.forEach(doc => {
-                    let d = doc.data();
-                    csvContent += `${doc.id},${d.userId},${d.amount},${d.gatewayChannel},${d.transactionId},${d.status}\n`;
-                });
+                let csvContent = "data:text/csv;charset=utf-8,ID,UserID,Amount,Channel,Status\n";
+                snap.forEach(doc => { let d = doc.data(); csvContent += `${doc.id},${d.userId},${d.amount},${d.gatewayChannel},${d.status}\n`; });
                 downloadCSVFile(csvContent, "Vestify_Transactions_Report.csv");
             });
         }
@@ -2900,17 +2269,13 @@
         window.dispatchGlobalBroadcast = function() {
             const title = document.getElementById('broadcastTitleInput').value.trim();
             const message = document.getElementById('broadcastMessageInput').value.trim();
-
-            if(!title || !message) { triggerToastDisplay("Enter broadcast title and message."); return; }
+            if(!title || !message) { triggerToastDisplay("Enter title and message."); return; }
 
             db.collection("global_broadcasts").add({
-                title: title,
-                message: message,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                title: title, message: message, timestamp: firebase.firestore.FieldValue.serverTimestamp()
             }).then(() => {
-                triggerToastDisplay("Broadcast sent to all users!");
-                document.getElementById('broadcastTitleInput').value = "";
-                document.getElementById('broadcastMessageInput').value = "";
+                triggerToastDisplay("Broadcast sent!");
+                document.getElementById('broadcastTitleInput').value = ""; document.getElementById('broadcastMessageInput').value = "";
             });
         }
 
@@ -2919,7 +2284,6 @@
                 const bannerContainer = document.getElementById('liveBroadcastTickerContainer');
                 const titleElem = document.getElementById('tickerBroadcastTitle');
                 const msgElem = document.getElementById('tickerBroadcastMsg');
-
                 if(!snapshot.empty) {
                     const latestBroadcast = snapshot.docs[0].data();
                     if(titleElem && msgElem && bannerContainer) {
@@ -2927,43 +2291,28 @@
                         msgElem.innerText = latestBroadcast.message || "";
                         bannerContainer.style.display = "flex";
                     }
-                } else {
-                    if(bannerContainer) bannerContainer.style.display = "none";
-                }
+                } else if(bannerContainer) { bannerContainer.style.display = "none"; }
             });
         }
 
         function loadAdminAnalyticsReports() {
             db.collection("users").get().then(snap => {
-                let activeToday = 0;
-                let activeWeek = 0;
-                let activeMonth = 0;
-                let now = new Date();
-
-                let revCount = 0;
-                db.collection("deposits").where("status", "==", "approved").get().then(depSnap => {
-                    depSnap.forEach(d => { revCount += (d.data().amount || 0); });
-                    document.getElementById('repTotalRevenue').innerText = `Rs. ${revCount.toLocaleString()}`;
-                });
-
+                let activeToday = 0, activeWeek = 0, activeMonth = 0, now = new Date();
                 snap.forEach(doc => {
                     let d = doc.data();
                     if(d.timestamp) {
-                        let tDate = d.timestamp.toDate();
-                        let diffDays = (now - tDate) / (1000 * 60 * 60 * 24);
+                        let diffDays = (now - d.timestamp.toDate()) / (1000 * 60 * 60 * 24);
                         if(diffDays <= 1) activeToday++;
                         if(diffDays <= 7) activeWeek++;
                         if(diffDays <= 30) activeMonth++;
                     }
                 });
-
                 document.getElementById('repDAU').innerText = activeToday;
                 document.getElementById('repWAU').innerText = activeWeek;
                 document.getElementById('repMAU').innerText = activeMonth;
             });
         }
 
-        /* HELPER FUNCTIONS */
         function triggerToastDisplay(message) {
             const toast = document.getElementById('rewardToast');
             toast.innerText = message;
@@ -2981,17 +2330,14 @@
         window.routeToView = function(pageId, navId) {
             document.querySelectorAll('.app-view-page').forEach(p => p.classList.remove('active-page'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            
             document.getElementById(pageId).classList.add('active-page');
             document.getElementById(navId).classList.add('active');
-            
             updateLivePresenceActivity(pageId);
         }
 
         window.switchPlanCategory = function(gridId, tabId) {
             document.querySelectorAll('.plans-grid').forEach(g => g.classList.remove('active-grid'));
             document.querySelectorAll('.plan-tab-trigger').forEach(t => t.classList.remove('active-tab'));
-            
             document.getElementById(gridId).classList.add('active-grid');
             document.getElementById(tabId).classList.add('active-tab');
         }
@@ -3002,34 +2348,21 @@
             document.getElementById('lblAccountTitleType').innerText = config.title;
             document.getElementById('txtMerchantAccountNo').innerText = config.number;
             document.getElementById('txtMerchantAccountTitle').innerText = config.title;
-            
-            document.getElementById('chkEasyPaisa').style.borderColor = channel === 'EasyPaisa' ? '#10b981' : 'rgba(255,255,255,0.05)';
-            document.getElementById('chkJazzCash').style.borderColor = channel === 'JazzCash' ? '#eab308' : 'rgba(255,255,255,0.05)';
-            document.getElementById('chkUSDT').style.borderColor = channel === 'USDT' ? '#26a17b' : 'rgba(255,255,255,0.05)';
-            
             updateDepositCalculations();
         }
 
         function toggleFaqVisibility(elem) {
             const ans = elem.querySelector('.faq-a');
             const icon = elem.querySelector('.faq-q i');
-            if(ans.style.display === 'block') {
-                ans.style.display = 'none';
-                icon.style.transform = 'rotate(0deg)';
-            } else {
-                ans.style.display = 'block';
-                icon.style.transform = 'rotate(180deg)';
-            }
+            ans.style.display = (ans.style.display === 'block') ? 'none' : 'block';
+            if(icon) icon.style.transform = (ans.style.display === 'block') ? 'rotate(180deg)' : 'rotate(0deg)';
         }
 
         function initializeCountdownClockTicker() {
             setInterval(() => {
                 const now = new Date();
-                const hours = 23 - now.getHours();
-                const minutes = 59 - now.getMinutes();
-                const seconds = 59 - now.getSeconds();
                 document.getElementById('countdownTimerClock').innerText = 
-                    `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                    `${(23 - now.getHours()).toString().padStart(2, '0')}:${(59 - now.getMinutes()).toString().padStart(2, '0')}:${(59 - now.getSeconds()).toString().padStart(2, '0')}`;
             }, 1000);
         }
     </script>
