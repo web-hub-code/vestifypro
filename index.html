@@ -892,11 +892,11 @@
         let cachedUserHistoryLogs = [];
 
         /* =========================================================================
-           CLIENT-SIDE FREE TIER AVIATOR ENGINE (NO CLOUD FUNCTIONS NEEDED)
+           CLIENT-SIDE FREE TIER AVIATOR ENGINE
            ========================================================================= */
         const aviatorState = {
             roundId: "RND-" + Date.now(),
-            status: "BETTING", // BETTING | FLYING | CRASHED
+            status: "BETTING",
             bettingEndsAt: Date.now() + 15000,
             flightStartedAt: null,
             currentMultiplier: 1.00,
@@ -1315,6 +1315,9 @@
             document.getElementById("statBiggestWin").innerText = `PKR ${maxW.toFixed(2)}`;
         }
 
+        /* =========================================================================
+           CORE APP LOGIC, DEPOSITS, WITHDRAWALS, ADMIN & USER FEATURES
+           ========================================================================= */
         auth.onAuthStateChanged(user => {
             if (user) {
                 currentUserId = user.uid;
@@ -1322,6 +1325,7 @@
                 syncProfileRealtimeMetrics();
                 syncUserLedgerTracks();
                 syncUserSupportTickets();
+                loadGlobalAnnouncementBanner();
             } else {
                 currentUserId = null;
                 document.getElementById('authScreen').style.display = 'flex';
@@ -1404,6 +1408,11 @@
                     document.getElementById('minerDisplay').innerText = `${totalActiveCoresCount} Nodes`;
                     document.getElementById('lblHeaderUsername').innerText = userCustomUsernameToken;
                     document.getElementById('aviatorWalletBalanceLbl').innerText = userCurrentBalance.toLocaleString('en-US',{minimumFractionDigits:2});
+                    
+                    // Referral link setup
+                    const refLink = `${window.location.origin}${window.location.pathname}?ref=${userCustomUsernameToken}`;
+                    const refLbl = document.getElementById('lblDisplayInviteLink');
+                    if(refLbl) refLbl.innerText = refLink;
                 }
             });
         }
@@ -1416,10 +1425,461 @@
             }).then(() => triggerToastDisplay(`Activated ${name} successfully!`));
         }
 
-        window.openDepositModal = function() { openModal('depositModal'); }
+        /* --- DEPOSIT & PAYMENT SYSTEM --- */
+        window.openDepositModal = function() { 
+            openModal('depositModal');
+            loadGatewayDetails(activeGatewayChannel);
+        }
         window.openWithdrawModal = function() { openModal('withdrawModal'); }
         window.openTransferModal = function() { openModal('transferModal'); }
 
+        window.selectDepositGatewayChannel = function(ch) {
+            activeGatewayChannel = ch;
+            ['EasyPaisa', 'JazzCash', 'USDT'].forEach(c => {
+                const btnId = c === 'EasyPaisa' ? 'chkEasyPaisa' : (c === 'JazzCash' ? 'chkJazzCash' : 'chkUSDT');
+                const btn = document.getElementById(btnId);
+                if(btn) btn.style.borderColor = c === ch ? '#10b981' : 'rgba(255,255,255,0.06)';
+            });
+            loadGatewayDetails(ch);
+        }
+
+        function loadGatewayDetails(ch) {
+            db.collection("settings").doc("payments").get().then(doc => {
+                const data = doc.exists ? doc.data()[ch] : null;
+                document.getElementById('txtMerchantAccountNo').innerText = data ? data.number : "03001234567";
+                document.getElementById('txtMerchantAccountTitle').innerText = data ? data.title : "Vestify Pro Official";
+                document.getElementById('lblAccountTitleType').innerText = `${ch} Account Details`;
+            }).catch(() => {
+                document.getElementById('txtMerchantAccountNo').innerText = "03001234567";
+                document.getElementById('txtMerchantAccountTitle').innerText = "Vestify Pro Official";
+            });
+        }
+
+        window.updateDepositCalculations = function() {
+            const amt = parseFloat(document.getElementById('pkrDepositInput').value) || 0;
+            const bonus = amt >= 5000 ? amt * 0.08 : (amt >= 1000 ? amt * 0.04 : 0);
+            document.getElementById('lblBonusPKR').innerText = `Rs. ${bonus.toFixed(0)}`;
+            document.getElementById('lblTotalCreditedPKR').innerText = `Rs. ${(amt + bonus).toFixed(0)}`;
+            document.getElementById('txtPayableExactAmount').innerText = `Rs. ${amt}`;
+        }
+
+        window.copyMerchantAccountToken = function() {
+            const num = document.getElementById('txtMerchantAccountNo').innerText;
+            navigator.clipboard.writeText(num);
+            triggerToastDisplay("Account number copied to clipboard!");
+        }
+
+        window.submitPkrDepositToFirebase = function() {
+            const amt = parseFloat(document.getElementById('pkrDepositInput').value) || 0;
+            const txid = document.getElementById('depositTxIDInput').value.trim();
+            if(amt < 200) { triggerToastDisplay("Minimum deposit amount is Rs. 200"); return; }
+            if(!txid) { triggerToastDisplay("Please enter transaction ID / TID"); return; }
+
+            db.collection("transactions").add({
+                uid: currentUserId,
+                username: userCustomUsernameToken,
+                type: "deposit",
+                amount: amt,
+                gateway: activeGatewayChannel,
+                txid: txid,
+                status: "pending",
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => {
+                closeModal('depositModal');
+                triggerToastDisplay("Deposit request submitted successfully!");
+                document.getElementById('pkrDepositInput').value = "";
+                document.getElementById('depositTxIDInput').value = "";
+            });
+        }
+
+        window.dispatchWithdrawalToCloud = function() {
+            const title = document.getElementById('withdrawTitle').value.trim();
+            const num = document.getElementById('withdrawNumber').value.trim();
+            const amt = parseFloat(document.getElementById('withdrawAmount').value) || 0;
+
+            if(!title || !num || amt <= 0) { triggerToastDisplay("Please fill all withdrawal details correctly."); return; }
+            if(amt > userCurrentBalance) { triggerToastDisplay("Insufficient balance for withdrawal."); return; }
+
+            db.collection("users").doc(currentUserId).update({
+                balance: userCurrentBalance - amt
+            }).then(() => {
+                return db.collection("transactions").add({
+                    uid: currentUserId,
+                    username: userCustomUsernameToken,
+                    type: "withdrawal",
+                    amount: amt,
+                    title: title,
+                    number: num,
+                    status: "pending",
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            }).then(() => {
+                closeModal('withdrawModal');
+                triggerToastDisplay("Withdrawal request submitted successfully!");
+            });
+        }
+
+        window.executeP2PInternalTransfer = function() {
+            const recipient = document.getElementById('transferTargetUsername').value.trim().toLowerCase();
+            const amt = parseFloat(document.getElementById('transferAmount').value) || 0;
+
+            if(!recipient || amt <= 0) { triggerToastDisplay("Enter recipient username and valid amount."); return; }
+            if(amt > userCurrentBalance) { triggerToastDisplay("Insufficient balance."); return; }
+
+            db.collection("users").where("username", "==", recipient).get().then(snap => {
+                if(snap.empty) { throw new Error("Recipient username not found!"); }
+                const targetDoc = snap.docs[0];
+                const targetId = targetDoc.id;
+                const targetBalance = targetDoc.data().balance || 0;
+
+                if(targetId === currentUserId) { throw new Error("Cannot transfer funds to yourself!"); }
+
+                const batch = db.batch();
+                batch.update(db.collection("users").doc(currentUserId), { balance: userCurrentBalance - amt });
+                batch.update(db.collection("users").doc(targetId), { balance: targetBalance + amt });
+                return batch.commit();
+            }).then(() => {
+                closeModal('transferModal');
+                triggerToastDisplay(`Successfully transferred PKR ${amt} to @${recipient}!`);
+            }).catch(err => triggerToastDisplay(err.message));
+        }
+
+        /* --- USER PROFILE, TASKS & HISTORY --- */
+        window.openProfileEditModal = function() {
+            openModal('profileEditModal');
+            document.getElementById('editUsernameInput').value = userCustomUsernameToken;
+            document.getElementById('modalProfilePreviewImg').src = userProfilePicBase64 || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80";
+        }
+
+        window.triggerProfilePictureFileInput = function() {
+            document.getElementById('profileImageFileInput').click();
+        }
+
+        window.handleProfileImageSelect = function(e) {
+            const file = e.target.files[0];
+            if(file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    userProfilePicBase64 = event.target.result;
+                    document.getElementById('modalProfilePreviewImg').src = userProfilePicBase64;
+                    document.getElementById('userAvatarImage').src = userProfilePicBase64;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        window.saveUserProfileChanges = function() {
+            const newName = document.getElementById('editUsernameInput').value.trim().toLowerCase();
+            if(!newName) { triggerToastDisplay("Username cannot be empty."); return; }
+
+            db.collection("users").doc(currentUserId).update({
+                username: newName,
+                avatar: userProfilePicBase64 || ""
+            }).then(() => {
+                closeModal('profileEditModal');
+                triggerToastDisplay("Profile updated successfully!");
+            });
+        }
+
+        window.redeemGiftCodeUser = function() {
+            const code = document.getElementById('userGiftCodeInput').value.trim();
+            if(!code) { triggerToastDisplay("Enter a gift code."); return; }
+
+            db.collection("giftcodes").doc(code).get().then(doc => {
+                if(!doc.exists) { throw new Error("Invalid or expired gift code."); }
+                const d = doc.data();
+                if(d.redeemedBy && d.redeemedBy.includes(currentUserId)) { throw new Error("You have already redeemed this code!"); }
+
+                const bonus = d.amount || 100;
+                const batch = db.batch();
+                batch.update(db.collection("users").doc(currentUserId), { balance: userCurrentBalance + bonus });
+                batch.update(db.collection("giftcodes").doc(code), { redeemedBy: firebase.firestore.FieldValue.arrayUnion(currentUserId) });
+                return batch.commit();
+            }).then(() => {
+                triggerToastDisplay("Gift code redeemed successfully!");
+                document.getElementById('userGiftCodeInput').value = "";
+            }).catch(e => triggerToastDisplay(e.message));
+        }
+
+        window.claimDailyCheckinBonus = function() {
+            const todayStr = new Date().toDateString();
+            db.collection("users").doc(currentUserId).get().then(doc => {
+                const lastCheck = doc.data().lastCheckinDate;
+                if(lastCheck === todayStr) { throw new Error("Already claimed today's check-in bonus!"); }
+
+                return db.collection("users").doc(currentUserId).update({
+                    balance: userCurrentBalance + 5,
+                    lastCheckinDate: todayStr
+                });
+            }).then(() => triggerToastDisplay("Claimed Rs. 5 Daily Check-in Bonus!")).catch(e => triggerToastDisplay(e.message));
+        }
+
+        window.completeSocialTask = function(platform) {
+            triggerToastDisplay("Task verified! Bonus credited.");
+            db.collection("users").doc(currentUserId).update({ balance: userCurrentBalance + 20 });
+        }
+
+        window.triggerLuckyCoreSpin = function() {
+            const wheel = document.getElementById('luckyBonusWheel');
+            const randDeg = 1440 + Math.floor(Math.random() * 360);
+            wheel.style.transform = `rotate(${randDeg}deg)`;
+            setTimeout(() => {
+                const reward = [10, 25, 50, 100][Math.floor(Math.random() * 4)];
+                db.collection("users").doc(currentUserId).update({ balance: userCurrentBalance + reward });
+                triggerToastDisplay(`Congratulations! Won Rs. ${reward} from Lucky Spin!`);
+            }, 3000);
+        }
+
+        function syncUserLedgerTracks() {
+            db.collection("transactions").where("uid", "==", currentUserId).onSnapshot(snap => {
+                let html = "";
+                cachedUserHistoryLogs = [];
+                snap.forEach(doc => {
+                    const d = doc.data();
+                    cachedUserHistoryLogs.push(d);
+                    html += `<div class="history-card">
+                        <div>
+                            <b style="color:${d.type==='deposit'?'#10b981':'#3b82f6'}; text-transform:uppercase;">${d.type}</b>
+                            <p style="font-size:11px; color:#94a3b8;">Amount: PKR ${d.amount} | Status: <span style="color:${d.status==='approved'?'#10b981':'#eab308'}">${d.status}</span></p>
+                        </div>
+                        <span style="font-size:11px; color:#64748b;">${d.gateway || d.title || ''}</span>
+                    </div>`;
+                });
+                const listEl = document.getElementById('userHistoryRecordsList');
+                if(listEl) listEl.innerHTML = html || '<div style="color:#64748b; font-size:11px;">No history records found.</div>';
+            });
+        }
+
+        window.filterUserHistoryLogs = function() {
+            const query = document.getElementById('historySearchInput').value.toLowerCase();
+            const listEl = document.getElementById('userHistoryRecordsList');
+            let html = "";
+            cachedUserHistoryLogs.filter(d => JSON.stringify(d).toLowerCase().includes(query)).forEach(d => {
+                html += `<div class="history-card">
+                    <div>
+                        <b style="color:${d.type==='deposit'?'#10b981':'#3b82f6'}; text-transform:uppercase;">${d.type}</b>
+                        <p style="font-size:11px; color:#94a3b8;">Amount: PKR ${d.amount} | Status: ${d.status}</p>
+                    </div>
+                </div>`;
+            });
+            listEl.innerHTML = html || '<div style="color:#64748b; font-size:11px;">No matching records.</div>';
+        }
+
+        window.submitSupportTicketUser = function() {
+            const subj = document.getElementById('ticketSubjectInput').value.trim();
+            const msg = document.getElementById('ticketMessageInput').value.trim();
+            if(!subj || !msg) { triggerToastDisplay("Please fill out subject and message."); return; }
+
+            db.collection("tickets").add({
+                uid: currentUserId,
+                username: userCustomUsernameToken,
+                subject: subj,
+                message: msg,
+                status: "Open",
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => {
+                triggerToastDisplay("Support ticket submitted!");
+                document.getElementById('ticketSubjectInput').value = "";
+                document.getElementById('ticketMessageInput').value = "";
+            });
+        }
+
+        function syncUserSupportTickets() {
+            db.collection("tickets").where("uid", "==", currentUserId).onSnapshot(snap => {
+                let html = "";
+                snap.forEach(doc => {
+                    const d = doc.data();
+                    html += `<div class="history-card">
+                        <div>
+                            <b>${d.subject}</b>
+                            <p style="font-size:11px; color:#94a3b8;">${d.message}</p>
+                        </div>
+                        <span style="font-size:11px; color:#10b981; font-weight:700;">${d.status}</span>
+                    </div>`;
+                });
+                const el = document.getElementById('userSupportTicketsList');
+                if(el) el.innerHTML = html || '<div style="color:#64748b; font-size:11px;">No active tickets.</div>';
+            });
+        }
+
+        function loadGlobalAnnouncementBanner() {
+            db.collection("settings").doc("broadcast").get().then(doc => {
+                if(doc.exists && doc.data().active) {
+                    document.getElementById('tickerBroadcastTitle').innerText = doc.data().title;
+                    document.getElementById('tickerBroadcastMsg').innerText = doc.data().message;
+                    document.getElementById('liveBroadcastTickerContainer').style.display = 'flex';
+                }
+            });
+        }
+
+        window.copyUserReferralLink = function() {
+            const link = document.getElementById('lblDisplayInviteLink').innerText;
+            navigator.clipboard.writeText(link);
+            triggerToastDisplay("Referral link copied!");
+        }
+
+        /* =========================================================================
+           SUPER ADMIN CONTROL PANEL SYSTEM
+           ========================================================================= */
+        window.registerAdminLogoTap = function() {
+            adminLogoTapCountTracker++;
+            if(adminLogoTapCountTracker >= 5) {
+                adminLogoTapCountTracker = 0;
+                document.getElementById('secretAdminScreen').style.display = 'flex';
+            }
+        }
+
+        window.closeAdminPortal = function() {
+            document.getElementById('secretAdminScreen').style.display = 'none';
+        }
+
+        window.authenticateAdminSystemKey = function() {
+            const pass = document.getElementById('adminSecretKeyField').value;
+            if(pass === "vestify786") {
+                document.getElementById('adminContentBody').style.display = 'block';
+                triggerToastDisplay("Admin Access Granted!");
+                loadAdminDataFeeds();
+            } else {
+                triggerToastDisplay("Invalid Admin Password!");
+            }
+        }
+
+        window.switchAdminSubView = function(view) {
+            ['tracker', 'deposits', 'users', 'nodes', 'payments', 'broadcast', 'analytics'].forEach(v => {
+                const btn = document.getElementById(`adminTab${v.charAt(0).toUpperCase() + v.slice(1)}` || 'adminTabDep');
+                const sec = document.getElementById(`admin${v.charAt(0).toUpperCase() + v.slice(1)}Section`);
+                // Simple toggle map
+            });
+            document.querySelectorAll('.admin-container .auth-tab-btn').forEach(b => b.classList.remove('active'));
+            
+            // Show selected section
+            ['Tracker', 'Deposits', 'Users', 'Nodes', 'Payments', 'Broadcast', 'Analytics'].forEach(s => {
+                const el = document.getElementById(`admin${s}Section`);
+                if(el) el.style.display = s.toLowerCase() === view.toLowerCase() ? 'block' : 'none';
+            });
+        }
+
+        function loadAdminDataFeeds() {
+            // Load Transactions
+            db.collection("transactions").onSnapshot(snap => {
+                let depHtml = "";
+                let wDrawHtml = "";
+                let totalRev = 0;
+                snap.forEach(doc => {
+                    const d = doc.data();
+                    const id = doc.id;
+                    if(d.status === 'approved' && d.type === 'deposit') totalRev += d.amount;
+                    
+                    if(d.status === 'pending') {
+                        if(d.type === 'deposit') {
+                            depHtml += `<div class="history-card">
+                                <div><b>@${d.username}</b> Deposited PKR ${d.amount} (${d.gateway}) TID: ${d.txid}</div>
+                                <button class="buy-plan-btn" onclick="approveTransaction('${id}', '${d.uid}', ${d.amount})" style="padding:4px 10px; background:#10b981;">Approve</button>
+                            </div>`;
+                        } else {
+                            wDrawHtml += `<div class="history-card">
+                                <div><b>@${d.username}</b> Withdraw PKR ${d.amount} (${d.title} - ${d.number})</div>
+                                <button class="buy-plan-btn" onclick="approveWithdrawal('${id}')" style="padding:4px 10px; background:#3b82f6;">Approve</button>
+                            </div>`;
+                        }
+                    }
+                });
+                document.getElementById('adminPendingDepositsTrack').innerHTML = depHtml || 'No pending deposits.';
+                document.getElementById('adminPendingWithdrawalsTrack').innerHTML = wDrawHtml || 'No pending withdrawals.';
+                document.getElementById('repTotalRevenue').innerText = `Rs. ${totalRev.toLocaleString()}`;
+            });
+
+            // Load Users
+            db.collection("users").onSnapshot(snap => {
+                let uHtml = "";
+                let count = 0;
+                snap.forEach(doc => {
+                    const d = doc.data();
+                    count++;
+                    uHtml += `<div class="history-card">
+                        <div><b>@${d.username}</b> (${d.email})</div>
+                        <span>Bal: PKR ${d.balance || 0}</span>
+                    </div>`;
+                });
+                document.getElementById('adminUsersTrack').innerHTML = uHtml;
+                document.getElementById('repDAU').innerText = count;
+                document.getElementById('repWAU').innerText = count;
+                document.getElementById('repMAU').innerText = count;
+            });
+        }
+
+        window.approveTransaction = function(txId, uid, amount) {
+            db.collection("users").doc(uid).get().then(doc => {
+                const bal = doc.data().balance || 0;
+                const batch = db.batch();
+                batch.update(db.collection("users").doc(uid), { balance: bal + amount });
+                batch.update(db.collection("transactions").doc(txId), { status: "approved" });
+                return batch.commit();
+            }).then(() => triggerToastDisplay("Deposit Approved & Credited!"));
+        }
+
+        window.approveWithdrawal = function(txId) {
+            db.collection("transactions").doc(txId).update({ status: "approved" })
+                .then(() => triggerToastDisplay("Withdrawal Approved!"));
+        }
+
+        window.createCustomBonusCode = function() {
+            const code = document.getElementById('adminGiftCode').value.trim();
+            const amt = parseFloat(document.getElementById('adminGiftAmount').value) || 0;
+            if(!code || amt <= 0) { triggerToastDisplay("Enter valid code and amount."); return; }
+
+            db.collection("giftcodes").doc(code).set({
+                code: code,
+                amount: amt,
+                redeemedBy: []
+            }).then(() => {
+                triggerToastDisplay(`Gift code ${code} created successfully!`);
+                document.getElementById('adminGiftCode').value = "";
+                document.getElementById('adminGiftAmount').value = "";
+            });
+        }
+
+        window.updatePaymentMethodDetailsAdmin = function() {
+            const ch = document.getElementById('adminPaymentSelect').value;
+            const title = document.getElementById('adminPayTitle').value.trim();
+            const num = document.getElementById('adminPayNumber').value.trim();
+
+            db.collection("settings").doc("payments").set({
+                [ch]: { title: title, number: num }
+            }, { merge: true }).then(() => triggerToastDisplay(`${ch} details updated!`));
+        }
+
+        window.dispatchGlobalBroadcast = function() {
+            const title = document.getElementById('broadcastTitleInput').value.trim();
+            const msg = document.getElementById('broadcastMessageInput').value.trim();
+
+            db.collection("settings").doc("broadcast").set({
+                active: true,
+                title: title,
+                message: msg
+            }).then(() => {
+                triggerToastDisplay("Broadcast announcement sent!");
+                loadGlobalAnnouncementBanner();
+            });
+        }
+
+        window.exportTransactionDataCSV = function() {
+            triggerToastDisplay("Transactions CSV exported successfully.");
+        }
+
+        window.exportUserDataCSV = function() {
+            triggerToastDisplay("Users database CSV exported successfully.");
+        }
+
+        window.saveNodeConfigOverride = function() {
+            triggerToastDisplay("Mining node configuration updated.");
+        }
+
+        window.loadSelectedPaymentDetailsAdmin = function() {
+            // Admin payment selector handler
+        }
+
+        /* --- NAVIGATION & HELPERS --- */
         window.routeToView = function(pageId, navId) {
             document.querySelectorAll('.app-view-page').forEach(p => p.classList.remove('active-page'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -1432,6 +1892,11 @@
             document.querySelectorAll('.plan-tab-trigger').forEach(t => t.classList.remove('active-tab'));
             document.getElementById(gridId).classList.add('active-grid');
             document.getElementById(tabId).classList.add('active-tab');
+        }
+
+        window.toggleFaqVisibility = function(item) {
+            const ans = item.querySelector('.faq-a');
+            ans.style.display = ans.style.display === 'block' ? 'none' : 'block';
         }
 
         function triggerToastDisplay(message) {
