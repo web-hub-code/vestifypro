@@ -33,11 +33,17 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background: #040814; color: #ffffff; min-height: 100vh; padding-bottom: 100px; overflow-x: hidden; }
         
-        .bg-glow-1 { position: fixed; width: 350px; height: 350px; background: radial-gradient(circle, rgba(255, 65, 108, 0.15) 0%, rgba(0,0,0,0) 70%); top: -50px; left: -50px; z-index: -1; pointer-events: none; }
-        .bg-glow-2 { position: fixed; width: 450px; height: 450px; background: radial-gradient(circle, rgba(56, 189, 248, 0.12) 0%, rgba(0,0,0,0) 70%); bottom: 100px; right: -100px; z-index: -1; pointer-events: none; }
+        .bg-glow-1 { position: fixed; width: 400px; height: 400px; background: radial-gradient(circle, rgba(255, 65, 108, 0.18) 0%, rgba(0,0,0,0) 70%); top: -50px; left: -50px; z-index: -1; pointer-events: none; }
+        .bg-glow-2 { position: fixed; width: 500px; height: 500px; background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, rgba(0,0,0,0) 70%); bottom: 100px; right: -100px; z-index: -1; pointer-events: none; }
 
+        /* MODERN LANDING & AUTH SCREEN */
         #authScreen, #secretAdminScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #040814; z-index: 99999; display: flex; align-items: center; justify-content: center; padding: 20px; overflow-y: auto; }
-        .auth-container, .admin-container { background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 28px; padding: 35px 24px; width: 100%; max-width: 480px; text-align: center; backdrop-filter: blur(25px); box-shadow: 0 20px 50px rgba(0,0,0,0.6); }
+        .auth-master-wrapper { display: grid; grid-template-columns: 1fr; width: 100%; max-width: 900px; background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 32px; overflow: hidden; backdrop-filter: blur(25px); box-shadow: 0 25px 60px rgba(0,0,0,0.7); }
+        @media(min-width: 768px) { .auth-master-wrapper { grid-template-columns: 1.1fr 1fr; } }
+        
+        .auth-info-pane { padding: 40px 30px; background: linear-gradient(135deg, rgba(255,65,108,0.1), rgba(56,189,248,0.05)); display: flex; flex-direction: column; justify-content: center; border-right: 1px solid rgba(255,255,255,0.06); }
+        .auth-form-pane { padding: 40px 30px; display: flex; flex-direction: column; justify-content: center; }
+
         .auth-tabs { display: flex; gap: 10px; margin-bottom: 20px; background: rgba(255,255,255,0.03); padding: 6px; border-radius: 14px; }
         .auth-tab-btn { flex: 1; padding: 10px; border-radius: 10px; border: none; background: transparent; color: #94a3b8; font-weight: 700; font-size: 11px; cursor: pointer; transition: all 0.3s; }
         .auth-tab-btn.active { background: linear-gradient(135deg, #ff416c, #ff4b2b); color: white; box-shadow: 0 4px 15px rgba(255,65,108,0.3); }
@@ -95,21 +101,13 @@
         .app-view-page.active-page { display: block; }
         .history-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); padding: 14px; border-radius: 16px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
 
-        .salary-bar-container { background: rgba(255,255,255,0.06); border-radius: 10px; height: 10px; width: 100%; margin-top: 8px; overflow: hidden; position: relative; }
-        .salary-bar-fill { height: 100%; background: linear-gradient(90deg, #38bdf8, #3b82f6); width: 0%; transition: width 0.5s ease; }
-
         .spin-box-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.06); padding: 25px 20px; border-radius: 24px; text-align: center; margin-top: 20px; position: relative; background: linear-gradient(180deg, rgba(255,65,108,0.05) 0%, rgba(4,8,24,0) 100%); }
-        .wheel-outer { width: 140px; height: 140px; border: 4px dashed #ff416c; border-radius: 50%; margin: 15px auto; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 13px; color: white; background: rgba(255,65,108,0.05); text-shadow: 0 0 10px #ff416c; box-shadow: inset 0 0 15px rgba(255,65,108,0.2); transition: transform 3s cubic-bezier(0.1, 0.8, 0.1, 1); }
+        .wheel-outer { width: 140px; height: 140px; border: 4px dashed #ff416c; border-radius: 50%; margin: 15px auto; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 13px; color: white; background: rgba(255,65,108,0.05); text-shadow: 0 0 10px #ff416c; box-shadow: inset 0 0 15px rgba(255,65,108,0.2); }
 
         .info-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 20px; padding: 18px; margin-bottom: 14px; }
         .info-card h4 { font-size: 14px; color: #38bdf8; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
         .info-card p { font-size: 12px; color: #94a3b8; line-height: 1.6; }
         
-        .faq-item { border-bottom: 1px solid rgba(255,255,255,0.06); padding: 12px 0; cursor: pointer; }
-        .faq-item:last-child { border: none; }
-        .faq-q { font-size: 13px; font-weight: 700; color: white; display: flex; justify-content: space-between; align-items: center; }
-        .faq-a { font-size: 12px; color: #94a3b8; margin-top: 6px; display: none; line-height: 1.5; }
-
         .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 70px; background: rgba(4, 8, 20, 0.95); backdrop-filter: blur(20px); border-top: 1px solid rgba(255, 255, 255, 0.08); display: flex; justify-content: space-around; align-items: center; z-index: 999; }
         .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: #64748b; text-decoration: none; font-size: 10px; font-weight: 600; cursor: pointer; transition: color 0.2s; }
         .nav-item.active { color: #38bdf8; }
@@ -136,7 +134,6 @@
         .aviator-status-closed { background: rgba(234, 179, 8, 0.16); color: #eab308; border: 1px solid rgba(234, 179, 8, 0.35); }
         .aviator-status-crashed { background: rgba(239, 68, 68, 0.16); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.35); }
         .aviator-icon-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.09); color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 11px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; }
-        .aviator-icon-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
         .aviator-stage { position: relative; width: 100%; height: 250px; background: radial-gradient(circle at 50% 60%, #131c36 0%, #030712 85%); border-radius: 22px; border: 1px solid rgba(255, 65, 108, 0.28); overflow: hidden; box-shadow: inset 0 0 40px rgba(0,0,0,0.8); }
         .aviator-grid-bg { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px); background-size: 32px 32px; pointer-events: none; }
         .aviator-countdown-bar-wrap { width: 220px; max-width: 80%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 99px; margin: 10px auto 0 auto; overflow: hidden; }
@@ -149,20 +146,8 @@
         .aviator-quick-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
         .aviator-chip-btn { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: #e2e8f0; border-radius: 9px; padding: 6px 4px; font-size: 11px; font-weight: 700; cursor: pointer; }
         .aviator-chip-btn:hover { background: rgba(56,189,248,0.16); border-color: #38bdf8; color: #38bdf8; }
-        .aviator-subtabs { display: flex; gap: 6px; background: rgba(255,255,255,0.03); padding: 5px; border-radius: 14px; overflow-x: auto; }
-        .aviator-subtab-btn { flex: 1; padding: 8px 10px; border-radius: 10px; border: none; background: transparent; color: #94a3b8; font-size: 11px; font-weight: 700; cursor: pointer; white-space: nowrap; }
-        .aviator-subtab-btn.active { background: #38bdf8; color: #040814; }
         .aviator-pill { padding: 3px 9px; border-radius: 8px; font-size: 11px; font-weight: 800; cursor: pointer; white-space: nowrap; }
         .aviator-pill-low { background: rgba(56, 189, 248, 0.14); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.25); }
-        .aviator-pill-mid { background: rgba(168, 85, 247, 0.16); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
-        .aviator-pill-high { background: rgba(234, 179, 8, 0.18); color: #facc15; border: 1px solid rgba(234, 179, 8, 0.35); }
-        @keyframes planeShake {
-            0%, 100% { transform: translate(0, 0) rotate(-18deg); }
-            25% { transform: translate(1px, -2px) rotate(-16deg); }
-            50% { transform: translate(-1px, 1px) rotate(-20deg); }
-            75% { transform: translate(2px, 1px) rotate(-17deg); }
-        }
-        .plane-flying-anim { animation: planeShake 0.35s infinite ease-in-out; }
     </style>
 </head>
 <body>
@@ -175,51 +160,65 @@
     <!-- Hidden File Input for Profile Picture Upload -->
     <input type="file" id="profileImageFileInput" accept="image/*" style="display:none;" onchange="handleProfileImageSelect(event)">
 
-    <!-- AUTHENTICATION SCREEN -->
+    <!-- MODERN AUTHENTICATION & LANDING SCREEN -->
     <div id="authScreen">
-        <div class="auth-container">
-            <h2 style="font-weight: 800; background: linear-gradient(135deg, #fff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 1px;">VESTIFY PRO</h2>
-            <p style="font-size: 11px; color: #64748b; margin-bottom: 20px;">Cloud Mining & Casino Platform</p>
-            
-            <div class="auth-tabs">
-                <button id="tabLogin" class="auth-tab-btn active" onclick="switchAuthTab('login')">Sign In</button>
-                <button id="tabRegister" class="auth-tab-btn" onclick="switchAuthTab('register')">Sign Up</button>
+        <div class="auth-master-wrapper">
+            <div class="auth-info-pane">
+                <div style="display:flex; align-items:center; gap:12px; margin-bottom:15px;">
+                    <div class="logo-icon"><i class="fa-solid fa-microchip"></i></div>
+                    <h2 style="font-size:20px; font-weight:800; letter-spacing:1px;">VESTIFY PRO</h2>
+                </div>
+                <p style="font-size:12px; color:#94a3b8; line-height:1.6; margin-bottom:16px;">
+                    Welcome to the ultimate Cloud Earning & Aviator Crash Gaming platform. Lease high-performance nodes, earn daily yields, and play secure rounds.
+                </p>
+                <div style="display:flex; flex-direction:column; gap:8px; font-size:11px; color:#38bdf8;">
+                    <div><i class="fa-solid fa-check-circle" style="color:#10b981;"></i> Secure Cloud Mining Yields</div>
+                    <div><i class="fa-solid fa-check-circle" style="color:#10b981;"></i> Live Aviator Crash Multipliers</div>
+                    <div><i class="fa-solid fa-check-circle" style="color:#10b981;"></i> 7-Day Streak & Spin Wheel Bonuses</div>
+                </div>
             </div>
-            
-            <input type="text" id="authUsername" class="modal-input" placeholder="Choose Username" style="margin-top:0; display:none;">
-            <input type="email" id="authEmail" class="modal-input" placeholder="Email Address">
-            <input type="password" id="authPassword" class="modal-input" placeholder="Password">
-            <input type="text" id="authReferralInput" class="modal-input" placeholder="Referral Code (Optional)">
-            
-            <button class="buy-plan-btn" onclick="handleAuthAction()" style="width:100%; margin-top:20px; padding:14px; border-radius:12px; font-size:13px; letter-spacing:0.5px;">CONTINUE</button>
-            
-            <div style="margin: 15px 0; color: #64748b; font-size: 11px; font-weight: 700;">OR USE GOOGLE</div>
-            
-            <button class="google-auth-btn" onclick="executeGoogleAuthenticationLink()">
-                <img src="https://img.icons8.com/color/48/000000/google-logo.png" width="18" alt=""> Continue with Google
-            </button>
+
+            <div class="auth-form-pane">
+                <div class="auth-tabs">
+                    <button id="tabLogin" class="auth-tab-btn active" onclick="switchAuthTab('login')">Sign In</button>
+                    <button id="tabRegister" class="auth-tab-btn" onclick="switchAuthTab('register')">Create Account</button>
+                </div>
+                
+                <input type="text" id="authUsername" class="modal-input" placeholder="Choose Username" style="margin-top:0; display:none;">
+                <input type="email" id="authEmail" class="modal-input" placeholder="Email Address">
+                <input type="password" id="authPassword" class="modal-input" placeholder="Password">
+                <input type="text" id="authReferralInput" class="modal-input" placeholder="Referral Code (Optional)" style="display:none;">
+                
+                <button class="buy-plan-btn" onclick="handleAuthAction()" style="width:100%; margin-top:20px; padding:14px; border-radius:12px; font-size:13px; letter-spacing:0.5px;">CONTINUE</button>
+                
+                <div style="margin: 15px 0; color: #64748b; font-size: 11px; font-weight: 700; text-align:center;">OR CONTINUE WITH GOOGLE</div>
+                
+                <button class="google-auth-btn" onclick="executeGoogleAuthenticationLink()">
+                    <img src="https://img.icons8.com/color/48/000000/google-logo.png" width="18" alt=""> Google Sign-In
+                </button>
+                <p style="font-size:9px; color:#64748b; text-align:center; margin-top:14px;">By continuing, you agree to our Terms & Conditions and Privacy Policy.</p>
+            </div>
         </div>
     </div>
 
-    <!-- ADVANCED SUPER ADMIN PANEL -->
+    <!-- MANUAL CONTROL ADMIN PANEL WITH PASSWORD RESET -->
     <div id="secretAdminScreen" style="display: none;">
-        <div class="admin-container" style="max-width: 560px; background: #070d19; border: 1px solid rgba(255,255,255,0.1);">
+        <div class="admin-container" style="max-width: 580px; background: #070d19; border: 1px solid rgba(255,255,255,0.1);">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                <h3 style="color: #ff416c; font-weight: 800; margin:0;"><i class="fa-solid fa-user-shield"></i> Admin Control Panel</h3>
+                <h3 style="color: #ff416c; font-weight: 800; margin:0;"><i class="fa-solid fa-user-shield"></i> Advanced Admin Control Panel</h3>
                 <div class="close-modal-btn" onclick="closeAdminPortal()" style="position: static; font-size: 14px; background:rgba(255,255,255,0.06); padding:4px 10px; border-radius:8px;">&times; Close</div>
             </div>
-            <p style="font-size: 11px; color: #64748b; margin-bottom: 15px; text-align:left;">Manage Users, Nodes, Payments, Bonuses & System Settings</p>
+            <p style="font-size: 11px; color: #64748b; margin-bottom: 15px; text-align:left;">Manage Manual Deposits, Withdrawals, User Balances, Passwords & Promo Codes</p>
             
             <input type="password" id="adminSecretKeyField" class="modal-input" placeholder="Enter Admin Secret Password (vestify786)" style="margin-top:0;">
             <button class="buy-plan-btn" onclick="authenticateAdminSystemKey()" style="width:100%; margin:10px 0; padding:10px;">Login Admin</button>
             
             <div id="adminContentBody" style="display: none; margin-top: 15px; text-align: left; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; max-height: 500px; overflow-y: auto;">
                 <div class="auth-tabs" style="margin-bottom: 15px; display: flex; flex-wrap: wrap; gap: 4px;">
-                    <button id="adminTabTracker" class="auth-tab-btn active" onclick="switchAdminSubView('tracker')">Live Online</button>
-                    <button id="adminTabDep" class="auth-tab-btn" onclick="switchAdminSubView('deposits')">Transactions</button>
+                    <button id="adminTabTracker" class="auth-tab-btn active" onclick="switchAdminSubView('tracker')">Online</button>
+                    <button id="adminTabDep" class="auth-tab-btn" onclick="switchAdminSubView('deposits')">Manual Pay</button>
                     <button id="adminTabUsers" class="auth-tab-btn" onclick="switchAdminSubView('users')">Users</button>
                     <button id="adminTabNodes" class="auth-tab-btn" onclick="switchAdminSubView('nodes')">Nodes</button>
-                    <button id="adminTabPayments" class="auth-tab-btn" onclick="switchAdminSubView('payments')">Payments</button>
                     <button id="adminTabBroadcast" class="auth-tab-btn" onclick="switchAdminSubView('broadcast')">Broadcast</button>
                     <button id="adminTabAnalytics" class="auth-tab-btn" onclick="switchAdminSubView('analytics')">Reports</button>
                 </div>
@@ -231,23 +230,27 @@
 
                 <div id="adminDepositsSection" style="display: none;">
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                        <h5 style="font-size: 13px; color: #38bdf8;">Pending Deposits & Withdrawals</h5>
+                        <h5 style="font-size: 13px; color: #38bdf8;">Pending Manual Deposits & Withdrawals</h5>
                         <button class="plan-tab-trigger" onclick="exportTransactionDataCSV()" style="padding:4px 10px; font-size:10px; background:#10b981; color:white; border:none;">Export CSV</button>
                     </div>
                     <div id="adminPendingDepositsTrack" style="font-size: 12px; display: flex; flex-direction: column; gap: 8px;">Awaiting verification...</div>
-                    <div id="adminPendingWithdrawalsTrack" style="font-size: 12px; display: flex; flex-direction: column; gap: 8px; margin-top: 10px;"></div>
                 </div>
 
                 <div id="adminUsersSection" style="display: none;">
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                        <h5 style="font-size: 13px; color: #eab308;">User Accounts & Control</h5>
-                        <button class="plan-tab-trigger" onclick="exportUserDataCSV()" style="padding:4px 10px; font-size:10px; background:#38bdf8; color:white; border:none;">Export All Users</button>
+                        <h5 style="font-size: 13px; color: #eab308;">User Accounts, Balance & Promo Codes</h5>
                     </div>
                     <div style="background:rgba(255,255,255,0.02); padding:10px; border-radius:12px; margin-bottom:12px; border:1px solid rgba(255,255,255,0.05);">
-                        <span style="font-size:11px; color:#38bdf8; font-weight:700;">Issue Custom Gift/Bonus Code</span>
-                        <input type="text" id="adminGiftCode" class="modal-input" placeholder="Gift Code Name (e.g. BONUS500)" style="margin-top:6px;">
+                        <span style="font-size:11px; color:#38bdf8; font-weight:700;">Issue Custom Promo / Gift Code</span>
+                        <input type="text" id="adminGiftCode" class="modal-input" placeholder="Promo Code (e.g. VESTIFY500)" style="margin-top:6px;">
                         <input type="number" id="adminGiftAmount" class="modal-input" placeholder="Bonus Amount (PKR)" style="margin-top:6px;">
-                        <button class="buy-plan-btn" onclick="createCustomBonusCode()" style="width:100%; margin-top:8px; padding:8px; background:#10b981;">Create Gift Code</button>
+                        <button class="buy-plan-btn" onclick="createCustomBonusCode()" style="width:100%; margin-top:8px; padding:8px; background:#10b981;">Create Promo Code</button>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.02); padding:10px; border-radius:12px; margin-bottom:12px; border:1px solid rgba(255,255,255,0.05);">
+                        <span style="font-size:11px; color:#eab308; font-weight:700;">Manage User Balance (Add/Deduct)</span>
+                        <input type="text" id="adminTargetUsername" class="modal-input" placeholder="Target Username" style="margin-top:6px;">
+                        <input type="number" id="adminAdjustAmount" class="modal-input" placeholder="Amount (+ or - PKR)" style="margin-top:6px;">
+                        <button class="buy-plan-btn" onclick="adjustUserBalanceAdmin()" style="width:100%; margin-top:8px; padding:8px; background:#eab308;">Update Balance</button>
                     </div>
                     <div id="adminUsersTrack" style="font-size: 12px; display: flex; flex-direction: column; gap: 8px;">Loading users...</div>
                 </div>
@@ -263,22 +266,7 @@
                         <input type="text" id="editNodeName" class="modal-input" placeholder="Node Name (e.g. Pod Alpha-5)" style="margin-top:0;">
                         <input type="number" id="editNodePrice" class="modal-input" placeholder="Lease Cost (PKR)" style="margin-top:0;">
                         <input type="number" id="editNodeDaily" class="modal-input" placeholder="Daily Profit (PKR)" style="margin-top:0;">
-                        <input type="number" id="editNodeDuration" class="modal-input" placeholder="Duration (Days, e.g. 30)" style="margin-top:0;">
                         <button class="buy-plan-btn" onclick="saveNodeConfigOverride()" style="background:linear-gradient(135deg, #a855f7, #7c3aed); padding:10px;">Save New Node</button>
-                    </div>
-                </div>
-
-                <div id="adminPaymentsSection" style="display: none;">
-                    <h5 style="font-size: 13px; color: #10b981; margin-bottom: 10px;">Dynamic Payment Account Details</h5>
-                    <div style="display: flex; flex-direction: column; gap: 10px; background: rgba(255,255,255,0.02); padding: 12px; border-radius: 14px;">
-                        <select id="adminPaymentSelect" class="modal-input" style="margin-top:0;">
-                            <option value="EasyPaisa" style="background:#0b111e;">EasyPaisa</option>
-                            <option value="JazzCash" style="background:#0b111e;">JazzCash</option>
-                            <option value="USDT" style="background:#0b111e;">Binance Pay (USDT TRC20)</option>
-                        </select>
-                        <input type="text" id="adminPayTitle" class="modal-input" placeholder="Account Title Name" style="margin-top:0;">
-                        <input type="text" id="adminPayNumber" class="modal-input" placeholder="Account Number / Wallet Address" style="margin-top:0;">
-                        <button class="buy-plan-btn" onclick="updatePaymentMethodDetailsAdmin()" style="background:#10b981; padding:10px;">Update Payment Method</button>
                     </div>
                 </div>
 
@@ -287,7 +275,7 @@
                     <div style="display: flex; flex-direction: column; gap: 10px;">
                         <input type="text" id="broadcastTitleInput" class="modal-input" placeholder="Announcement Title" style="margin-top:0;">
                         <textarea id="broadcastMessageInput" class="modal-input" placeholder="Type notification message for all users..." style="margin-top:0; height:80px; resize:none;"></textarea>
-                        <button class="buy-plan-btn" onclick="dispatchGlobalBroadcast()" style="background:linear-gradient(135deg, #ff416c, #ff4b2b); padding:10px;">Send Announcement to All</button>
+                        <button class="buy-plan-btn" onclick="dispatchGlobalBroadcast()" style="background:linear-gradient(135deg, #ff416c, #ff4b2b); padding:10px;">Send Announcement</button>
                     </div>
                 </div>
 
@@ -312,7 +300,10 @@
                     <p style="font-size:10px; color:#38bdf8; font-weight: 700;">Cloud Earning & Casino</p>
                 </div>
             </div>
-            <button class="buy-plan-btn" onclick="triggerSignOut()" style="background:rgba(239,68,68,0.15); color:#ef4444; font-size:11px; padding:6px 14px; border:1px solid rgba(239,68,68,0.3); box-shadow: none;">Log Out</button>
+            <div style="display:flex; gap:8px; align-items:center;">
+                <button class="buy-plan-btn" onclick="openProfileEditModal()" style="background:rgba(56,189,248,0.15); color:#38bdf8; font-size:11px; padding:6px 12px; border:1px solid rgba(56,189,248,0.3); box-shadow: none;">Settings</button>
+                <button class="buy-plan-btn" onclick="triggerSignOut()" style="background:rgba(239,68,68,0.15); color:#ef4444; font-size:11px; padding:6px 12px; border:1px solid rgba(239,68,68,0.3); box-shadow: none;">Log Out</button>
+            </div>
         </div>
     </div>
 
@@ -347,7 +338,7 @@
             
             <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); font-size: 11px;">
                 <span style="color:#94a3b8;">Active Mining Nodes: <b id="minerDisplay" style="color:#38bdf8;">0 Nodes</b></span>
-                <span style="color:#10b981;">Total Earned Profit: <b id="lblTotalYieldGenerated">Rs. 0.00</b></span>
+                <span style="color:#10b981;">Available Spins: <b id="lblAvailableSpinsCount" style="color:#facc15;">0 Spins</b></span>
             </div>
         </div>
 
@@ -366,41 +357,29 @@
 
         <div class="plans-grid active-grid" id="gridNormal">
             <div class="plan-card">
-                <img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Node Array">
+                <img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Node">
                 <div class="plan-details">
                     <h4>Pod Alpha-1 <i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:10px;"></i></h4>
                     <p>Price: <b>Rs. 200</b> | Daily: <span>Rs. 16/Day</span></p>
-                    <p style="color:#64748b; font-size:10px;">Duration: 30 Days</p>
                 </div>
                 <button class="buy-plan-btn" onclick="leaseHardwareNode('Pod Alpha-1', 200, 16)">Activate</button>
             </div>
             <div class="plan-card">
-                <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Node Array">
+                <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Node">
                 <div class="plan-details">
                     <h4>Pod Alpha-2 <i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:10px;"></i></h4>
                     <p>Price: <b>Rs. 500</b> | Daily: <span>Rs. 42/Day</span></p>
-                    <p style="color:#64748b; font-size:10px;">Duration: 30 Days</p>
                 </div>
                 <button class="buy-plan-btn" onclick="leaseHardwareNode('Pod Alpha-2', 500, 42)">Activate</button>
-            </div>
-            <div class="plan-card">
-                <img src="https://images.unsplash.com/photo-1563770660941-20978e870e26?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Node Array">
-                <div class="plan-details">
-                    <h4>Pod Alpha-3 <i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:10px;"></i></h4>
-                    <p>Price: <b>Rs. 800</b> | Daily: <span>Rs. 70/Day</span></p>
-                    <p style="color:#64748b; font-size:10px;">Duration: 30 Days</p>
-                </div>
-                <button class="buy-plan-btn" onclick="leaseHardwareNode('Pod Alpha-3', 800, 70)">Activate</button>
             </div>
         </div>
 
         <div class="plans-grid" id="gridSpecial">
             <div class="plan-card special-border">
-                <img src="https://images.unsplash.com/photo-1640340434855-6084b1f4901c?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Rig Setup">
+                <img src="https://images.unsplash.com/photo-1640340434855-6084b1f4901c?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Rig">
                 <div class="plan-details">
                     <h4>Rig Stratum-1 <i class="fa-solid fa-crown" style="color:#eab308; font-size:10px;"></i></h4>
                     <p>Price: <b>Rs. 4,000</b> | Daily: <span>Rs. 380/Day</span></p>
-                    <p style="color:#64748b; font-size:10px;">Duration: 30 Days</p>
                 </div>
                 <button class="buy-plan-btn" style="background: linear-gradient(135deg, #eab308, #ca8a04);" onclick="leaseHardwareNode('Rig Stratum-1', 4000, 380)">Activate</button>
             </div>
@@ -408,46 +387,58 @@
 
         <div class="plans-grid" id="gridOffers">
             <div class="plan-card offer-border">
-                <img src="https://images.unsplash.com/photo-1639322537228-f710d846310a?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Overdrive Array">
+                <img src="https://images.unsplash.com/photo-1639322537228-f710d846310a?w=120&auto=format&fit=crop&q=60" class="plan-node-img" alt="Array">
                 <div class="plan-details">
                     <h4>Matrix Overdrive-1 <i class="fa-solid fa-bolt-lightning" style="color:#a855f7; font-size:10px;"></i></h4>
                     <p>Price: <b>Rs. 30,000</b> | Daily: <span>Rs. 3,400/Day</span></p>
-                    <p style="color:#64748b; font-size:10px;">Duration: 30 Days</p>
                 </div>
                 <button class="buy-plan-btn" style="background: linear-gradient(135deg, #a855f7, #7c3aed);" onclick="leaseHardwareNode('Matrix Overdrive-1', 30000, 3400)">Activate</button>
             </div>
         </div>
 
-        <div class="section-title"><i class="fa-solid fa-list-check"></i> Daily Tasks & Gift Code</div>
+        <div class="section-title"><i class="fa-solid fa-gift"></i> Promo Code & Tasks</div>
         <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); padding: 14px; border-radius: 16px; margin-bottom: 12px; display:flex; gap:8px;">
-            <input type="text" id="userGiftCodeInput" class="modal-input" placeholder="Enter Gift / Promo Code" style="margin-top:0; flex:1;">
+            <input type="text" id="userGiftCodeInput" class="modal-input" placeholder="Enter Promo / Gift Code" style="margin-top:0; flex:1;">
             <button class="buy-plan-btn" onclick="redeemGiftCodeUser()" style="padding:10px 16px; background:#10b981;">Redeem</button>
         </div>
 
+        <!-- 7-Day Streak Daily Login Tasks -->
         <div class="task-card">
             <div class="task-info">
                 <div class="task-icon"><i class="fa-solid fa-calendar-check"></i></div>
                 <div>
-                    <b style="font-size:13px; color:white;">Daily Login Check-in</b>
-                    <p style="font-size:10px; color:#94a3b8;">Claim free Rs. 5 PKR bonus daily</p>
+                    <b style="font-size:13px; color:white;" id="dailyLoginStreakTitle">Daily Login Streak (Day 1)</b>
+                    <p style="font-size:10px; color:#94a3b8;">Claim Rs. 4 to Rs. 20 PKR bonus every 24h</p>
                 </div>
             </div>
-            <button class="buy-plan-btn" onclick="claimDailyCheckinBonus()" style="padding:6px 14px; font-size:11px;">Claim</button>
+            <button class="buy-plan-btn" id="claimDailyBtn" onclick="claimDailyCheckinBonus()" style="padding:6px 14px; font-size:11px;">Claim</button>
         </div>
 
+        <!-- Facebook Page Follow Task -->
+        <div class="task-card">
+            <div class="task-info">
+                <div class="task-icon" style="background:rgba(59,130,246,0.1); color:#3b82f6;"><i class="fa-brands fa-facebook-f"></i></div>
+                <div>
+                    <b style="font-size:13px; color:white;">Follow Facebook Page</b>
+                    <p style="font-size:10px; color:#94a3b8;">Earn Rs. 20 PKR reward instantly</p>
+                </div>
+            </div>
+            <button class="buy-plan-btn" id="claimFbBtn" onclick="completeFacebookFollowTask()" style="padding:6px 14px; font-size:11px; background:#3b82f6;">Follow & Claim</button>
+        </div>
+
+        <!-- Spin Wheel Card -->
         <div class="spin-box-card">
-            <h4><i class="fa-solid fa-dharmachakra"></i> Lucky Spin Bonus</h4>
-            <p style="font-size:11px; color:#64748b; margin-top:3px;">Spin once every 24 hours for free cash rewards</p>
+            <h4><i class="fa-solid fa-dharmachakra"></i> Aviator Spin Wheel</h4>
+            <p style="font-size:11px; color:#64748b; margin-top:3px;">Play Aviator bets &ge; Rs. 1,000 to earn spins (Win Rs. 10 - Rs. 50)</p>
+            <div style="font-size:13px; font-weight:700; color:#38bdf8; margin-top:6px;">Available Spins: <span id="spinWheelCountDisplay" style="color:#facc15;">0</span></div>
             <div class="wheel-outer" id="luckyBonusWheel"><i class="fa-solid fa-circle-radiation fa-spin" style="font-size: 24px; color:#ff416c;"></i></div>
-            <button class="buy-plan-btn" onclick="triggerLuckyCoreSpin()" style="padding:11px 28px; font-size:13px; border-radius:12px;">SPIN NOW</button>
+            <button class="buy-plan-btn" onclick="triggerAviatorSpinWheel()" style="padding:11px 28px; font-size:13px; border-radius:12px;">SPIN NOW</button>
         </div>
     </div>
 
-    <!-- PAGE 2: AVIATOR PRO CRASH GAME MODULE (WITH AUTO BET & AUTO CASH OUT) -->
+    <!-- PAGE 2: AVIATOR PRO CRASH GAME -->
     <div id="pageAviator" class="app-view-page">
         <div class="aviator-wrap">
-
-            <!-- Top Status & Utility Bar -->
             <div class="aviator-topbar">
                 <div style="display:flex; align-items:center; gap:8px;">
                     <h3 style="color:#ff416c; font-size:15px; font-weight:800;"><i class="fa-solid fa-plane-departure"></i> AVIATOR PRO</h3>
@@ -459,169 +450,79 @@
                 </div>
             </div>
 
-            <!-- Recent Crash Multiplier History Strip -->
+            <!-- Recent Multipliers -->
             <div style="background:rgba(15,23,42,0.65); border:1px solid rgba(255,255,255,0.06); border-radius:14px; padding:8px 10px;">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-                    <span style="font-size:10px; color:#94a3b8; font-weight:800;">RECENT MULTIPLIERS</span>
-                    <span style="font-size:10px; color:#38bdf8;" id="aviatorSessionTimer">00:00</span>
+                    <span style="font-size:10px; color:#94a3b8; font-weight:800;">RECENT MULTIPLIERS (Bets &ge; Rs.1000 earn Spin Rewards!)</span>
                 </div>
                 <div id="aviatorMultiplierTickerBar" style="display:flex; gap:6px; overflow-x:auto;">
                     <span class="aviator-pill aviator-pill-low">1.50x</span>
                 </div>
             </div>
 
-            <!-- Main Flight Canvas Stage -->
+            <!-- Canvas Stage -->
             <div class="aviator-stage">
                 <div class="aviator-grid-bg"></div>
-                <svg id="aviatorFlightSvg" style="position:absolute; inset:0; width:100%; height:100%; pointer-events:none;" viewBox="0 0 400 250" preserveAspectRatio="none">
-                    <defs>
-                        <linearGradient id="aviatorCurveFill" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stop-color="#ff416c" stop-opacity="0.38" />
-                            <stop offset="100%" stop-color="#ff416c" stop-opacity="0.0" />
-                        </linearGradient>
-                    </defs>
-                    <path id="aviatorFlightAreaPath" d="" fill="url(#aviatorCurveFill)" />
-                    <path id="aviatorFlightCurvePath" d="" fill="none" stroke="#ff416c" stroke-width="3.5" stroke-linecap="round" />
-                </svg>
-
                 <div id="aviatorCanvasOverlay" style="position:relative; z-index:3; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:12px;">
                     <div id="aviatorSubBannerText" style="font-size:11px; font-weight:800; color:#38bdf8; text-transform:uppercase; margin-bottom:4px;">NEXT ROUND IN</div>
                     <h1 id="aviatorMultiplierDisplay" style="font-size:45px; font-weight:800; color:#ffffff; line-height:1;">15.0s</h1>
-                    <p id="aviatorStatusText" style="font-size:12px; color:#cbd5e1; margin-top:6px;">Place bets before takeoff</p>
+                    <p id="aviatorStatusText" style="font-size:12px; color:#cbd5e1; margin-top:6px;">Place bets &ge; Rs.1000 to earn Spin rewards</p>
                     <div id="aviatorCountdownBarWrap" class="aviator-countdown-bar-wrap">
                         <div id="aviatorCountdownBarFill" class="aviator-countdown-bar-fill"></div>
                     </div>
                 </div>
-
-                <div id="aviatorPlaneIcon" style="position:absolute; bottom:24px; left:24px; z-index:4; display:none;">
-                    <i class="fa-solid fa-jet-fighter-up" style="font-size:28px; color:#ff416c; transform: rotate(45deg);"></i>
-                </div>
             </div>
 
-            <!-- DUAL INDEPENDENT BETTING PANELS WITH AUTO BET & AUTO CASH OUT -->
+            <!-- Dual Betting Panels -->
             <div class="aviator-panels-grid">
-
-                <!-- PANEL 1 -->
                 <div class="aviator-bet-card">
                     <div style="display:flex; justify-content:space-between; align-items:center;">
                         <span style="font-size:12px; font-weight:800; color:#38bdf8;">BETTING PANEL 1</span>
                         <span id="panel1StatusTag" style="font-size:10px; color:#94a3b8;">READY</span>
                     </div>
-
                     <div style="display:flex; gap:8px; align-items:center;">
-                        <input type="number" id="aviatorBetAmountInput" class="modal-input" min="16" value="100" oninput="refreshAviatorPanelPreviews(1)" style="margin-top:0; flex:1;">
-                        <button class="aviator-chip-btn" onclick="setAviatorMaxBet(1)">MAX</button>
+                        <input type="number" id="aviatorBetAmountInput" class="modal-input" min="16" value="1000" style="margin-top:0; flex:1;">
                     </div>
-
-                    <div class="aviator-quick-grid">
-                        <button class="aviator-chip-btn" onclick="setAviatorQuickBet(1, 100)">100</button>
-                        <button class="aviator-chip-btn" onclick="setAviatorQuickBet(1, 500)">500</button>
-                        <button class="aviator-chip-btn" onclick="setAviatorQuickBet(1, 1000)">1K</button>
-                        <button class="aviator-chip-btn" onclick="setAviatorQuickBet(1, 5000)">5K</button>
-                    </div>
-
-                    <!-- Auto Multiplier & Auto Cash Out Settings -->
-                    <div style="display:flex; gap:8px; align-items:center; background:rgba(255,255,255,0.02); padding:8px; border-radius:10px;">
-                        <div style="flex:1;">
-                            <label style="font-size:10px; color:#94a3b8; display:block; margin-bottom:2px;">Auto Cash Out Target</label>
-                            <select id="panel1AutoCashOut" class="modal-input" style="margin-top:0; padding:6px; font-size:11px;">
-                                <option value="0" style="background:#0b111e;">Disabled (Manual)</option>
-                                <option value="2" style="background:#0b111e;">2.00x</option>
-                                <option value="5" style="background:#0b111e;">5.00x (5x)</option>
-                                <option value="10" style="background:#0b111e;">10.00x (10x)</option>
-                                <option value="25" style="background:#0b111e;">25.00x (25x)</option>
-                                <option value="50" style="background:#0b111e;">50.00x (50x)</option>
-                            </select>
-                        </div>
-                        <div style="flex:1;">
-                            <label style="font-size:10px; color:#94a3b8; display:block; margin-bottom:2px;">Auto Next Rounds</label>
-                            <select id="panel1AutoRounds" class="modal-input" style="margin-top:0; padding:6px; font-size:11px;">
-                                <option value="1" style="background:#0b111e;">1 Round</option>
-                                <option value="5" style="background:#0b111e;">5 Rounds (5x)</option>
-                                <option value="10" style="background:#0b111e;">10 Rounds (10x)</option>
-                                <option value="25" style="background:#0b111e;">25 Rounds (25x)</option>
-                            </select>
-                        </div>
-                    </div>
-
                     <button id="aviatorActionBtn" class="buy-plan-btn" onclick="handleAviatorPanelAction(1)" style="width:100%; padding:12px; background:linear-gradient(135deg, #ff416c, #ff4b2b);">
-                        PLACE BET (PKR 100)
+                        PLACE BET (PKR 1000)
                     </button>
                 </div>
-
-                <!-- PANEL 2 -->
                 <div class="aviator-bet-card">
                     <div style="display:flex; justify-content:space-between; align-items:center;">
                         <span style="font-size:12px; font-weight:800; color:#c084fc;">BETTING PANEL 2</span>
                         <span id="panel2StatusTag" style="font-size:10px; color:#94a3b8;">READY</span>
                     </div>
-
                     <div style="display:flex; gap:8px; align-items:center;">
-                        <input type="number" id="aviatorBetAmountInput2" class="modal-input" min="16" value="200" oninput="refreshAviatorPanelPreviews(2)" style="margin-top:0; flex:1;">
-                        <button class="aviator-chip-btn" onclick="setAviatorMaxBet(2)">MAX</button>
+                        <input type="number" id="aviatorBetAmountInput2" class="modal-input" min="16" value="2000" style="margin-top:0; flex:1;">
                     </div>
-
-                    <div class="aviator-quick-grid">
-                        <button class="aviator-chip-btn" onclick="setAviatorQuickBet(2, 100)">100</button>
-                        <button class="aviator-chip-btn" onclick="setAviatorQuickBet(2, 500)">500</button>
-                        <button class="aviator-chip-btn" onclick="setAviatorQuickBet(2, 1000)">1K</button>
-                        <button class="aviator-chip-btn" onclick="setAviatorQuickBet(2, 5000)">5K</button>
-                    </div>
-
-                    <!-- Auto Multiplier & Auto Cash Out Settings -->
-                    <div style="display:flex; gap:8px; align-items:center; background:rgba(255,255,255,0.02); padding:8px; border-radius:10px;">
-                        <div style="flex:1;">
-                            <label style="font-size:10px; color:#94a3b8; display:block; margin-bottom:2px;">Auto Cash Out Target</label>
-                            <select id="panel2AutoCashOut" class="modal-input" style="margin-top:0; padding:6px; font-size:11px;">
-                                <option value="0" style="background:#0b111e;">Disabled (Manual)</option>
-                                <option value="2" style="background:#0b111e;">2.00x</option>
-                                <option value="5" style="background:#0b111e;">5.00x (5x)</option>
-                                <option value="10" style="background:#0b111e;">10.00x (10x)</option>
-                                <option value="25" style="background:#0b111e;">25.00x (25x)</option>
-                                <option value="50" style="background:#0b111e;">50.00x (50x)</option>
-                            </select>
-                        </div>
-                        <div style="flex:1;">
-                            <label style="font-size:10px; color:#94a3b8; display:block; margin-bottom:2px;">Auto Next Rounds</label>
-                            <select id="panel2AutoRounds" class="modal-input" style="margin-top:0; padding:6px; font-size:11px;">
-                                <option value="1" style="background:#0b111e;">1 Round</option>
-                                <option value="5" style="background:#0b111e;">5 Rounds (5x)</option>
-                                <option value="10" style="background:#0b111e;">10 Rounds (10x)</option>
-                                <option value="25" style="background:#0b111e;">25 Rounds (25x)</option>
-                            </select>
-                        </div>
-                    </div>
-
                     <button id="aviatorActionBtn2" class="buy-plan-btn" onclick="handleAviatorPanelAction(2)" style="width:100%; padding:12px; background:linear-gradient(135deg, #a855f7, #7c3aed);">
-                        PLACE BET 2 (PKR 200)
+                        PLACE BET 2 (PKR 2000)
                     </button>
                 </div>
             </div>
 
-            <!-- Personal History -->
             <div style="background:rgba(15,23,42,0.7); border:1px solid rgba(255,255,255,0.07); border-radius:18px; padding:12px;">
                 <h5 style="font-size:12px; color:#38bdf8; margin-bottom:8px;">My Aviator Bet History</h5>
                 <div id="aviatorPersonalHistoryList" style="display:flex; flex-direction:column; gap:8px; max-height:220px; overflow-y:auto;">
                     <div style="color:#64748b; text-align:center; padding:10px; font-size:11px;">No bets recorded yet.</div>
                 </div>
             </div>
-
         </div>
     </div>
     
-    <!-- PAGE 3: REFERRAL & NETWORK -->
+    <!-- PAGE 3: NETWORK -->
     <div id="pageAffiliate" class="app-view-page">
         <div class="stats-dashboard" style="margin: 20px 0;">
             <h3 style="color:#38bdf8; font-size:15px; margin-bottom:12px;"><i class="fa-solid fa-network-wired"></i> Referral Network Center</h3>
             <p style="font-size:11px; color:#64748b;">Your Personal Invitation Link</p>
             <div style="background:rgba(0,0,0,0.3); padding:10px; border-radius:12px; display:flex; justify-content:space-between; align-items:center; margin-top:5px;">
-                <span id="lblDisplayInviteLink" style="font-size:12px; color:#94a3b8; overflow:hidden; text-overflow:ellipsis; max-width:75%;">Generating link...</span>
+                <span id="lblDisplayInviteLink" style="font-size:12px; color:#94a3b8; overflow:hidden; text-overflow:ellipsis; max-width:75%;">Generating...</span>
                 <button class="plan-tab-trigger" onclick="copyUserReferralLink()" style="padding:4px 10px; font-size:11px;">Copy</button>
             </div>
         </div>
     </div>
 
-    <!-- PAGE 4: HISTORY & SUPPORT -->
+    <!-- PAGE 4: HISTORY -->
     <div id="pageHistory" class="app-view-page">
         <div class="section-title" style="margin-left:0;"><i class="fa-solid fa-receipt"></i> Transaction History Logs</div>
         <div id="userHistoryRecordsList" style="margin-bottom: 25px;">Loading history...</div>
@@ -645,30 +546,40 @@
         <div class="nav-item" id="nvLegal" onclick="routeToView('pageLegalHub', 'nvLegal')"><i class="fa-solid fa-folder-open"></i><span>Info Hub</span></div>
     </div>
 
-    <!-- MODAL 1: DEPOSIT MODAL -->
+    <!-- MODAL 1: DEPOSIT MODAL (MANUAL) -->
     <div id="depositModal" class="premium-modal">
         <div class="modal-content" style="text-align:left;">
             <div class="close-modal-btn" onclick="closeModal('depositModal')">&times;</div>
-            <h4 style="margin-bottom:12px; color:white; text-align:center;">Deposit Funds</h4>
+            <h4 style="margin-bottom:12px; color:white; text-align:center;">Manual Deposit Funds</h4>
             <input type="number" id="pkrDepositInput" class="modal-input" placeholder="Enter Amount in PKR (Min: 200)">
             <div style="background:rgba(0,0,0,0.3); padding:12px; border-radius:12px; margin-top:12px;">
-                <span style="font-size:10px; color:#64748b;" id="lblAccountTitleType">EasyPaisa Account</span>
-                <h4 id="txtMerchantAccountNo" style="font-size:13px; color:white;">03001234567</h4>
-                <span id="txtMerchantAccountTitle" style="font-size:11px; color:#38bdf8;">Vestify Pro Official</span>
+                <span style="font-size:10px; color:#64748b;">Manual Official Account</span>
+                <h4 style="font-size:13px; color:white;">03001234567 (EasyPaisa/JazzCash)</h4>
+                <span style="font-size:11px; color:#38bdf8;">Vestify Pro Official</span>
             </div>
-            <input type="text" id="depositTxIDInput" class="modal-input" placeholder="Transaction ID / TID (11-12 Digits)">
-            <button class="buy-plan-btn" onclick="submitPkrDepositToFirebase()" style="width:100%; margin-top:14px; padding:12px;">Submit Deposit</button>
+            <input type="text" id="depositTxIDInput" class="modal-input" placeholder="Transaction ID / TID">
+            <button class="buy-plan-btn" onclick="submitPkrDepositToFirebase()" style="width:100%; margin-top:14px; padding:12px;">Submit Manual Deposit</button>
         </div>
     </div>
 
-    <!-- MODAL 2: WITHDRAWAL MODAL -->
+    <!-- MODAL 2: WITHDRAWAL MODAL WITH MANUAL METHODS -->
     <div id="withdrawModal" class="premium-modal">
-        <div class="modal-content">
+        <div class="modal-content" style="text-align:left;">
             <div class="close-modal-btn" onclick="closeModal('withdrawModal')">&times;</div>
-            <h4 style="color:white;">Request Withdrawal</h4>
-            <input type="text" id="withdrawTitle" class="modal-input" placeholder="Account Title">
-            <input type="text" id="withdrawNumber" class="modal-input" placeholder="Account Number">
+            <h4 style="color:white; text-align:center; margin-bottom:12px;">Request Manual Withdrawal</h4>
+            
+            <label style="font-size:11px; color:#94a3b8; display:block; margin-bottom:4px;">Select Withdrawal Method</label>
+            <select id="withdrawMethodSelect" class="modal-input" style="margin-top:0;">
+                <option value="EasyPaisa" style="background:#0b111e;">EasyPaisa</option>
+                <option value="JazzCash" style="background:#0b111e;">JazzCash</option>
+                <option value="Bank" style="background:#0b111e;">Bank Transfer</option>
+                <option value="USDT" style="background:#0b111e;">Binance (USDT TRC20)</option>
+            </select>
+
+            <input type="text" id="withdrawTitle" class="modal-input" placeholder="Account Title / Holder Name">
+            <input type="text" id="withdrawNumber" class="modal-input" placeholder="Account Number / IBAN / USDT Address">
             <input type="number" id="withdrawAmount" class="modal-input" placeholder="Amount (PKR)">
+            
             <button class="buy-plan-btn" onclick="dispatchWithdrawalToCloud()" style="width:100%; margin-top:14px; padding:12px; background:#3b82f6;">Submit Cash Out</button>
         </div>
     </div>
@@ -684,13 +595,21 @@
         </div>
     </div>
 
-    <!-- MODAL 4: PROFILE EDIT -->
+    <!-- MODAL 4: PROFILE & PASSWORD UPDATE -->
     <div id="profileEditModal" class="premium-modal">
-        <div class="modal-content">
+        <div class="modal-content" style="text-align:left;">
             <div class="close-modal-btn" onclick="closeModal('profileEditModal')">&times;</div>
-            <h4 style="color:white;">Edit Profile</h4>
-            <input type="text" id="editUsernameInput" class="modal-input" placeholder="New Username">
-            <button class="buy-plan-btn" onclick="saveUserProfileChanges()" style="width:100%; margin-top:14px; padding:12px; background:#10b981;">Save</button>
+            <h4 style="color:white; text-align:center; margin-bottom:14px;">User Settings & Security</h4>
+            
+            <label style="font-size:11px; color:#94a3b8; display:block; margin-bottom:4px;">Change Username</label>
+            <input type="text" id="editUsernameInput" class="modal-input" placeholder="New Username" style="margin-top:0;">
+            <button class="buy-plan-btn" onclick="saveUserProfileChanges()" style="width:100%; margin-top:8px; padding:10px; background:#10b981;">Update Username</button>
+
+            <hr style="border:0; border-top:1px solid rgba(255,255,255,0.08); margin:16px 0;">
+
+            <label style="font-size:11px; color:#94a3b8; display:block; margin-bottom:4px;">Update Password</label>
+            <input type="password" id="newUserPasswordInput" class="modal-input" placeholder="New Password (Min 6 chars)" style="margin-top:0;">
+            <button class="buy-plan-btn" onclick="updateUserPasswordSecure()" style="width:100%; margin-top:8px; padding:10px; background:#3b82f6;">Update Password</button>
         </div>
     </div>
 
@@ -716,8 +635,9 @@
         let currentAuthTabMode = "login";
         let userCustomUsernameToken = "";
         let adminLogoTapCountTracker = 0;
+        let userProfileData = {};
 
-        /* ================= AVIATOR PRO ENGINE (WITH AUTO BET & AUTO CASH OUT) ================= */
+        /* ================= AVIATOR & SPIN WHEEL ENGINE ================= */
         const aviatorState = {
             roundId: "RND-" + Date.now(),
             status: "BETTING",
@@ -727,10 +647,9 @@
             crashPoint: 2.00,
             soundEnabled: true,
             audioCtx: null,
-            sessionStartTime: Date.now(),
             panels: {
-                1: { activeBet: false, betAmount: 0, autoCashOut: 0, autoRoundsLeft: 0 },
-                2: { activeBet: false, betAmount: 0, autoCashOut: 0, autoRoundsLeft: 0 }
+                1: { activeBet: false, betAmount: 0 },
+                2: { activeBet: false, betAmount: 0 }
             },
             recentHistory: [1.45, 2.10, 1.12, 5.40, 1.85, 3.20],
             personalBetsList: [],
@@ -759,68 +678,16 @@
             triggerToastDisplay(aviatorState.soundEnabled ? "Sound Enabled" : "Sound Muted");
         }
 
-        window.setAviatorQuickBet = function(panel, amount) {
-            const input = document.getElementById(panel === 1 ? "aviatorBetAmountInput" : "aviatorBetAmountInput2");
-            if (input) { input.value = amount; updateAviatorActionButtons(); }
-        }
-
-        window.setAviatorMaxBet = function(panel) {
-            const input = document.getElementById(panel === 1 ? "aviatorBetAmountInput" : "aviatorBetAmountInput2");
-            if (input) { input.value = Math.floor(Math.max(16, userCurrentBalance)); updateAviatorActionButtons(); }
-        }
-
-        window.refreshAviatorPanelPreviews = function(panel) { updateAviatorActionButtons(); }
-
-        function updateAviatorActionButtons() {
-            [1, 2].forEach(panel => {
-                const btn = document.getElementById(panel === 1 ? "aviatorActionBtn" : "aviatorActionBtn2");
-                const tag = document.getElementById(panel === 1 ? "panel1StatusTag" : "panel2StatusTag");
-                const input = document.getElementById(panel === 1 ? "aviatorBetAmountInput" : "aviatorBetAmountInput2");
-                if (!btn || !tag) return;
-
-                const pState = aviatorState.panels[panel];
-                const amt = parseFloat(input && input.value) || 100;
-
-                if (aviatorState.status === "BETTING") {
-                    if (pState.activeBet) {
-                        btn.style.background = "#ef4444";
-                        btn.innerText = `CANCEL BET (PKR ${pState.betAmount})`;
-                        tag.innerText = "PLACED";
-                    } else {
-                        btn.style.background = panel === 1 ? "linear-gradient(135deg, #ff416c, #ff4b2b)" : "linear-gradient(135deg, #a855f7, #7c3aed)";
-                        btn.innerText = `PLACE BET ${panel} (PKR ${amt})`;
-                        tag.innerText = pState.autoRoundsLeft > 0 ? `AUTO (${pState.autoRoundsLeft})` : "READY";
-                    }
-                } else if (aviatorState.status === "FLYING") {
-                    if (pState.activeBet) {
-                        const payout = pState.betAmount * aviatorState.currentMultiplier;
-                        btn.style.background = "#10b981";
-                        btn.innerText = `CASH OUT — PKR ${payout.toFixed(2)}`;
-                        tag.innerText = `${aviatorState.currentMultiplier.toFixed(2)}x`;
-                    } else {
-                        btn.style.background = "#475569";
-                        btn.innerText = "IN FLIGHT";
-                    }
-                } else {
-                    btn.style.background = "#475569";
-                    btn.innerText = "CRASHED";
-                }
-            });
-        }
-
         window.handleAviatorPanelAction = function(panel) {
-            if (!currentUserId) { triggerToastDisplay("Please sign in first."); return; }
+            if (!currentUserId) { triggerToastDisplay("Please sign in first sweetie."); return; }
             const pState = aviatorState.panels[panel];
             const input = document.getElementById(panel === 1 ? "aviatorBetAmountInput" : "aviatorBetAmountInput2");
-            const autoCashSelect = document.getElementById(panel === 1 ? "panel1AutoCashOut" : "panel2AutoCashOut");
-            const autoRoundsSelect = document.getElementById(panel === 1 ? "panel1AutoRounds" : "panel2AutoRounds");
 
             if (aviatorState.status === "BETTING") {
                 if (pState.activeBet) {
                     userCurrentBalance += pState.betAmount;
                     db.collection("users").doc(currentUserId).update({ balance: userCurrentBalance });
                     pState.activeBet = false;
-                    pState.autoRoundsLeft = 0;
                     triggerToastDisplay("Bet cancelled & refunded.");
                     updateAviatorActionButtons();
                     return;
@@ -828,15 +695,21 @@
 
                 const amount = parseFloat(input.value);
                 if (isNaN(amount) || amount < 16) { triggerToastDisplay("Min bet is PKR 16."); return; }
-                if (amount > userCurrentBalance) { triggerToastDisplay("Insufficient balance."); return; }
+                if (amount > userCurrentBalance) { triggerToastDisplay("Insufficient balance sweetie."); return; }
 
                 userCurrentBalance -= amount;
                 db.collection("users").doc(currentUserId).update({ balance: userCurrentBalance });
 
                 pState.activeBet = true;
                 pState.betAmount = amount;
-                pState.autoCashOut = parseFloat(autoCashSelect.value) || 0;
-                pState.autoRoundsLeft = parseInt(autoRoundsSelect.value) || 1;
+
+                if (amount >= 1000) {
+                    const earnedSpins = Math.floor(amount / 1000);
+                    const currentSpins = userProfileData.availableSpins || 0;
+                    const newSpinsTotal = currentSpins + earnedSpins;
+                    db.collection("users").doc(currentUserId).update({ availableSpins: newSpinsTotal });
+                    triggerToastDisplay(`Bet &ge; Rs.1000! Earned ${earnedSpins} Spin Wheel turn(s) sweetie! 🎡`);
+                }
 
                 playAviatorTone("bet");
                 triggerToastDisplay(`Panel ${panel} Bet Confirmed: PKR ${amount}`);
@@ -865,17 +738,51 @@
                 status: "Won"
             });
             renderAviatorHistory();
-
             pState.activeBet = false;
-            pState.autoRoundsLeft = Math.max(0, pState.autoRoundsLeft - 1);
             updateAviatorActionButtons();
+        }
+
+        function updateAviatorActionButtons() {
+            [1, 2].forEach(panel => {
+                const btn = document.getElementById(panel === 1 ? "aviatorActionBtn" : "aviatorActionBtn2");
+                const tag = document.getElementById(panel === 1 ? "panel1StatusTag" : "panel2StatusTag");
+                const input = document.getElementById(panel === 1 ? "aviatorBetAmountInput" : "aviatorBetAmountInput2");
+                if (!btn || !tag) return;
+
+                const pState = aviatorState.panels[panel];
+                const amt = parseFloat(input && input.value) || 1000;
+
+                if (aviatorState.status === "BETTING") {
+                    if (pState.activeBet) {
+                        btn.style.background = "#ef4444";
+                        btn.innerText = `CANCEL BET (PKR ${pState.betAmount})`;
+                        tag.innerText = "PLACED";
+                    } else {
+                        btn.style.background = panel === 1 ? "linear-gradient(135deg, #ff416c, #ff4b2b)" : "linear-gradient(135deg, #a855f7, #7c3aed)";
+                        btn.innerText = `PLACE BET ${panel} (PKR ${amt})`;
+                        tag.innerText = "READY";
+                    }
+                } else if (aviatorState.status === "FLYING") {
+                    if (pState.activeBet) {
+                        const payout = pState.betAmount * aviatorState.currentMultiplier;
+                        btn.style.background = "#10b981";
+                        btn.innerText = `CASH OUT — PKR ${payout.toFixed(2)}`;
+                        tag.innerText = `${aviatorState.currentMultiplier.toFixed(2)}x`;
+                    } else {
+                        btn.style.background = "#475569";
+                        btn.innerText = "IN FLIGHT";
+                    }
+                } else {
+                    btn.style.background = "#475569";
+                    btn.innerText = "CRASHED";
+                }
+            });
         }
 
         function startClientSideAviatorEngine() {
             if (aviatorState.loopInterval) clearInterval(aviatorState.loopInterval);
             aviatorState.loopInterval = setInterval(() => {
                 const now = Date.now();
-
                 if (aviatorState.status === "BETTING" && now >= aviatorState.bettingEndsAt) {
                     aviatorState.status = "FLYING";
                     aviatorState.flightStartedAt = now;
@@ -884,14 +791,6 @@
                 } else if (aviatorState.status === "FLYING") {
                     const elapsed = (now - aviatorState.flightStartedAt) / 1000;
                     aviatorState.currentMultiplier = 1.0 + (elapsed * elapsed * 0.18);
-
-                    // Check Auto Cash Out
-                    [1, 2].forEach(panel => {
-                        const pState = aviatorState.panels[panel];
-                        if (pState.activeBet && pState.autoCashOut > 0 && aviatorState.currentMultiplier >= pState.autoCashOut) {
-                            executeAviatorCashOut(panel);
-                        }
-                    });
 
                     if (aviatorState.currentMultiplier >= aviatorState.crashPoint) {
                         aviatorState.status = "CRASHED";
@@ -908,7 +807,6 @@
                                     status: "Crashed"
                                 });
                                 pState.activeBet = false;
-                                pState.autoRoundsLeft = Math.max(0, pState.autoRoundsLeft - 1);
                             }
                         });
                         renderAviatorHistory();
@@ -918,17 +816,6 @@
                             aviatorState.status = "BETTING";
                             aviatorState.bettingEndsAt = Date.now() + 12000;
                             aviatorState.currentMultiplier = 1.00;
-
-                            // Handle Auto Next Rounds
-                            [1, 2].forEach(panel => {
-                                const pState = aviatorState.panels[panel];
-                                if (pState.autoRoundsLeft > 0 && userCurrentBalance >= pState.betAmount) {
-                                    userCurrentBalance -= pState.betAmount;
-                                    db.collection("users").doc(currentUserId).update({ balance: userCurrentBalance });
-                                    pState.activeBet = true;
-                                }
-                            });
-
                             updateAviatorStageBadge();
                         }, 3500);
                     }
@@ -940,9 +827,7 @@
         function renderAviatorCanvasUI() {
             const multEl = document.getElementById("aviatorMultiplierDisplay");
             const subEl = document.getElementById("aviatorSubBannerText");
-            const statusEl = document.getElementById("aviatorStatusText");
             const barFill = document.getElementById("aviatorCountdownBarFill");
-            const planeEl = document.getElementById("aviatorPlaneIcon");
             if (!multEl) return;
 
             if (aviatorState.status === "BETTING") {
@@ -950,11 +835,9 @@
                 multEl.innerText = `${(rem/1000).toFixed(1)}s`;
                 subEl.innerText = "NEXT ROUND IN";
                 if (barFill) barFill.style.width = `${(rem/12000)*100}%`;
-                if (planeEl) planeEl.style.display = "none";
             } else if (aviatorState.status === "FLYING") {
                 multEl.innerText = `${aviatorState.currentMultiplier.toFixed(2)}x`;
                 subEl.innerText = "IN FLIGHT";
-                if (planeEl) planeEl.style.display = "block";
             } else {
                 multEl.innerText = `${aviatorState.crashPoint.toFixed(2)}x`;
                 subEl.innerText = "CRASHED";
@@ -982,7 +865,73 @@
             list.innerHTML = html || '<div style="color:#64748b; text-align:center; font-size:11px;">No history.</div>';
         }
 
-        /* ================= CORE APP & ADMIN CONTROLS ================= */
+        /* ================= SPIN WHEEL (10 to 50 PKR bonus) ================= */
+        window.triggerAviatorSpinWheel = function() {
+            if (!currentUserId) return;
+            const spins = userProfileData.availableSpins || 0;
+            if (spins <= 0) {
+                triggerToastDisplay("No spins left! Play Aviator bets &ge; Rs. 1000 to earn spins sweetie! 🎡");
+                return;
+            }
+
+            const reward = Math.floor(Math.random() * (50 - 10 + 1)) + 10;
+            const updatedSpins = spins - 1;
+            const updatedBalance = userCurrentBalance + reward;
+
+            db.collection("users").doc(currentUserId).update({
+                balance: updatedBalance,
+                availableSpins: updatedSpins
+            }).then(() => {
+                triggerToastDisplay(`🎉 Spin Successful! You won Rs. ${reward} PKR bonus sweetie!`);
+            });
+        }
+
+        /* ================= 7-DAY STREAK DAILY LOGIN & TASKS ================= */
+        window.claimDailyCheckinBonus = function() {
+            if (!currentUserId) return;
+            const lastClaim = userProfileData.lastDailyClaim || 0;
+            const now = Date.now();
+            const twentyFourHours = 24 * 60 * 60 * 1000;
+
+            if (now - lastClaim < twentyFourHours) {
+                const hoursLeft = Math.ceil((twentyFourHours - (now - lastClaim)) / (1000 * 60 * 60));
+                triggerToastDisplay(`Daily bonus already claimed! Next claim in ${hoursLeft} hours sweetie. ⏳`);
+                return;
+            }
+
+            let streak = (userProfileData.loginStreak || 0) + 1;
+            if (streak > 7) streak = 1;
+
+            const rewardMap = { 1: 4, 2: 6, 3: 10, 4: 12, 5: 15, 6: 18, 7: 20 };
+            const reward = rewardMap[streak] || 5;
+
+            db.collection("users").doc(currentUserId).update({
+                balance: userCurrentBalance + reward,
+                loginStreak: streak,
+                lastDailyClaim: now
+            }).then(() => {
+                triggerToastDisplay(`Day ${streak} Claimed! You received Rs. ${reward} PKR bonus sweetie! 🎁`);
+            });
+        }
+
+        window.completeFacebookFollowTask = function() {
+            if (!currentUserId) return;
+            if (userProfileData.fbFollowClaimed) {
+                triggerToastDisplay("Facebook follow reward already claimed sweetie!");
+                return;
+            }
+
+            window.open("https://www.facebook.com/profile.php?id=61593627494433", "_blank");
+
+            db.collection("users").doc(currentUserId).update({
+                balance: userCurrentBalance + 20,
+                fbFollowClaimed: true
+            }).then(() => {
+                triggerToastDisplay("Task verified! Rs. 20 PKR added to your balance sweetie! 👍");
+            });
+        }
+
+        /* ================= CORE APP & MANUAL ADMIN CONTROLS ================= */
         auth.onAuthStateChanged(user => {
             if (user) {
                 currentUserId = user.uid;
@@ -1001,6 +950,7 @@
             document.getElementById('tabLogin').classList.toggle('active', mode === 'login');
             document.getElementById('tabRegister').classList.toggle('active', mode === 'register');
             document.getElementById('authUsername').style.display = mode === 'register' ? 'block' : 'none';
+            document.getElementById('authReferralInput').style.display = mode === 'register' ? 'block' : 'none';
         }
 
         window.handleAuthAction = function() {
@@ -1008,12 +958,12 @@
             const pass = document.getElementById('authPassword').value;
             const username = document.getElementById('authUsername').value.trim().toLowerCase();
 
-            if (!email || !pass) { triggerToastDisplay("Enter email & password."); return; }
+            if (!email || !pass) { triggerToastDisplay("Enter email & password sweetie."); return; }
             if (currentAuthTabMode === "register") {
-                if (!username) { triggerToastDisplay("Enter username."); return; }
+                if (!username) { triggerToastDisplay("Enter username sweetie."); return; }
                 auth.createUserWithEmailAndPassword(email, pass).then(cred => {
                     return db.collection("users").doc(cred.user.uid).set({
-                        uid: cred.user.uid, balance: 0.00, minersCount: 0, email: email, username: username
+                        uid: cred.user.uid, balance: 0.00, minersCount: 0, email: email, username: username, availableSpins: 0, loginStreak: 0, lastDailyClaim: 0, fbFollowClaimed: false
                     });
                 }).then(() => triggerToastDisplay("Registered successfully!")).catch(e => triggerToastDisplay(e.message));
             } else {
@@ -1027,7 +977,7 @@
                 db.collection("users").doc(u.uid).get().then(doc => {
                     if (!doc.exists) {
                         db.collection("users").doc(u.uid).set({
-                            uid: u.uid, balance: 0.00, minersCount: 0, email: u.email, username: "user_" + u.uid.slice(0,5)
+                            uid: u.uid, balance: 0.00, minersCount: 0, email: u.email, username: "user_" + u.uid.slice(0,5), availableSpins: 0, loginStreak: 0, lastDailyClaim: 0, fbFollowClaimed: false
                         });
                     }
                 });
@@ -1039,26 +989,32 @@
         function syncProfileRealtimeMetrics() {
             db.collection("users").doc(currentUserId).onSnapshot(doc => {
                 if (doc.exists) {
-                    const d = doc.data();
-                    userCurrentBalance = d.balance || 0.00;
-                    totalActiveCoresCount = d.minersCount || 0;
-                    userCustomUsernameToken = d.username || "User";
+                    userProfileData = doc.data();
+                    userCurrentBalance = userProfileData.balance || 0.00;
+                    totalActiveCoresCount = userProfileData.minersCount || 0;
+                    userCustomUsernameToken = userProfileData.username || "User";
+                    const spins = userProfileData.availableSpins || 0;
+                    const streak = userProfileData.loginStreak || 0;
                     
                     document.getElementById('assetDisplay').innerText = userCurrentBalance.toLocaleString('en-US',{minimumFractionDigits:2});
                     document.getElementById('minerDisplay').innerText = `${totalActiveCoresCount} Nodes`;
                     document.getElementById('lblHeaderUsername').innerText = userCustomUsernameToken;
                     document.getElementById('aviatorWalletBalanceLbl').innerText = userCurrentBalance.toLocaleString('en-US',{minimumFractionDigits:2});
                     document.getElementById('lblDisplayInviteLink').innerText = `${window.location.origin}?ref=${userCustomUsernameToken}`;
+                    document.getElementById('spinWheelCountDisplay').innerText = spins;
+                    document.getElementById('lblAvailableSpinsCount').innerText = `${spins} Spins`;
+                    document.getElementById('dailyLoginStreakTitle').innerText = `Daily Login Streak (Day ${streak > 0 ? streak : 1})`;
+                    document.getElementById('editUsernameInput').value = userCustomUsernameToken;
                 }
             });
         }
 
         window.leaseHardwareNode = function(name, price, daily) {
-            if (userCurrentBalance < price) { triggerToastDisplay("Insufficient balance!"); return; }
+            if (userCurrentBalance < price) { triggerToastDisplay("Insufficient balance sweetie!"); return; }
             db.collection("users").doc(currentUserId).update({
                 balance: userCurrentBalance - price,
                 minersCount: totalActiveCoresCount + 1
-            }).then(() => triggerToastDisplay(`Activated ${name}!`));
+            }).then(() => triggerToastDisplay(`Activated ${name} sweetie!`));
         }
 
         window.openDepositModal = function() { openModal('depositModal'); }
@@ -1068,28 +1024,33 @@
         window.submitPkrDepositToFirebase = function() {
             const amt = parseFloat(document.getElementById('pkrDepositInput').value) || 0;
             const txid = document.getElementById('depositTxIDInput').value.trim();
-            if (amt < 200 || !txid) { triggerToastDisplay("Enter min PKR 200 and TID."); return; }
+            if (amt < 200 || !txid) { triggerToastDisplay("Enter min PKR 200 and TID sweetie."); return; }
 
             db.collection("transactions").add({
                 uid: currentUserId, username: userCustomUsernameToken, type: "deposit", amount: amt, txid: txid, status: "pending", timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            }).then(() => { closeModal('depositModal'); triggerToastDisplay("Deposit submitted!"); });
+            }).then(() => { closeModal('depositModal'); triggerToastDisplay("Manual deposit submitted for admin approval sweetie!"); });
         }
 
         window.dispatchWithdrawalToCloud = function() {
+            const method = document.getElementById('withdrawMethodSelect').value;
+            const title = document.getElementById('withdrawTitle').value.trim();
+            const number = document.getElementById('withdrawNumber').value.trim();
             const amt = parseFloat(document.getElementById('withdrawAmount').value) || 0;
-            if (amt <= 0 || amt > userCurrentBalance) { triggerToastDisplay("Invalid amount."); return; }
+
+            if (!title || !number || amt <= 0) { triggerToastDisplay("Please fill all withdrawal details sweetie."); return; }
+            if (amt > userCurrentBalance) { triggerToastDisplay("Insufficient balance sweetie."); return; }
 
             db.collection("users").doc(currentUserId).update({ balance: userCurrentBalance - amt }).then(() => {
                 return db.collection("transactions").add({
-                    uid: currentUserId, username: userCustomUsernameToken, type: "withdrawal", amount: amt, status: "pending", timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    uid: currentUserId, username: userCustomUsernameToken, type: "withdrawal", method: method, accountTitle: title, accountNumber: number, amount: amt, status: "pending", timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 });
-            }).then(() => { closeModal('withdrawModal'); triggerToastDisplay("Withdrawal requested!"); });
+            }).then(() => { closeModal('withdrawModal'); triggerToastDisplay(`Withdrawal request via ${method} submitted sweetie! 💸`); });
         }
 
         window.executeP2PInternalTransfer = function() {
             const rec = document.getElementById('transferTargetUsername').value.trim().toLowerCase();
             const amt = parseFloat(document.getElementById('transferAmount').value) || 0;
-            if (!rec || amt <= 0 || amt > userCurrentBalance) { triggerToastDisplay("Check transfer details."); return; }
+            if (!rec || amt <= 0 || amt > userCurrentBalance) { triggerToastDisplay("Check transfer details sweetie."); return; }
 
             db.collection("users").where("username", "==", rec).get().then(snap => {
                 if (snap.empty) throw new Error("Recipient not found.");
@@ -1098,31 +1059,42 @@
                 batch.update(db.collection("users").doc(currentUserId), { balance: userCurrentBalance - amt });
                 batch.update(db.collection("users").doc(targetDoc.id), { balance: targetDoc.data().balance + amt });
                 return batch.commit();
-            }).then(() => { closeModal('transferModal'); triggerToastDisplay("Transfer successful!"); }).catch(e => triggerToastDisplay(e.message));
+            }).then(() => { closeModal('transferModal'); triggerToastDisplay("Transfer successful sweetie!"); }).catch(e => triggerToastDisplay(e.message));
         }
 
         window.redeemGiftCodeUser = function() {
             const code = document.getElementById('userGiftCodeInput').value.trim();
             if (!code) return;
             db.collection("giftcodes").doc(code).get().then(doc => {
-                if (!doc.exists) throw new Error("Invalid gift code.");
+                if (!doc.exists) throw new Error("Invalid promo code sweetie.");
                 const d = doc.data();
                 const bonus = d.amount || 100;
                 db.collection("users").doc(currentUserId).update({ balance: userCurrentBalance + bonus });
                 db.collection("giftcodes").doc(code).delete();
-                triggerToastDisplay(`Redeemed PKR ${bonus}!`);
+                triggerToastDisplay(`Redeemed PKR ${bonus} promo bonus sweetie! 🎉`);
             }).catch(e => triggerToastDisplay(e.message));
         }
 
-        window.claimDailyCheckinBonus = function() {
-            db.collection("users").doc(currentUserId).update({ balance: userCurrentBalance + 5 });
-            triggerToastDisplay("Claimed Rs. 5 Daily Bonus!");
+        window.saveUserProfileChanges = function() {
+            const newName = document.getElementById('editUsernameInput').value.trim().toLowerCase();
+            if (!newName) { triggerToastDisplay("Enter username."); return; }
+            db.collection("users").doc(currentUserId).update({ username: newName }).then(() => {
+                triggerToastDisplay("Username updated successfully sweetie!");
+                closeModal('profileEditModal');
+            });
         }
 
-        window.triggerLuckyCoreSpin = function() {
-            const reward = [10, 25, 50, 100][Math.floor(Math.random() * 4)];
-            db.collection("users").doc(currentUserId).update({ balance: userCurrentBalance + reward });
-            triggerToastDisplay(`Won Rs. ${reward} from Spin!`);
+        window.updateUserPasswordSecure = function() {
+            const newPass = document.getElementById('newUserPasswordInput').value;
+            if (!newPass || newPass.length < 6) { triggerToastDisplay("Password must be at least 6 characters sweetie."); return; }
+            const user = auth.currentUser;
+            if (user) {
+                user.updatePassword(newPass).then(() => {
+                    triggerToastDisplay("Password updated successfully sweetie! 🔒");
+                    closeModal('profileEditModal');
+                    document.getElementById('newUserPasswordInput').value = "";
+                }).catch(e => triggerToastDisplay(e.message));
+            }
         }
 
         function syncUserLedgerTracks() {
@@ -1130,7 +1102,7 @@
                 let html = "";
                 snap.forEach(doc => {
                     const d = doc.data();
-                    html += `<div class="history-card"><div><b>${d.type.toUpperCase()}</b>: PKR ${d.amount}</div><span style="color:${d.status==='approved'?'#10b981':'#eab308'}">${d.status}</span></div>`;
+                    html += `<div class="history-card"><div><b>${d.type.toUpperCase()}</b>: PKR ${d.amount} ${d.method ? '('+d.method+')':''}</div><span style="color:${d.status==='approved'?'#10b981':'#eab308'}">${d.status}</span></div>`;
                 });
                 document.getElementById('userHistoryRecordsList').innerHTML = html || '<div style="color:#64748b; font-size:11px;">No history.</div>';
             });
@@ -1148,10 +1120,10 @@
 
         window.copyUserReferralLink = function() {
             navigator.clipboard.writeText(document.getElementById('lblDisplayInviteLink').innerText);
-            triggerToastDisplay("Referral link copied!");
+            triggerToastDisplay("Referral link copied sweetie!");
         }
 
-        /* ================= SUPER ADMIN CONTROLS ================= */
+        /* ================= MANUAL ADMIN CONTROLS ================= */
         window.registerAdminLogoTap = function() {
             adminLogoTapCountTracker++;
             if (adminLogoTapCountTracker >= 5) {
@@ -1164,15 +1136,15 @@
         window.authenticateAdminSystemKey = function() {
             if (document.getElementById('adminSecretKeyField').value === "vestify786") {
                 document.getElementById('adminContentBody').style.display = 'block';
-                triggerToastDisplay("Admin Access Granted!");
+                triggerToastDisplay("Manual Admin Access Granted sweetie!");
                 loadAdminDataFeeds();
             } else {
-                triggerToastDisplay("Incorrect Password!");
+                triggerToastDisplay("Incorrect Admin Password!");
             }
         }
 
         window.switchAdminSubView = function(view) {
-            ['Tracker', 'Deposits', 'Users', 'Nodes', 'Payments', 'Broadcast', 'Analytics'].forEach(s => {
+            ['Tracker', 'Deposits', 'Users', 'Nodes', 'Broadcast', 'Analytics'].forEach(s => {
                 const el = document.getElementById(`admin${s}Section`);
                 if (el) el.style.display = s.toLowerCase() === view.toLowerCase() ? 'block' : 'none';
             });
@@ -1186,10 +1158,10 @@
                     const id = doc.id;
                     if (d.status === 'approved') rev += d.amount;
                     if (d.status === 'pending') {
-                        depHtml += `<div class="history-card"><div><b>@${d.username}</b> ${d.type} PKR ${d.amount}</div><button class="buy-plan-btn" onclick="approveTransaction('${id}', '${d.uid}', ${d.amount})" style="padding:4px 8px; background:#10b981;">Approve</button></div>`;
+                        depHtml += `<div class="history-card"><div><b>@${d.username}</b> ${d.type} PKR ${d.amount} ${d.method ? '<br><small style="color:#38bdf8;">Method: '+d.method+'<br>Title: '+d.accountTitle+'<br>No: '+d.accountNumber+'</small>':''}${d.txid ? '<br><small style="color:#10b981;">TID: '+d.txid+'</small>':''}</div><button class="buy-plan-btn" onclick="approveTransaction('${id}', '${d.uid}', ${d.amount})" style="padding:4px 8px; background:#10b981;">Approve</button></div>`;
                     }
                 });
-                document.getElementById('adminPendingDepositsTrack').innerHTML = depHtml || 'No pending transactions.';
+                document.getElementById('adminPendingDepositsTrack').innerHTML = depHtml || 'No pending manual transactions.';
                 document.getElementById('repTotalRevenue').innerText = `Rs. ${rev.toLocaleString()}`;
             });
 
@@ -1212,35 +1184,40 @@
                 batch.update(db.collection("users").doc(uid), { balance: b + amt });
                 batch.update(db.collection("transactions").doc(txId), { status: "approved" });
                 return batch.commit();
-            }).then(() => triggerToastDisplay("Approved & Credited!"));
+            }).then(() => triggerToastDisplay("Manual transaction approved successfully!"));
         }
 
         window.createCustomBonusCode = function() {
             const code = document.getElementById('adminGiftCode').value.trim();
             const amt = parseFloat(document.getElementById('adminGiftAmount').value) || 0;
-            if (!code || amt <= 0) { triggerToastDisplay("Enter valid code & amount."); return; }
+            if (!code || amt <= 0) { triggerToastDisplay("Enter valid promo code & amount."); return; }
             db.collection("giftcodes").doc(code).set({ code: code, amount: amt }).then(() => {
-                triggerToastDisplay(`Gift code ${code} created!`);
+                triggerToastDisplay(`Promo code ${code} created sweetie!`);
                 document.getElementById('adminGiftCode').value = "";
                 document.getElementById('adminGiftAmount').value = "";
             });
         }
 
-        window.updatePaymentMethodDetailsAdmin = function() {
-            const ch = document.getElementById('adminPaymentSelect').value;
-            db.collection("settings").doc("payments").set({
-                [ch]: { title: document.getElementById('adminPayTitle').value, number: document.getElementById('adminPayNumber').value }
-            }, { merge: true }).then(() => triggerToastDisplay("Payment details updated!"));
+        window.adjustUserBalanceAdmin = function() {
+            const target = document.getElementById('adminTargetUsername').value.trim().toLowerCase();
+            const amount = parseFloat(document.getElementById('adminAdjustAmount').value) || 0;
+            if (!target) { triggerToastDisplay("Enter username."); return; }
+
+            db.collection("users").where("username", "==", target).get().then(snap => {
+                if (snap.empty) throw new Error("User not found.");
+                const uDoc = snap.docs[0];
+                const newBal = (uDoc.data().balance || 0) + amount;
+                return uDoc.ref.update({ balance: newBal });
+            }).then(() => triggerToastDisplay("User balance updated successfully sweetie!")).catch(e => triggerToastDisplay(e.message));
         }
 
         window.dispatchGlobalBroadcast = function() {
             db.collection("settings").doc("broadcast").set({
                 active: true, title: document.getElementById('broadcastTitleInput').value, message: document.getElementById('broadcastMessageInput').value
-            }).then(() => { triggerToastDisplay("Broadcast sent!"); loadGlobalAnnouncementBanner(); });
+            }).then(() => { triggerToastDisplay("Broadcast sent sweetie!"); loadGlobalAnnouncementBanner(); });
         }
 
         window.exportTransactionDataCSV = function() { triggerToastDisplay("Transactions exported."); }
-        window.exportUserDataCSV = function() { triggerToastDisplay("Users database exported."); }
         window.saveNodeConfigOverride = function() { triggerToastDisplay("Node added successfully."); }
 
         window.routeToView = function(pageId, navId) {
