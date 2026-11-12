@@ -20,6 +20,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-functions-compat.js"></script>
 
     <script>
       if ('serviceWorker' in navigator) {
@@ -87,8 +88,9 @@
         .plan-details p { font-size: 11px; color: #94a3b8; margin-top: 3px; line-height: 1.4; }
         .plan-details span { color: #10b981; font-weight: 700; }
         
-        .buy-plan-btn { padding: 9px 18px; background: linear-gradient(135deg, #ff416c, #ff4b2b); border: none; border-radius: 12px; color: white; font-weight: 700; font-size: 12px; cursor: pointer; box-shadow: 0 4px 12px rgba(255,65,108,0.3); }
+        .buy-plan-btn { padding: 9px 18px; background: linear-gradient(135deg, #ff416c, #ff4b2b); border: none; border-radius: 12px; color: white; font-weight: 700; font-size: 12px; cursor: pointer; box-shadow: 0 4px 12px rgba(255,65,108,0.3); transition: all 0.2s; }
         .buy-plan-btn:active { transform: scale(0.95); }
+        .buy-plan-btn:disabled { opacity: 0.55; cursor: not-allowed; }
 
         .app-view-page { display: none; padding: 0 16px; }
         .app-view-page.active-page { display: block; }
@@ -115,7 +117,7 @@
 
         .premium-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 4, 10, 0.85); backdrop-filter: blur(12px); z-index: 10000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; padding: 20px; }
         .premium-modal.modal-open { opacity: 1; pointer-events: auto; }
-        .modal-content { background: #0b111e; border: 1px solid rgba(255, 255, 255, 0.1); width: 100%; max-width: 400px; border-radius: 24px; padding: 24px; text-align: center; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.8); }
+        .modal-content { background: #0b111e; border: 1px solid rgba(255, 255, 255, 0.1); width: 100%; max-width: 420px; border-radius: 24px; padding: 24px; text-align: center; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.8); max-height: 85vh; overflow-y: auto; }
         .modal-input { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: white; font-size: 13px; margin-top: 10px; outline: none; }
         .close-modal-btn { position: absolute; top: 16px; right: 16px; color: #64748b; font-size: 20px; cursor: pointer; }
 
@@ -126,6 +128,42 @@
         .task-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 14px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; }
         .task-card .task-info { display: flex; align-items: center; gap: 12px; }
         .task-card .task-icon { width: 38px; height: 38px; border-radius: 10px; background: rgba(56,189,248,0.1); color: #38bdf8; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+
+        /* AVIATOR PRO UPGRADED STYLES */
+        .aviator-wrap { margin: 16px 0; display: flex; flex-direction: column; gap: 14px; }
+        .aviator-topbar { background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 18px; padding: 12px 14px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; }
+        .aviator-status-pill { font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 20px; letter-spacing: 0.5px; display: inline-flex; align-items: center; gap: 6px; }
+        .aviator-status-open { background: rgba(16, 185, 129, 0.16); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.35); }
+        .aviator-status-closed { background: rgba(234, 179, 8, 0.16); color: #eab308; border: 1px solid rgba(234, 179, 8, 0.35); }
+        .aviator-status-crashed { background: rgba(239, 68, 68, 0.16); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.35); }
+        .aviator-icon-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.09); color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 11px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; }
+        .aviator-icon-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+        .aviator-stage { position: relative; width: 100%; height: 250px; background: radial-gradient(circle at 50% 60%, #131c36 0%, #030712 85%); border-radius: 22px; border: 1px solid rgba(255, 65, 108, 0.28); overflow: hidden; box-shadow: inset 0 0 40px rgba(0,0,0,0.8); }
+        .aviator-grid-bg { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px); background-size: 32px 32px; pointer-events: none; }
+        .aviator-countdown-bar-wrap { width: 220px; max-width: 80%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 99px; margin: 10px auto 0 auto; overflow: hidden; }
+        .aviator-countdown-bar-fill { height: 100%; width: 100%; background: linear-gradient(90deg, #ff416c, #eab308, #10b981); transition: width 0.1s linear; }
+        .aviator-panels-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+        @media (min-width: 768px) {
+            .aviator-panels-grid { grid-template-columns: 1fr 1fr; }
+        }
+        .aviator-bet-card { background: rgba(15, 23, 42, 0.78); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+        .aviator-quick-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+        .aviator-chip-btn { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: #e2e8f0; border-radius: 9px; padding: 6px 4px; font-size: 11px; font-weight: 700; cursor: pointer; }
+        .aviator-chip-btn:hover { background: rgba(56,189,248,0.16); border-color: #38bdf8; color: #38bdf8; }
+        .aviator-subtabs { display: flex; gap: 6px; background: rgba(255,255,255,0.03); padding: 5px; border-radius: 14px; overflow-x: auto; }
+        .aviator-subtab-btn { flex: 1; padding: 8px 10px; border-radius: 10px; border: none; background: transparent; color: #94a3b8; font-size: 11px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+        .aviator-subtab-btn.active { background: #38bdf8; color: #040814; }
+        .aviator-pill { padding: 3px 9px; border-radius: 8px; font-size: 11px; font-weight: 800; cursor: pointer; white-space: nowrap; }
+        .aviator-pill-low { background: rgba(56, 189, 248, 0.14); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.25); }
+        .aviator-pill-mid { background: rgba(168, 85, 247, 0.16); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
+        .aviator-pill-high { background: rgba(234, 179, 8, 0.18); color: #facc15; border: 1px solid rgba(234, 179, 8, 0.35); }
+        @keyframes planeShake {
+            0%, 100% { transform: translate(0, 0) rotate(-18deg); }
+            25% { transform: translate(1px, -2px) rotate(-16deg); }
+            50% { transform: translate(-1px, 1px) rotate(-20deg); }
+            75% { transform: translate(2px, 1px) rotate(-17deg); }
+        }
+        .plane-flying-anim { animation: planeShake 0.35s infinite ease-in-out; }
     </style>
 </head>
 <body>
@@ -175,7 +213,6 @@
             <button class="buy-plan-btn" onclick="authenticateAdminSystemKey()" style="width:100%; margin:12px 0; padding:10px;">Login Admin</button>
             
             <div id="adminContentBody" style="display: none; margin-top: 20px; text-align: left; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; max-height: 480px; overflow-y: auto;">
-                <!-- ADMIN NAVIGATION TABS -->
                 <div class="auth-tabs" style="margin-bottom: 15px; display: flex; flex-wrap: wrap; gap: 4px;">
                     <button id="adminTabTracker" class="auth-tab-btn active" onclick="switchAdminSubView('tracker')" style="font-size: 10px; padding: 6px;">Live Online</button>
                     <button id="adminTabDep" class="auth-tab-btn" onclick="switchAdminSubView('deposits')" style="font-size: 10px; padding: 6px;">Transactions</button>
@@ -186,13 +223,11 @@
                     <button id="adminTabAnalytics" class="auth-tab-btn" onclick="switchAdminSubView('analytics')" style="font-size: 10px; padding: 6px;">Reports</button>
                 </div>
 
-                <!-- 1. LIVE USER TRACKER -->
                 <div id="adminTrackerSection">
                     <h5 style="font-size: 13px; color: #10b981; margin-bottom: 10px;"><i class="fa-solid fa-satellite-dish"></i> Active Online Users</h5>
                     <div id="adminLiveTrackerFeed" style="font-size: 12px; display: flex; flex-direction: column; gap: 8px;">Scanning active users...</div>
                 </div>
 
-                <!-- 2. TRANSACTIONS APPROVALS -->
                 <div id="adminDepositsSection" style="display: none;">
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
                         <h5 style="font-size: 13px; color: #38bdf8;">Pending Deposits & Withdrawals</h5>
@@ -202,24 +237,20 @@
                     <div id="adminPendingWithdrawalsTrack" style="font-size: 12px; display: flex; flex-direction: column; gap: 8px; margin-top: 10px;"></div>
                 </div>
 
-                <!-- 3. ADVANCED USER MANAGEMENT -->
                 <div id="adminUsersSection" style="display: none;">
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
                         <h5 style="font-size: 13px; color: #eab308;">User Accounts & Control</h5>
                         <button class="plan-tab-trigger" onclick="exportUserDataCSV()" style="padding:4px 10px; font-size:10px; background:#38bdf8; color:white; border:none;">Export All Users</button>
                     </div>
-                    
                     <div style="background:rgba(255,255,255,0.02); padding:10px; border-radius:12px; margin-bottom:12px; border:1px solid rgba(255,255,255,0.05);">
                         <span style="font-size:11px; color:#38bdf8; font-weight:700;">Issue Custom Gift/Bonus Code</span>
                         <input type="text" id="adminGiftCode" class="modal-input" placeholder="Gift Code Name (e.g. BONUS500)" style="margin-top:6px;">
                         <input type="number" id="adminGiftAmount" class="modal-input" placeholder="Bonus Amount (PKR)" style="margin-top:6px;">
                         <button class="buy-plan-btn" onclick="createCustomBonusCode()" style="width:100%; margin-top:8px; padding:8px; background:#10b981;">Create Gift Code</button>
                     </div>
-
                     <div id="adminUsersTrack" style="font-size: 12px; display: flex; flex-direction: column; gap: 8px;">Loading users...</div>
                 </div>
 
-                <!-- 4. DYNAMIC NODE MANAGER -->
                 <div id="adminNodesSection" style="display: none;">
                     <h5 style="font-size: 13px; color: #a855f7; margin-bottom: 10px;">Mining Nodes Configurator & Add New</h5>
                     <div style="display: flex; flex-direction: column; gap: 10px; background: rgba(255,255,255,0.02); padding: 12px; border-radius: 14px;">
@@ -233,15 +264,12 @@
                         <input type="number" id="editNodeDaily" class="modal-input" placeholder="Daily Profit (PKR)" style="margin-top:0;">
                         <input type="number" id="editNodeDuration" class="modal-input" placeholder="Duration (Days, e.g. 30)" style="margin-top:0;">
                         <input type="text" id="editNodeImg" class="modal-input" placeholder="Image URL or Base64 (Optional)" style="margin-top:0;">
-                        
                         <button class="buy-plan-btn" onclick="saveNodeConfigOverride()" style="background:linear-gradient(135deg, #a855f7, #7c3aed); padding:10px;">Save / Add Node</button>
                     </div>
-                    
                     <h6 style="font-size: 12px; color: #94a3b8; margin: 12px 0 6px 0;">Existing Active Nodes:</h6>
                     <div id="adminExistingNodesList" style="font-size: 11px; display: flex; flex-direction: column; gap: 6px;">Loading nodes list...</div>
                 </div>
 
-                <!-- 5. DYNAMIC PAYMENT METHODS MANAGER -->
                 <div id="adminPaymentsSection" style="display: none;">
                     <h5 style="font-size: 13px; color: #10b981; margin-bottom: 10px;">Dynamic Payment Account Details</h5>
                     <div style="display: flex; flex-direction: column; gap: 10px; background: rgba(255,255,255,0.02); padding: 12px; border-radius: 14px;">
@@ -256,7 +284,6 @@
                     </div>
                 </div>
 
-                <!-- 6. BROADCAST & NOTIFICATION CENTER -->
                 <div id="adminBroadcastSection" style="display: none;">
                     <h5 style="font-size: 13px; color: #ff416c; margin-bottom: 10px;"><i class="fa-solid fa-bullhorn"></i> Send Dashboard Broadcast Alert</h5>
                     <div style="display: flex; flex-direction: column; gap: 10px;">
@@ -266,7 +293,6 @@
                     </div>
                 </div>
 
-                <!-- 7. ANALYTICS REPORTS -->
                 <div id="adminAnalyticsSection" style="display: none;">
                     <h5 style="font-size: 13px; color: #38bdf8; margin-bottom: 10px;"><i class="fa-solid fa-chart-pie"></i> Platform Revenue & Activity Summary</h5>
                     <div style="background: rgba(255,255,255,0.02); padding: 14px; border-radius: 14px; display: flex; flex-direction: column; gap: 10px;">
@@ -296,7 +322,6 @@
 
     <!-- PAGE 1: HOME DASHBOARD -->
     <div id="pageHome" class="app-view-page active-page">
-        <!-- Broadcast Viewer Box Ticker Banner -->
         <div id="liveBroadcastTickerContainer" class="broadcast-ticker-banner" style="display: none;">
             <i class="fa-solid fa-bullhorn" style="font-size: 18px; color: #ff416c;"></i>
             <div style="flex: 1; overflow: hidden;">
@@ -305,7 +330,6 @@
             </div>
         </div>
 
-        <!-- MAIN BALANCE DASHBOARD CARD -->
         <div class="stats-dashboard">
             <span class="live-tag"><i class="fa-solid fa-bolt"></i> Live Earning Active</span>
             
@@ -331,14 +355,12 @@
             </div>
         </div>
 
-        <!-- QUICK ACTIONS BUTTONS -->
         <div class="quick-actions">
             <button class="action-btn btn-deposit" onclick="openDepositModal()"><i class="fa-solid fa-wallet"></i>Deposit</button>
             <button class="action-btn btn-withdraw" onclick="openWithdrawModal()"><i class="fa-solid fa-money-bill-transfer"></i>Withdraw</button>
             <button class="action-btn btn-transfer" onclick="openTransferModal()"><i class="fa-solid fa-paper-plane"></i>Transfer</button>
         </div>
 
-        <!-- MINING NODES / PACKAGES -->
         <div class="section-title"><i class="fa-solid fa-server"></i> Mining Hardware Nodes</div>
         <div class="plan-tabs-row">
             <div class="plan-tab-trigger active-tab" id="tbNorm" onclick="switchPlanCategory('gridNormal', 'tbNorm')">Normal Pods</div>
@@ -418,9 +440,7 @@
             </div>
         </div>
 
-        <!-- DAILY TASKS & CHECK-IN SECTION -->
         <div class="section-title"><i class="fa-solid fa-list-check"></i> Daily Tasks & Gift Code</div>
-        
         <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); padding: 14px; border-radius: 16px; margin-bottom: 12px; display:flex; gap:8px;">
             <input type="text" id="userGiftCodeInput" class="modal-input" placeholder="Enter Gift / Promo Code" style="margin-top:0; flex:1;">
             <button class="buy-plan-btn" onclick="redeemGiftCodeUser()" style="padding:10px 16px; background:#10b981;">Redeem</button>
@@ -448,7 +468,6 @@
             <button class="buy-plan-btn" id="btnFbTask" onclick="window.open('https://www.facebook.com/profile.php?id=61593627494433', '_blank'); completeSocialTask('fb')" style="padding:6px 14px; font-size:11px; background:#1877f2;">Complete</button>
         </div>
 
-        <!-- YIELD SYNC TIMER -->
         <div class="section-title"><i class="fa-solid fa-hourglass-half"></i> Daily Profit Sync Timer</div>
         <div class="history-card" style="margin: 0; background: rgba(56,189,248,0.03); border-color: rgba(56,189,248,0.2);">
             <div>
@@ -458,7 +477,6 @@
             <span id="countdownTimerClock" style="font-size:15px; font-weight:800; color:#38bdf8; letter-spacing:1px;">24:00:00</span>
         </div>
 
-        <!-- LUCKY SPIN WHEEL -->
         <div class="spin-box-card">
             <h4><i class="fa-solid fa-dharmachakra"></i> Lucky Spin Bonus</h4>
             <p style="font-size:11px; color:#64748b; margin-top:3px;">Spin once every 24 hours for free cash rewards</p>
@@ -467,97 +485,256 @@
         </div>
     </div>
 
-        <!-- PAGE 2: AVIATOR CRASH GAME MODULE (100% REALTIME DATABASE) -->
+    <!-- PAGE 2: UPGRADED AVIATOR PRO CRASH GAME MODULE -->
     <div id="pageAviator" class="app-view-page">
-        <div class="stats-dashboard" style="background: linear-gradient(135deg, rgba(255,65,108,0.08), rgba(4,8,20,0.4)); border-color: rgba(255,65,108,0.2);">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                <h3 style="color:#ff416c; font-size:16px;"><i class="fa-solid fa-plane-departure"></i> Aviator Pro (Live Realtime)</h3>
-                <span style="font-size:11px; background:rgba(16,185,129,0.15); color:#10b981; padding:3px 10px; border-radius:20px; font-weight:700;"><i class="fa-solid fa-users"></i> Live Multiuser</span>
+        <div class="aviator-wrap">
+
+            <!-- Disconnection Banner -->
+            <div id="aviatorOfflineWarning" style="display:none; background:rgba(239,68,68,0.18); border:1px solid #ef4444; color:#fecaca; padding:10px 14px; border-radius:14px; font-size:12px; font-weight:700; text-align:center;">
+                <i class="fa-solid fa-wifi"></i> Internet connection lost. Reconnecting to live round server...
             </div>
 
-            <!-- Realtime Recent Crash Multipliers Ticker Bar -->
-            <div style="font-size:10px; color:#94a3b8; margin-bottom:4px; font-weight:700;">LIVE DATABASE ROUND HISTORY:</div>
-            <div id="aviatorMultiplierTickerBar" style="display:flex; gap:6px; overflow-x:auto; padding-bottom:6px; margin-bottom:12px;">
-                <span style="background:rgba(56,189,248,0.1); color:#38bdf8; padding:3px 8px; border-radius:6px; font-size:11px; font-weight:700;">1.00x</span>
+            <!-- Top Status & Utility Bar -->
+            <div class="aviator-topbar">
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <h3 style="color:#ff416c; font-size:15px; font-weight:800;"><i class="fa-solid fa-plane-departure"></i> AVIATOR PRO</h3>
+                    <span id="aviatorRoundStateBadge" class="aviator-status-pill aviator-status-open">BETTING OPEN</span>
+                </div>
+                <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+                    <span style="font-size:11px; color:#94a3b8; font-weight:700;" id="aviatorRoundIdLabel">Round: --</span>
+                    <span style="font-size:11px; color:#10b981; font-weight:700;"><i class="fa-solid fa-users"></i> <span id="aviatorLivePlayerCount">0</span></span>
+                    <button class="aviator-icon-btn" id="aviatorSoundToggleBtn" onclick="toggleAviatorSound()" title="Toggle Sound">
+                        <i id="aviatorSoundIcon" class="fa-solid fa-volume-high"></i>
+                    </button>
+                    <button class="aviator-icon-btn" onclick="openAviatorFairnessModal()" title="Provably Fair & Verification">
+                        <i class="fa-solid fa-shield-check" style="color:#10b981;"></i> Fair
+                    </button>
+                    <button class="aviator-icon-btn" onclick="openAviatorLimitsModal()" title="Responsible Gaming Limits">
+                        <i class="fa-solid fa-sliders" style="color:#eab308;"></i> Limits
+                    </button>
+                </div>
             </div>
 
-            <!-- Canvas / Flight Animation Screen with Dynamic Curve -->
-            <div style="position:relative; width:100%; height:220px; background:#02050b; border-radius:18px; border:1px solid rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center; overflow:hidden;">
-                <!-- SVG Flight Curve Line -->
-                <svg style="position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;" preserveAspectRatio="none">
-                    <path id="aviatorFlightCurvePath" d="M 0,230 Q 150,200 350,50" fill="none" stroke="rgba(255,65,108,0.4)" stroke-width="3" />
+            <!-- Recent Crash Multiplier History Strip -->
+            <div style="background:rgba(15,23,42,0.65); border:1px solid rgba(255,255,255,0.06); border-radius:14px; padding:8px 10px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                    <span style="font-size:10px; color:#94a3b8; font-weight:800; letter-spacing:0.5px;">RECENT CRASH RESULTS (CLICK TO VERIFY)</span>
+                    <span style="font-size:10px; color:#38bdf8; font-weight:700;">Session: <span id="aviatorSessionTimer">00:00</span></span>
+                </div>
+                <div id="aviatorMultiplierTickerBar" style="display:flex; gap:6px; overflow-x:auto; padding-bottom:2px;">
+                    <span class="aviator-pill aviator-pill-low">Loading...</span>
+                </div>
+            </div>
+
+            <!-- Main Flight Canvas Stage -->
+            <div class="aviator-stage" id="aviatorStageBox">
+                <div class="aviator-grid-bg"></div>
+                <svg id="aviatorFlightSvg" style="position:absolute; inset:0; width:100%; height:100%; pointer-events:none;" viewBox="0 0 400 250" preserveAspectRatio="none">
+                    <defs>
+                        <linearGradient id="aviatorCurveFill" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#ff416c" stop-opacity="0.38" />
+                            <stop offset="100%" stop-color="#ff416c" stop-opacity="0.0" />
+                        </linearGradient>
+                    </defs>
+                    <path id="aviatorFlightAreaPath" d="" fill="url(#aviatorCurveFill)" />
+                    <path id="aviatorFlightCurvePath" d="" fill="none" stroke="#ff416c" stroke-width="3.5" stroke-linecap="round" />
                 </svg>
 
-                <div id="aviatorCanvasOverlay" style="text-align:center; z-index:2;">
-                    <h1 id="aviatorMultiplierDisplay" style="font-size:44px; font-weight:800; color:white; text-shadow:0 0 20px rgba(255,65,108,0.5);">1.00x</h1>
-                    <p id="aviatorStatusText" style="font-size:12px; color:#94a3b8; margin-top:4px;">Waiting for next round (10s)...</p>
+                <!-- Center Multiplier & Countdown Display -->
+                <div id="aviatorCanvasOverlay" style="position:relative; z-index:3; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:12px;">
+                    <div id="aviatorSubBannerText" style="font-size:11px; font-weight:800; letter-spacing:1px; color:#38bdf8; text-transform:uppercase; margin-bottom:4px;">NEXT ROUND IN</div>
+                    <h1 id="aviatorMultiplierDisplay" style="font-size:50px; font-weight:800; color:#ffffff; line-height:1; text-shadow:0 0 28px rgba(255,65,108,0.6);">15.0s</h1>
+                    <p id="aviatorStatusText" style="font-size:12px; color:#cbd5e1; margin-top:6px; font-weight:600;">Place your bets for the upcoming flight</p>
+                    <div id="aviatorCountdownBarWrap" class="aviator-countdown-bar-wrap">
+                        <div id="aviatorCountdownBarFill" class="aviator-countdown-bar-fill"></div>
+                    </div>
                 </div>
-                <i id="aviatorPlaneIcon" class="fa-solid fa-plane" style="position:absolute; bottom:30px; left:30px; font-size:26px; color:#ff416c; transition:all 0.1s linear; display:none; filter: drop-shadow(0 0 8px #ff416c);"></i>
+
+                <!-- Animated Plane -->
+                <div id="aviatorPlaneIcon" style="position:absolute; bottom:24px; left:24px; z-index:4; display:none; transition: left 0.08s linear, bottom 0.08s linear;">
+                    <i class="fa-solid fa-jet-fighter-up" style="font-size:30px; color:#ff416c; filter: drop-shadow(0 0 12px #ff416c); transform: rotate(45deg);"></i>
+                </div>
             </div>
 
-            <!-- Wallet Balance Quick View -->
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px; font-size:12px;">
-                <span style="color:#94a3b8;">Min Bet: Rs. 16 | Real Deposit Required</span>
-                <span style="color:#38bdf8; font-weight:700;">My Balance: Rs. <span id="aviatorWalletBalanceLbl">0.00</span></span>
-            </div>
-
-            <!-- DUAL BETTING PANELS -->
-            <div style="display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 10px;">
-                
-                <!-- Panel 1 -->
-                <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); padding: 12px; border-radius: 16px;">
-                    <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-                        <span style="font-size:11px; color:#38bdf8; font-weight:700;">Bet Panel 1</span>
-                        <label style="font-size:10px; color:#94a3b8; display:flex; align-items:center; gap:4px;">
-                            <input type="checkbox" id="autoCashoutToggle1" style="accent-color:#ff416c;"> Auto Cashout
-                        </label>
-                    </div>
-
-                    <div style="display:flex; gap:8px; margin-bottom:8px;">
-                        <input type="number" id="aviatorBetAmountInput" class="modal-input" placeholder="Bet (Rs. 16+)" style="margin-top:0; flex:1;" value="100">
-                        <input type="number" id="autoCashoutVal1" class="modal-input" placeholder="2.00x" style="margin-top:0; width:75px;" value="2.00">
-                    </div>
-
-                    <button id="aviatorActionBtn" class="buy-plan-btn" onclick="handleAviatorBetAction()" style="width:100%; padding:12px; background:linear-gradient(135deg, #ff416c, #ff4b2b); font-size:13px; font-weight:800; letter-spacing:1px;">PLACE REAL BET (Rs. 100)</button>
+            <!-- Wallet & Live Round Telemetry Strip -->
+            <div style="background:rgba(15,23,42,0.75); border:1px solid rgba(255,255,255,0.07); border-radius:16px; padding:10px 14px; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:8px; font-size:12px;">
+                <div>
+                    <span style="color:#94a3b8;">Wallet Balance:</span>
+                    <b style="color:#38bdf8; font-size:14px;">PKR <span id="aviatorWalletBalanceLbl">0.00</span></b>
                 </div>
-
-                <!-- Panel 2 -->
-                <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); padding: 12px; border-radius: 16px;">
-                    <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-                        <span style="font-size:11px; color:#a855f7; font-weight:700;">Bet Panel 2</span>
-                        <label style="font-size:10px; color:#94a3b8; display:flex; align-items:center; gap:4px;">
-                            <input type="checkbox" id="autoCashoutToggle2" style="accent-color:#a855f7;"> Auto Cashout
-                        </label>
-                    </div>
-
-                    <div style="display:flex; gap:8px; margin-bottom:8px;">
-                        <input type="number" id="aviatorBetAmountInput2" class="modal-input" placeholder="Bet (Rs. 16+)" style="margin-top:0; flex:1;" value="200">
-                        <input type="number" id="autoCashoutVal2" class="modal-input" placeholder="3.00x" style="margin-top:0; width:75px;" value="3.00">
-                    </div>
-
-                    <button id="aviatorActionBtn2" class="buy-plan-btn" onclick="handleAviatorBetAction2()" style="width:100%; padding:12px; background:linear-gradient(135deg, #a855f7, #7c3aed); font-size:13px; font-weight:800; letter-spacing:1px;">PLACE REAL BET 2 (Rs. 200)</button>
+                <div style="display:flex; gap:12px; font-size:11px; color:#94a3b8;">
+                    <span>Accepted Bets: <b id="aviatorTotalRoundBetsCount" style="color:#fff;">0</b></span>
+                    <span>Pool: <b id="aviatorTotalRoundPool" style="color:#10b981;">PKR 0</b></span>
                 </div>
-
             </div>
 
             <!-- Top Up Prompt -->
-            <div id="aviatorTopUpPromptBox" style="display:none; background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.3); padding:10px; border-radius:12px; text-align:center; margin-top:10px;">
-                <p style="font-size:11px; color:#ef4444; font-weight:700;">Insufficient real balance! Company revenue is strictly protected.</p>
-                <button class="buy-plan-btn" onclick="openDepositModal()" style="margin-top:6px; padding:8px 16px; background:#10b981; font-size:11px;">Deposit Real Funds</button>
+            <div id="aviatorTopUpPromptBox" style="display:none; background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.35); padding:10px 14px; border-radius:14px; text-align:center;">
+                <p style="font-size:11px; color:#fca5a5; font-weight:700;">Insufficient PKR wallet balance for this bet amount.</p>
+                <button class="buy-plan-btn" onclick="openDepositModal()" style="margin-top:6px; padding:7px 16px; background:#10b981; font-size:11px;">Deposit PKR Funds</button>
             </div>
-        </div>
 
-        <!-- Real-Time Online Database Bets Table -->
-        <div class="section-title" style="margin-left:0;"><i class="fa-solid fa-table-list"></i> Real-Time Online Users Bets Table</div>
-        <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); border-radius:16px; padding:10px; margin-bottom:30px;">
-            <div style="display:grid; grid-template-columns: 2fr 1.5fr 1.5fr; font-size:11px; font-weight:700; color:#94a3b8; padding-bottom:8px; border-bottom:1px solid rgba(255,255,255,0.06); text-align:center;">
-                <span>Online User</span>
-                <span>Bet (PKR)</span>
-                <span>Status / Cashout</span>
+            <!-- DUAL INDEPENDENT BETTING PANELS -->
+            <div class="aviator-panels-grid">
+
+                <!-- PANEL 1 -->
+                <div class="aviator-bet-card" id="aviatorPanelCard1">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <span style="font-size:12px; font-weight:800; color:#38bdf8;"><i class="fa-solid fa-1"></i> BETTING PANEL 1</span>
+                        <span id="panel1StatusTag" style="font-size:10px; font-weight:700; color:#94a3b8; background:rgba(255,255,255,0.04); padding:3px 8px; border-radius:8px;">READY</span>
+                    </div>
+
+                    <div style="display:flex; gap:8px; align-items:center;">
+                        <input type="number" id="aviatorBetAmountInput" class="modal-input" min="16" max="50000" step="1" value="100" oninput="refreshAviatorPanelPreviews(1)" style="margin-top:0; flex:1; font-weight:700;">
+                        <button class="aviator-chip-btn" onclick="setAviatorMaxBet(1)" style="padding:11px 12px; color:#eab308; border-color:rgba(234,179,8,0.35);">MAX</button>
+                    </div>
+
+                    <div class="aviator-quick-grid">
+                        <button class="aviator-chip-btn" onclick="setAviatorQuickBet(1, 100)">100</button>
+                        <button class="aviator-chip-btn" onclick="setAviatorQuickBet(1, 250)">250</button>
+                        <button class="aviator-chip-btn" onclick="setAviatorQuickBet(1, 500)">500</button>
+                        <button class="aviator-chip-btn" onclick="setAviatorQuickBet(1, 1000)">1,000</button>
+                        <button class="aviator-chip-btn" onclick="setAviatorQuickBet(1, 2500)">2,500</button>
+                        <button class="aviator-chip-btn" onclick="setAviatorQuickBet(1, 5000)">5,000</button>
+                        <button class="aviator-chip-btn" onclick="adjustAviatorBet(1, 0.5)">1/2</button>
+                        <button class="aviator-chip-btn" onclick="adjustAviatorBet(1, 2)">2x</button>
+                    </div>
+
+                    <!-- Auto Bet & Auto Cashout Controls -->
+                    <div style="background:rgba(0,0,0,0.28); border:1px solid rgba(255,255,255,0.05); border-radius:12px; padding:8px 10px; display:flex; flex-direction:column; gap:6px; font-size:11px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <label style="display:flex; align-items:center; gap:6px; color:#cbd5e1; cursor:pointer; font-weight:600;">
+                                <input type="checkbox" id="autoBetToggle1" onchange="toggleAutoBetPanel(1)" style="accent-color:#38bdf8;"> Auto Bet
+                            </label>
+                            <span id="autoBetStatus1" style="font-size:10px; color:#64748b; font-weight:700;">OFF</span>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+                            <label style="display:flex; align-items:center; gap:6px; color:#cbd5e1; cursor:pointer; font-weight:600;">
+                                <input type="checkbox" id="autoCashoutToggle1" onchange="refreshAviatorPanelPreviews(1)" style="accent-color:#10b981;"> Auto Cashout
+                            </label>
+                            <div style="display:flex; align-items:center; gap:4px;">
+                                <input type="number" id="autoCashoutVal1" step="0.1" min="1.01" max="1000" value="2.00" oninput="refreshAviatorPanelPreviews(1)" class="modal-input" style="margin-top:0; width:74px; padding:5px 8px; font-size:11px; text-align:right;">
+                                <span style="color:#94a3b8; font-weight:700;">x</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Potential Winnings & Live Profit Telemetry -->
+                    <div style="display:flex; justify-content:space-between; font-size:11px; color:#94a3b8; padding:0 2px;">
+                        <span>Est. Payout: <b id="panel1EstPayout" style="color:#fff;">PKR 200.00</b></span>
+                        <span>Live Profit: <b id="panel1LiveProfit" style="color:#10b981;">PKR 0.00</b></span>
+                    </div>
+
+                    <!-- Primary Action Button -->
+                    <button id="aviatorActionBtn" class="buy-plan-btn" onclick="handleAviatorPanelAction(1)" style="width:100%; padding:13px; background:linear-gradient(135deg, #ff416c, #ff4b2b); font-size:13px; font-weight:800; letter-spacing:0.6px;">
+                        PLACE BET (PKR 100)
+                    </button>
+                </div>
+
+                <!-- PANEL 2 -->
+                <div class="aviator-bet-card" id="aviatorPanelCard2">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <span style="font-size:12px; font-weight:800; color:#c084fc;"><i class="fa-solid fa-2"></i> BETTING PANEL 2</span>
+                        <span id="panel2StatusTag" style="font-size:10px; font-weight:700; color:#94a3b8; background:rgba(255,255,255,0.04); padding:3px 8px; border-radius:8px;">READY</span>
+                    </div>
+
+                    <div style="display:flex; gap:8px; align-items:center;">
+                        <input type="number" id="aviatorBetAmountInput2" class="modal-input" min="16" max="50000" step="1" value="200" oninput="refreshAviatorPanelPreviews(2)" style="margin-top:0; flex:1; font-weight:700;">
+                        <button class="aviator-chip-btn" onclick="setAviatorMaxBet(2)" style="padding:11px 12px; color:#eab308; border-color:rgba(234,179,8,0.35);">MAX</button>
+                    </div>
+
+                    <div class="aviator-quick-grid">
+                        <button class="aviator-chip-btn" onclick="setAviatorQuickBet(2, 100)">100</button>
+                        <button class="aviator-chip-btn" onclick="setAviatorQuickBet(2, 250)">250</button>
+                        <button class="aviator-chip-btn" onclick="setAviatorQuickBet(2, 500)">500</button>
+                        <button class="aviator-chip-btn" onclick="setAviatorQuickBet(2, 1000)">1,000</button>
+                        <button class="aviator-chip-btn" onclick="setAviatorQuickBet(2, 2500)">2,500</button>
+                        <button class="aviator-chip-btn" onclick="setAviatorQuickBet(2, 5000)">5,000</button>
+                        <button class="aviator-chip-btn" onclick="adjustAviatorBet(2, 0.5)">1/2</button>
+                        <button class="aviator-chip-btn" onclick="adjustAviatorBet(2, 2)">2x</button>
+                    </div>
+
+                    <!-- Auto Bet & Auto Cashout Controls -->
+                    <div style="background:rgba(0,0,0,0.28); border:1px solid rgba(255,255,255,0.05); border-radius:12px; padding:8px 10px; display:flex; flex-direction:column; gap:6px; font-size:11px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <label style="display:flex; align-items:center; gap:6px; color:#cbd5e1; cursor:pointer; font-weight:600;">
+                                <input type="checkbox" id="autoBetToggle2" onchange="toggleAutoBetPanel(2)" style="accent-color:#c084fc;"> Auto Bet
+                            </label>
+                            <span id="autoBetStatus2" style="font-size:10px; color:#64748b; font-weight:700;">OFF</span>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+                            <label style="display:flex; align-items:center; gap:6px; color:#cbd5e1; cursor:pointer; font-weight:600;">
+                                <input type="checkbox" id="autoCashoutToggle2" onchange="refreshAviatorPanelPreviews(2)" style="accent-color:#10b981;"> Auto Cashout
+                            </label>
+                            <div style="display:flex; align-items:center; gap:4px;">
+                                <input type="number" id="autoCashoutVal2" step="0.1" min="1.01" max="1000" value="3.00" oninput="refreshAviatorPanelPreviews(2)" class="modal-input" style="margin-top:0; width:74px; padding:5px 8px; font-size:11px; text-align:right;">
+                                <span style="color:#94a3b8; font-weight:700;">x</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Potential Winnings & Live Profit Telemetry -->
+                    <div style="display:flex; justify-content:space-between; font-size:11px; color:#94a3b8; padding:0 2px;">
+                        <span>Est. Payout: <b id="panel2EstPayout" style="color:#fff;">PKR 600.00</b></span>
+                        <span>Live Profit: <b id="panel2LiveProfit" style="color:#10b981;">PKR 0.00</b></span>
+                    </div>
+
+                    <!-- Primary Action Button -->
+                    <button id="aviatorActionBtn2" class="buy-plan-btn" onclick="handleAviatorPanelAction(2)" style="width:100%; padding:13px; background:linear-gradient(135deg, #a855f7, #7c3aed); font-size:13px; font-weight:800; letter-spacing:0.6px;">
+                        PLACE BET 2 (PKR 200)
+                    </button>
+                </div>
             </div>
-            <div id="aviatorLivePlayersFeed" style="display:flex; flex-direction:column; gap:6px; max-height:240px; overflow-y:auto; margin-top:8px;">
-                <!-- Real database live rows -->
+
+            <!-- Live Bets / Personal History / Stats Sub-Tabs -->
+            <div class="aviator-subtabs">
+                <button class="aviator-subtab-btn active" id="avSubTabLive" onclick="switchAviatorSubTab('live')">Live Round Bets</button>
+                <button class="aviator-subtab-btn" id="avSubTabMyBets" onclick="switchAviatorSubTab('mybets')">My Bet History</button>
+                <button class="aviator-subtab-btn" id="avSubTabStats" onclick="switchAviatorSubTab('stats')">Game Stats</button>
             </div>
+
+            <!-- 1. Live Round Bets Table (Real Firestore Data Only) -->
+            <div id="avSectionLive" style="background:rgba(15,23,42,0.7); border:1px solid rgba(255,255,255,0.07); border-radius:18px; padding:12px;">
+                <div style="display:grid; grid-template-columns: 2fr 1.2fr 1fr 1.5fr; font-size:10px; font-weight:800; color:#94a3b8; padding-bottom:8px; border-bottom:1px solid rgba(255,255,255,0.06); text-align:center;">
+                    <span style="text-align:left; padding-left:4px;">PLAYER</span>
+                    <span>BET (PKR)</span>
+                    <span>MULT.</span>
+                    <span>PAYOUT / STATUS</span>
+                </div>
+                <div id="aviatorLivePlayersFeed" style="display:flex; flex-direction:column; gap:6px; max-height:240px; overflow-y:auto; margin-top:8px;">
+                    <div style="color:#64748b; text-align:center; padding:12px; font-size:11px;">Waiting for round bets...</div>
+                </div>
+            </div>
+
+            <!-- 2. Personal Persistent Bet History -->
+            <div id="avSectionMyBets" style="display:none; background:rgba(15,23,42,0.7); border:1px solid rgba(255,255,255,0.07); border-radius:18px; padding:12px;">
+                <div id="aviatorPersonalHistoryList" style="display:flex; flex-direction:column; gap:8px; max-height:300px; overflow-y:auto;">
+                    <div style="color:#64748b; text-align:center; padding:12px; font-size:11px;">Loading your persisted bet history...</div>
+                </div>
+            </div>
+
+            <!-- 3. Personal Game Statistics Dashboard -->
+            <div id="avSectionStats" style="display:none; background:rgba(15,23,42,0.7); border:1px solid rgba(255,255,255,0.07); border-radius:18px; padding:14px;">
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                    <div style="background:rgba(255,255,255,0.03); padding:12px; border-radius:14px;">
+                        <span style="font-size:10px; color:#94a3b8;">TOTAL ROUNDS PLAYED</span>
+                        <h4 id="statTotalRounds" style="font-size:18px; color:#fff; margin-top:3px;">0</h4>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.03); padding:12px; border-radius:14px;">
+                        <span style="font-size:10px; color:#94a3b8;">BIGGEST WIN (PKR)</span>
+                        <h4 id="statBiggestWin" style="font-size:18px; color:#10b981; margin-top:3px;">PKR 0.00</h4>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.03); padding:12px; border-radius:14px;">
+                        <span style="font-size:10px; color:#94a3b8;">BIGGEST MULTIPLIER</span>
+                        <h4 id="statBiggestMult" style="font-size:18px; color:#eab308; margin-top:3px;">0.00x</h4>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.03); padding:12px; border-radius:14px;">
+                        <span style="font-size:10px; color:#94a3b8;">SESSION NET P/L</span>
+                        <h4 id="statSessionNetPL" style="font-size:18px; color:#38bdf8; margin-top:3px;">PKR 0.00</h4>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
     
@@ -565,13 +742,11 @@
     <div id="pageAffiliate" class="app-view-page">
         <div class="stats-dashboard" style="margin: 20px 0; background: linear-gradient(135deg, rgba(56,189,248,0.05), rgba(4,8,20,0.2)); border-color: rgba(56,189,248,0.15);">
             <h3 style="color:#38bdf8; font-size:15px; margin-bottom:12px;"><i class="fa-solid fa-network-wired"></i> Referral & Network Center</h3>
-            
             <p style="font-size:11px; color:#64748b;">Your Personal Invitation Link (Unlimited Invites Allowed)</p>
             <div style="background:rgba(0,0,0,0.3); padding:10px; border-radius:12px; display:flex; justify-content:space-between; align-items:center; margin-top:5px;">
                 <span id="lblDisplayInviteLink" style="font-size:12px; color:#94a3b8; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:75%;">Loading referral link...</span>
                 <button class="plan-tab-trigger" onclick="copyUserReferralLink()" style="padding:4px 10px; font-size:11px;">Copy Link</button>
             </div>
-
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:15px; text-align:left;">
                 <div style="background:rgba(255,255,255,0.02); padding:12px; border-radius:14px; border:1px solid rgba(255,255,255,0.04);">
                     <span style="font-size:11px; color:#64748b;">Direct Referrals (Tier 1)</span>
@@ -582,7 +757,6 @@
                     <h3 id="cntActiveDepositors" style="font-size:20px; color:#10b981; margin-top:2px;">0 Active</h3>
                 </div>
             </div>
-
             <div style="margin-top:12px; background:rgba(234,179,8,0.05); padding:12px; border-radius:12px; border:1px solid rgba(234,179,8,0.2);">
                 <span style="font-size:11px; color:#eab308; font-weight:700;">Multi-Tier Commission Structure:</span>
                 <p style="font-size:10px; color:#94a3b8; margin-top:3px;">Level 1: 10% Bonus | Level 2: 3% Bonus | Level 3: 1% Bonus</p>
@@ -591,7 +765,6 @@
         </div>
 
         <div class="section-title" style="margin-left:0;"><i class="fa-solid fa-sack-dollar"></i> Network Monthly / Weekly Salary</div>
-        
         <div class="history-card" style="margin-left:0; flex-direction:column; align-items:flex-start; padding:16px;">
             <div style="display:flex; justify-content:space-between; width:100%;">
                 <b>Weekly Salary Reward</b>
@@ -616,12 +789,9 @@
     <!-- PAGE 4: SEARCHABLE UNLIMITED HISTORY & SUPPORT TICKETS -->
     <div id="pageHistory" class="app-view-page">
         <div class="section-title" style="margin-left:0;"><i class="fa-solid fa-list"></i> Searchable History Logs</div>
-        
         <input type="text" id="historySearchInput" class="modal-input" placeholder="Search deposits, withdrawals or referral logs..." oninput="filterUserHistoryLogs()" style="margin-top:0; margin-bottom:12px;">
-
         <div id="userHistoryRecordsList" style="margin-bottom: 25px;">Loading transaction history...</div>
 
-        <!-- SUPPORT TICKET SYSTEM -->
         <div class="section-title" style="margin-left:0;"><i class="fa-solid fa-headset"></i> In-App Help & Support Tickets</div>
         <div class="info-card">
             <h4>Submit a Support Ticket</h4>
@@ -685,20 +855,16 @@
         <div class="modal-content" style="text-align:left;">
             <div class="close-modal-btn" onclick="closeModal('depositModal')">&times;</div>
             <h4 style="margin-bottom:12px; color:white; text-align:center;">Deposit Funds</h4>
-            
             <input type="number" id="pkrDepositInput" class="modal-input" placeholder="Enter Amount in PKR (Min: 200)" oninput="updateDepositCalculations()">
-            
             <div style="background: rgba(16, 185, 129, 0.05); padding: 10px; border-radius: 12px; margin-top: 10px; font-size:12px;">
                 <div style="display:flex; justify-content:space-between; color:#94a3b8;"><span>Bonus Credited:</span> <b id="lblBonusPKR" style="color:#10b981;">Rs. 0 (8% / 4%)</b></div>
                 <div style="display:flex; justify-content:space-between; color:white; font-weight:800; margin-top:4px;"><span>Total Added Balance:</span> <b id="lblTotalCreditedPKR" style="color:#38bdf8;">Rs. 0</b></div>
             </div>
-
             <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px;">
                 <button id="chkEasyPaisa" class="action-btn" onclick="selectDepositGatewayChannel('EasyPaisa')" style="border-color:#10b981; font-size:10px;"><i class="fa-solid fa-mobile-screen" style="color:#10b981;"></i>EasyPaisa</button>
                 <button id="chkJazzCash" class="action-btn" onclick="selectDepositGatewayChannel('JazzCash')" style="font-size:10px;"><i class="fa-solid fa-wallet" style="color:#eab308;"></i>JazzCash</button>
                 <button id="chkUSDT" class="action-btn" onclick="selectDepositGatewayChannel('USDT')" style="font-size:10px;"><i class="fa-solid fa-circle-dollar-to-slot" style="color:#26a17b;"></i>Binance</button>
             </div>
-
             <div style="background:rgba(0,0,0,0.3); padding:12px; border-radius:12px; margin-top:12px; display:flex; justify-content:space-between; align-items:center;">
                 <div>
                     <span id="lblAccountTitleType" style="font-size:10px; color:#64748b; text-transform:uppercase;">Account Details</span>
@@ -707,9 +873,7 @@
                 </div>
                 <button class="plan-tab-trigger" onclick="copyMerchantAccountToken()" style="padding:4px 10px; font-size:10px;">Copy Number</button>
             </div>
-            
             <div style="font-size:11px; margin-top:8px; display:flex; justify-content:space-between;"><span>Exact Amount Needed:</span> <b id="txtPayableExactAmount" style="color:#ff416c;">Rs. 0</b></div>
-
             <input type="text" id="depositTxIDInput" class="modal-input" placeholder="Transaction ID / TID (11-12 Digits)">
             <button class="buy-plan-btn" onclick="submitPkrDepositToFirebase()" style="width:100%; margin-top:14px; padding:12px;">Submit Deposit</button>
         </div>
@@ -743,17 +907,58 @@
         <div class="modal-content">
             <div class="close-modal-btn" onclick="closeModal('profileEditModal')">&times;</div>
             <h4 style="color:white;"><i class="fa-solid fa-user-gear"></i> Edit User Profile</h4>
-            
             <div style="margin: 15px 0;">
                 <img id="modalProfilePreviewImg" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" style="width:70px; height:70px; border-radius:50%; object-fit:cover; border:2px solid #38bdf8;" alt="Preview">
                 <br>
                 <button class="plan-tab-trigger" onclick="triggerProfilePictureFileInput()" style="margin-top:8px; padding:6px 14px; font-size:11px;">Change Photo</button>
             </div>
-
             <input type="text" id="editUsernameInput" class="modal-input" placeholder="New Username">
             <p id="lblUsernameChangeNotice" style="font-size:10px; color:#eab308; margin-top:4px; text-align:left;">Note: Username can only be changed once every 30 days.</p>
-
             <button class="buy-plan-btn" onclick="saveUserProfileChanges()" style="width:100%; margin-top:14px; padding:12px; background:#10b981;">Save Profile Changes</button>
+        </div>
+    </div>
+
+    <!-- MODAL 5: PROVABLY FAIR & ROUND VERIFICATION MODAL -->
+    <div id="aviatorFairnessModal" class="premium-modal">
+        <div class="modal-content" style="text-align:left;">
+            <div class="close-modal-btn" onclick="closeModal('aviatorFairnessModal')">&times;</div>
+            <h4 style="color:#10b981; margin-bottom:8px;"><i class="fa-solid fa-shield-check"></i> Provably Fair Verification</h4>
+            <p style="font-size:11px; color:#94a3b8; line-height:1.5; margin-bottom:10px;">
+                Every Aviator round outcome is generated on the server using <b>HMAC-SHA256(serverSeed, roundId)</b> with a disclosed <b>3.0% house edge</b>. The SHA-256 hash of the server seed is published before flight starts, and the raw seed is revealed after crash so you can verify independently using WebCrypto below.
+            </p>
+            <div style="background:rgba(0,0,0,0.35); padding:10px; border-radius:12px; font-size:11px; margin-bottom:10px;">
+                <div style="color:#64748b;">Current Round Seed Hash (Pre-Committed):</div>
+                <div id="fairCurrentHash" style="color:#38bdf8; word-break:break-all; font-family:monospace; font-size:10px; margin-top:2px;">--</div>
+            </div>
+            <label style="font-size:11px; color:#cbd5e1; font-weight:700;">Round ID to Verify</label>
+            <input type="text" id="verifyRoundIdInput" class="modal-input" placeholder="e.g. RND-1731450000000" style="margin-top:4px;">
+            <label style="font-size:11px; color:#cbd5e1; font-weight:700; display:block; margin-top:8px;">Revealed Server Seed (Hex)</label>
+            <input type="text" id="verifyServerSeedInput" class="modal-input" placeholder="Paste revealed serverSeed" style="margin-top:4px;">
+            <button class="buy-plan-btn" onclick="verifyAviatorRoundFairness()" style="width:100%; margin-top:12px; padding:11px; background:#10b981;">VERIFY CRYPTOGRAPHIC RESULT</button>
+            <div id="verifyFairnessOutput" style="margin-top:10px; font-size:11px; color:#e2e8f0; background:rgba(255,255,255,0.03); padding:10px; border-radius:10px; display:none;"></div>
+        </div>
+    </div>
+
+    <!-- MODAL 6: RESPONSIBLE GAMING & AUTOPLAY LIMITS MODAL -->
+    <div id="aviatorLimitsModal" class="premium-modal">
+        <div class="modal-content" style="text-align:left;">
+            <div class="close-modal-btn" onclick="closeModal('aviatorLimitsModal')">&times;</div>
+            <h4 style="color:#eab308; margin-bottom:8px;"><i class="fa-solid fa-sliders"></i> Autoplay & Responsible Limits</h4>
+            <p style="font-size:11px; color:#94a3b8; margin-bottom:10px;">Configure automatic stop conditions and daily/session risk caps.</p>
+
+            <label style="font-size:11px; color:#cbd5e1; font-weight:700;">Daily Betting Limit (PKR)</label>
+            <input type="number" id="limitDailyBetInput" class="modal-input" placeholder="e.g. 25000" style="margin-top:4px;">
+
+            <label style="font-size:11px; color:#cbd5e1; font-weight:700; display:block; margin-top:8px;">Session Loss Limit (PKR)</label>
+            <input type="number" id="limitSessionLossInput" class="modal-input" placeholder="e.g. 5000" style="margin-top:4px;">
+
+            <label style="font-size:11px; color:#cbd5e1; font-weight:700; display:block; margin-top:8px;">Auto-Bet Stop on Profit Target (PKR)</label>
+            <input type="number" id="limitAutoProfitStopInput" class="modal-input" placeholder="e.g. 3000" style="margin-top:4px;">
+
+            <label style="font-size:11px; color:#cbd5e1; font-weight:700; display:block; margin-top:8px;">Auto-Bet Max Consecutive Rounds</label>
+            <input type="number" id="limitAutoMaxRoundsInput" class="modal-input" placeholder="e.g. 20" style="margin-top:4px;">
+
+            <button class="buy-plan-btn" onclick="saveAviatorResponsibleLimits()" style="width:100%; margin-top:14px; padding:11px; background:linear-gradient(135deg, #eab308, #ca8a04); color:#040814;">SAVE GAMING LIMITS</button>
         </div>
     </div>
 
@@ -783,6 +988,7 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
         const auth = firebase.auth();
+        const functions = firebase.functions();
 
         let currentUserId = null;
         let userCurrentBalance = 0.00;
@@ -795,286 +1001,789 @@
         let adminLogoTapCountTracker = 0;
         let cachedUserHistoryLogs = [];
 
-         // Aviator State Variables (Real-time Database Enforced)
-        let aviatorGameActiveState = false;
-        let aviatorUserHasPlacedBet = false;
-        let aviatorUserHasPlacedBet2 = false;
-        let aviatorCurrentRoundMultiplier = 1.00;
-        let aviatorActiveBetAmount = 0;
-        let aviatorActiveBetAmount2 = 0;
-        let aviatorCrashTargetMultiplier = 1.00;
-        let currentRoundId = "round_" + Date.now();
-
-        // Listen to live database bets from actual online users
-        function syncRealtimeDatabaseBets() {
-            db.collection("aviator_live_bets").where("roundId", "==", currentRoundId).onSnapshot(snapshot => {
-                let html = "";
-                if (snapshot.empty) {
-                    html = "<div style='color:#64748b; text-align:center; padding:10px; font-size:11px;'>No bets placed this round yet. Be the first!</div>";
+        /* =========================================================================
+           UNIFIED SYNCHRONIZED AVIATOR PRO ENGINE (NO DUPLICATES)
+           ========================================================================= */
+        const aviatorState = {
+            roundId: null,
+            status: "BETTING", // BETTING | FLYING | CRASHED
+            bettingEndsAt: 0,
+            flightStartedAt: null,
+            currentMultiplier: 1.00,
+            serverSeedHash: "",
+            soundEnabled: true,
+            audioCtx: null,
+            sessionStartTime: Date.now(),
+            sessionWagered: 0,
+            sessionNetPL: 0,
+            dailyWagered: 0,
+            limits: {
+                dailyBet: 50000,
+                sessionLoss: 25000,
+                autoProfitStop: 10000,
+                autoMaxRounds: 50
+            },
+            panels: {
+                1: {
+                    activeBet: false,
+                    betAmount: 0,
+                    betId: null,
+                    autoBet: false,
+                    autoRoundsLeft: 0,
+                    autoCashoutTriggered: false,
+                    pendingRequest: false
+                },
+                2: {
+                    activeBet: false,
+                    betAmount: 0,
+                    betId: null,
+                    autoBet: false,
+                    autoRoundsLeft: 0,
+                    autoCashoutTriggered: false,
+                    pendingRequest: false
                 }
-                snapshot.forEach(doc => {
-                    let d = doc.data();
-                    let statusColor = d.status === 'won' ? '#10b981' : (d.status === 'crashed' ? '#ef4444' : '#eab308');
-                    let statusText = d.status === 'won' ? `Won Rs. ${d.winnings.toFixed(0)} (${d.cashoutMultiplier}x)` : (d.status === 'crashed' ? 'Crashed' : 'Waiting...');
+            },
+            unsubscribeRound: null,
+            unsubscribeLiveBets: null,
+            unsubscribeHistory: null,
+            unsubscribePersonal: null,
+            renderRaf: null,
+            tickTimer: null
+        };
 
-                    html += `<div style="display:grid; grid-template-columns: 2fr 1.5fr 1.5fr; font-size:11px; padding:6px 4px; border-bottom:1px solid rgba(255,255,255,0.03); align-items:center; text-align:center;">
-                        <span style="color:#38bdf8; font-weight:600; text-align:left; padding-left:4px;">${d.username}</span>
-                        <span style="color:white;">Rs. ${d.amount.toLocaleString()}</span>
-                        <span style="color:${statusColor}; font-weight:700;">${statusText}</span>
-                    </div>`;
-                });
-                let container = document.getElementById('aviatorLivePlayersFeed');
-                if (container) container.innerHTML = html;
+        function loadSavedAviatorSettings() {
+            try {
+                const savedLimits = JSON.parse(localStorage.getItem("vestify_aviator_limits") || "null");
+                if (savedLimits) Object.assign(aviatorState.limits, savedLimits);
+                const todayKey = new Date().toISOString().slice(0, 10);
+                const dailyTrack = JSON.parse(localStorage.getItem("vestify_aviator_daily_" + todayKey) || "0");
+                aviatorState.dailyWagered = Number(dailyTrack) || 0;
+                const soundPref = localStorage.getItem("vestify_aviator_sound");
+                if (soundPref !== null) aviatorState.soundEnabled = soundPref === "true";
+                updateSoundIconUI();
+            } catch (e) {}
+        }
+
+        function playAviatorTone(type) {
+            if (!aviatorState.soundEnabled) return;
+            try {
+                if (!aviatorState.audioCtx) {
+                    aviatorState.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                const ctx = aviatorState.audioCtx;
+                if (ctx.state === "suspended") ctx.resume();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+
+                const now = ctx.currentTime;
+                if (type === "bet") {
+                    osc.type = "sine";
+                    osc.frequency.setValueAtTime(520, now);
+                    osc.frequency.exponentialRampToValueAtTime(780, now + 0.12);
+                    gain.gain.setValueAtTime(0.08, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
+                    osc.start(now);
+                    osc.stop(now + 0.15);
+                } else if (type === "takeoff") {
+                    osc.type = "triangle";
+                    osc.frequency.setValueAtTime(220, now);
+                    osc.frequency.exponentialRampToValueAtTime(620, now + 0.35);
+                    gain.gain.setValueAtTime(0.09, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.38);
+                    osc.start(now);
+                    osc.stop(now + 0.4);
+                } else if (type === "cashout") {
+                    osc.type = "sine";
+                    osc.frequency.setValueAtTime(660, now);
+                    osc.frequency.setValueAtTime(880, now + 0.09);
+                    osc.frequency.setValueAtTime(1120, now + 0.18);
+                    gain.gain.setValueAtTime(0.11, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.32);
+                    osc.start(now);
+                    osc.stop(now + 0.34);
+                } else if (type === "crash") {
+                    osc.type = "sawtooth";
+                    osc.frequency.setValueAtTime(190, now);
+                    osc.frequency.exponentialRampToValueAtTime(55, now + 0.42);
+                    gain.gain.setValueAtTime(0.12, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+                    osc.start(now);
+                    osc.stop(now + 0.46);
+                }
+            } catch (e) {}
+        }
+
+        window.toggleAviatorSound = function() {
+            aviatorState.soundEnabled = !aviatorState.soundEnabled;
+            localStorage.setItem("vestify_aviator_sound", String(aviatorState.soundEnabled));
+            updateSoundIconUI();
+            triggerToastDisplay(aviatorState.soundEnabled ? "Aviator sound enabled" : "Aviator sound muted");
+        };
+
+        function updateSoundIconUI() {
+            const icon = document.getElementById("aviatorSoundIcon");
+            if (icon) {
+                icon.className = aviatorState.soundEnabled ? "fa-solid fa-volume-high" : "fa-solid fa-volume-xmark";
+                icon.style.color = aviatorState.soundEnabled ? "#10b981" : "#ef4444";
+            }
+        }
+
+        window.switchAviatorSubTab = function(tab) {
+            const tabs = { live: ["avSubTabLive", "avSectionLive"], mybets: ["avSubTabMyBets", "avSectionMyBets"], stats: ["avSubTabStats", "avSectionStats"] };
+            Object.keys(tabs).forEach(k => {
+                const btn = document.getElementById(tabs[k][0]);
+                const sec = document.getElementById(tabs[k][1]);
+                if (btn) btn.classList.toggle("active", k === tab);
+                if (sec) sec.style.display = k === tab ? "block" : "none";
+            });
+        };
+
+        window.setAviatorQuickBet = function(panel, amount) {
+            const input = document.getElementById(panel === 1 ? "aviatorBetAmountInput" : "aviatorBetAmountInput2");
+            if (input) {
+                input.value = Math.min(50000, Math.max(16, amount));
+                refreshAviatorPanelPreviews(panel);
+            }
+        };
+
+        window.adjustAviatorBet = function(panel, factor) {
+            const input = document.getElementById(panel === 1 ? "aviatorBetAmountInput" : "aviatorBetAmountInput2");
+            if (input) {
+                const cur = parseFloat(input.value) || 100;
+                const next = Math.round(cur * factor);
+                input.value = Math.min(50000, Math.max(16, next));
+                refreshAviatorPanelPreviews(panel);
+            }
+        };
+
+        window.setAviatorMaxBet = function(panel) {
+            const input = document.getElementById(panel === 1 ? "aviatorBetAmountInput" : "aviatorBetAmountInput2");
+            if (input) {
+                const maxAllowed = Math.floor(Math.min(50000, userCurrentBalance));
+                input.value = maxAllowed >= 16 ? maxAllowed : 16;
+                refreshAviatorPanelPreviews(panel);
+            }
+        };
+
+        window.toggleAutoBetPanel = function(panel) {
+            const checked = document.getElementById(panel === 1 ? "autoBetToggle1" : "autoBetToggle2").checked;
+            const pState = aviatorState.panels[panel];
+            pState.autoBet = checked;
+            pState.autoRoundsLeft = checked ? aviatorState.limits.autoMaxRounds : 0;
+            const statusLbl = document.getElementById(panel === 1 ? "autoBetStatus1" : "autoBetStatus2");
+            if (statusLbl) {
+                statusLbl.innerText = checked ? `ON (${pState.autoRoundsLeft} rds)` : "OFF";
+                statusLbl.style.color = checked ? "#10b981" : "#64748b";
+            }
+            if (checked && aviatorState.status === "BETTING" && !pState.activeBet) {
+                handleAviatorPanelAction(panel);
+            }
+        };
+
+        window.refreshAviatorPanelPreviews = function(panel) {
+            const input = document.getElementById(panel === 1 ? "aviatorBetAmountInput" : "aviatorBetAmountInput2");
+            const autoChk = document.getElementById(panel === 1 ? "autoCashoutToggle1" : "autoCashoutToggle2");
+            const autoVal = document.getElementById(panel === 1 ? "autoCashoutVal1" : "autoCashoutVal2");
+            const estEl = document.getElementById(panel === 1 ? "panel1EstPayout" : "panel2EstPayout");
+            const amt = parseFloat(input && input.value) || 0;
+            const mult = (autoChk && autoChk.checked) ? (parseFloat(autoVal.value) || 2.0) : 2.0;
+            if (estEl) estEl.innerText = `PKR ${(amt * mult).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            updateAviatorActionButtons();
+        };
+
+        function updateAviatorActionButtons() {
+            [1, 2].forEach(panel => {
+                const btn = document.getElementById(panel === 1 ? "aviatorActionBtn" : "aviatorActionBtn2");
+                const tag = document.getElementById(panel === 1 ? "panel1StatusTag" : "panel2StatusTag");
+                const input = document.getElementById(panel === 1 ? "aviatorBetAmountInput" : "aviatorBetAmountInput2");
+                const profitEl = document.getElementById(panel === 1 ? "panel1LiveProfit" : "panel2LiveProfit");
+                if (!btn || !tag) return;
+
+                const pState = aviatorState.panels[panel];
+                const inputVal = parseFloat(input && input.value) || (panel === 1 ? 100 : 200);
+
+                if (pState.pendingRequest) {
+                    btn.disabled = true;
+                    btn.innerText = "PROCESSING...";
+                    return;
+                }
+
+                if (aviatorState.status === "BETTING") {
+                    if (pState.activeBet) {
+                        btn.disabled = false;
+                        btn.style.background = "linear-gradient(135deg, #ef4444, #dc2626)";
+                        btn.innerText = `CANCEL BET (PKR ${pState.betAmount.toLocaleString()})`;
+                        tag.innerText = "BET ACCEPTED";
+                        tag.style.color = "#10b981";
+                        if (profitEl) profitEl.innerText = "PKR 0.00";
+                    } else {
+                        btn.disabled = false;
+                        btn.style.background = panel === 1
+                            ? "linear-gradient(135deg, #ff416c, #ff4b2b)"
+                            : "linear-gradient(135deg, #a855f7, #7c3aed)";
+                        btn.innerText = `PLACE BET${panel === 2 ? " 2" : ""} (PKR ${inputVal.toLocaleString()})`;
+                        tag.innerText = "BETTING OPEN";
+                        tag.style.color = "#38bdf8";
+                        if (profitEl) profitEl.innerText = "PKR 0.00";
+                    }
+                } else if (aviatorState.status === "FLYING") {
+                    if (pState.activeBet) {
+                        const livePayout = pState.betAmount * aviatorState.currentMultiplier;
+                        const liveProfit = livePayout - pState.betAmount;
+                        btn.disabled = false;
+                        btn.style.background = "linear-gradient(135deg, #10b981, #059669)";
+                        btn.innerText = `CASH OUT — PKR ${livePayout.toFixed(2)}`;
+                        tag.innerText = `IN FLIGHT @ ${aviatorState.currentMultiplier.toFixed(2)}x`;
+                        tag.style.color = "#10b981";
+                        if (profitEl) profitEl.innerText = `+PKR ${liveProfit.toFixed(2)}`;
+                    } else {
+                        btn.disabled = true;
+                        btn.style.background = "rgba(100, 116, 139, 0.35)";
+                        btn.innerText = "BETTING CLOSED — WAIT FOR NEXT ROUND";
+                        tag.innerText = "BETTING CLOSED";
+                        tag.style.color = "#eab308";
+                        if (profitEl) profitEl.innerText = "PKR 0.00";
+                    }
+                } else {
+                    btn.disabled = true;
+                    btn.style.background = "rgba(100, 116, 139, 0.35)";
+                    btn.innerText = "ROUND SETTLED — NEXT ROUND SOON";
+                    tag.innerText = "CRASHED";
+                    tag.style.color = "#ef4444";
+                }
             });
         }
 
-        window.handleAviatorBetAction = function() {
-            let betInput = parseFloat(document.getElementById('aviatorBetAmountInput').value);
-            
-            if (isNaN(betInput) || betInput < 16 || betInput > 50000) {
-                triggerToastDisplay("Minimum bet is Rs. 16.");
+        window.handleAviatorPanelAction = async function(panel) {
+            if (!currentUserId) {
+                triggerToastDisplay("Please sign in to play.");
                 return;
             }
+            const pState = aviatorState.panels[panel];
+            if (pState.pendingRequest) return;
 
-            if (betInput > userCurrentBalance) {
-                document.getElementById('aviatorTopUpPromptBox').style.display = 'block';
-                triggerToastDisplay("Insufficient real balance!");
-                return;
-            }
-
-            if (!aviatorGameActiveState && !aviatorUserHasPlacedBet) {
-                aviatorActiveBetAmount = betInput;
-                db.collection("users").doc(currentUserId).update({
-                    balance: userCurrentBalance - betInput,
-                    hasDepositedBefore: true
-                }).then(() => {
-                    aviatorUserHasPlacedBet = true;
-                    db.collection("aviator_live_bets").add({
-                        roundId: currentRoundId,
-                        uid: currentUserId,
-                        username: userCustomUsernameToken || "User",
-                        amount: betInput,
-                        status: "active",
-                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                    document.getElementById('aviatorActionBtn').innerText = "CASHOUT NOW\nRs. 0.00";
-                    document.getElementById('aviatorActionBtn').style.background = "linear-gradient(135deg, #10b981, #059669)";
-                    triggerToastDisplay(`Real Bet 1 of Rs. ${betInput} placed!`);
-                });
-            } else if (aviatorGameActiveState && aviatorUserHasPlacedBet) {
-                let winnings = aviatorActiveBetAmount * aviatorCurrentRoundMultiplier;
-                db.collection("users").doc(currentUserId).update({
-                    balance: userCurrentBalance + winnings
-                }).then(() => {
-                    db.collection("aviator_live_bets").where("roundId", "==", currentRoundId).where("uid", "==", currentUserId).get().then(snap => {
-                        snap.forEach(doc => {
-                            doc.ref.update({ status: "won", cashoutMultiplier: aviatorCurrentRoundMultiplier.toFixed(2), winnings: winnings });
-                        });
-                    });
-                    triggerToastDisplay(`Cashed out! Won Rs. ${winnings.toFixed(2)}`);
-                    aviatorUserHasPlacedBet = false;
-                    document.getElementById('aviatorActionBtn').innerText = "WAITING...";
-                    document.getElementById('aviatorActionBtn').disabled = true;
-                });
-            }
-        }
-
-        window.handleAviatorBetAction2 = function() {
-            let betInput = parseFloat(document.getElementById('aviatorBetAmountInput2').value);
-            
-            if (isNaN(betInput) || betInput < 16 || betInput > 50000) {
-                triggerToastDisplay("Minimum bet is Rs. 16.");
-                return;
-            }
-
-            if (betInput > userCurrentBalance) {
-                document.getElementById('aviatorTopUpPromptBox').style.display = 'block';
-                triggerToastDisplay("Insufficient balance for Bet 2!");
-                return;
-            }
-
-            if (!aviatorGameActiveState && !aviatorUserHasPlacedBet2) {
-                aviatorActiveBetAmount2 = betInput;
-                db.collection("users").doc(currentUserId).update({
-                    balance: userCurrentBalance - betInput,
-                    hasDepositedBefore: true
-                }).then(() => {
-                    aviatorUserHasPlacedBet2 = true;
-                    db.collection("aviator_live_bets").add({
-                        roundId: currentRoundId,
-                        uid: currentUserId,
-                        username: (userCustomUsernameToken || "User") + " [2]",
-                        amount: betInput,
-                        status: "active",
-                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                    document.getElementById('aviatorActionBtn2').innerText = "CASHOUT 2\nRs. 0.00";
-                    document.getElementById('aviatorActionBtn2').style.background = "linear-gradient(135deg, #10b981, #059669)";
-                    triggerToastDisplay(`Real Bet 2 of Rs. ${betInput} placed!`);
-                });
-            } else if (aviatorGameActiveState && aviatorUserHasPlacedBet2) {
-                let winnings = aviatorActiveBetAmount2 * aviatorCurrentRoundMultiplier;
-                db.collection("users").doc(currentUserId).update({
-                    balance: userCurrentBalance + winnings
-                }).then(() => {
-                    triggerToastDisplay(`Cashed out Bet 2! Won Rs. ${winnings.toFixed(2)}`);
-                    aviatorUserHasPlacedBet2 = false;
-                    document.getElementById('aviatorActionBtn2').innerText = "WAITING...";
-                });
-            }
-        }
-
-        function startAviatorGameLoop() {
-            syncRealtimeDatabaseBets();
-            setInterval(() => {
-                if (!aviatorGameActiveState) {
-                    let countdownSec = 10;
-                    currentRoundId = "round_" + Date.now();
-                    syncRealtimeDatabaseBets();
-
-                    document.getElementById('aviatorStatusText').innerText = `Next round starting in ${countdownSec}s...`;
-                    document.getElementById('aviatorMultiplierDisplay').innerText = "1.00x";
-                    document.getElementById('aviatorPlaneIcon').style.display = 'none';
-
-                    let countdownInterval = setInterval(() => {
-                        countdownSec--;
-                        if (countdownSec > 0) {
-                            document.getElementById('aviatorStatusText').innerText = `Next round starting in ${countdownSec}s...`;
-                        }
-                    }, 1000);
-                    
-                    setTimeout(() => {
-                        clearInterval(countdownInterval);
-                        aviatorGameActiveState = true;
-                        aviatorCrashTargetMultiplier = calculateAviatorCrashPoint();
-                        aviatorCurrentRoundMultiplier = 1.00;
-                        
-                        if (!aviatorUserHasPlacedBet) {
-                            let currentVal = document.getElementById('aviatorBetAmountInput').value || 100;
-                            document.getElementById('aviatorActionBtn').innerText = `PLACE REAL BET (Rs. ${currentVal})`;
-                            document.getElementById('aviatorActionBtn').style.background = "linear-gradient(135deg, #ff416c, #ff4b2b)";
-                            document.getElementById('aviatorActionBtn').disabled = false;
-                        }
-                        
-                        if (!aviatorUserHasPlacedBet2 && document.getElementById('aviatorActionBtn2')) {
-                            let currentVal2 = document.getElementById('aviatorBetAmountInput2').value || 200;
-                            document.getElementById('aviatorActionBtn2').innerText = `PLACE REAL BET 2 (Rs. ${currentVal2})`;
-                            document.getElementById('aviatorActionBtn2').style.background = "linear-gradient(135deg, #a855f7, #7c3aed)";
-                            document.getElementById('aviatorActionBtn2').disabled = false;
-                        }
-
-                        document.getElementById('aviatorTopUpPromptBox').style.display = 'none';
-                        document.getElementById('aviatorPlaneIcon').style.display = 'block';
-
-                        let flightInterval = setInterval(() => {
-                            if (!aviatorGameActiveState) {
-                                clearInterval(flightInterval);
-                                return;
-                            }
-
-                            aviatorCurrentRoundMultiplier += 0.02 + (aviatorCurrentRoundMultiplier * 0.03);
-                            document.getElementById('aviatorMultiplierDisplay').innerText = aviatorCurrentRoundMultiplier.toFixed(2) + "x";
-
-                            if (aviatorUserHasPlacedBet) {
-                                let liveWinning1 = aviatorActiveBetAmount * aviatorCurrentRoundMultiplier;
-                                document.getElementById('aviatorActionBtn').innerText = `CASHOUT NOW\nRs. ${liveWinning1.toFixed(2)}`;
-                            }
-                            if (aviatorUserHasPlacedBet2) {
-                                let liveWinning2 = aviatorActiveBetAmount2 * aviatorCurrentRoundMultiplier;
-                                document.getElementById('aviatorActionBtn2').innerText = `CASHOUT 2\nRs. ${liveWinning2.toFixed(2)}`;
-                            }
-
-                            // Auto Cashout Check Panel 1
-                            if (aviatorUserHasPlacedBet && document.getElementById('autoCashoutToggle1').checked) {
-                                let target1 = parseFloat(document.getElementById('autoCashoutVal1').value) || 2.00;
-                                if (aviatorCurrentRoundMultiplier >= target1) {
-                                    let winnings1 = aviatorActiveBetAmount * target1;
-                                    db.collection("users").doc(currentUserId).update({
-                                        balance: userCurrentBalance + winnings1
-                                    }).then(() => {
-                                        triggerToastDisplay(`Auto Cashout 1! Won Rs. ${winnings1.toFixed(2)}`);
-                                        aviatorUserHasPlacedBet = false;
-                                        document.getElementById('aviatorActionBtn').innerText = "WAITING...";
-                                        document.getElementById('aviatorActionBtn').disabled = true;
-                                    });
-                                }
-                            }
-
-                            // Auto Cashout Check Panel 2
-                            if (aviatorUserHasPlacedBet2 && document.getElementById('autoCashoutToggle2').checked) {
-                                let target2 = parseFloat(document.getElementById('autoCashoutVal2').value) || 3.00;
-                                if (aviatorCurrentRoundMultiplier >= target2) {
-                                    let winnings2 = aviatorActiveBetAmount2 * target2;
-                                    db.collection("users").doc(currentUserId).update({
-                                        balance: userCurrentBalance + winnings2
-                                    }).then(() => {
-                                        triggerToastDisplay(`Auto Cashout 2! Won Rs. ${winnings2.toFixed(2)}`);
-                                        aviatorUserHasPlacedBet2 = false;
-                                        document.getElementById('aviatorActionBtn2').innerText = "WAITING...";
-                                        document.getElementById('aviatorActionBtn2').disabled = true;
-                                    });
-                                }
-                            }
-
-                            if (aviatorCurrentRoundMultiplier >= aviatorCrashTargetMultiplier) {
-                                aviatorGameActiveState = false;
-                                clearInterval(flightInterval);
-                                document.getElementById('aviatorStatusText').innerText = `CRASHED @ ${aviatorCrashTargetMultiplier.toFixed(2)}x`;
-                                document.getElementById('aviatorMultiplierDisplay').style.color = "#ef4444";
-                                
-                                db.collection("aviator_live_bets").where("roundId", "==", currentRoundId).where("status", "==", "active").get().then(snap => {
-                                    snap.forEach(doc => { doc.ref.update({ status: "crashed" }); });
-                                });
-
-                                let tickerBar = document.getElementById('aviatorMultiplierTickerBar');
-                                if (tickerBar) {
-                                    let val = aviatorCrashTargetMultiplier.toFixed(2);
-                                    let newSpan = document.createElement('span');
-                                    newSpan.className = "aviator-history-pill";
-                                    newSpan.style.cssText = "background:rgba(239,68,68,0.1); color:#ef4444; padding:3px 8px; border-radius:6px; font-size:11px; font-weight:700;";
-                                    newSpan.innerText = `${val}x`;
-                                    tickerBar.prepend(newSpan);
-                                }
-
-                                if (aviatorUserHasPlacedBet) {
-                                    triggerToastDisplay("Plane crashed! Bet 1 lost.");
-                                    aviatorUserHasPlacedBet = false;
-                                }
-                                if (aviatorUserHasPlacedBet2) {
-                                    triggerToastDisplay("Plane crashed! Bet 2 lost.");
-                                    aviatorUserHasPlacedBet2 = false;
-                                }
-
-                                document.getElementById('aviatorActionBtn').innerText = "WAITING...";
-                                document.getElementById('aviatorActionBtn').disabled = true;
-                                if(document.getElementById('aviatorActionBtn2')) {
-                                    document.getElementById('aviatorActionBtn2').innerText = "WAITING...";
-                                    document.getElementById('aviatorActionBtn2').disabled = true;
-                                }
-
-                                setTimeout(() => {
-                                    document.getElementById('aviatorMultiplierDisplay').style.color = "white";
-                                }, 2000);
-                            }
-                        }, 150);
-                    }, 10000);
+            // 1. BETTING PHASE: Place or Cancel Bet
+            if (aviatorState.status === "BETTING") {
+                if (pState.activeBet) {
+                    // Cancel existing bet before betting closes
+                    pState.pendingRequest = true;
+                    updateAviatorActionButtons();
+                    try {
+                        const cancelFn = functions.httpsCallable("cancelAviatorBet");
+                        const res = await cancelFn({ panel });
+                        pState.activeBet = false;
+                        pState.betAmount = 0;
+                        pState.betId = null;
+                        triggerToastDisplay(`Bet cancelled & PKR ${res.data.refunded} refunded.`);
+                    } catch (err) {
+                        triggerToastDisplay(err.message || "Unable to cancel bet.");
+                    } finally {
+                        pState.pendingRequest = false;
+                        updateAviatorActionButtons();
+                    }
+                    return;
                 }
-            }, 8000);
+
+                const input = document.getElementById(panel === 1 ? "aviatorBetAmountInput" : "aviatorBetAmountInput2");
+                const autoChk = document.getElementById(panel === 1 ? "autoCashoutToggle1" : "autoCashoutToggle2");
+                const autoVal = document.getElementById(panel === 1 ? "autoCashoutVal1" : "autoCashoutVal2");
+                const amount = parseFloat(input.value);
+
+                if (isNaN(amount) || amount < 16 || amount > 50000) {
+                    triggerToastDisplay("Bet amount must be between PKR 16 and PKR 50,000.");
+                    return;
+                }
+                if (amount > userCurrentBalance) {
+                    document.getElementById("aviatorTopUpPromptBox").style.display = "block";
+                    triggerToastDisplay("Insufficient PKR wallet balance.");
+                    return;
+                }
+                if (aviatorState.dailyWagered + amount > aviatorState.limits.dailyBet) {
+                    triggerToastDisplay(`Daily betting limit (PKR ${aviatorState.limits.dailyBet.toLocaleString()}) reached.`);
+                    stopAllAutoBets("Daily betting limit reached");
+                    return;
+                }
+                if (aviatorState.sessionNetPL <= -Math.abs(aviatorState.limits.sessionLoss)) {
+                    triggerToastDisplay(`Session loss limit (PKR ${aviatorState.limits.sessionLoss.toLocaleString()}) reached.`);
+                    stopAllAutoBets("Session loss limit reached");
+                    return;
+                }
+
+                document.getElementById("aviatorTopUpPromptBox").style.display = "none";
+                const autoCashout = (autoChk && autoChk.checked) ? parseFloat(autoVal.value) : null;
+
+                pState.pendingRequest = true;
+                updateAviatorActionButtons();
+                try {
+                    const placeFn = functions.httpsCallable("placeAviatorBet");
+                    const res = await placeFn({ panel, amount, autoCashout });
+                    pState.activeBet = true;
+                    pState.betAmount = amount;
+                    pState.betId = res.data.betId;
+                    pState.autoCashoutTriggered = false;
+
+                    aviatorState.sessionWagered += amount;
+                    aviatorState.sessionNetPL -= amount;
+                    aviatorState.dailyWagered += amount;
+                    const todayKey = new Date().toISOString().slice(0, 10);
+                    localStorage.setItem("vestify_aviator_daily_" + todayKey, String(aviatorState.dailyWagered));
+
+                    playAviatorTone("bet");
+                    triggerToastDisplay(`Panel ${panel} bet confirmed: PKR ${amount.toLocaleString()}`);
+                } catch (err) {
+                    triggerToastDisplay(err.message || "Bet rejected by server.");
+                } finally {
+                    pState.pendingRequest = false;
+                    updateAviatorActionButtons();
+                }
+                return;
+            }
+
+            // 2. FLYING PHASE: Manual Cash Out
+            if (aviatorState.status === "FLYING" && pState.activeBet) {
+                pState.pendingRequest = true;
+                updateAviatorActionButtons();
+                try {
+                    const cashoutFn = functions.httpsCallable("cashoutAviatorBet");
+                    const res = await cashoutFn({ panel });
+                    pState.activeBet = false;
+                    aviatorState.sessionNetPL += res.data.payout;
+                    playAviatorTone("cashout");
+                    triggerToastDisplay(`CASHED OUT @ ${res.data.multiplier.toFixed(2)}x! Won PKR ${res.data.payout.toFixed(2)} (+PKR ${res.data.netProfit.toFixed(2)})`);
+                    checkAutoBetStopConditions();
+                } catch (err) {
+                    triggerToastDisplay(err.message || "Cashout failed.");
+                } finally {
+                    pState.pendingRequest = false;
+                    updateAviatorActionButtons();
+                }
+            }
+        };
+
+        function stopAllAutoBets(reason) {
+            [1, 2].forEach(panel => {
+                aviatorState.panels[panel].autoBet = false;
+                const chk = document.getElementById(panel === 1 ? "autoBetToggle1" : "autoBetToggle2");
+                const lbl = document.getElementById(panel === 1 ? "autoBetStatus1" : "autoBetStatus2");
+                if (chk) chk.checked = false;
+                if (lbl) {
+                    lbl.innerText = "OFF";
+                    lbl.style.color = "#64748b";
+                }
+            });
+            if (reason) triggerToastDisplay(`Auto-Bet stopped: ${reason}`);
         }
 
-        function calculateAviatorCrashPoint() {
-            let randomRoll = Math.random();
-            if (randomRoll < 0.65) {
-                return parseFloat((1.00 + Math.random() * 0.35).toFixed(2));
-            } else if (randomRoll < 0.90) {
-                return parseFloat((1.36 + Math.random() * 2.14).toFixed(2));
-            } else if (randomRoll < 0.98) {
-                return parseFloat((3.51 + Math.random() * 6.50).toFixed(2));
-            } else {
-                return parseFloat((10.00 + Math.random() * 40.00).toFixed(2));
+        function checkAutoBetStopConditions() {
+            if (aviatorState.sessionNetPL >= aviatorState.limits.autoProfitStop) {
+                stopAllAutoBets(`Profit target (+PKR ${aviatorState.limits.autoProfitStop}) reached`);
+            } else if (aviatorState.sessionNetPL <= -Math.abs(aviatorState.limits.sessionLoss)) {
+                stopAllAutoBets(`Session loss limit (-PKR ${aviatorState.limits.sessionLoss}) reached`);
             }
-        } 
-                        
+        }
+
+        function startAviatorSynchronizedEngine() {
+            loadSavedAviatorSettings();
+
+            // Monitor network connectivity
+            window.addEventListener("online", () => {
+                const warn = document.getElementById("aviatorOfflineWarning");
+                if (warn) warn.style.display = "none";
+                triggerToastDisplay("Connection restored. Syncing live round...");
+            });
+            window.addEventListener("offline", () => {
+                const warn = document.getElementById("aviatorOfflineWarning");
+                if (warn) warn.style.display = "block";
+            });
+
+            // Session timer & server heartbeat tick
+            if (aviatorState.tickTimer) clearInterval(aviatorState.tickTimer);
+            aviatorState.tickTimer = setInterval(() => {
+                const secElapsed = Math.floor((Date.now() - aviatorState.sessionStartTime) / 1000);
+                const mins = String(Math.floor(secElapsed / 60)).padStart(2, "0");
+                const secs = String(secElapsed % 60).padStart(2, "0");
+                const timerEl = document.getElementById("aviatorSessionTimer");
+                if (timerEl) timerEl.innerText = `${mins}:${secs}`;
+
+                const netEl = document.getElementById("statSessionNetPL");
+                if (netEl) {
+                    netEl.innerText = `${aviatorState.sessionNetPL >= 0 ? "+" : ""}PKR ${aviatorState.sessionNetPL.toFixed(2)}`;
+                    netEl.style.color = aviatorState.sessionNetPL >= 0 ? "#10b981" : "#ef4444";
+                }
+
+                // Drive round state transitions via server Cloud Function when phase boundary is reached
+                const now = Date.now();
+                if (
+                    !aviatorState.roundId ||
+                    (aviatorState.status === "BETTING" && now >= aviatorState.bettingEndsAt) ||
+                    (aviatorState.status === "FLYING" && aviatorState.currentMultiplier >= 1.01)
+                ) {
+                    functions.httpsCallable("aviatorRoundTick")().catch(() => {});
+                }
+            }, 1000);
+
+            // Listen to server-authoritative round document
+            if (aviatorState.unsubscribeRound) aviatorState.unsubscribeRound();
+            aviatorState.unsubscribeRound = db.collection("aviator_state").doc("current").onSnapshot(doc => {
+                if (!doc.exists) {
+                    functions.httpsCallable("aviatorRoundTick")().catch(() => {});
+                    return;
+                }
+
+                const data = doc.data();
+                const prevRoundId = aviatorState.roundId;
+                const prevStatus = aviatorState.status;
+
+                aviatorState.roundId = data.roundId;
+                aviatorState.status = data.status;
+                aviatorState.bettingEndsAt = data.bettingEndsAt || (Date.now() + 15000);
+                aviatorState.flightStartedAt = data.flightStartedAt || null;
+                aviatorState.serverSeedHash = data.serverSeedHash || "";
+
+                const rLabel = document.getElementById("aviatorRoundIdLabel");
+                if (rLabel) rLabel.innerText = `Round: ${data.roundId}`;
+                const hashEl = document.getElementById("fairCurrentHash");
+                if (hashEl) hashEl.innerText = aviatorState.serverSeedHash;
+
+                // New round started -> reset per-round states & trigger Auto-Bet
+                if (prevRoundId !== data.roundId) {
+                    if (data.lastCrashedRound && prevRoundId === data.lastCrashedRound.roundId) {
+                        playAviatorTone("crash");
+                        if (aviatorState.panels[1].activeBet || aviatorState.panels[2].activeBet) {
+                            triggerToastDisplay(`CRASHED @ ${Number(data.lastCrashedRound.crashPoint).toFixed(2)}x!`);
+                        }
+                    }
+
+                    [1, 2].forEach(panel => {
+                        const p = aviatorState.panels[panel];
+                        p.activeBet = false;
+                        p.betAmount = 0;
+                        p.betId = null;
+                        p.autoCashoutTriggered = false;
+                    });
+
+                    subscribeToRoundLiveBets(data.roundId);
+
+                    // Execute Auto-Bet for subsequent rounds
+                    if (data.status === "BETTING") {
+                        [1, 2].forEach(panel => {
+                            const p = aviatorState.panels[panel];
+                            if (p.autoBet) {
+                                if (p.autoRoundsLeft <= 0) {
+                                    stopAllAutoBets("Max consecutive auto-bet rounds reached");
+                                } else {
+                                    p.autoRoundsLeft--;
+                                    const lbl = document.getElementById(panel === 1 ? "autoBetStatus1" : "autoBetStatus2");
+                                    if (lbl) lbl.innerText = `ON (${p.autoRoundsLeft} rds)`;
+                                    setTimeout(() => handleAviatorPanelAction(panel), 400);
+                                }
+                            }
+                        });
+                    }
+                }
+
+                if (prevStatus !== "FLYING" && data.status === "FLYING") {
+                    playAviatorTone("takeoff");
+                }
+
+                updateAviatorStageBadge();
+                updateAviatorActionButtons();
+            });
+
+            // Subscribe to recent crash history strip
+            if (aviatorState.unsubscribeHistory) aviatorState.unsubscribeHistory();
+            aviatorState.unsubscribeHistory = db.collection("aviator_rounds_history")
+                .orderBy("crashedAt", "desc")
+                .limit(20)
+                .onSnapshot(snap => {
+                    const tickerBar = document.getElementById("aviatorMultiplierTickerBar");
+                    if (!tickerBar) return;
+                    if (snap.empty) {
+                        tickerBar.innerHTML = `<span class="aviator-pill aviator-pill-low">No completed rounds yet</span>`;
+                        return;
+                    }
+                    let html = "";
+                    snap.forEach(doc => {
+                        const r = doc.data();
+                        const val = Number(r.crashPoint || 1.00);
+                        const cls = val >= 10 ? "aviator-pill-high" : (val >= 2 ? "aviator-pill-mid" : "aviator-pill-low");
+                        html += `<span class="aviator-pill ${cls}" onclick="prefillVerifyRound('${r.roundId}', '${r.serverSeed || ""}')" title="Click to verify round ${r.roundId}">${val.toFixed(2)}x</span>`;
+                    });
+                    tickerBar.innerHTML = html;
+                });
+
+            // Smooth 60fps animation loop for countdown & flight curve
+            if (aviatorState.renderRaf) cancelAnimationFrame(aviatorState.renderRaf);
+            const renderFrame = () => {
+                renderAviatorCanvas();
+                aviatorState.renderRaf = requestAnimationFrame(renderFrame);
+            };
+            aviatorState.renderRaf = requestAnimationFrame(renderFrame);
+        }
+
+        function subscribeToRoundLiveBets(roundId) {
+            if (aviatorState.unsubscribeLiveBets) aviatorState.unsubscribeLiveBets();
+            aviatorState.unsubscribeLiveBets = db.collection("aviator_live_bets")
+                .where("roundId", "==", roundId)
+                .onSnapshot(snap => {
+                    const feedEl = document.getElementById("aviatorLivePlayersFeed");
+                    const countEl = document.getElementById("aviatorTotalRoundBetsCount");
+                    const poolEl = document.getElementById("aviatorTotalRoundPool");
+                    const playersEl = document.getElementById("aviatorLivePlayerCount");
+
+                    let totalBets = 0;
+                    let totalPool = 0;
+                    const uniquePlayers = new Set();
+                    let html = "";
+
+                    snap.forEach(doc => {
+                        const b = doc.data();
+                        totalBets++;
+                        totalPool += Number(b.amount || 0);
+                        if (b.uid) uniquePlayers.add(b.uid);
+
+                        // Sync local panel state with authoritative Firestore bet document
+                        if (b.uid === currentUserId && [1, 2].includes(b.panel)) {
+                            const p = aviatorState.panels[b.panel];
+                            p.activeBet = b.status === "active";
+                            p.betAmount = Number(b.amount || 0);
+                            p.betId = doc.id;
+                        }
+
+                        const statusColor = b.status === "won" ? "#10b981" : (b.status === "crashed" ? "#ef4444" : "#38bdf8");
+                        const multTxt = b.status === "won" ? `${Number(b.cashoutMultiplier).toFixed(2)}x` : "--";
+                        const payoutTxt = b.status === "won"
+                            ? `+PKR ${Number(b.winnings).toFixed(2)}`
+                            : (b.status === "crashed" ? "CRASHED" : "IN PLAY");
+
+                        html += `<div style="display:grid; grid-template-columns: 2fr 1.2fr 1fr 1.5fr; font-size:11px; padding:6px 4px; border-bottom:1px solid rgba(255,255,255,0.04); align-items:center; text-align:center;">
+                            <span style="color:#e2e8f0; font-weight:700; text-align:left; padding-left:4px;">${b.username || "Player"} <span style="color:#64748b; font-size:9px;">[P${b.panel || 1}]</span></span>
+                            <span style="color:#fff;">${Number(b.amount).toLocaleString()}</span>
+                            <span style="color:#eab308; font-weight:700;">${multTxt}</span>
+                            <span style="color:${statusColor}; font-weight:800;">${payoutTxt}</span>
+                        </div>`;
+                    });
+
+                    if (feedEl) {
+                        feedEl.innerHTML = html || `<div style="color:#64748b; text-align:center; padding:12px; font-size:11px;">No bets placed in this round yet.</div>`;
+                    }
+                    if (countEl) countEl.innerText = String(totalBets);
+                    if (poolEl) poolEl.innerText = `PKR ${totalPool.toLocaleString()}`;
+                    if (playersEl) playersEl.innerText = String(uniquePlayers.size);
+                    updateAviatorActionButtons();
+                });
+        }
+
+        function subscribeToPersonalAviatorHistory(uid) {
+            if (aviatorState.unsubscribePersonal) aviatorState.unsubscribePersonal();
+            aviatorState.unsubscribePersonal = db.collection("aviator_live_bets")
+                .where("uid", "==", uid)
+                .orderBy("createdAt", "desc")
+                .limit(50)
+                .onSnapshot(snap => {
+                    const listEl = document.getElementById("aviatorPersonalHistoryList");
+                    let totalRounds = 0;
+                    let biggestWin = 0;
+                    let biggestMult = 0;
+                    let html = "";
+
+                    snap.forEach(doc => {
+                        const b = doc.data();
+                        totalRounds++;
+                        const win = Number(b.winnings || 0);
+                        const mult = Number(b.cashoutMultiplier || 0);
+                        const net = b.status === "won" ? (win - Number(b.amount || 0)) : -Number(b.amount || 0);
+                        if (win > biggestWin) biggestWin = win;
+                        if (mult > biggestMult) biggestMult = mult;
+
+                        const dt = b.createdAt ? b.createdAt.toDate().toLocaleString() : "Just now";
+                        const badgeColor = b.status === "won" ? "#10b981" : (b.status === "crashed" ? "#ef4444" : "#38bdf8");
+
+                        html += `<div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); border-radius:12px; padding:10px; display:flex; justify-content:space-between; align-items:center; font-size:11px;">
+                            <div>
+                                <div style="font-weight:800; color:#fff;">${b.roundId} <span style="color:#64748b;">(Panel ${b.panel || 1})</span></div>
+                                <div style="color:#94a3b8; margin-top:2px;">Bet: <b>PKR ${Number(b.amount).toLocaleString()}</b> | Cashout: <b>${mult > 0 ? mult.toFixed(2) + "x" : "--"}</b></div>
+                                <div style="color:#64748b; font-size:10px; margin-top:2px;">${dt}</div>
+                            </div>
+                            <div style="text-align:right;">
+                                <div style="font-weight:800; color:${badgeColor};">${b.status === "won" ? "+PKR " + win.toFixed(2) : b.status.toUpperCase()}</div>
+                                <div style="font-size:10px; color:${net >= 0 ? "#10b981" : "#ef4444"};">Net: ${net >= 0 ? "+" : ""}PKR ${net.toFixed(2)}</div>
+                            </div>
+                        </div>`;
+                    });
+
+                    if (listEl) {
+                        listEl.innerHTML = html || `<div style="color:#64748b; text-align:center; padding:14px; font-size:11px;">No personal bets recorded yet.</div>`;
+                    }
+                    const rEl = document.getElementById("statTotalRounds");
+                    const wEl = document.getElementById("statBiggestWin");
+                    const mEl = document.getElementById("statBiggestMult");
+                    if (rEl) rEl.innerText = String(totalRounds);
+                    if (wEl) wEl.innerText = `PKR ${biggestWin.toFixed(2)}`;
+                    if (mEl) mEl.innerText = `${biggestMult.toFixed(2)}x`;
+                });
+        }
+
+        function updateAviatorStageBadge() {
+            const badge = document.getElementById("aviatorRoundStateBadge");
+            if (!badge) return;
+            if (aviatorState.status === "BETTING") {
+                badge.className = "aviator-status-pill aviator-status-open";
+                badge.innerText = "BETTING OPEN";
+            } else if (aviatorState.status === "FLYING") {
+                badge.className = "aviator-status-pill aviator-status-closed";
+                badge.innerText = "BETTING CLOSED • IN FLIGHT";
+            } else {
+                badge.className = "aviator-status-pill aviator-status-crashed";
+                badge.innerText = "CRASHED";
+            }
+        }
+
+        function renderAviatorCanvas() {
+            const multEl = document.getElementById("aviatorMultiplierDisplay");
+            const subEl = document.getElementById("aviatorSubBannerText");
+            const statusEl = document.getElementById("aviatorStatusText");
+            const barWrap = document.getElementById("aviatorCountdownBarWrap");
+            const barFill = document.getElementById("aviatorCountdownBarFill");
+            const planeEl = document.getElementById("aviatorPlaneIcon");
+            const curvePath = document.getElementById("aviatorFlightCurvePath");
+            const areaPath = document.getElementById("aviatorFlightAreaPath");
+
+            if (!multEl) return;
+            const now = Date.now();
+
+            if (aviatorState.status === "BETTING") {
+                const remainingMs = Math.max(0, aviatorState.bettingEndsAt - now);
+                const remainingSec = (remainingMs / 1000).toFixed(1);
+                const pct = Math.min(100, (remainingMs / 15000) * 100);
+
+                if (subEl) {
+                    subEl.innerText = remainingMs > 0 ? "BETTING OPEN — TAKING OFF IN" : "BETTING CLOSED";
+                    subEl.style.color = remainingMs > 0 ? "#10b981" : "#eab308";
+                }
+                multEl.innerText = `${remainingSec}s`;
+                multEl.style.color = "#ffffff";
+                if (statusEl) statusEl.innerText = remainingMs > 0 ? "Place or adjust bets before countdown reaches 0.0s" : "Launching aircraft...";
+                if (barWrap) barWrap.style.display = "block";
+                if (barFill) barFill.style.width = `${pct}%`;
+                if (planeEl) {
+                    planeEl.style.display = "none";
+                    planeEl.classList.remove("plane-flying-anim");
+                }
+                if (curvePath) curvePath.setAttribute("d", "");
+                if (areaPath) areaPath.setAttribute("d", "");
+            } else if (aviatorState.status === "FLYING" && aviatorState.flightStartedAt) {
+                const elapsedSec = Math.max(0, (now - aviatorState.flightStartedAt) / 1000);
+                const mult = Math.pow(Math.E, 0.065 * elapsedSec);
+                aviatorState.currentMultiplier = mult;
+
+                if (subEl) {
+                    subEl.innerText = "BETTING CLOSED • FLEW AWAY AT";
+                    subEl.style.color = "#eab308";
+                }
+                multEl.innerText = `${mult.toFixed(2)}x`;
+                multEl.style.color = mult >= 5 ? "#eab308" : (mult >= 2 ? "#38bdf8" : "#ffffff");
+                if (statusEl) statusEl.innerText = "Cash out before the plane flies away!";
+                if (barWrap) barWrap.style.display = "none";
+
+                // Smooth curved trajectory
+                const progress = Math.min(1, elapsedSec / 12);
+                const endX = 24 + progress * 310;
+                const endY = 220 - Math.pow(progress, 1.35) * 175;
+                const ctrlX = 24 + (endX - 24) * 0.55;
+                const ctrlY = 220;
+
+                if (curvePath) curvePath.setAttribute("d", `M 24 220 Q ${ctrlX} ${ctrlY} ${endX} ${endY}`);
+                if (areaPath) areaPath.setAttribute("d", `M 24 220 Q ${ctrlX} ${ctrlY} ${endX} ${endY} L ${endX} 250 L 24 250 Z`);
+
+                if (planeEl) {
+                    planeEl.style.display = "block";
+                    planeEl.classList.add("plane-flying-anim");
+                    planeEl.style.left = `${(endX / 400) * 100}%`;
+                    planeEl.style.bottom = `${((250 - endY) / 250) * 100}%`;
+                }
+
+                // Trigger server-verified Auto-Cashout when local multiplier crosses target
+                [1, 2].forEach(panel => {
+                    const p = aviatorState.panels[panel];
+                    const autoChk = document.getElementById(panel === 1 ? "autoCashoutToggle1" : "autoCashoutToggle2");
+                    const autoVal = document.getElementById(panel === 1 ? "autoCashoutVal1" : "autoCashoutVal2");
+                    if (p.activeBet && !p.autoCashoutTriggered && !p.pendingRequest && autoChk && autoChk.checked) {
+                        const target = parseFloat(autoVal.value) || 2.0;
+                        if (mult >= target) {
+                            p.autoCashoutTriggered = true;
+                            handleAviatorPanelAction(panel);
+                        }
+                    }
+                });
+
+                updateAviatorActionButtons();
+            }
+        }
+
+        window.openAviatorFairnessModal = function() {
+            openModal("aviatorFairnessModal");
+        };
+
+        window.prefillVerifyRound = function(roundId, serverSeed) {
+            document.getElementById("verifyRoundIdInput").value = roundId || "";
+            document.getElementById("verifyServerSeedInput").value = serverSeed || "";
+            openModal("aviatorFairnessModal");
+        };
+
+        window.verifyAviatorRoundFairness = async function() {
+            const roundId = document.getElementById("verifyRoundIdInput").value.trim();
+            const serverSeed = document.getElementById("verifyServerSeedInput").value.trim();
+            const outEl = document.getElementById("verifyFairnessOutput");
+            if (!roundId || !serverSeed) {
+                triggerToastDisplay("Enter both Round ID and revealed Server Seed.");
+                return;
+            }
+            try {
+                const enc = new TextEncoder();
+                const key = await crypto.subtle.importKey("raw", enc.encode(serverSeed), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
+                const sig = await crypto.subtle.sign("HMAC", key, enc.encode(roundId));
+                const hmacHex = Array.from(new Uint8Array(sig)).map(b => b.toString(16).padStart(2, "0")).join("");
+
+                const seedHashBuf = await crypto.subtle.digest("SHA-256", enc.encode(serverSeed));
+                const seedHashHex = Array.from(new Uint8Array(seedHashBuf)).map(b => b.toString(16).padStart(2, "0")).join("");
+
+                const h = parseInt(hmacHex.slice(0, 13), 16);
+                const e = Math.pow(2, 52);
+                const crashPoint = (h % 33 === 0)
+                    ? 1.00
+                    : Math.max(1.01, Math.floor(((100 * e - h) / (e - h) / 100) * 0.97 * 100) / 100);
+
+                outEl.style.display = "block";
+                outEl.innerHTML = `
+                    <div style="color:#10b981; font-weight:800; margin-bottom:4px;">Verified Crash Point: ${crashPoint.toFixed(2)}x</div>
+                    <div style="color:#94a3b8; word-break:break-all; font-family:monospace; font-size:10px;">SHA-256(seed): ${seedHashHex}</div>
+                `;
+            } catch (err) {
+                triggerToastDisplay("Verification error: " + err.message);
+            }
+        };
+
+        window.openAviatorLimitsModal = function() {
+            document.getElementById("limitDailyBetInput").value = aviatorState.limits.dailyBet;
+            document.getElementById("limitSessionLossInput").value = aviatorState.limits.sessionLoss;
+            document.getElementById("limitAutoProfitStopInput").value = aviatorState.limits.autoProfitStop;
+            document.getElementById("limitAutoMaxRoundsInput").value = aviatorState.limits.autoMaxRounds;
+            openModal("aviatorLimitsModal");
+        };
+
+        window.saveAviatorResponsibleLimits = function() {
+            aviatorState.limits.dailyBet = Math.max(16, parseFloat(document.getElementById("limitDailyBetInput").value) || 50000);
+            aviatorState.limits.sessionLoss = Math.max(16, parseFloat(document.getElementById("limitSessionLossInput").value) || 25000);
+            aviatorState.limits.autoProfitStop = Math.max(16, parseFloat(document.getElementById("limitAutoProfitStopInput").value) || 10000);
+            aviatorState.limits.autoMaxRounds = Math.max(1, parseInt(document.getElementById("limitAutoMaxRoundsInput").value, 10) || 50);
+            localStorage.setItem("vestify_aviator_limits", JSON.stringify(aviatorState.limits));
+            closeModal("aviatorLimitsModal");
+            triggerToastDisplay("Gaming & Autoplay limits saved.");
+        };
+
         let paymentGatewayMerchantConfig = {
             "EasyPaisa": { number: "03379827882", title: "EasyPaisa Account" },
             "JazzCash": { number: "03705519562", title: "JazzCash Account" },
@@ -1090,7 +1799,7 @@
             initializeRealtimeNodeConfigSync();
             loadPaymentMethodsFromFirestore();
             startLiveMiningSimulatorCounter();
-            startAviatorGameLoop();
+            startAviatorSynchronizedEngine();
         });
 
         auth.onAuthStateChanged(user => {
@@ -1100,6 +1809,7 @@
                 syncProfileRealtimeMetrics();
                 syncUserLedgerTracks();
                 syncUserSupportTickets();
+                subscribeToPersonalAviatorHistory(user.uid);
                 initializeCountdownClockTicker();
                 updateLivePresenceActivity("Home View");
             } else {
@@ -1276,120 +1986,6 @@
             });
         }
 
-        /* AVIATOR CRASH GAME MECHANICS & HIGH-RISK HOUSE EDGE */
-        window.setAviatorBetMultiplier = function(factor) {
-            let current = parseFloat(document.getElementById('aviatorBetAmountInput').value) || 16;
-            document.getElementById('aviatorBetAmountInput').value = Math.min(50000, current * factor);
-        }
-
-        window.setMaxAviatorBet = function() {
-            document.getElementById('aviatorBetAmountInput').value = Math.min(50000, userCurrentBalance);
-        }
-
-        function calculateAviatorCrashPoint() {
-            let randomRoll = Math.random();
-            if (randomRoll < 0.65) {
-                return parseFloat((1.00 + Math.random() * 0.35).toFixed(2));
-            } else if (randomRoll < 0.90) {
-                return parseFloat((1.36 + Math.random() * 2.14).toFixed(2));
-            } else if (randomRoll < 0.98) {
-                return parseFloat((3.51 + Math.random() * 6.50).toFixed(2));
-            } else {
-                return parseFloat((10.00 + Math.random() * 40.00).toFixed(2));
-            }
-        }
-
-        window.handleAviatorBetAction = function() {
-            let betInput = parseFloat(document.getElementById('aviatorBetAmountInput').value);
-            
-            if (isNaN(betInput) || betInput < 16 || betInput > 50000) {
-                triggerToastDisplay("Minimum bet is Rs. 16 and Maximum is Rs. 50,000.");
-                return;
-            }
-
-            if (betInput > userCurrentBalance) {
-                document.getElementById('aviatorTopUpPromptBox').style.display = 'block';
-                triggerToastDisplay("Insufficient balance! Please top up.");
-                return;
-            }
-
-            if (!aviatorGameActiveState && !aviatorUserHasPlacedBet) {
-                aviatorActiveBetAmount = betInput;
-                db.collection("users").doc(currentUserId).update({
-                    balance: userCurrentBalance - betInput
-                }).then(() => {
-                    aviatorUserHasPlacedBet = true;
-                    document.getElementById('aviatorActionBtn').innerText = "CASHOUT NOW";
-                    document.getElementById('aviatorActionBtn').style.background = "linear-gradient(135deg, #10b981, #059669)";
-                    triggerToastDisplay(`Bet of Rs. ${betInput} placed successfully!`);
-                });
-            } else if (aviatorGameActiveState && aviatorUserHasPlacedBet) {
-                let winnings = aviatorActiveBetAmount * aviatorCurrentRoundMultiplier;
-                db.collection("users").doc(currentUserId).update({
-                    balance: userCurrentBalance + winnings
-                }).then(() => {
-                    triggerToastDisplay(`Cashed out successfully! Won Rs. ${winnings.toFixed(2)}`);
-                    aviatorUserHasPlacedBet = false;
-                    document.getElementById('aviatorActionBtn').innerText = "WAIT FOR NEXT ROUND";
-                    document.getElementById('aviatorActionBtn').disabled = true;
-                });
-            }
-        }
-
-        function startAviatorGameLoop() {
-            setInterval(() => {
-                if (!aviatorGameActiveState) {
-                    document.getElementById('aviatorStatusText').innerText = "Next round starting in 3 seconds...";
-                    document.getElementById('aviatorMultiplierDisplay').innerText = "1.00x";
-                    document.getElementById('aviatorPlaneIcon').style.display = 'none';
-                    
-                    setTimeout(() => {
-                        aviatorGameActiveState = true;
-                        aviatorCrashTargetMultiplier = calculateAviatorCrashPoint();
-                        aviatorCurrentRoundMultiplier = 1.00;
-                        
-                        if (!aviatorUserHasPlacedBet) {
-                            let currentVal = document.getElementById('aviatorBetAmountInput').value || 100;
-                            document.getElementById('aviatorActionBtn').innerText = `PLACE BET (Rs. ${currentVal})`;
-                            document.getElementById('aviatorActionBtn').style.background = "linear-gradient(135deg, #ff416c, #ff4b2b)";
-                            document.getElementById('aviatorActionBtn').disabled = false;
-                        }
-                        document.getElementById('aviatorTopUpPromptBox').style.display = 'none';
-                        document.getElementById('aviatorPlaneIcon').style.display = 'block';
-
-                        let flightInterval = setInterval(() => {
-                            if (!aviatorGameActiveState) {
-                                clearInterval(flightInterval);
-                                return;
-                            }
-
-                            aviatorCurrentRoundMultiplier += 0.02 + (aviatorCurrentRoundMultiplier * 0.03);
-                            document.getElementById('aviatorMultiplierDisplay').innerText = aviatorCurrentRoundMultiplier.toFixed(2) + "x";
-
-                            if (aviatorCurrentRoundMultiplier >= aviatorCrashTargetMultiplier) {
-                                aviatorGameActiveState = false;
-                                clearInterval(flightInterval);
-                                document.getElementById('aviatorStatusText').innerText = `CRASHED @ ${aviatorCrashTargetMultiplier.toFixed(2)}x`;
-                                document.getElementById('aviatorMultiplierDisplay').style.color = "#ef4444";
-                                
-                                if (aviatorUserHasPlacedBet) {
-                                    triggerToastDisplay("Plane crashed! You lost your bet.");
-                                    aviatorUserHasPlacedBet = false;
-                                }
-
-                                document.getElementById('aviatorActionBtn').innerText = "WAITING...";
-                                document.getElementById('aviatorActionBtn').disabled = true;
-
-                                setTimeout(() => {
-                                    document.getElementById('aviatorMultiplierDisplay').style.color = "white";
-                                }, 2000);
-                            }
-                        }, 150);
-                    }, 3000);
-                }
-            }, 8000);
-        }
-
         /* LIVE MINING / STAKING SIMULATOR COUNTER */
         function startLiveMiningSimulatorCounter() {
             setInterval(() => {
@@ -1488,11 +2084,9 @@
             db.collection("users").where("referredBy", "==", userUsername).onSnapshot(snapLevel1 => {
                 let directCount = snapLevel1.size;
                 let activeDepositorsCount = 0;
-                let level1Usernames = [];
 
                 snapLevel1.forEach(doc => {
                     let d = doc.data();
-                    level1Usernames.push(d.username);
                     if(d.hasDepositedBefore) activeDepositorsCount++;
                 });
 
