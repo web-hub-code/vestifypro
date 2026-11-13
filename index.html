@@ -494,7 +494,7 @@
                 <div style="display:flex; justify-content:space-between; align-items:center;">
                     <div>
                         <span style="font-size:11px; font-weight:800; color:#e9d5ff;"><i class="fa-solid fa-dharmachakra"></i> AVIATOR 5,000 PKR SPIN REWARD</span>
-                        <p style="font-size:10px; color:#cbd5e1; margin-top:2px;">Play Rs. 5,000 in Aviator to unlock 1 Free Spin (Win Rs. 20 – Rs. 100!)</p>
+                        <p style="font-size:10px; color:#cbd5e1; margin-top:2px;">Play Rs. 5,000 in Aviator to unlock 1 Free Spin (Win Rs. 10000 – Rs. 50000!)</p>
                     </div>
                     <button id="btnClaimAviatorSpin" class="buy-plan-btn" onclick="openAviatorMilestoneSpinModal()" style="padding:7px 12px; font-size:11px; background:linear-gradient(135deg, #eab308, #ca8a04); color:#040814;" disabled>
                         <i class="fa-solid fa-lock"></i> 0 / 5,000
@@ -908,9 +908,9 @@
         <div class="modal-content">
             <div class="close-modal-btn" onclick="closeModal('aviatorMilestoneSpinModal')">&times;</div>
             <h4 style="color:#eab308;"><i class="fa-solid fa-dharmachakra"></i> Aviator VIP Milestone Spin</h4>
-            <p style="font-size:11px; color:#cbd5e1; margin-top:4px;">You played Rs. 5,000 in Aviator! Spin to win <b>Rs. 20 to Rs. 100</b> bonus!</p>
+            <p style="font-size:11px; color:#cbd5e1; margin-top:4px;">You played Rs. 5,000 in Aviator! Spin to win <b>Rs. 100 to Rs. 100000</b> bonus!</p>
             <div class="wheel-outer" id="aviatorMilestoneWheel" style="border-color:#eab308; width:140px; height:140px; margin:18px auto;">
-                <span style="font-size:14px; color:#eab308;">20 - 100<br>PKR</span>
+                <span style="font-size:14px; color:#eab308;">100 - 50000<br>PKR</span>
             </div>
             <button id="btnExecuteAviatorMilestoneSpin" class="buy-plan-btn" onclick="executeAviatorMilestoneSpin()" style="width:100%; padding:13px; background:linear-gradient(135deg, #eab308, #ca8a04); color:#040814; font-weight:800;">
                 SPIN & CLAIM BONUS
@@ -1587,8 +1587,8 @@
             const wheel = document.getElementById("aviatorMilestoneWheel");
             btn.disabled = true;
 
-            // Random bonus between 20 PKR and 100 PKR
-            const rewardAmount = Math.floor(20 + Math.random() * 81);
+            // Random bonus between 7 PKR and 100 PKR
+            const rewardAmount = Math.floor(7 + Math.random() * 81);
             wheel.style.transform = "rotate(1800deg)";
 
             setTimeout(() => {
