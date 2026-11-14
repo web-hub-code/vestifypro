@@ -582,12 +582,12 @@
         </div>
     </div>
 
-    <!-- PAGE 2: AVIATOR PRO CRASH GAME MODULE -->
+        <!-- PAGE 2: AVIATOR CLASSIC CRASH GAME MODULE -->
     <div id="pageAviator" class="app-view-page">
         <div class="aviator-wrap">
             <div class="aviator-topbar">
                 <div style="display:flex; align-items:center; gap:8px;">
-                    <h3 style="color:var(--sky-primary); font-size:15px; font-weight:800;"><i class="fa-solid fa-plane-departure"></i> AVIATOR SKY PRO</h3>
+                    <h3 style="color:#ef4444; font-size:15px; font-weight:800;"><i class="fa-solid fa-plane-departure"></i> AVIATOR CLASSIC</h3>
                     <span id="aviatorRoundStateBadge" class="aviator-status-pill aviator-status-open">BETTING OPEN</span>
                 </div>
                 <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
@@ -601,10 +601,10 @@
             </div>
 
             <!-- AVIATOR 5,000 PKR MILESTONE FREE SPIN TRACKER -->
-            <div style="background: linear-gradient(135deg, rgba(14,165,233,0.16), rgba(2,132,199,0.12)); border: 1px solid rgba(56,189,248,0.4); border-radius: 16px; padding: 12px 14px;">
+            <div style="background: linear-gradient(135deg, rgba(239,68,68,0.16), rgba(185,28,28,0.12)); border: 1px solid rgba(239,68,68,0.4); border-radius: 16px; padding: 12px 14px;">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
                     <div>
-                        <span style="font-size:11px; font-weight:800; color:var(--sky-primary);"><i class="fa-solid fa-dharmachakra"></i> AVIATOR 5,000 PKR SPIN REWARD</span>
+                        <span style="font-size:11px; font-weight:800; color:#ef4444;"><i class="fa-solid fa-dharmachakra"></i> AVIATOR 5,000 PKR SPIN REWARD</span>
                         <p style="font-size:10px; color:var(--text-muted); margin-top:2px;">Play Rs. 5,000 in Aviator to unlock 1 Free Spin (Win Rs. 100 – Rs. 50,000!)</p>
                     </div>
                     <button id="btnClaimAviatorSpin" class="buy-plan-btn" onclick="openAviatorMilestoneSpinModal()" style="padding:7px 12px; font-size:11px; background:linear-gradient(135deg, #eab308, #ca8a04); color:#040814;" disabled>
@@ -612,14 +612,14 @@
                     </button>
                 </div>
                 <div class="salary-bar-container" style="height:7px; margin-top:8px;">
-                    <div id="aviatorSpinProgressBar" class="salary-bar-fill" style="width:0%;"></div>
+                    <div id="aviatorSpinProgressBar" class="salary-bar-fill" style="width:0%; background: linear-gradient(90deg, #f87171, #ef4444);"></div>
                 </div>
             </div>
 
             <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:14px; padding:8px 10px;">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
                     <span style="font-size:10px; color:var(--text-muted); font-weight:800; letter-spacing:0.5px;">RECENT CRASH RESULTS</span>
-                    <span style="font-size:10px; color:var(--sky-primary); font-weight:700;">Session: <span id="aviatorSessionTimer">00:00</span></span>
+                    <span style="font-size:10px; color:#ef4444; font-weight:700;">Session: <span id="aviatorSessionTimer">00:00</span></span>
                 </div>
                 <div id="aviatorMultiplierTickerBar" style="display:flex; gap:6px; overflow-x:auto; padding-bottom:2px;"></div>
             </div>
@@ -629,25 +629,25 @@
                 <svg id="aviatorFlightSvg" style="position:absolute; inset:0; width:100%; height:100%; pointer-events:none;" viewBox="0 0 400 250" preserveAspectRatio="none">
                     <defs>
                         <linearGradient id="aviatorCurveFill" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.42" />
-                            <stop offset="100%" stop-color="#0ea5e9" stop-opacity="0.0" />
+                            <stop offset="0%" stop-color="#ef4444" stop-opacity="0.42" />
+                            <stop offset="100%" stop-color="#991b1b" stop-opacity="0.0" />
                         </linearGradient>
                     </defs>
                     <path id="aviatorFlightAreaPath" d="" fill="url(#aviatorCurveFill)" />
-                    <path id="aviatorFlightCurvePath" d="" fill="none" stroke="#38bdf8" stroke-width="3.5" stroke-linecap="round" />
+                    <path id="aviatorFlightCurvePath" d="" fill="none" stroke="#ef4444" stroke-width="3.5" stroke-linecap="round" />
                 </svg>
 
                 <div id="aviatorCanvasOverlay" style="position:relative; z-index:3; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:12px;">
-                    <div id="aviatorSubBannerText" style="font-size:11px; font-weight:800; letter-spacing:1px; color:#38bdf8; text-transform:uppercase; margin-bottom:4px;">NEXT ROUND IN</div>
-                    <h1 id="aviatorMultiplierDisplay" style="font-size:48px; font-weight:800; color:#ffffff; line-height:1; text-shadow:0 0 28px rgba(56,189,248,0.65);">10.0s</h1>
-                    <p id="aviatorStatusText" style="font-size:12px; color:#bae6fd; margin-top:6px; font-weight:600;">Place your bets for the upcoming flight</p>
+                    <div id="aviatorSubBannerText" style="font-size:11px; font-weight:800; letter-spacing:1px; color:#f87171; text-transform:uppercase; margin-bottom:4px;">NEXT ROUND IN</div>
+                    <h1 id="aviatorMultiplierDisplay" style="font-size:48px; font-weight:800; color:#ffffff; line-height:1; text-shadow:0 0 28px rgba(239,68,68,0.65);">10.0s</h1>
+                    <p id="aviatorStatusText" style="font-size:12px; color:#fca5a5; margin-top:6px; font-weight:600;">Place your bets for the upcoming flight</p>
                     <div id="aviatorCountdownBarWrap" class="aviator-countdown-bar-wrap">
-                        <div id="aviatorCountdownBarFill" class="aviator-countdown-bar-fill"></div>
+                        <div id="aviatorCountdownBarFill" class="aviator-countdown-bar-fill" style="background: linear-gradient(90deg, #f87171, #ef4444, #10b981);"></div>
                     </div>
                 </div>
 
                 <div id="aviatorPlaneIcon" style="position:absolute; bottom:24px; left:24px; z-index:4; display:none; transition: left 0.08s linear, bottom 0.08s linear;">
-                    <i class="fa-solid fa-jet-fighter-up" style="font-size:30px; color:#38bdf8; filter: drop-shadow(0 0 12px #38bdf8); transform: rotate(45deg);"></i>
+                    <i class="fa-solid fa-jet-fighter-up" style="font-size:30px; color:#ef4444; filter: drop-shadow(0 0 12px #ef4444); transform: rotate(45deg);"></i>
                 </div>
             </div>
 
@@ -662,7 +662,7 @@
             <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:16px; padding:10px 14px; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:8px; font-size:12px;">
                 <div>
                     <span style="color:var(--text-muted);">Playable Balance:</span>
-                    <b style="color:var(--sky-primary); font-size:14px;">PKR <span id="aviatorWalletBalanceLbl">0.00</span></b>
+                    <b style="color:#ef4444; font-size:14px;">PKR <span id="aviatorWalletBalanceLbl">0.00</span></b>
                 </div>
                 <div style="display:flex; gap:10px; font-size:10px; color:var(--text-muted);">
                     <span>Cash: <b id="avCashSubLbl" style="color:#10b981;">0</b></span>
@@ -672,14 +672,14 @@
 
             <div id="aviatorTopUpPromptBox" style="display:none; background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.35); padding:10px 14px; border-radius:14px; text-align:center;">
                 <p style="font-size:11px; color:#ef4444; font-weight:700;">Insufficient PKR balance for this bet amount.</p>
-                <button class="buy-plan-btn" onclick="openDepositModal()" style="margin-top:6px; padding:7px 16px; font-size:11px;">Deposit PKR Funds</button>
+                <button class="buy-plan-btn" onclick="openDepositModal()" style="margin-top:6px; padding:7px 16px; font-size:11px; background:linear-gradient(135deg, #ef4444, #dc2626);">Deposit PKR Funds</button>
             </div>
 
             <div class="aviator-panels-grid">
                 <!-- PANEL 1 -->
                 <div class="aviator-bet-card" id="aviatorPanelCard1">
                     <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <span style="font-size:12px; font-weight:800; color:var(--sky-primary);"><i class="fa-solid fa-1"></i> PANEL 1</span>
+                        <span style="font-size:12px; font-weight:800; color:#ef4444;"><i class="fa-solid fa-1"></i> PANEL 1</span>
                         <span id="panel1StatusTag" style="font-size:10px; font-weight:700; color:var(--text-muted); background:var(--bg-sub); padding:3px 8px; border-radius:8px;">READY</span>
                     </div>
 
@@ -721,12 +721,12 @@
                                     <option value="20">20x</option>
                                     <option value="50">50x</option>
                                 </select>
-                                <span id="autoBetRem1" style="font-size:10px; color:var(--sky-primary); font-weight:800;"></span>
+                                <span id="autoBetRem1" style="font-size:10px; color:#ef4444; font-weight:800;"></span>
                             </div>
                         </div>
                     </div>
 
-                    <button id="aviatorActionBtn" class="buy-plan-btn" onclick="handleAviatorPanelAction(1)" style="width:100%; padding:13px; font-size:13px; font-weight:800; letter-spacing:0.6px;">
+                    <button id="aviatorActionBtn" class="buy-plan-btn" onclick="handleAviatorPanelAction(1)" style="width:100%; padding:13px; background:linear-gradient(135deg, #ef4444, #b91c1c); font-size:13px; font-weight:800; letter-spacing:0.6px;">
                         PLACE BET (PKR 100)
                     </button>
                 </div>
@@ -734,7 +734,7 @@
                 <!-- PANEL 2 -->
                 <div class="aviator-bet-card" id="aviatorPanelCard2">
                     <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <span style="font-size:12px; font-weight:800; color:#0284c7;"><i class="fa-solid fa-2"></i> PANEL 2</span>
+                        <span style="font-size:12px; font-weight:800; color:#f87171;"><i class="fa-solid fa-2"></i> PANEL 2</span>
                         <span id="panel2StatusTag" style="font-size:10px; font-weight:700; color:var(--text-muted); background:var(--bg-sub); padding:3px 8px; border-radius:8px;">READY</span>
                     </div>
 
@@ -776,12 +776,12 @@
                                     <option value="20">20x</option>
                                     <option value="50">50x</option>
                                 </select>
-                                <span id="autoBetRem2" style="font-size:10px; color:#0284c7; font-weight:800;"></span>
+                                <span id="autoBetRem2" style="font-size:10px; color:#f87171; font-weight:800;"></span>
                             </div>
                         </div>
                     </div>
 
-                    <button id="aviatorActionBtn2" class="buy-plan-btn" onclick="handleAviatorPanelAction(2)" style="width:100%; padding:13px; background:linear-gradient(135deg, #38bdf8, #0369a1); font-size:13px; font-weight:800; letter-spacing:0.6px;">
+                    <button id="aviatorActionBtn2" class="buy-plan-btn" onclick="handleAviatorPanelAction(2)" style="width:100%; padding:13px; background:linear-gradient(135deg, #f87171, #dc2626); font-size:13px; font-weight:800; letter-spacing:0.6px;">
                         PLACE BET 2 (PKR 200)
                     </button>
                 </div>
