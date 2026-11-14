@@ -89,28 +89,28 @@
         .bg-glow-1 { position: fixed; width: 380px; height: 380px; background: radial-gradient(circle, rgba(14, 165, 233, 0.22) 0%, rgba(0,0,0,0) 70%); top: -60px; left: -60px; z-index: -1; pointer-events: none; }
         .bg-glow-2 { position: fixed; width: 460px; height: 460px; background: radial-gradient(circle, rgba(56, 189, 248, 0.18) 0%, rgba(0,0,0,0) 70%); bottom: 90px; right: -100px; z-index: -1; pointer-events: none; }
 
-        /* MODERN AUTH SCREEN WITH SLIDING BACKGROUND */
-        #authScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #020813; z-index: 99999; display: flex; align-items: center; justify-content: center; padding: 18px; overflow-y: auto; }
-        .auth-bg-slider { position: fixed; inset: 0; z-index: 0; overflow: hidden; }
+                /* MODERN AUTH SCREEN WITH LIGHT SKY BLUE THEME */
+        #authScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); z-index: 99999; display: flex; align-items: center; justify-content: center; padding: 18px; overflow-y: auto; }
+        .auth-bg-slider { position: fixed; inset: 0; z-index: 0; overflow: hidden; opacity: 0.15; }
         .auth-slide { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0; transform: scale(1.06); transition: opacity 1.4s ease-in-out, transform 7s ease-out; }
-        .auth-slide.active { opacity: 0.38; transform: scale(1); }
-        .auth-bg-overlay { position: fixed; inset: 0; background: linear-gradient(180deg, rgba(2, 12, 27, 0.78) 0%, rgba(3, 18, 38, 0.92) 100%); z-index: 1; }
+        .auth-slide.active { opacity: 0.4; transform: scale(1); }
+        .auth-bg-overlay { position: fixed; inset: 0; background: linear-gradient(180deg, rgba(240, 249, 255, 0.85) 0%, rgba(224, 242, 254, 0.95) 100%); z-index: 1; }
 
         #secretAdminScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 8, 20, 0.96); z-index: 99999; display: flex; align-items: center; justify-content: center; padding: 20px; overflow-y: auto; }
-        .auth-container { position: relative; z-index: 2; background: rgba(10, 25, 47, 0.82); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 28px; padding: 28px 22px; width: 100%; max-width: 450px; text-align: center; backdrop-filter: blur(22px); box-shadow: 0 25px 60px rgba(0,0,0,0.75); color: #fff; }
+        .auth-container { position: relative; z-index: 2; background: rgba(255, 255, 255, 0.92); border: 1px solid rgba(14, 165, 233, 0.28); border-radius: 28px; padding: 28px 22px; width: 100%; max-width: 450px; text-align: center; backdrop-filter: blur(22px); box-shadow: 0 25px 50px rgba(14, 165, 233, 0.18); color: #0f172a; }
         .admin-container { background: #071326; border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 28px; padding: 26px 20px; width: 100%; max-width: 540px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.75); color: #fff; }
 
         .auth-feature-pills { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 14px 0 18px 0; }
-        .auth-pill-box { background: rgba(14, 165, 233, 0.12); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 12px; padding: 8px 4px; }
-        .auth-pill-box b { display: block; font-size: 12px; color: #38bdf8; }
-        .auth-pill-box span { font-size: 9px; color: #cbd5e1; }
+        .auth-pill-box { background: rgba(14, 165, 233, 0.1); border: 1px solid rgba(14, 165, 233, 0.22); border-radius: 12px; padding: 8px 4px; }
+        .auth-pill-box b { display: block; font-size: 12px; color: #0284c7; }
+        .auth-pill-box span { font-size: 9px; color: #475569; }
 
-        .auth-tabs { display: flex; gap: 8px; margin-bottom: 16px; background: rgba(255,255,255,0.05); padding: 6px; border-radius: 14px; }
-        .auth-tab-btn { flex: 1; padding: 10px; border-radius: 10px; border: none; background: transparent; color: #94a3b8; font-weight: 700; cursor: pointer; transition: all 0.3s; }
+        .auth-tabs { display: flex; gap: 8px; margin-bottom: 16px; background: rgba(14, 165, 233, 0.08); padding: 6px; border-radius: 14px; }
+        .auth-tab-btn { flex: 1; padding: 10px; border-radius: 10px; border: none; background: transparent; color: #475569; font-weight: 700; cursor: pointer; transition: all 0.3s; }
         .auth-tab-btn.active { background: linear-gradient(135deg, #0ea5e9, #0284c7); color: white; box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4); }
         
-        .google-auth-btn { width: 100%; padding: 13px; border-radius: 12px; border: 1px solid rgba(56, 189, 248, 0.25); background: rgba(255,255,255,0.05); color: white; font-weight: 700; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 12px; transition: background 0.2s; }
-        .google-auth-btn:hover { background: rgba(14, 165, 233, 0.15); }
+        .google-auth-btn { width: 100%; padding: 13px; border-radius: 12px; border: 1px solid rgba(14, 165, 233, 0.3); background: #ffffff; color: #0f172a; font-weight: 700; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 12px; transition: background 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .google-auth-btn:hover { background: rgba(14, 165, 233, 0.08); }
 
         .vestify-header { padding: 14px 16px; background: var(--bg-header); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100; }
         .brand-row { display: flex; justify-content: space-between; align-items: center; }
@@ -191,7 +191,8 @@
         .premium-modal.modal-open { opacity: 1; pointer-events: auto; }
         .modal-content { background: var(--bg-card-solid); border: 1px solid var(--border-color); color: var(--text-main); width: 100%; max-width: 420px; border-radius: 24px; padding: 24px; text-align: center; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.65); max-height: 88vh; overflow-y: auto; }
         .modal-input { width: 100%; padding: 11px 12px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text-main); font-size: 13px; margin-top: 10px; outline: none; }
-        .auth-container .modal-input, .admin-container .modal-input { background: rgba(2, 12, 27, 0.75); color: #fff; border-color: rgba(56, 189, 248, 0.28); }
+        .auth-container .modal-input { background: #f8fafc; color: #0f172a; border: 1px solid rgba(14, 165, 233, 0.28); }
+        .admin-container .modal-input { background: rgba(2, 12, 27, 0.75); color: #fff; border-color: rgba(56, 189, 248, 0.28); }
         .close-modal-btn { position: absolute; top: 16px; right: 16px; color: var(--text-muted); font-size: 20px; cursor: pointer; }
 
         .reward-toast { position: fixed; top: 25px; left: 50%; transform: translateX(-50%) translateY(-100px); background: #0ea5e9; color: white; padding: 12px 20px; border-radius: 16px; z-index: 11000; font-weight: 700; font-size: 13px; transition: transform 0.3s ease; box-shadow: 0 10px 25px rgba(14,165,233,0.4); text-align: center; width: max-content; max-width: 90%; }
@@ -201,7 +202,7 @@
         .task-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 14px; margin: 0 16px 10px 16px; display: flex; align-items: center; justify-content: space-between; }
         .task-card .task-info { display: flex; align-items: center; gap: 12px; }
         .task-card .task-icon { width: 38px; height: 38px; border-radius: 10px; background: rgba(14,165,233,0.14); color: #0ea5e9; display: flex; align-items: center; justify-content: center; font-size: 16px; }
-
+        
                 /* CLASSIC AVIATOR RED / MAROON THEME STYLES */
         .aviator-wrap { margin: 16px 0; display: flex; flex-direction: column; gap: 12px; }
         .aviator-topbar { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 18px; padding: 12px 14px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; }
