@@ -176,32 +176,41 @@
 
         .info-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; padding: 18px; margin-bottom: 14px; }
         .info-card h4 { font-size: 14px; color: var(--sky-primary); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
-        .info-card p { font-size: 12px; color: var(--text-muted); line-height: 1.6; }
-        
-        .faq-item { border-bottom: 1px solid var(--border-color); padding: 12px 0; cursor: pointer; }
-        .faq-item:last-child { border: none; }
-        .faq-q { font-size: 13px; font-weight: 700; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; }
-        .faq-a { font-size: 12px; color: var(--text-muted); margin-top: 6px; display: none; line-height: 1.5; }
+        /* ULTRA-MODERN HIGH-CONVERTING AUTH SCREEN */
+        #authScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #f0f9ff 0%, #bae6fd 100%); z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 14px 16px 30px 16px; overflow-y: auto; }
+        .auth-bg-slider { position: fixed; inset: 0; z-index: 0; overflow: hidden; opacity: 0.2; }
+        .auth-slide { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0; transform: scale(1.06); transition: opacity 1.5s ease-in-out, transform 8s ease-out; }
+        .auth-slide.active { opacity: 0.45; transform: scale(1); }
+        .auth-bg-overlay { position: fixed; inset: 0; background: linear-gradient(180deg, rgba(240, 249, 255, 0.85) 0%, rgba(224, 242, 254, 0.96) 100%); z-index: 1; }
 
-        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 70px; background: var(--bg-header); backdrop-filter: blur(20px); border-top: 1px solid var(--border-color); display: flex; justify-content: space-around; align-items: center; z-index: 999; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-muted); text-decoration: none; font-size: 10px; font-weight: 700; cursor: pointer; transition: color 0.2s; }
-        .nav-item.active { color: var(--sky-primary); }
+        .auth-live-payout-strip { position: relative; z-index: 2; width: 100%; max-width: 470px; background: rgba(255, 255, 255, 0.92); border: 1px solid rgba(14, 165, 233, 0.35); border-radius: 14px; padding: 8px 12px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; box-shadow: 0 6px 20px rgba(14, 165, 233, 0.12); font-size: 11px; color: #0369a1; font-weight: 700; }
+        .pulse-dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; box-shadow: 0 0 0 rgba(16, 185, 129, 0.7); animation: pulseGreen 1.5s infinite; flex-shrink: 0; }
+        @keyframes pulseGreen { 0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); } 70% { box-shadow: 0 0 0 7px rgba(16, 185, 129, 0); } 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
 
-        .premium-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 8, 20, 0.85); backdrop-filter: blur(12px); z-index: 10000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; padding: 20px; }
-        .premium-modal.modal-open { opacity: 1; pointer-events: auto; }
-        .modal-content { background: var(--bg-card-solid); border: 1px solid var(--border-color); color: var(--text-main); width: 100%; max-width: 420px; border-radius: 24px; padding: 24px; text-align: center; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.65); max-height: 88vh; overflow-y: auto; }
-        .modal-input { width: 100%; padding: 11px 12px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text-main); font-size: 13px; margin-top: 10px; outline: none; }
+        .auth-container { position: relative; z-index: 2; background: rgba(255, 255, 255, 0.95); border: 1px solid rgba(14, 165, 233, 0.32); border-radius: 28px; padding: 24px 20px; width: 100%; max-width: 470px; text-align: center; backdrop-filter: blur(24px); box-shadow: 0 25px 60px rgba(14, 165, 233, 0.22); color: #0f172a; }
+
+        .auth-stats-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; background: linear-gradient(135deg, #0ea5e9, #0284c7); border-radius: 14px; padding: 10px 6px; margin: 12px 0; color: #fff; box-shadow: 0 6px 18px rgba(14, 165, 233, 0.3); }
+        .auth-stat-item b { display: block; font-size: 13px; font-weight: 800; }
+        .auth-stat-item span { font-size: 9px; opacity: 0.9; font-weight: 600; text-transform: uppercase; }
+
+        .auth-feature-pills { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 12px 0; }
+        .auth-pill-box { background: rgba(14, 165, 233, 0.08); border: 1px solid rgba(14, 165, 233, 0.22); border-radius: 12px; padding: 8px 4px; transition: transform 0.2s; }
+        .auth-pill-box:hover { transform: translateY(-2px); background: rgba(14, 165, 233, 0.14); }
+        .auth-pill-box b { display: block; font-size: 11px; color: #0284c7; }
+        .auth-pill-box span { font-size: 9px; color: #475569; font-weight: 600; }
+
+        .auth-promo-banner { background: linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(14, 165, 233, 0.12)); border: 1px dashed #10b981; border-radius: 12px; padding: 8px 10px; margin-bottom: 14px; font-size: 11px; color: #065f46; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 6px; }
+
+        .auth-tabs { display: flex; gap: 8px; margin-bottom: 14px; background: rgba(14, 165, 233, 0.09); padding: 5px; border-radius: 14px; }
+        .auth-tab-btn { flex: 1; padding: 10px; border-radius: 10px; border: none; background: transparent; color: #475569; font-weight: 700; cursor: pointer; transition: all 0.3s; font-size: 12px; }
+        .auth-tab-btn.active { background: linear-gradient(135deg, #0ea5e9, #0284c7); color: white; box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4); }
+
+        .password-wrapper { position: relative; width: 100%; }
+        .password-eye-btn { position: absolute; right: 12px; top: 58%; transform: translateY(-50%); color: #64748b; cursor: pointer; font-size: 14px; }
+
+        .google-auth-btn { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid rgba(14, 165, 233, 0.3); background: #ffffff; color: #0f172a; font-weight: 700; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 10px; transition: background 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .google-auth-btn:hover { background: rgba(14, 165, 233, 0.08); }
         .auth-container .modal-input { background: #f8fafc; color: #0f172a; border: 1px solid rgba(14, 165, 233, 0.28); }
-        .admin-container .modal-input { background: rgba(2, 12, 27, 0.75); color: #fff; border-color: rgba(56, 189, 248, 0.28); }
-        .close-modal-btn { position: absolute; top: 16px; right: 16px; color: var(--text-muted); font-size: 20px; cursor: pointer; }
-
-        .reward-toast { position: fixed; top: 25px; left: 50%; transform: translateX(-50%) translateY(-100px); background: #0ea5e9; color: white; padding: 12px 20px; border-radius: 16px; z-index: 11000; font-weight: 700; font-size: 13px; transition: transform 0.3s ease; box-shadow: 0 10px 25px rgba(14,165,233,0.4); text-align: center; width: max-content; max-width: 90%; }
-        .reward-toast.toast-show { transform: translateX(-50%) translateY(0); }
-        .section-title { font-size:11px; color: var(--sky-primary); margin:22px 16px 10px 16px; text-transform:uppercase; letter-spacing: 1px; font-weight: 800; display: flex; align-items: center; gap: 6px; }
-        
-        .task-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 14px; margin: 0 16px 10px 16px; display: flex; align-items: center; justify-content: space-between; }
-        .task-card .task-info { display: flex; align-items: center; gap: 12px; }
-        .task-card .task-icon { width: 38px; height: 38px; border-radius: 10px; background: rgba(14,165,233,0.14); color: #0ea5e9; display: flex; align-items: center; justify-content: center; font-size: 16px; }
         
                 /* CLASSIC AVIATOR RED / MAROON THEME STYLES */
         .aviator-wrap { margin: 16px 0; display: flex; flex-direction: column; gap: 12px; }
@@ -258,7 +267,7 @@
         <p style="font-size:13px; color:#94a3b8; max-width:340px; margin-top:8px;">Vestify Pro servers are undergoing scheduled maintenance. Please check back in a few minutes.</p>
     </div>
 
-    <!-- MODERN AUTHENTICATION SCREEN WITH SLIDING FREE IMAGES & PLATFORM DETAILS -->
+    <!-- ULTRA-MODERN HIGH-CONVERTING AUTHENTICATION SCREEN -->
     <div id="authScreen">
         <div class="auth-bg-slider">
             <div class="auth-slide active" style="background-image: url('https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=1200&auto=format&fit=crop&q=80');"></div>
@@ -268,26 +277,55 @@
         </div>
         <div class="auth-bg-overlay"></div>
 
+        <!-- LIVE PAYOUTS TICKER STRIP -->
+        <div class="auth-live-payout-strip">
+            <span class="pulse-dot"></span>
+            <span id="authLiveTickerMsg" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">0300****82 just withdrew Rs. 2,400 via EasyPaisa!</span>
+        </div>
+
         <div class="auth-container">
-            <div style="width:52px; height:52px; background:linear-gradient(135deg, #38bdf8, #0284c7); border-radius:16px; display:flex; align-items:center; justify-content:center; margin:0 auto 10px auto; font-size:24px; box-shadow:0 8px 25px rgba(14,165,233,0.45);">
+            <div style="width:50px; height:50px; background:linear-gradient(135deg, #0ea5e9, #0284c7); border-radius:16px; display:flex; align-items:center; justify-content:center; margin:0 auto 8px auto; font-size:22px; color:#fff; box-shadow:0 8px 25px rgba(14,165,233,0.4);">
                 <i class="fa-solid fa-cloud-bolt"></i>
             </div>
-            <h2 style="font-weight: 800; background: linear-gradient(135deg, #ffffff, #38bdf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 1px;">VESTIFY PRO</h2>
-            <p style="font-size: 11px; color: #bae6fd; margin-top: 2px;">Next-Gen Cloud Mining & Live Aviator Crash Gaming</p>
+            <h2 style="font-weight: 800; color: #0f172a; letter-spacing: 0.8px; font-size: 20px;">VESTIFY PRO</h2>
+            <p style="font-size: 11px; color: #0284c7; margin-top: 2px; font-weight: 700;">Cloud Mining Nodes & Live Aviator Crash Gaming</p>
 
+            <!-- LIVE PLATFORM STATS BAR -->
+            <div class="auth-stats-bar">
+                <div class="auth-stat-item">
+                    <b>18,450+</b>
+                    <span>Active Miners</span>
+                </div>
+                <div class="auth-stat-item" style="border-left:1px solid rgba(255,255,255,0.25); border-right:1px solid rgba(255,255,255,0.25);">
+                    <b>Rs. 4.2M+</b>
+                    <span>Total Paid Out</span>
+                </div>
+                <div class="auth-stat-item">
+                    <b>500x</b>
+                    <span>Aviator Max</span>
+                </div>
+            </div>
+
+            <!-- FEATURE PILLS -->
             <div class="auth-feature-pills">
                 <div class="auth-pill-box">
-                    <b><i class="fa-solid fa-server"></i> 24/7 Cloud</b>
+                    <b><i class="fa-solid fa-server"></i> Cloud Rigs</b>
                     <span>Auto Daily Profit</span>
                 </div>
                 <div class="auth-pill-box">
-                    <b><i class="fa-solid fa-plane-up"></i> 500x Aviator</b>
+                    <b><i class="fa-solid fa-plane-up"></i> Aviator Pro</b>
                     <span>Instant Cashout</span>
                 </div>
                 <div class="auth-pill-box">
-                    <b><i class="fa-solid fa-bolt"></i> Fast Payout</b>
+                    <b><i class="fa-solid fa-wallet"></i> Fast Payout</b>
                     <span>EasyPaisa / Jazz</span>
                 </div>
+            </div>
+
+            <!-- WELCOME BONUS BANNER -->
+            <div class="auth-promo-banner">
+                <i class="fa-solid fa-gift" style="color:#10b981; font-size:13px;"></i>
+                <span>Get 8% Deposit Bonus + Daily Free Lucky Spin!</span>
             </div>
             
             <div class="auth-tabs">
@@ -297,18 +335,32 @@
             
             <input type="text" id="authUsername" class="modal-input" placeholder="Choose Unique Username" style="margin-top:0; display:none;">
             <input type="email" id="authEmail" class="modal-input" placeholder="Email Address">
-            <input type="password" id="authPassword" class="modal-input" placeholder="Password">
+            
+            <!-- PASSWORD FIELD WITH SHOW/HIDE EYE TOGGLE -->
+            <div class="password-wrapper" style="position: relative; width: 100%;">
+                <input type="password" id="authPassword" class="modal-input" placeholder="Password" style="padding-right: 38px;">
+                <i id="authPassEye" class="fa-solid fa-eye" style="position: absolute; right: 12px; top: 58%; transform: translateY(-50%); color: #64748b; cursor: pointer; font-size: 14px;" onclick="const p=document.getElementById('authPassword'); p.type=p.type==='password'?'text':'password'; this.classList.toggle('fa-eye-slash');"></i>
+            </div>
+
             <input type="text" id="authReferralInput" class="modal-input" placeholder="Referral Code (Optional)">
             
-            <button class="buy-plan-btn" onclick="handleAuthAction()" style="width:100%; margin-top:18px; padding:14px; border-radius:12px; font-size:13px; letter-spacing:0.6px;">ENTER PLATFORM <i class="fa-solid fa-arrow-right"></i></button>
+            <button class="buy-plan-btn" onclick="handleAuthAction()" style="width:100%; margin-top:15px; padding:13px; border-radius:12px; font-size:13px; letter-spacing:0.6px; background:linear-gradient(135deg, #0ea5e9, #0284c7); color:white; border:none; font-weight:800; cursor:pointer; box-shadow:0 6px 20px rgba(14,165,233,0.38);">
+                START EARNING NOW <i class="fa-solid fa-arrow-right"></i>
+            </button>
             
-            <div style="margin: 14px 0; color: #94a3b8; font-size: 11px; font-weight: 700;">OR CONTINUE WITH</div>
+            <div style="margin: 12px 0; color: #64748b; font-size: 11px; font-weight: 700;">OR CONTINUE WITH</div>
             
             <button class="google-auth-btn" onclick="executeGoogleAuthenticationLink()">
                 <img src="https://img.icons8.com/color/48/000000/google-logo.png" width="18" alt=""> Continue with Google
             </button>
 
-            <p style="font-size:10px; color:#64748b; margin-top:14px;">256-Bit SSL Encrypted • Singapore Registered Cloud Infrastructure</p>
+            <div style="display:flex; justify-content:center; gap:12px; margin-top:14px; font-size:10px; color:#475569; font-weight:600;">
+                <span><i class="fa-solid fa-shield-halved" style="color:#0284c7;"></i> 256-Bit SSL</span>
+                <span>•</span>
+                <span><i class="fa-solid fa-building" style="color:#0284c7;"></i> Singapore Reg.</span>
+                <span>•</span>
+                <a href="https://chat.whatsapp.com/D6QqMvZFBqLE4Hu4MsYEL5?s=cl&p=a&mlu=4" target="_blank" style="color:#10b981; text-decoration:none; font-weight:700;"><i class="fa-brands fa-whatsapp"></i> Support</a>
+            </div>
         </div>
     </div>
 
@@ -3204,20 +3256,36 @@
         }
 
         function startLiveSocialProofTicker() {
+                function startLiveSocialProofTicker() {
             const messages = [
                 "0300****82 withdrew Rs. 2,400 via EasyPaisa",
                 "hamza_77 won Rs. 14,500 @ 14.5x in Aviator!",
                 "ayesha_m activated Rig Stratum-1 Node",
                 "0315****19 withdrew Rs. 4,850 via JazzCash",
                 "bilal_pro won Rs. 42,000 @ 84.0x in Aviator!",
-                "sana_k unlocked Aviator 5,000 PKR Free Spin!"
+                "sana_k unlocked Aviator 5,000 PKR Free Spin!",
+                "0321****94 withdrew Rs. 12,500 via EasyPaisa",
+                "zainab99 won Rs. 8,900 @ 6.2x in Aviator!",
+                "usman_rwp activated Matrix Overdrive-1",
+                "0333****41 withdrew Rs. 3,100 via JazzCash",
+                "fahad_90 won Rs. 25,000 @ 31.4x in Aviator!",
+                "mahnoor_s deposited Rs. 5,000 successfully",
+                "0345****67 withdrew Rs. 18,200 via EasyPaisa",
+                "kamran_x won Rs. 6,400 @ 4.8x in Aviator!",
+                "fatima_noor activated Pod Alpha-3 Node",
+                "0301****55 withdrew Rs. 7,600 via JazzCash"
             ];
             let idx = 0;
             const el = document.getElementById("liveSocialProofText");
+            const authTickerEl = document.getElementById("authLiveTickerMsg");
+            
             if (el) el.innerText = messages[0];
+            if (authTickerEl) authTickerEl.innerText = messages[0];
+
             setInterval(() => {
                 idx = (idx + 1) % messages.length;
                 if (el) el.innerText = messages[idx];
+                if (authTickerEl) authTickerEl.innerText = messages[idx];
             }, 4000);
         }
 
