@@ -1,4 +1,4 @@
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,144 +27,194 @@
     </script>
     
     <style>
+        :root {
+            --sky-primary: #0ea5e9;
+            --sky-light: #38bdf8;
+            --sky-dark: #0284c7;
+            --sky-glow: rgba(14, 165, 233, 0.35);
+
+            /* Dark Sky Theme (Default) */
+            --bg-main: #030b17;
+            --bg-header: rgba(7, 19, 38, 0.88);
+            --bg-card: rgba(12, 28, 52, 0.78);
+            --bg-card-solid: #0a192f;
+            --bg-sub: rgba(2, 12, 27, 0.45);
+            --border-color: rgba(56, 189, 248, 0.18);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --input-bg: rgba(3, 13, 28, 0.65);
+        }
+
+        [data-theme="light"] {
+            /* Light Sky-Blue Theme */
+            --bg-main: #f0f9ff;
+            --bg-header: rgba(224, 242, 254, 0.92);
+            --bg-card: rgba(255, 255, 255, 0.92);
+            --bg-card-solid: #ffffff;
+            --bg-sub: rgba(186, 230, 253, 0.35);
+            --border-color: rgba(14, 165, 233, 0.28);
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --input-bg: #f8fafc;
+        }
+
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background: #040814; color: #ffffff; min-height: 100vh; padding-bottom: 100px; overflow-x: hidden; }
+        body { background: var(--bg-main); color: var(--text-main); min-height: 100vh; padding-bottom: 100px; overflow-x: hidden; transition: background 0.3s ease, color 0.3s ease; }
         
-        .bg-glow-1 { position: fixed; width: 350px; height: 350px; background: radial-gradient(circle, rgba(255, 65, 108, 0.15) 0%, rgba(0,0,0,0) 70%); top: -50px; left: -50px; z-index: -1; pointer-events: none; }
-        .bg-glow-2 { position: fixed; width: 450px; height: 450px; background: radial-gradient(circle, rgba(56, 189, 248, 0.12) 0%, rgba(0,0,0,0) 70%); bottom: 100px; right: -100px; z-index: -1; pointer-events: none; }
+        .bg-glow-1 { position: fixed; width: 380px; height: 380px; background: radial-gradient(circle, rgba(14, 165, 233, 0.22) 0%, rgba(0,0,0,0) 70%); top: -60px; left: -60px; z-index: -1; pointer-events: none; }
+        .bg-glow-2 { position: fixed; width: 460px; height: 460px; background: radial-gradient(circle, rgba(56, 189, 248, 0.18) 0%, rgba(0,0,0,0) 70%); bottom: 90px; right: -100px; z-index: -1; pointer-events: none; }
 
-        #authScreen, #secretAdminScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #040814; z-index: 99999; display: flex; align-items: center; justify-content: center; padding: 20px; overflow-y: auto; }
-        .auth-container, .admin-container { background: rgba(15, 23, 42, 0.75); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 28px; padding: 30px 22px; width: 100%; max-width: 460px; text-align: center; backdrop-filter: blur(25px); box-shadow: 0 20px 50px rgba(0,0,0,0.6); }
-        .auth-tabs { display: flex; gap: 8px; margin-bottom: 18px; background: rgba(255,255,255,0.03); padding: 6px; border-radius: 14px; }
+        /* MODERN AUTH SCREEN WITH SLIDING BACKGROUND */
+        #authScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #020813; z-index: 99999; display: flex; align-items: center; justify-content: center; padding: 18px; overflow-y: auto; }
+        .auth-bg-slider { position: fixed; inset: 0; z-index: 0; overflow: hidden; }
+        .auth-slide { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0; transform: scale(1.06); transition: opacity 1.4s ease-in-out, transform 7s ease-out; }
+        .auth-slide.active { opacity: 0.38; transform: scale(1); }
+        .auth-bg-overlay { position: fixed; inset: 0; background: linear-gradient(180deg, rgba(2, 12, 27, 0.78) 0%, rgba(3, 18, 38, 0.92) 100%); z-index: 1; }
+
+        #secretAdminScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 8, 20, 0.96); z-index: 99999; display: flex; align-items: center; justify-content: center; padding: 20px; overflow-y: auto; }
+        .auth-container { position: relative; z-index: 2; background: rgba(10, 25, 47, 0.82); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 28px; padding: 28px 22px; width: 100%; max-width: 450px; text-align: center; backdrop-filter: blur(22px); box-shadow: 0 25px 60px rgba(0,0,0,0.75); color: #fff; }
+        .admin-container { background: #071326; border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 28px; padding: 26px 20px; width: 100%; max-width: 540px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.75); color: #fff; }
+
+        .auth-feature-pills { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 14px 0 18px 0; }
+        .auth-pill-box { background: rgba(14, 165, 233, 0.12); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 12px; padding: 8px 4px; }
+        .auth-pill-box b { display: block; font-size: 12px; color: #38bdf8; }
+        .auth-pill-box span { font-size: 9px; color: #cbd5e1; }
+
+        .auth-tabs { display: flex; gap: 8px; margin-bottom: 16px; background: rgba(255,255,255,0.05); padding: 6px; border-radius: 14px; }
         .auth-tab-btn { flex: 1; padding: 10px; border-radius: 10px; border: none; background: transparent; color: #94a3b8; font-weight: 700; cursor: pointer; transition: all 0.3s; }
-        .auth-tab-btn.active { background: linear-gradient(135deg, #ff416c, #ff4b2b); color: white; box-shadow: 0 4px 15px rgba(255,65,108,0.3); }
+        .auth-tab-btn.active { background: linear-gradient(135deg, #0ea5e9, #0284c7); color: white; box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4); }
         
-        .google-auth-btn { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: white; font-weight: 700; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 15px; transition: background 0.2s; }
-        .google-auth-btn:hover { background: rgba(255,255,255,0.07); }
+        .google-auth-btn { width: 100%; padding: 13px; border-radius: 12px; border: 1px solid rgba(56, 189, 248, 0.25); background: rgba(255,255,255,0.05); color: white; font-weight: 700; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 12px; transition: background 0.2s; }
+        .google-auth-btn:hover { background: rgba(14, 165, 233, 0.15); }
 
-        .vestify-header { padding: 14px 16px; background: rgba(11, 21, 40, 0.8); backdrop-filter: blur(15px); border-bottom: 1px solid rgba(255, 255, 255, 0.08); position: sticky; top: 0; z-index: 100; }
+        .vestify-header { padding: 14px 16px; background: var(--bg-header); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100; }
         .brand-row { display: flex; justify-content: space-between; align-items: center; }
-        .logo-block { display: flex; align-items: center; gap: 12px; cursor: pointer; }
-        .logo-icon { width: 42px; height: 42px; background: linear-gradient(135deg, #ff416c, #ff4b2b); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 800; box-shadow: 0 4px 12px rgba(255,65,108,0.3); }
-        .logo-text h1 { font-size: 18px; font-weight: 800; letter-spacing: 1px; }
+        .logo-block { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .logo-icon { width: 40px; height: 40px; background: linear-gradient(135deg, #0ea5e9, #0284c7); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 19px; color: #fff; font-weight: 800; box-shadow: 0 4px 14px var(--sky-glow); }
+        .logo-text h1 { font-size: 17px; font-weight: 800; letter-spacing: 0.8px; color: var(--text-main); }
 
-        .broadcast-ticker-banner { background: linear-gradient(135deg, rgba(255,65,108,0.2), rgba(255,75,43,0.1)); border: 1px solid rgba(255,65,108,0.4); border-radius: 16px; padding: 12px 16px; margin: 14px 16px 0 16px; display: flex; align-items: center; gap: 12px; }
-        .live-social-ticker { background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 12px; padding: 8px 12px; margin: 12px 16px 0 16px; display: flex; align-items: center; gap: 8px; font-size: 11px; color: #a7f3d0; overflow: hidden; }
+        .theme-toggle-btn { width: 34px; height: 34px; border-radius: 10px; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--sky-primary); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 15px; transition: 0.2s; }
 
-        .stats-dashboard { background: linear-gradient(135deg, rgba(30, 41, 59, 0.65), rgba(15, 23, 42, 0.85)); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 24px; padding: 20px; margin: 16px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        .live-tag { position: absolute; top: 14px; right: 16px; background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16,185,129,0.3); font-size: 10px; padding: 3px 10px; border-radius: 20px; font-weight: 700; }
+        .broadcast-ticker-banner { background: linear-gradient(135deg, rgba(14,165,233,0.22), rgba(2,132,199,0.12)); border: 1px solid rgba(56,189,248,0.45); border-radius: 16px; padding: 12px 16px; margin: 14px 16px 0 16px; display: flex; align-items: center; gap: 12px; }
+        .live-social-ticker { background: rgba(14, 165, 233, 0.1); border: 1px solid rgba(56, 189, 248, 0.28); border-radius: 12px; padding: 8px 12px; margin: 12px 16px 0 16px; display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--sky-primary); font-weight: 600; overflow: hidden; }
+
+        .stats-dashboard { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 24px; padding: 20px; margin: 16px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
+        .live-tag { position: absolute; top: 14px; right: 16px; background: rgba(14, 165, 233, 0.16); color: var(--sky-primary); border: 1px solid rgba(56,189,248,0.35); font-size: 10px; padding: 3px 10px; border-radius: 20px; font-weight: 700; }
         
         .profile-header-box { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
         .profile-avatar-container { position: relative; cursor: pointer; }
-        .profile-avatar-img { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; border: 2px solid #38bdf8; background: #0f172a; }
-        .profile-avatar-upload-icon { position: absolute; bottom: -2px; right: -2px; background: #ff416c; color: white; width: 18px; height: 18px; border-radius: 50%; font-size: 10px; display: flex; align-items: center; justify-content: center; }
+        .profile-avatar-img { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; border: 2px solid var(--sky-primary); background: #0f172a; }
+        .profile-avatar-upload-icon { position: absolute; bottom: -2px; right: -2px; background: var(--sky-primary); color: white; width: 18px; height: 18px; border-radius: 50%; font-size: 10px; display: flex; align-items: center; justify-content: center; }
 
         .wallet-split-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
-        .wallet-sub-box { background: rgba(0,0,0,0.28); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 10px 12px; }
+        .wallet-sub-box { background: var(--bg-sub); border: 1px solid var(--border-color); border-radius: 14px; padding: 10px 12px; }
 
         .quick-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 0 16px 20px 16px; }
-        .action-btn { padding: 14px 8px; border-radius: 16px; border: none; font-size: 12px; font-weight: 700; color: white; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px; transition: all 0.2s; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); }
+        .action-btn { padding: 14px 8px; border-radius: 16px; font-size: 12px; font-weight: 700; color: var(--text-main); cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px; transition: all 0.2s; background: var(--bg-card); border: 1px solid var(--border-color); }
         .action-btn i { font-size: 18px; }
         .btn-deposit { color: #10b981; }
-        .btn-withdraw { color: #3b82f6; }
+        .btn-withdraw { color: #0ea5e9; }
         .btn-transfer { color: #eab308; }
         .action-btn:active { transform: scale(0.95); }
 
         .plan-tabs-row { display: flex; gap: 8px; padding: 0 16px; margin-bottom: 14px; overflow-x: auto; white-space: nowrap; }
-        .plan-tab-trigger { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); padding: 10px 18px; border-radius: 20px; font-size: 12px; color: #94a3b8; font-weight: 700; cursor: pointer; }
-        .plan-tab-trigger.active-tab { background: #38bdf8; color: #040814; border-color: #38bdf8; box-shadow: 0 0 12px rgba(56,189,248,0.4); }
+        .plan-tab-trigger { background: var(--bg-card); border: 1px solid var(--border-color); padding: 10px 18px; border-radius: 20px; font-size: 12px; color: var(--text-muted); font-weight: 700; cursor: pointer; }
+        .plan-tab-trigger.active-tab { background: linear-gradient(135deg, #0ea5e9, #0284c7); color: #ffffff; border-color: #0ea5e9; box-shadow: 0 4px 14px var(--sky-glow); }
 
         .plans-grid { display: none; flex-direction: column; gap: 14px; padding: 0 16px; }
         .plans-grid.active-grid { display: flex; }
         
-        .plan-card { background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 16px; display: flex; align-items: center; gap: 14px; position: relative; overflow: hidden; backdrop-filter: blur(10px); }
-        .plan-card::after { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: #38bdf8; }
+        .plan-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; padding: 16px; display: flex; align-items: center; gap: 14px; position: relative; overflow: hidden; backdrop-filter: blur(10px); }
+        .plan-card::after { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: #0ea5e9; }
         .plan-card.special-border::after { background: #eab308; }
         .plan-card.offer-border::after { background: #a855f7; }
         
-        .plan-node-img { width: 60px; height: 60px; border-radius: 14px; object-fit: cover; border: 1px solid rgba(255,255,255,0.1); background: #0b111e; }
+        .plan-node-img { width: 60px; height: 60px; border-radius: 14px; object-fit: cover; border: 1px solid var(--border-color); background: #0b111e; }
         .plan-details { flex: 1; }
-        .plan-details h4 { font-size: 14px; font-weight: 700; color: white; display: flex; align-items: center; gap: 6px; }
-        .plan-details p { font-size: 11px; color: #94a3b8; margin-top: 3px; line-height: 1.4; }
+        .plan-details h4 { font-size: 14px; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 6px; }
+        .plan-details p { font-size: 11px; color: var(--text-muted); margin-top: 3px; line-height: 1.4; }
         .plan-details span { color: #10b981; font-weight: 700; }
         
-        .buy-plan-btn { padding: 9px 18px; background: linear-gradient(135deg, #ff416c, #ff4b2b); border: none; border-radius: 12px; color: white; font-weight: 700; font-size: 12px; cursor: pointer; box-shadow: 0 4px 12px rgba(255,65,108,0.3); }
+        .buy-plan-btn { padding: 9px 18px; background: linear-gradient(135deg, #0ea5e9, #0284c7); border: none; border-radius: 12px; color: white; font-weight: 700; font-size: 12px; cursor: pointer; box-shadow: 0 4px 12px var(--sky-glow); }
         .buy-plan-btn:active { transform: scale(0.95); }
         .buy-plan-btn:disabled { opacity: 0.55; cursor: not-allowed; }
 
         .app-view-page { display: none; padding: 0 16px; }
         .app-view-page.active-page { display: block; }
-        .history-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); padding: 14px; border-radius: 16px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .history-card { background: var(--bg-card); border: 1px solid var(--border-color); padding: 14px; border-radius: 16px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
 
-        .salary-bar-container { background: rgba(255,255,255,0.06); border-radius: 10px; height: 10px; width: 100%; margin-top: 8px; overflow: hidden; position: relative; }
-        .salary-bar-fill { height: 100%; background: linear-gradient(90deg, #38bdf8, #3b82f6); width: 0%; transition: width 0.5s ease; }
+        .salary-bar-container { background: rgba(148, 163, 184, 0.2); border-radius: 10px; height: 10px; width: 100%; margin-top: 8px; overflow: hidden; position: relative; }
+        .salary-bar-fill { height: 100%; background: linear-gradient(90deg, #38bdf8, #0284c7); width: 0%; transition: width 0.5s ease; }
 
-        .spin-box-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.06); padding: 25px 20px; border-radius: 24px; text-align: center; margin-top: 20px; position: relative; background: linear-gradient(180deg, rgba(255,65,108,0.05) 0%, rgba(4,8,24,0) 100%); }
-        .wheel-outer { width: 130px; height: 130px; border: 4px dashed #ff416c; border-radius: 50%; margin: 15px auto; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 13px; color: white; background: rgba(255,65,108,0.05); text-shadow: 0 0 10px #ff416c; box-shadow: inset 0 0 15px rgba(255,65,108,0.2); transition: transform 3s cubic-bezier(0.1, 0.8, 0.1, 1); }
+        .spin-box-card { background: var(--bg-card); border: 1px solid var(--border-color); padding: 25px 20px; border-radius: 24px; text-align: center; margin-top: 20px; position: relative; }
+        .wheel-outer { width: 130px; height: 130px; border: 4px dashed #0ea5e9; border-radius: 50%; margin: 15px auto; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 13px; color: var(--text-main); background: rgba(14,165,233,0.08); box-shadow: inset 0 0 15px rgba(14,165,233,0.25); transition: transform 3s cubic-bezier(0.1, 0.8, 0.1, 1); }
 
-        .info-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 20px; padding: 18px; margin-bottom: 14px; }
-        .info-card h4 { font-size: 14px; color: #38bdf8; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
-        .info-card p { font-size: 12px; color: #94a3b8; line-height: 1.6; }
+        .info-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; padding: 18px; margin-bottom: 14px; }
+        .info-card h4 { font-size: 14px; color: var(--sky-primary); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .info-card p { font-size: 12px; color: var(--text-muted); line-height: 1.6; }
         
-        .faq-item { border-bottom: 1px solid rgba(255,255,255,0.06); padding: 12px 0; cursor: pointer; }
+        .faq-item { border-bottom: 1px solid var(--border-color); padding: 12px 0; cursor: pointer; }
         .faq-item:last-child { border: none; }
-        .faq-q { font-size: 13px; font-weight: 700; color: white; display: flex; justify-content: space-between; align-items: center; }
-        .faq-a { font-size: 12px; color: #94a3b8; margin-top: 6px; display: none; line-height: 1.5; }
+        .faq-q { font-size: 13px; font-weight: 700; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; }
+        .faq-a { font-size: 12px; color: var(--text-muted); margin-top: 6px; display: none; line-height: 1.5; }
 
-        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 70px; background: rgba(4, 8, 20, 0.95); backdrop-filter: blur(20px); border-top: 1px solid rgba(255, 255, 255, 0.08); display: flex; justify-content: space-around; align-items: center; z-index: 999; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: #64748b; text-decoration: none; font-size: 10px; font-weight: 600; cursor: pointer; transition: color 0.2s; }
-        .nav-item.active { color: #38bdf8; }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 70px; background: var(--bg-header); backdrop-filter: blur(20px); border-top: 1px solid var(--border-color); display: flex; justify-content: space-around; align-items: center; z-index: 999; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-muted); text-decoration: none; font-size: 10px; font-weight: 700; cursor: pointer; transition: color 0.2s; }
+        .nav-item.active { color: var(--sky-primary); }
 
-        .premium-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 4, 10, 0.85); backdrop-filter: blur(12px); z-index: 10000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; padding: 20px; }
+        .premium-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 8, 20, 0.85); backdrop-filter: blur(12px); z-index: 10000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; padding: 20px; }
         .premium-modal.modal-open { opacity: 1; pointer-events: auto; }
-        .modal-content { background: #0b111e; border: 1px solid rgba(255, 255, 255, 0.1); width: 100%; max-width: 420px; border-radius: 24px; padding: 24px; text-align: center; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.8); max-height: 88vh; overflow-y: auto; }
-        .modal-input { width: 100%; padding: 11px 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.35); color: white; font-size: 13px; margin-top: 10px; outline: none; }
-        .close-modal-btn { position: absolute; top: 16px; right: 16px; color: #64748b; font-size: 20px; cursor: pointer; }
+        .modal-content { background: var(--bg-card-solid); border: 1px solid var(--border-color); color: var(--text-main); width: 100%; max-width: 420px; border-radius: 24px; padding: 24px; text-align: center; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.65); max-height: 88vh; overflow-y: auto; }
+        .modal-input { width: 100%; padding: 11px 12px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text-main); font-size: 13px; margin-top: 10px; outline: none; }
+        .auth-container .modal-input, .admin-container .modal-input { background: rgba(2, 12, 27, 0.75); color: #fff; border-color: rgba(56, 189, 248, 0.28); }
+        .close-modal-btn { position: absolute; top: 16px; right: 16px; color: var(--text-muted); font-size: 20px; cursor: pointer; }
 
-        .reward-toast { position: fixed; top: 25px; left: 50%; transform: translateX(-50%) translateY(-100px); background: #10b981; color: white; padding: 12px 20px; border-radius: 16px; z-index: 11000; font-weight: 700; font-size: 13px; transition: transform 0.3s ease; box-shadow: 0 10px 25px rgba(16,185,129,0.3); text-align: center; width: max-content; max-width: 90%; }
+        .reward-toast { position: fixed; top: 25px; left: 50%; transform: translateX(-50%) translateY(-100px); background: #0ea5e9; color: white; padding: 12px 20px; border-radius: 16px; z-index: 11000; font-weight: 700; font-size: 13px; transition: transform 0.3s ease; box-shadow: 0 10px 25px rgba(14,165,233,0.4); text-align: center; width: max-content; max-width: 90%; }
         .reward-toast.toast-show { transform: translateX(-50%) translateY(0); }
-        .section-title { font-size:11px; color:#94a3b8; margin:22px 16px 10px 16px; text-transform:uppercase; letter-spacing: 1px; font-weight: 800; display: flex; align-items: center; gap: 6px; }
+        .section-title { font-size:11px; color: var(--sky-primary); margin:22px 16px 10px 16px; text-transform:uppercase; letter-spacing: 1px; font-weight: 800; display: flex; align-items: center; gap: 6px; }
         
-        .task-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 14px; margin: 0 16px 10px 16px; display: flex; align-items: center; justify-content: space-between; }
+        .task-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 14px; margin: 0 16px 10px 16px; display: flex; align-items: center; justify-content: space-between; }
         .task-card .task-info { display: flex; align-items: center; gap: 12px; }
-        .task-card .task-icon { width: 38px; height: 38px; border-radius: 10px; background: rgba(56,189,248,0.1); color: #38bdf8; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+        .task-card .task-icon { width: 38px; height: 38px; border-radius: 10px; background: rgba(14,165,233,0.14); color: #0ea5e9; display: flex; align-items: center; justify-content: center; font-size: 16px; }
 
-        /* AVIATOR STYLES */
+        /* AVIATOR SKY-BLUE PRO STYLES */
         .aviator-wrap { margin: 16px 0; display: flex; flex-direction: column; gap: 12px; }
-        .aviator-topbar { background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 18px; padding: 12px 14px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; }
+        .aviator-topbar { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 18px; padding: 12px 14px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; }
         .aviator-status-pill { font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 20px; letter-spacing: 0.5px; display: inline-flex; align-items: center; gap: 6px; }
-        .aviator-status-open { background: rgba(16, 185, 129, 0.16); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.35); }
+        .aviator-status-open { background: rgba(14, 165, 233, 0.18); color: #0ea5e9; border: 1px solid rgba(56, 189, 248, 0.4); }
         .aviator-status-closed { background: rgba(234, 179, 8, 0.16); color: #eab308; border: 1px solid rgba(234, 179, 8, 0.35); }
         .aviator-status-crashed { background: rgba(239, 68, 68, 0.16); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.35); }
-        .aviator-icon-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.09); color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 11px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; }
-        .aviator-stage { position: relative; width: 100%; height: 235px; background: radial-gradient(circle at 50% 60%, #131c36 0%, #030712 85%); border-radius: 22px; border: 1px solid rgba(255, 65, 108, 0.28); overflow: hidden; box-shadow: inset 0 0 40px rgba(0,0,0,0.8); }
-        .aviator-grid-bg { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px); background-size: 32px 32px; pointer-events: none; }
-        .aviator-countdown-bar-wrap { width: 220px; max-width: 80%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 99px; margin: 10px auto 0 auto; overflow: hidden; }
-        .aviator-countdown-bar-fill { height: 100%; width: 100%; background: linear-gradient(90deg, #ff416c, #eab308, #10b981); transition: width 0.1s linear; }
+        .aviator-icon-btn { background: var(--bg-sub); border: 1px solid var(--border-color); color: var(--text-main); border-radius: 10px; padding: 6px 10px; font-size: 11px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; }
+        .aviator-stage { position: relative; width: 100%; height: 235px; background: radial-gradient(circle at 50% 45%, #0c3559 0%, #030e21 88%); border-radius: 22px; border: 1px solid rgba(56, 189, 248, 0.4); overflow: hidden; box-shadow: inset 0 0 40px rgba(0,0,0,0.75); }
+        .aviator-grid-bg { position: absolute; inset: 0; background-image: linear-gradient(rgba(56,189,248,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(56,189,248,0.06) 1px, transparent 1px); background-size: 32px 32px; pointer-events: none; }
+        .aviator-countdown-bar-wrap { width: 220px; max-width: 80%; height: 8px; background: rgba(255,255,255,0.14); border-radius: 99px; margin: 10px auto 0 auto; overflow: hidden; }
+        .aviator-countdown-bar-fill { height: 100%; width: 100%; background: linear-gradient(90deg, #38bdf8, #0ea5e9, #10b981); transition: width 0.1s linear; }
         .aviator-panels-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
         @media (min-width: 768px) { .aviator-panels-grid { grid-template-columns: 1fr 1fr; } }
-        .aviator-bet-card { background: rgba(15, 23, 42, 0.82); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 14px; display: flex; flex-direction: column; gap: 9px; }
+        .aviator-bet-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; padding: 14px; display: flex; flex-direction: column; gap: 9px; }
         .aviator-quick-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
-        .aviator-chip-btn { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: #e2e8f0; border-radius: 9px; padding: 6px 4px; font-size: 11px; font-weight: 700; cursor: pointer; }
-        .aviator-chip-btn:hover { background: rgba(56,189,248,0.16); border-color: #38bdf8; color: #38bdf8; }
-        .auto-controls-box { background: rgba(0,0,0,0.28); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 8px 10px; display: flex; flex-direction: column; gap: 7px; }
+        .aviator-chip-btn { background: var(--bg-sub); border: 1px solid var(--border-color); color: var(--text-main); border-radius: 9px; padding: 6px 4px; font-size: 11px; font-weight: 700; cursor: pointer; }
+        .aviator-chip-btn:hover { background: rgba(14,165,233,0.2); border-color: #0ea5e9; color: #0ea5e9; }
+        .auto-controls-box { background: var(--bg-sub); border: 1px solid var(--border-color); border-radius: 12px; padding: 8px 10px; display: flex; flex-direction: column; gap: 7px; }
         .auto-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 11px; }
-        .auto-mini-input { width: 72px; padding: 5px 8px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12); background: rgba(15,23,42,0.9); color: #fff; font-size: 11px; font-weight: 700; text-align: center; }
-        .aviator-subtabs { display: flex; gap: 6px; background: rgba(255,255,255,0.03); padding: 5px; border-radius: 14px; overflow-x: auto; }
-        .aviator-subtab-btn { flex: 1; padding: 8px 10px; border-radius: 10px; border: none; background: transparent; color: #94a3b8; font-size: 11px; font-weight: 700; cursor: pointer; white-space: nowrap; }
-        .aviator-subtab-btn.active { background: #38bdf8; color: #040814; }
+        .auto-mini-input { width: 72px; padding: 5px 8px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text-main); font-size: 11px; font-weight: 700; text-align: center; }
+        .aviator-subtabs { display: flex; gap: 6px; background: var(--bg-card); border: 1px solid var(--border-color); padding: 5px; border-radius: 14px; overflow-x: auto; }
+        .aviator-subtab-btn { flex: 1; padding: 8px 10px; border-radius: 10px; border: none; background: transparent; color: var(--text-muted); font-size: 11px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+        .aviator-subtab-btn.active { background: #0ea5e9; color: #ffffff; }
         .aviator-pill { padding: 3px 9px; border-radius: 8px; font-size: 11px; font-weight: 800; cursor: pointer; white-space: nowrap; }
-        .aviator-pill-low { background: rgba(56, 189, 248, 0.14); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.25); }
-        .aviator-pill-mid { background: rgba(168, 85, 247, 0.16); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
-        .aviator-pill-high { background: rgba(234, 179, 8, 0.18); color: #facc15; border: 1px solid rgba(234, 179, 8, 0.35); }
-        .aviator-pill-mega { background: rgba(255, 65, 108, 0.24); color: #ff416c; border: 1px solid rgba(255, 65, 108, 0.5); }
+        .aviator-pill-low { background: rgba(14, 165, 233, 0.16); color: #0ea5e9; border: 1px solid rgba(14, 165, 233, 0.3); }
+        .aviator-pill-mid { background: rgba(168, 85, 247, 0.16); color: #a855f7; border: 1px solid rgba(168, 85, 247, 0.3); }
+        .aviator-pill-high { background: rgba(234, 179, 8, 0.18); color: #eab308; border: 1px solid rgba(234, 179, 8, 0.35); }
+        .aviator-pill-mega { background: rgba(16, 185, 129, 0.22); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.45); }
 
         .toggle-switch { position: relative; display: inline-block; width: 36px; height: 20px; }
         .toggle-switch input { opacity: 0; width: 0; height: 0; }
-        .toggle-slider { position: absolute; cursor: pointer; inset: 0; background-color: #334155; transition: .3s; border-radius: 20px; }
+        .toggle-slider { position: absolute; cursor: pointer; inset: 0; background-color: #475569; transition: .3s; border-radius: 20px; }
         .toggle-slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%; }
-        input:checked + .toggle-slider { background-color: #10b981; }
+        input:checked + .toggle-slider { background-color: #0ea5e9; }
         input:checked + .toggle-slider:before { transform: translateX(16px); }
+
+        .live-badge-real { background: rgba(16, 185, 129, 0.2); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.45); font-size: 9px; padding: 1px 5px; border-radius: 5px; font-weight: 800; margin-left: 4px; }
     </style>
 </head>
 <body>
@@ -173,52 +223,86 @@
     <div class="bg-glow-2"></div>
 
     <div id="rewardToast" class="reward-toast">Notification Message</div>
-
     <input type="file" id="profileImageFileInput" accept="image/*" style="display:none;" onchange="handleProfileImageSelect(event)">
 
-    <!-- AUTHENTICATION SCREEN -->
+    <!-- MAINTENANCE OVERLAY (ADMIN CONTROLLED) -->
+    <div id="maintenanceOverlay" style="display:none; position:fixed; inset:0; background:#030b17; z-index:999999; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:24px; color:#fff;">
+        <i class="fa-solid fa-screwdriver-wrench fa-bounce" style="font-size:48px; color:#38bdf8; margin-bottom:16px;"></i>
+        <h2 style="font-weight:800; color:#38bdf8;">System Upgrade In Progress</h2>
+        <p style="font-size:13px; color:#94a3b8; max-width:340px; margin-top:8px;">Vestify Pro servers are undergoing scheduled maintenance. Please check back in a few minutes.</p>
+    </div>
+
+    <!-- MODERN AUTHENTICATION SCREEN WITH SLIDING FREE IMAGES & PLATFORM DETAILS -->
     <div id="authScreen">
+        <div class="auth-bg-slider">
+            <div class="auth-slide active" style="background-image: url('https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=1200&auto=format&fit=crop&q=80');"></div>
+            <div class="auth-slide" style="background-image: url('https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200&auto=format&fit=crop&q=80');"></div>
+            <div class="auth-slide" style="background-image: url('https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&auto=format&fit=crop&q=80');"></div>
+            <div class="auth-slide" style="background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&auto=format&fit=crop&q=80');"></div>
+        </div>
+        <div class="auth-bg-overlay"></div>
+
         <div class="auth-container">
-            <h2 style="font-weight: 800; background: linear-gradient(135deg, #fff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 1px;">VESTIFY PRO</h2>
-            <p style="font-size: 11px; color: #64748b; margin-bottom: 20px;">Cloud Mining & Aviator Casino Platform</p>
+            <div style="width:52px; height:52px; background:linear-gradient(135deg, #38bdf8, #0284c7); border-radius:16px; display:flex; align-items:center; justify-content:center; margin:0 auto 10px auto; font-size:24px; box-shadow:0 8px 25px rgba(14,165,233,0.45);">
+                <i class="fa-solid fa-cloud-bolt"></i>
+            </div>
+            <h2 style="font-weight: 800; background: linear-gradient(135deg, #ffffff, #38bdf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 1px;">VESTIFY PRO</h2>
+            <p style="font-size: 11px; color: #bae6fd; margin-top: 2px;">Next-Gen Cloud Mining & Live Aviator Crash Gaming</p>
+
+            <div class="auth-feature-pills">
+                <div class="auth-pill-box">
+                    <b><i class="fa-solid fa-server"></i> 24/7 Cloud</b>
+                    <span>Auto Daily Profit</span>
+                </div>
+                <div class="auth-pill-box">
+                    <b><i class="fa-solid fa-plane-up"></i> 500x Aviator</b>
+                    <span>Instant Cashout</span>
+                </div>
+                <div class="auth-pill-box">
+                    <b><i class="fa-solid fa-bolt"></i> Fast Payout</b>
+                    <span>EasyPaisa / Jazz</span>
+                </div>
+            </div>
             
             <div class="auth-tabs">
                 <button id="tabLogin" class="auth-tab-btn active" onclick="switchAuthTab('login')">Sign In</button>
-                <button id="tabRegister" class="auth-tab-btn" onclick="switchAuthTab('register')">Sign Up</button>
+                <button id="tabRegister" class="auth-tab-btn" onclick="switchAuthTab('register')">Create Account</button>
             </div>
             
-            <input type="text" id="authUsername" class="modal-input" placeholder="Choose Username" style="margin-top:0; display:none;">
+            <input type="text" id="authUsername" class="modal-input" placeholder="Choose Unique Username" style="margin-top:0; display:none;">
             <input type="email" id="authEmail" class="modal-input" placeholder="Email Address">
             <input type="password" id="authPassword" class="modal-input" placeholder="Password">
             <input type="text" id="authReferralInput" class="modal-input" placeholder="Referral Code (Optional)">
             
-            <button class="buy-plan-btn" onclick="handleAuthAction()" style="width:100%; margin-top:20px; padding:14px; border-radius:12px; font-size:13px; letter-spacing:0.5px;">CONTINUE</button>
+            <button class="buy-plan-btn" onclick="handleAuthAction()" style="width:100%; margin-top:18px; padding:14px; border-radius:12px; font-size:13px; letter-spacing:0.6px;">ENTER PLATFORM <i class="fa-solid fa-arrow-right"></i></button>
             
-            <div style="margin: 15px 0; color: #64748b; font-size: 11px; font-weight: 700;">OR USE GOOGLE</div>
+            <div style="margin: 14px 0; color: #94a3b8; font-size: 11px; font-weight: 700;">OR CONTINUE WITH</div>
             
             <button class="google-auth-btn" onclick="executeGoogleAuthenticationLink()">
                 <img src="https://img.icons8.com/color/48/000000/google-logo.png" width="18" alt=""> Continue with Google
             </button>
+
+            <p style="font-size:10px; color:#64748b; margin-top:14px;">256-Bit SSL Encrypted • Singapore Registered Cloud Infrastructure</p>
         </div>
     </div>
 
     <!-- ADVANCED SUPER ADMIN PANEL -->
     <div id="secretAdminScreen" style="display: none;">
-        <div class="admin-container" style="max-width: 540px; background: #070d19; border: 1px solid rgba(255,255,255,0.12);">
-            <div class="close-modal-btn" onclick="closeAdminPortal()" style="position: static; text-align: right; margin-bottom: 10px;">&times; Close Admin</div>
-            <h3 style="color: #ff416c; font-weight: 800; margin-bottom: 5px;"><i class="fa-solid fa-user-shield"></i> Super Admin Control Panel</h3>
-            <p style="font-size: 11px; color: #64748b; margin-bottom: 16px;">Full Control: Users, Nodes, Aviator Win-Rate, Taxes & Tickets</p>
+        <div class="admin-container">
+            <div class="close-modal-btn" onclick="closeAdminPortal()" style="position: static; text-align: right; margin-bottom: 10px; color:#38bdf8;">&times; Close Admin</div>
+            <h3 style="color: #38bdf8; font-weight: 800; margin-bottom: 5px;"><i class="fa-solid fa-user-shield"></i> Super Admin Control Panel</h3>
+            <p style="font-size: 11px; color: #94a3b8; margin-bottom: 16px;">Full Control: Users, Nodes, Aviator Traffic, Taxes & Maintenance</p>
             
             <input type="password" id="adminSecretKeyField" class="modal-input" placeholder="Enter Admin Secret Password" style="margin-top:0;">
             <button class="buy-plan-btn" onclick="authenticateAdminSystemKey()" style="width:100%; margin:12px 0; padding:10px;">Login Admin</button>
             
-            <div id="adminContentBody" style="display: none; margin-top: 15px; text-align: left; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; max-height: 500px; overflow-y: auto;">
+            <div id="adminContentBody" style="display: none; margin-top: 15px; text-align: left; border-top: 1px solid rgba(56,189,248,0.2); padding-top: 15px; max-height: 500px; overflow-y: auto;">
                 <div class="auth-tabs" style="margin-bottom: 15px; display: flex; flex-wrap: wrap; gap: 4px;">
                     <button id="adminTabTracker" class="auth-tab-btn active" onclick="switchAdminSubView('tracker')" style="font-size: 10px; padding: 6px;">Live Online</button>
                     <button id="adminTabDep" class="auth-tab-btn" onclick="switchAdminSubView('deposits')" style="font-size: 10px; padding: 6px;">Transactions</button>
                     <button id="adminTabUsers" class="auth-tab-btn" onclick="switchAdminSubView('users')" style="font-size: 10px; padding: 6px;">Users</button>
                     <button id="adminTabNodes" class="auth-tab-btn" onclick="switchAdminSubView('nodes')" style="font-size: 10px; padding: 6px;">Nodes Manager</button>
-                    <button id="adminTabGameControl" class="auth-tab-btn" onclick="switchAdminSubView('gameControl')" style="font-size: 10px; padding: 6px;">Aviator & Tax</button>
+                    <button id="adminTabGameControl" class="auth-tab-btn" onclick="switchAdminSubView('gameControl')" style="font-size: 10px; padding: 6px;">Aviator & System</button>
                     <button id="adminTabTickets" class="auth-tab-btn" onclick="switchAdminSubView('tickets')" style="font-size: 10px; padding: 6px;">Tickets</button>
                     <button id="adminTabPayments" class="auth-tab-btn" onclick="switchAdminSubView('payments')" style="font-size: 10px; padding: 6px;">Payments</button>
                     <button id="adminTabBroadcast" class="auth-tab-btn" onclick="switchAdminSubView('broadcast')" style="font-size: 10px; padding: 6px;">Broadcast</button>
@@ -227,7 +311,7 @@
 
                 <!-- 1. LIVE TRACKER -->
                 <div id="adminTrackerSection">
-                    <h5 style="font-size: 13px; color: #10b981; margin-bottom: 10px;"><i class="fa-solid fa-satellite-dish"></i> Active Online Users</h5>
+                    <h5 style="font-size: 13px; color: #38bdf8; margin-bottom: 10px;"><i class="fa-solid fa-satellite-dish"></i> Active Online Users</h5>
                     <div id="adminLiveTrackerFeed" style="font-size: 12px; display: flex; flex-direction: column; gap: 8px;">Scanning active users...</div>
                 </div>
 
@@ -235,7 +319,7 @@
                 <div id="adminDepositsSection" style="display: none;">
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
                         <h5 style="font-size: 13px; color: #38bdf8;">Pending Deposits & Withdrawals</h5>
-                        <button class="plan-tab-trigger" onclick="exportTransactionDataCSV()" style="padding:4px 10px; font-size:10px; background:#10b981; color:white; border:none;">Export CSV</button>
+                        <button class="plan-tab-trigger" onclick="exportTransactionDataCSV()" style="padding:4px 10px; font-size:10px; background:#0ea5e9; color:white; border:none;">Export CSV</button>
                     </div>
                     <div id="adminPendingDepositsTrack" style="font-size: 12px; display: flex; flex-direction: column; gap: 8px;">Awaiting verification...</div>
                     <div id="adminPendingWithdrawalsTrack" style="font-size: 12px; display: flex; flex-direction: column; gap: 8px; margin-top: 10px;"></div>
@@ -245,47 +329,47 @@
                 <div id="adminUsersSection" style="display: none;">
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
                         <h5 style="font-size: 13px; color: #eab308;">User Accounts & Wallet Control</h5>
-                        <button class="plan-tab-trigger" onclick="exportUserDataCSV()" style="padding:4px 10px; font-size:10px; background:#38bdf8; color:white; border:none;">Export All Users</button>
+                        <button class="plan-tab-trigger" onclick="exportUserDataCSV()" style="padding:4px 10px; font-size:10px; background:#0ea5e9; color:white; border:none;">Export All Users</button>
                     </div>
-                    <div style="background:rgba(255,255,255,0.02); padding:10px; border-radius:12px; margin-bottom:12px; border:1px solid rgba(255,255,255,0.05);">
+                    <div style="background:rgba(255,255,255,0.03); padding:10px; border-radius:12px; margin-bottom:12px; border:1px solid rgba(56,189,248,0.2);">
                         <span style="font-size:11px; color:#38bdf8; font-weight:700;">Issue Custom Gift/Bonus Code (Non-Withdrawable)</span>
-                        <input type="text" id="adminGiftCode" class="modal-input" placeholder="Gift Code Name (e.g. BONUS500)" style="margin-top:6px;">
+                        <input type="text" id="adminGiftCode" class="modal-input" placeholder="Gift Code Name (e.g. SKY500)" style="margin-top:6px;">
                         <input type="number" id="adminGiftAmount" class="modal-input" placeholder="Bonus Amount (PKR)" style="margin-top:6px;">
-                        <button class="buy-plan-btn" onclick="createCustomBonusCode()" style="width:100%; margin-top:8px; padding:8px; background:#10b981;">Create Gift Code</button>
+                        <button class="buy-plan-btn" onclick="createCustomBonusCode()" style="width:100%; margin-top:8px; padding:8px;">Create Gift Code</button>
                     </div>
                     <div id="adminUsersTrack" style="font-size: 12px; display: flex; flex-direction: column; gap: 8px;">Loading users...</div>
                 </div>
 
-                <!-- 4. NODES MANAGER (FIXED & ENHANCED) -->
+                <!-- 4. NODES MANAGER -->
                 <div id="adminNodesSection" style="display: none;">
-                    <h5 style="font-size: 13px; color: #a855f7; margin-bottom: 10px;">Add New or Update Existing Node</h5>
-                    <div style="display: flex; flex-direction: column; gap: 8px; background: rgba(255,255,255,0.03); padding: 12px; border-radius: 14px; border:1px solid rgba(168,85,247,0.3);">
+                    <h5 style="font-size: 13px; color: #38bdf8; margin-bottom: 10px;">Add New or Update Existing Node</h5>
+                    <div style="display: flex; flex-direction: column; gap: 8px; background: rgba(255,255,255,0.03); padding: 12px; border-radius: 14px; border:1px solid rgba(56,189,248,0.3);">
                         <select id="editNodeCategory" class="modal-input" style="margin-top:0;">
-                            <option value="normal" style="background:#0b111e;">Normal Pods</option>
-                            <option value="special" style="background:#0b111e;">Special Rigs</option>
-                            <option value="offer" style="background:#0b111e;">Exclusive Offers</option>
+                            <option value="normal" style="background:#071326;">Normal Pods</option>
+                            <option value="special" style="background:#071326;">Special Rigs</option>
+                            <option value="offer" style="background:#071326;">Exclusive Offers</option>
                         </select>
-                        <input type="text" id="editNodeName" class="modal-input" placeholder="Exact Node Name (e.g. Pod Alpha-1 or Pod Alpha-5)" style="margin-top:0;">
+                        <input type="text" id="editNodeName" class="modal-input" placeholder="Exact Node Name (e.g. Pod Alpha-1)" style="margin-top:0;">
                         <input type="number" id="editNodePrice" class="modal-input" placeholder="Lease Cost (PKR)" style="margin-top:0;">
                         <input type="number" id="editNodeDaily" class="modal-input" placeholder="Daily Profit (PKR)" style="margin-top:0;">
                         <input type="number" id="editNodeDuration" class="modal-input" placeholder="Duration (Days, e.g. 30)" style="margin-top:0;">
                         <input type="text" id="editNodeImg" class="modal-input" placeholder="Image URL (Optional)" style="margin-top:0;">
-                        <button class="buy-plan-btn" onclick="saveNodeConfigOverride()" style="background:linear-gradient(135deg, #a855f7, #7c3aed); padding:10px;">Save / Add Live Node</button>
+                        <button class="buy-plan-btn" onclick="saveNodeConfigOverride()" style="padding:10px;">Save / Add Live Node</button>
                     </div>
                     <h6 style="font-size: 12px; color: #94a3b8; margin: 12px 0 6px 0;">All Active Nodes (Click Edit to Load):</h6>
                     <div id="adminExistingNodesList" style="font-size: 11px; display: flex; flex-direction: column; gap: 6px;">Loading nodes...</div>
                 </div>
 
-                <!-- 5. AVIATOR & TAX CONTROL -->
+                <!-- 5. AVIATOR, TAX & SYSTEM CONTROL -->
                 <div id="adminGameControlSection" style="display: none;">
-                    <h5 style="font-size: 13px; color: #ff416c; margin-bottom: 10px;"><i class="fa-solid fa-sliders"></i> Aviator Algorithm & Withdrawal Tax</h5>
+                    <h5 style="font-size: 13px; color: #38bdf8; margin-bottom: 10px;"><i class="fa-solid fa-sliders"></i> Aviator Algorithm, Crowd & System Control</h5>
                     
-                    <div style="background:rgba(255,255,255,0.03); padding:12px; border-radius:14px; margin-bottom:12px; border:1px solid rgba(255,65,108,0.25);">
+                    <div style="background:rgba(255,255,255,0.03); padding:12px; border-radius:14px; margin-bottom:12px; border:1px solid rgba(56,189,248,0.25);">
                         <label style="font-size:11px; color:#38bdf8; font-weight:700;">Aviator Win Difficulty Mode:</label>
                         <select id="adminAviatorDifficulty" class="modal-input" style="margin-top:6px;">
-                            <option value="house_edge" style="background:#0b111e;">Company Profit Mode (Balanced + Rare 200x-500x Spikes)</option>
-                            <option value="strict" style="background:#0b111e;">High Profit Mode (More 1.1x-1.8x, Rare 100x)</option>
-                            <option value="generous" style="background:#0b111e;">Promo / Traffic Mode (Frequent 2x-10x + 500x Spikes)</option>
+                            <option value="house_edge" style="background:#071326;">Company Profit Mode (Balanced + Rare 200x-500x Spikes)</option>
+                            <option value="strict" style="background:#071326;">High Profit Mode (More 1.1x-1.8x, Rare 100x)</option>
+                            <option value="generous" style="background:#071326;">Promo / Traffic Mode (Frequent 2x-10x + 500x Spikes)</option>
                         </select>
 
                         <label style="font-size:11px; color:#eab308; font-weight:700; display:block; margin-top:10px;">Force Next Round Crash Point (Optional):</label>
@@ -294,7 +378,18 @@
                         <label style="font-size:11px; color:#10b981; font-weight:700; display:block; margin-top:10px;">Mon–Fri Withdrawal Tax Percentage (%):</label>
                         <input type="number" id="adminWithdrawTaxPct" class="modal-input" placeholder="Default: 10 (Sat & Sun = 0% Free)" value="10" style="margin-top:4px;">
 
-                        <button class="buy-plan-btn" onclick="saveSystemGameAndTaxSettings()" style="width:100%; margin-top:12px; padding:10px; background:#10b981;">Save Game & Tax Settings</button>
+                        <label style="font-size:11px; color:#38bdf8; font-weight:700; display:block; margin-top:10px;">Aviator Base Online Crowd Multiplier:</label>
+                        <input type="number" id="adminCrowdBaseInput" class="modal-input" placeholder="Default: 280 (Live counter fluctuates around this)" value="280" style="margin-top:4px;">
+
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px; padding:8px; background:rgba(239,68,68,0.1); border-radius:10px;">
+                            <span style="font-size:11px; color:#fca5a5; font-weight:700;">Maintenance Mode (Lock User Access):</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="adminMaintenanceToggle">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+
+                        <button class="buy-plan-btn" onclick="saveSystemGameAndTaxSettings()" style="width:100%; margin-top:12px; padding:10px;">Save All System Settings</button>
                     </div>
                 </div>
 
@@ -306,75 +401,80 @@
 
                 <!-- 7. PAYMENTS -->
                 <div id="adminPaymentsSection" style="display: none;">
-                    <h5 style="font-size: 13px; color: #10b981; margin-bottom: 10px;">Dynamic Payment Account Details</h5>
-                    <div style="display: flex; flex-direction: column; gap: 10px; background: rgba(255,255,255,0.02); padding: 12px; border-radius: 14px;">
+                    <h5 style="font-size: 13px; color: #38bdf8; margin-bottom: 10px;">Dynamic Payment Account Details</h5>
+                    <div style="display: flex; flex-direction: column; gap: 10px; background: rgba(255,255,255,0.03); padding: 12px; border-radius: 14px;">
                         <select id="adminPaymentSelect" class="modal-input" style="margin-top:0;" onchange="loadSelectedPaymentDetailsAdmin()">
-                            <option value="EasyPaisa" style="background:#0b111e;">EasyPaisa</option>
-                            <option value="JazzCash" style="background:#0b111e;">JazzCash</option>
-                            <option value="USDT" style="background:#0b111e;">Binance Pay (USDT TRC20)</option>
+                            <option value="EasyPaisa" style="background:#071326;">EasyPaisa</option>
+                            <option value="JazzCash" style="background:#071326;">JazzCash</option>
+                            <option value="USDT" style="background:#071326;">Binance Pay (USDT TRC20)</option>
                         </select>
                         <input type="text" id="adminPayTitle" class="modal-input" placeholder="Account Title Name" style="margin-top:0;">
                         <input type="text" id="adminPayNumber" class="modal-input" placeholder="Account Number / Wallet Address" style="margin-top:0;">
-                        <button class="buy-plan-btn" onclick="updatePaymentMethodDetailsAdmin()" style="background:#10b981; padding:10px;">Update Payment Method</button>
+                        <button class="buy-plan-btn" onclick="updatePaymentMethodDetailsAdmin()" style="padding:10px;">Update Payment Method</button>
                     </div>
                 </div>
 
                 <!-- 8. BROADCAST -->
                 <div id="adminBroadcastSection" style="display: none;">
-                    <h5 style="font-size: 13px; color: #ff416c; margin-bottom: 10px;"><i class="fa-solid fa-bullhorn"></i> Send Dashboard Broadcast Alert</h5>
+                    <h5 style="font-size: 13px; color: #38bdf8; margin-bottom: 10px;"><i class="fa-solid fa-bullhorn"></i> Send Dashboard Broadcast Alert</h5>
                     <div style="display: flex; flex-direction: column; gap: 10px;">
                         <input type="text" id="broadcastTitleInput" class="modal-input" placeholder="Announcement Title" style="margin-top:0;">
                         <textarea id="broadcastMessageInput" class="modal-input" placeholder="Type notification message for all users..." style="margin-top:0; height:80px; resize:none;"></textarea>
-                        <button class="buy-plan-btn" onclick="dispatchGlobalBroadcast()" style="background:linear-gradient(135deg, #ff416c, #ff4b2b); padding:10px;">Send Announcement to All</button>
+                        <button class="buy-plan-btn" onclick="dispatchGlobalBroadcast()" style="padding:10px;">Send Announcement to All</button>
                     </div>
                 </div>
 
                 <!-- 9. ANALYTICS -->
                 <div id="adminAnalyticsSection" style="display: none;">
                     <h5 style="font-size: 13px; color: #38bdf8; margin-bottom: 10px;"><i class="fa-solid fa-chart-pie"></i> Platform Revenue & Activity Summary</h5>
-                    <div style="background: rgba(255,255,255,0.02); padding: 14px; border-radius: 14px; display: flex; flex-direction: column; gap: 10px;">
+                    <div style="background: rgba(255,255,255,0.03); padding: 14px; border-radius: 14px; display: flex; flex-direction: column; gap: 10px;">
                         <div style="display:flex; justify-content:space-between;"><span>Daily Active Users (DAU):</span> <b id="repDAU" style="color:#10b981;">0</b></div>
                         <div style="display:flex; justify-content:space-between;"><span>Weekly Active Users (WAU):</span> <b id="repWAU" style="color:#38bdf8;">0</b></div>
                         <div style="display:flex; justify-content:space-between;"><span>Monthly Active Users (MAU):</span> <b id="repMAU" style="color:#eab308;">0</b></div>
-                        <div style="display:flex; justify-content:space-between; border-top:1px solid rgba(255,255,255,0.05); padding-top:8px;"><span>Total Approved Deposits:</span> <b id="repTotalRevenue" style="color:#ff416c;">Rs. 0</b></div>
+                        <div style="display:flex; justify-content:space-between; border-top:1px solid rgba(255,255,255,0.1); padding-top:8px;"><span>Total Approved Deposits:</span> <b id="repTotalRevenue" style="color:#38bdf8;">Rs. 0</b></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- MAIN APP HEADER -->
+    <!-- MAIN APP HEADER WITH DARK/LIGHT SKY THEME TOGGLE -->
     <div class="vestify-header">
         <div class="brand-row">
             <div class="logo-block" onclick="registerAdminLogoTap()">
-                <div class="logo-icon"><i class="fa-solid fa-microchip"></i></div>
+                <div class="logo-icon"><i class="fa-solid fa-cloud-bolt"></i></div>
                 <div class="logo-text">
                     <h1>VESTIFY PRO</h1>
-                    <p style="font-size:10px; color:#38bdf8; font-weight: 700;">Cloud Earning & Aviator</p>
+                    <p style="font-size:10px; color:var(--sky-primary); font-weight: 700;">Sky Cloud Mining & Aviator</p>
                 </div>
             </div>
-            <button class="buy-plan-btn" onclick="triggerSignOut()" style="background:rgba(239,68,68,0.15); color:#ef4444; font-size:11px; padding:6px 14px; border:1px solid rgba(239,68,68,0.3); box-shadow: none;">Log Out</button>
+            <div style="display:flex; align-items:center; gap:8px;">
+                <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleAppColorTheme()" title="Switch Dark / Sky Light Mode">
+                    <i id="themeToggleIcon" class="fa-solid fa-sun"></i>
+                </button>
+                <button class="buy-plan-btn" onclick="triggerSignOut()" style="background:rgba(239,68,68,0.14); color:#ef4444; font-size:11px; padding:7px 13px; border:1px solid rgba(239,68,68,0.3); box-shadow: none;">Log Out</button>
+            </div>
         </div>
     </div>
 
     <!-- PAGE 1: HOME DASHBOARD -->
     <div id="pageHome" class="app-view-page active-page" style="padding:0;">
         <div id="liveBroadcastTickerContainer" class="broadcast-ticker-banner" style="display: none;">
-            <i class="fa-solid fa-bullhorn" style="font-size: 18px; color: #ff416c;"></i>
+            <i class="fa-solid fa-bullhorn" style="font-size: 18px; color: var(--sky-primary);"></i>
             <div style="flex: 1; overflow: hidden;">
-                <b id="tickerBroadcastTitle" style="font-size: 12px; color: #fff; display: block;">Announcement</b>
-                <p id="tickerBroadcastMsg" style="font-size: 11px; color: #cbd5e1; margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"></p>
+                <b id="tickerBroadcastTitle" style="font-size: 12px; color: var(--text-main); display: block;">Announcement</b>
+                <p id="tickerBroadcastMsg" style="font-size: 11px; color: var(--text-muted); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"></p>
             </div>
         </div>
 
         <!-- LIVE SOCIAL PROOF TICKER -->
         <div class="live-social-ticker">
-            <i class="fa-solid fa-fire" style="color:#10b981;"></i>
+            <i class="fa-solid fa-bolt" style="color:var(--sky-primary);"></i>
             <span id="liveSocialProofText" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Loading live payouts...</span>
         </div>
 
         <div class="stats-dashboard">
-            <span class="live-tag"><i class="fa-solid fa-bolt"></i> Live Earning Active</span>
+            <span class="live-tag"><i class="fa-solid fa-satellite-dish"></i> Live Earning Active</span>
             
             <div class="profile-header-box">
                 <div class="profile-avatar-container" onclick="openProfileEditModal()" title="Click to edit profile">
@@ -382,30 +482,30 @@
                     <div class="profile-avatar-upload-icon"><i class="fa-solid fa-pen"></i></div>
                 </div>
                 <div>
-                    <h4 style="font-size: 16px; font-weight: 800; color: white; display:flex; align-items:center; gap:6px;" id="lblHeaderUsername">Loading...</h4>
-                    <p style="font-size: 10px; color: #38bdf8; font-weight: 700; margin-top:2px;" id="lblUserLevelBadge">Level 1 Member</p>
+                    <h4 style="font-size: 16px; font-weight: 800; color: var(--text-main); display:flex; align-items:center; gap:6px;" id="lblHeaderUsername">Loading...</h4>
+                    <p style="font-size: 10px; color: var(--sky-primary); font-weight: 700; margin-top:2px;" id="lblUserLevelBadge">Level 1 Member</p>
                 </div>
             </div>
 
-            <p style="font-size:11px; color:#94a3b8;">Total Combined Wallet</p>
-            <h2 style="font-size:30px; margin-top:2px; font-weight:800; color:white;">Rs. <span id="assetDisplay">0.00</span></h2>
+            <p style="font-size:11px; color:var(--text-muted);">Total Combined Wallet</p>
+            <h2 style="font-size:30px; margin-top:2px; font-weight:800; color:var(--text-main);">Rs. <span id="assetDisplay">0.00</span></h2>
             
             <!-- TWO-WALLET BREAKDOWN -->
             <div class="wallet-split-grid">
                 <div class="wallet-sub-box">
                     <span style="font-size:10px; color:#10b981; font-weight:700;"><i class="fa-solid fa-circle-check"></i> Withdrawable Cash</span>
-                    <h4 style="font-size:15px; color:#fff; margin-top:3px;">Rs. <span id="withdrawableBalanceDisplay">0.00</span></h4>
-                    <span style="font-size:9px; color:#64748b;">Nodes + Game Wins</span>
+                    <h4 style="font-size:15px; color:var(--text-main); margin-top:3px;">Rs. <span id="withdrawableBalanceDisplay">0.00</span></h4>
+                    <span style="font-size:9px; color:var(--text-muted);">Nodes + Game Wins</span>
                 </div>
                 <div class="wallet-sub-box">
                     <span style="font-size:10px; color:#eab308; font-weight:700;"><i class="fa-solid fa-gift"></i> Bonus / Play Wallet</span>
-                    <h4 style="font-size:15px; color:#fff; margin-top:3px;">Rs. <span id="bonusBalanceDisplay">0.00</span></h4>
-                    <span style="font-size:9px; color:#64748b;">For Nodes & Aviator Only</span>
+                    <h4 style="font-size:15px; color:var(--text-main); margin-top:3px;">Rs. <span id="bonusBalanceDisplay">0.00</span></h4>
+                    <span style="font-size:9px; color:var(--text-muted);">For Nodes & Aviator Only</span>
                 </div>
             </div>
 
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); font-size: 11px;">
-                <span style="color:#94a3b8;">Active Nodes: <b id="minerDisplay" style="color:#38bdf8;">0 Nodes</b></span>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border-color); font-size: 11px;">
+                <span style="color:var(--text-muted);">Active Nodes: <b id="minerDisplay" style="color:var(--sky-primary);">0 Nodes</b></span>
                 <span style="color:#10b981;">Total Yield: <b id="lblTotalYieldGenerated">Rs. 0.00</b></span>
             </div>
         </div>
@@ -414,6 +514,15 @@
             <button class="action-btn btn-deposit" onclick="openDepositModal()"><i class="fa-solid fa-wallet"></i>Deposit</button>
             <button class="action-btn btn-withdraw" onclick="openWithdrawModal()"><i class="fa-solid fa-money-bill-transfer"></i>Withdraw</button>
             <button class="action-btn btn-transfer" onclick="openTransferModal()"><i class="fa-solid fa-paper-plane"></i>Transfer</button>
+        </div>
+
+        <!-- MY ACTIVE LEASES OVERVIEW -->
+        <div id="myActiveNodesOverview" style="display:none; margin: 0 16px 14px 16px; background: rgba(14,165,233,0.08); border: 1px solid var(--border-color); border-radius: 16px; padding: 12px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                <span style="font-size:11px; font-weight:800; color:var(--sky-primary);"><i class="fa-solid fa-microchip"></i> YOUR ACTIVE CLOUD RIGS</span>
+                <span id="myDailyReturnSummary" style="font-size:11px; font-weight:800; color:#10b981;">+Rs. 0/day</span>
+            </div>
+            <div id="myActiveNodesChips" style="display:flex; flex-wrap:wrap; gap:6px;"></div>
         </div>
 
         <div class="section-title"><i class="fa-solid fa-server"></i> Mining Hardware Nodes</div>
@@ -429,17 +538,17 @@
         <div class="plans-grid" id="gridOffers"></div>
 
         <div class="section-title"><i class="fa-solid fa-list-check"></i> Daily Tasks & Gift Code</div>
-        <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); padding: 14px; border-radius: 16px; margin: 0 16px 12px 16px; display:flex; gap:8px;">
+        <div style="background: var(--bg-card); border: 1px solid var(--border-color); padding: 14px; border-radius: 16px; margin: 0 16px 12px 16px; display:flex; gap:8px;">
             <input type="text" id="userGiftCodeInput" class="modal-input" placeholder="Enter Gift / Promo Code" style="margin-top:0; flex:1;">
-            <button class="buy-plan-btn" onclick="redeemGiftCodeUser()" style="padding:10px 16px; background:#10b981;">Redeem</button>
+            <button class="buy-plan-btn" onclick="redeemGiftCodeUser()" style="padding:10px 16px;">Redeem</button>
         </div>
 
         <div class="task-card">
             <div class="task-info">
                 <div class="task-icon"><i class="fa-solid fa-calendar-check"></i></div>
                 <div>
-                    <b style="font-size:13px; color:white;">Daily Login Check-in</b>
-                    <p style="font-size:10px; color:#94a3b8;">Claim free Rs. 5 PKR play bonus daily</p>
+                    <b style="font-size:13px; color:var(--text-main);">Daily Login Check-in</b>
+                    <p style="font-size:10px; color:var(--text-muted);">Claim free Rs. 5 PKR play bonus daily</p>
                 </div>
             </div>
             <button class="buy-plan-btn" id="btnDailyCheckin" onclick="claimDailyCheckinBonus()" style="padding:6px 14px; font-size:11px;">Claim</button>
@@ -447,28 +556,28 @@
 
         <div class="task-card">
             <div class="task-info">
-                <div class="task-icon" style="color:#1877f2; background:rgba(24,119,242,0.1);"><i class="fa-brands fa-facebook"></i></div>
+                <div class="task-icon" style="color:#0ea5e9;"><i class="fa-brands fa-facebook"></i></div>
                 <div>
-                    <b style="font-size:13px; color:white;">Facebook Page Task</b>
-                    <p style="font-size:10px; color:#94a3b8;">Follow page & earn Rs. 20 play bonus</p>
+                    <b style="font-size:13px; color:var(--text-main);">Facebook Page Task</b>
+                    <p style="font-size:10px; color:var(--text-muted);">Follow page & earn Rs. 20 play bonus</p>
                 </div>
             </div>
-            <button class="buy-plan-btn" id="btnFbTask" onclick="window.open('https://www.facebook.com/profile.php?id=61593627494433', '_blank'); completeSocialTask('fb')" style="padding:6px 14px; font-size:11px; background:#1877f2;">Complete</button>
+            <button class="buy-plan-btn" id="btnFbTask" onclick="window.open('https://www.facebook.com/profile.php?id=61593627494433', '_blank'); completeSocialTask('fb')" style="padding:6px 14px; font-size:11px;">Complete</button>
         </div>
 
         <div class="section-title"><i class="fa-solid fa-hourglass-half"></i> Daily Profit Sync Timer</div>
-        <div class="history-card" style="margin: 0 16px; background: rgba(56,189,248,0.03); border-color: rgba(56,189,248,0.2);">
+        <div class="history-card" style="margin: 0 16px;">
             <div>
-                <span style="font-size:13px; font-weight:700; color:#38bdf8;">Next Profit Sync Countdown</span>
-                <p style="font-size:11px; color:#64748b;">Daily auto profit distribution timer</p>
+                <span style="font-size:13px; font-weight:700; color:var(--sky-primary);">Next Profit Sync Countdown</span>
+                <p style="font-size:11px; color:var(--text-muted);">Daily auto profit distribution timer</p>
             </div>
-            <span id="countdownTimerClock" style="font-size:15px; font-weight:800; color:#38bdf8; letter-spacing:1px;">24:00:00</span>
+            <span id="countdownTimerClock" style="font-size:15px; font-weight:800; color:var(--sky-primary); letter-spacing:1px;">24:00:00</span>
         </div>
 
         <div class="spin-box-card" style="margin: 20px 16px 0 16px;">
             <h4><i class="fa-solid fa-dharmachakra"></i> Daily Lucky Spin Bonus</h4>
-            <p style="font-size:11px; color:#64748b; margin-top:3px;">Spin once every 24 hours for free play rewards</p>
-            <div class="wheel-outer" id="luckyBonusWheel"><i class="fa-solid fa-circle-radiation fa-spin" style="font-size: 24px; color:#ff416c;"></i></div>
+            <p style="font-size:11px; color:var(--text-muted); margin-top:3px;">Spin once every 24 hours for free play rewards</p>
+            <div class="wheel-outer" id="luckyBonusWheel"><i class="fa-solid fa-circle-radiation fa-spin" style="font-size: 24px; color:#0ea5e9;"></i></div>
             <button class="buy-plan-btn" onclick="triggerLuckyCoreSpin()" style="padding:11px 28px; font-size:13px; border-radius:12px;">SPIN NOW</button>
         </div>
     </div>
@@ -478,11 +587,13 @@
         <div class="aviator-wrap">
             <div class="aviator-topbar">
                 <div style="display:flex; align-items:center; gap:8px;">
-                    <h3 style="color:#ff416c; font-size:15px; font-weight:800;"><i class="fa-solid fa-plane-departure"></i> AVIATOR PRO</h3>
+                    <h3 style="color:var(--sky-primary); font-size:15px; font-weight:800;"><i class="fa-solid fa-plane-departure"></i> AVIATOR SKY PRO</h3>
                     <span id="aviatorRoundStateBadge" class="aviator-status-pill aviator-status-open">BETTING OPEN</span>
                 </div>
                 <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
-                    <span style="font-size:11px; color:#10b981; font-weight:700;"><i class="fa-solid fa-users"></i> <span id="aviatorLivePlayerCount">142</span></span>
+                    <span style="font-size:11px; color:#10b981; font-weight:800; background:rgba(16,185,129,0.12); padding:4px 9px; border-radius:10px; border:1px solid rgba(16,185,129,0.3);">
+                        <i class="fa-solid fa-users"></i> <span id="aviatorLivePlayerCount">284</span> Playing
+                    </span>
                     <button class="aviator-icon-btn" id="aviatorSoundToggleBtn" onclick="toggleAviatorSound()" title="Toggle Sound">
                         <i id="aviatorSoundIcon" class="fa-solid fa-volume-high"></i>
                     </button>
@@ -490,25 +601,25 @@
             </div>
 
             <!-- AVIATOR 5,000 PKR MILESTONE FREE SPIN TRACKER -->
-            <div style="background: linear-gradient(135deg, rgba(168,85,247,0.16), rgba(255,65,108,0.14)); border: 1px solid rgba(168,85,247,0.4); border-radius: 16px; padding: 12px 14px;">
+            <div style="background: linear-gradient(135deg, rgba(14,165,233,0.16), rgba(2,132,199,0.12)); border: 1px solid rgba(56,189,248,0.4); border-radius: 16px; padding: 12px 14px;">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
                     <div>
-                        <span style="font-size:11px; font-weight:800; color:#e9d5ff;"><i class="fa-solid fa-dharmachakra"></i> AVIATOR 5,000 PKR SPIN REWARD</span>
-                        <p style="font-size:10px; color:#cbd5e1; margin-top:2px;">Play Rs. 5,000 in Aviator to unlock 1 Free Spin (Win Rs. 10000 – Rs. 50000!)</p>
+                        <span style="font-size:11px; font-weight:800; color:var(--sky-primary);"><i class="fa-solid fa-dharmachakra"></i> AVIATOR 5,000 PKR SPIN REWARD</span>
+                        <p style="font-size:10px; color:var(--text-muted); margin-top:2px;">Play Rs. 5,000 in Aviator to unlock 1 Free Spin (Win Rs. 100 – Rs. 50,000!)</p>
                     </div>
                     <button id="btnClaimAviatorSpin" class="buy-plan-btn" onclick="openAviatorMilestoneSpinModal()" style="padding:7px 12px; font-size:11px; background:linear-gradient(135deg, #eab308, #ca8a04); color:#040814;" disabled>
                         <i class="fa-solid fa-lock"></i> 0 / 5,000
                     </button>
                 </div>
                 <div class="salary-bar-container" style="height:7px; margin-top:8px;">
-                    <div id="aviatorSpinProgressBar" class="salary-bar-fill" style="background:linear-gradient(90deg, #a855f7, #ff416c); width:0%;"></div>
+                    <div id="aviatorSpinProgressBar" class="salary-bar-fill" style="width:0%;"></div>
                 </div>
             </div>
 
-            <div style="background:rgba(15,23,42,0.65); border:1px solid rgba(255,255,255,0.06); border-radius:14px; padding:8px 10px;">
+            <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:14px; padding:8px 10px;">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-                    <span style="font-size:10px; color:#94a3b8; font-weight:800; letter-spacing:0.5px;">RECENT CRASH RESULTS</span>
-                    <span style="font-size:10px; color:#38bdf8; font-weight:700;">Session: <span id="aviatorSessionTimer">00:00</span></span>
+                    <span style="font-size:10px; color:var(--text-muted); font-weight:800; letter-spacing:0.5px;">RECENT CRASH RESULTS</span>
+                    <span style="font-size:10px; color:var(--sky-primary); font-weight:700;">Session: <span id="aviatorSessionTimer">00:00</span></span>
                 </div>
                 <div id="aviatorMultiplierTickerBar" style="display:flex; gap:6px; overflow-x:auto; padding-bottom:2px;"></div>
             </div>
@@ -518,50 +629,58 @@
                 <svg id="aviatorFlightSvg" style="position:absolute; inset:0; width:100%; height:100%; pointer-events:none;" viewBox="0 0 400 250" preserveAspectRatio="none">
                     <defs>
                         <linearGradient id="aviatorCurveFill" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stop-color="#ff416c" stop-opacity="0.38" />
-                            <stop offset="100%" stop-color="#ff416c" stop-opacity="0.0" />
+                            <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.42" />
+                            <stop offset="100%" stop-color="#0ea5e9" stop-opacity="0.0" />
                         </linearGradient>
                     </defs>
                     <path id="aviatorFlightAreaPath" d="" fill="url(#aviatorCurveFill)" />
-                    <path id="aviatorFlightCurvePath" d="" fill="none" stroke="#ff416c" stroke-width="3.5" stroke-linecap="round" />
+                    <path id="aviatorFlightCurvePath" d="" fill="none" stroke="#38bdf8" stroke-width="3.5" stroke-linecap="round" />
                 </svg>
 
                 <div id="aviatorCanvasOverlay" style="position:relative; z-index:3; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:12px;">
                     <div id="aviatorSubBannerText" style="font-size:11px; font-weight:800; letter-spacing:1px; color:#38bdf8; text-transform:uppercase; margin-bottom:4px;">NEXT ROUND IN</div>
-                    <h1 id="aviatorMultiplierDisplay" style="font-size:48px; font-weight:800; color:#ffffff; line-height:1; text-shadow:0 0 28px rgba(255,65,108,0.6);">10.0s</h1>
-                    <p id="aviatorStatusText" style="font-size:12px; color:#cbd5e1; margin-top:6px; font-weight:600;">Place your bets for the upcoming flight</p>
+                    <h1 id="aviatorMultiplierDisplay" style="font-size:48px; font-weight:800; color:#ffffff; line-height:1; text-shadow:0 0 28px rgba(56,189,248,0.65);">10.0s</h1>
+                    <p id="aviatorStatusText" style="font-size:12px; color:#bae6fd; margin-top:6px; font-weight:600;">Place your bets for the upcoming flight</p>
                     <div id="aviatorCountdownBarWrap" class="aviator-countdown-bar-wrap">
                         <div id="aviatorCountdownBarFill" class="aviator-countdown-bar-fill"></div>
                     </div>
                 </div>
 
                 <div id="aviatorPlaneIcon" style="position:absolute; bottom:24px; left:24px; z-index:4; display:none; transition: left 0.08s linear, bottom 0.08s linear;">
-                    <i class="fa-solid fa-jet-fighter-up" style="font-size:30px; color:#ff416c; filter: drop-shadow(0 0 12px #ff416c); transform: rotate(45deg);"></i>
+                    <i class="fa-solid fa-jet-fighter-up" style="font-size:30px; color:#38bdf8; filter: drop-shadow(0 0 12px #38bdf8); transform: rotate(45deg);"></i>
                 </div>
             </div>
 
-            <div style="background:rgba(15,23,42,0.75); border:1px solid rgba(255,255,255,0.07); border-radius:16px; padding:10px 14px; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:8px; font-size:12px;">
+            <!-- QUICK PLAYER REACTION BAR -->
+            <div style="display:flex; gap:6px; overflow-x:auto; padding:2px 0;">
+                <button class="aviator-chip-btn" style="padding:5px 10px; white-space:nowrap;" onclick="sendAviatorQuickReaction('🔥 Big Win!')">🔥 Big Win!</button>
+                <button class="aviator-chip-btn" style="padding:5px 10px; white-space:nowrap;" onclick="sendAviatorQuickReaction('🚀 Fly High!')">🚀 Fly High!</button>
+                <button class="aviator-chip-btn" style="padding:5px 10px; white-space:nowrap;" onclick="sendAviatorQuickReaction('💸 Cashed Out!')">💸 Cashed Out!</button>
+                <button class="aviator-chip-btn" style="padding:5px 10px; white-space:nowrap;" onclick="sendAviatorQuickReaction('⚡ 100x Coming!')">⚡ 100x Coming!</button>
+            </div>
+
+            <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:16px; padding:10px 14px; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:8px; font-size:12px;">
                 <div>
-                    <span style="color:#94a3b8;">Playable Balance:</span>
-                    <b style="color:#38bdf8; font-size:14px;">PKR <span id="aviatorWalletBalanceLbl">0.00</span></b>
+                    <span style="color:var(--text-muted);">Playable Balance:</span>
+                    <b style="color:var(--sky-primary); font-size:14px;">PKR <span id="aviatorWalletBalanceLbl">0.00</span></b>
                 </div>
-                <div style="display:flex; gap:10px; font-size:10px; color:#94a3b8;">
+                <div style="display:flex; gap:10px; font-size:10px; color:var(--text-muted);">
                     <span>Cash: <b id="avCashSubLbl" style="color:#10b981;">0</b></span>
                     <span>Bonus: <b id="avBonusSubLbl" style="color:#eab308;">0</b></span>
                 </div>
             </div>
 
             <div id="aviatorTopUpPromptBox" style="display:none; background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.35); padding:10px 14px; border-radius:14px; text-align:center;">
-                <p style="font-size:11px; color:#fca5a5; font-weight:700;">Insufficient PKR balance for this bet amount.</p>
-                <button class="buy-plan-btn" onclick="openDepositModal()" style="margin-top:6px; padding:7px 16px; background:#10b981; font-size:11px;">Deposit PKR Funds</button>
+                <p style="font-size:11px; color:#ef4444; font-weight:700;">Insufficient PKR balance for this bet amount.</p>
+                <button class="buy-plan-btn" onclick="openDepositModal()" style="margin-top:6px; padding:7px 16px; font-size:11px;">Deposit PKR Funds</button>
             </div>
 
             <div class="aviator-panels-grid">
                 <!-- PANEL 1 -->
                 <div class="aviator-bet-card" id="aviatorPanelCard1">
                     <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <span style="font-size:12px; font-weight:800; color:#38bdf8;"><i class="fa-solid fa-1"></i> PANEL 1</span>
-                        <span id="panel1StatusTag" style="font-size:10px; font-weight:700; color:#94a3b8; background:rgba(255,255,255,0.04); padding:3px 8px; border-radius:8px;">READY</span>
+                        <span style="font-size:12px; font-weight:800; color:var(--sky-primary);"><i class="fa-solid fa-1"></i> PANEL 1</span>
+                        <span id="panel1StatusTag" style="font-size:10px; font-weight:700; color:var(--text-muted); background:var(--bg-sub); padding:3px 8px; border-radius:8px;">READY</span>
                     </div>
 
                     <div style="display:flex; gap:8px; align-items:center;">
@@ -576,10 +695,9 @@
                         <button class="aviator-chip-btn" onclick="setAviatorQuickBet(1, 1000)">1,000</button>
                     </div>
 
-                    <!-- AUTO CASHOUT & AUTO BET CONTROLS PANEL 1 -->
                     <div class="auto-controls-box">
                         <div class="auto-row">
-                            <label style="display:flex; align-items:center; gap:6px; color:#cbd5e1; font-weight:600;">
+                            <label style="display:flex; align-items:center; gap:6px; color:var(--text-main); font-weight:600;">
                                 <label class="toggle-switch">
                                     <input type="checkbox" id="autoCashoutToggle1">
                                     <span class="toggle-slider"></span>
@@ -589,7 +707,7 @@
                             <input type="number" id="autoCashoutVal1" class="auto-mini-input" value="2.00" step="0.10" min="1.05">
                         </div>
                         <div class="auto-row">
-                            <label style="display:flex; align-items:center; gap:6px; color:#cbd5e1; font-weight:600;">
+                            <label style="display:flex; align-items:center; gap:6px; color:var(--text-main); font-weight:600;">
                                 <label class="toggle-switch">
                                     <input type="checkbox" id="autoBetToggle1" onchange="toggleAutoBetState(1)">
                                     <span class="toggle-slider"></span>
@@ -603,12 +721,12 @@
                                     <option value="20">20x</option>
                                     <option value="50">50x</option>
                                 </select>
-                                <span id="autoBetRem1" style="font-size:10px; color:#38bdf8; font-weight:800;"></span>
+                                <span id="autoBetRem1" style="font-size:10px; color:var(--sky-primary); font-weight:800;"></span>
                             </div>
                         </div>
                     </div>
 
-                    <button id="aviatorActionBtn" class="buy-plan-btn" onclick="handleAviatorPanelAction(1)" style="width:100%; padding:13px; background:linear-gradient(135deg, #ff416c, #ff4b2b); font-size:13px; font-weight:800; letter-spacing:0.6px;">
+                    <button id="aviatorActionBtn" class="buy-plan-btn" onclick="handleAviatorPanelAction(1)" style="width:100%; padding:13px; font-size:13px; font-weight:800; letter-spacing:0.6px;">
                         PLACE BET (PKR 100)
                     </button>
                 </div>
@@ -616,8 +734,8 @@
                 <!-- PANEL 2 -->
                 <div class="aviator-bet-card" id="aviatorPanelCard2">
                     <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <span style="font-size:12px; font-weight:800; color:#c084fc;"><i class="fa-solid fa-2"></i> PANEL 2</span>
-                        <span id="panel2StatusTag" style="font-size:10px; font-weight:700; color:#94a3b8; background:rgba(255,255,255,0.04); padding:3px 8px; border-radius:8px;">READY</span>
+                        <span style="font-size:12px; font-weight:800; color:#0284c7;"><i class="fa-solid fa-2"></i> PANEL 2</span>
+                        <span id="panel2StatusTag" style="font-size:10px; font-weight:700; color:var(--text-muted); background:var(--bg-sub); padding:3px 8px; border-radius:8px;">READY</span>
                     </div>
 
                     <div style="display:flex; gap:8px; align-items:center;">
@@ -632,10 +750,9 @@
                         <button class="aviator-chip-btn" onclick="setAviatorQuickBet(2, 1000)">1,000</button>
                     </div>
 
-                    <!-- AUTO CASHOUT & AUTO BET CONTROLS PANEL 2 -->
                     <div class="auto-controls-box">
                         <div class="auto-row">
-                            <label style="display:flex; align-items:center; gap:6px; color:#cbd5e1; font-weight:600;">
+                            <label style="display:flex; align-items:center; gap:6px; color:var(--text-main); font-weight:600;">
                                 <label class="toggle-switch">
                                     <input type="checkbox" id="autoCashoutToggle2">
                                     <span class="toggle-slider"></span>
@@ -645,7 +762,7 @@
                             <input type="number" id="autoCashoutVal2" class="auto-mini-input" value="1.50" step="0.10" min="1.05">
                         </div>
                         <div class="auto-row">
-                            <label style="display:flex; align-items:center; gap:6px; color:#cbd5e1; font-weight:600;">
+                            <label style="display:flex; align-items:center; gap:6px; color:var(--text-main); font-weight:600;">
                                 <label class="toggle-switch">
                                     <input type="checkbox" id="autoBetToggle2" onchange="toggleAutoBetState(2)">
                                     <span class="toggle-slider"></span>
@@ -659,45 +776,45 @@
                                     <option value="20">20x</option>
                                     <option value="50">50x</option>
                                 </select>
-                                <span id="autoBetRem2" style="font-size:10px; color:#c084fc; font-weight:800;"></span>
+                                <span id="autoBetRem2" style="font-size:10px; color:#0284c7; font-weight:800;"></span>
                             </div>
                         </div>
                     </div>
 
-                    <button id="aviatorActionBtn2" class="buy-plan-btn" onclick="handleAviatorPanelAction(2)" style="width:100%; padding:13px; background:linear-gradient(135deg, #a855f7, #7c3aed); font-size:13px; font-weight:800; letter-spacing:0.6px;">
+                    <button id="aviatorActionBtn2" class="buy-plan-btn" onclick="handleAviatorPanelAction(2)" style="width:100%; padding:13px; background:linear-gradient(135deg, #38bdf8, #0369a1); font-size:13px; font-weight:800; letter-spacing:0.6px;">
                         PLACE BET 2 (PKR 200)
                     </button>
                 </div>
             </div>
 
             <div class="aviator-subtabs">
-                <button class="aviator-subtab-btn active" id="avSubTabLive" onclick="switchAviatorSubTab('live')">Live Bets</button>
+                <button class="aviator-subtab-btn active" id="avSubTabLive" onclick="switchAviatorSubTab('live')">All Live Bets (<span id="liveBetsTotalBadge">85</span>)</button>
                 <button class="aviator-subtab-btn" id="avSubTabMyBets" onclick="switchAviatorSubTab('mybets')">My History</button>
                 <button class="aviator-subtab-btn" id="avSubTabStats" onclick="switchAviatorSubTab('stats')">Stats</button>
             </div>
 
-            <div id="avSectionLive" style="background:rgba(15,23,42,0.7); border:1px solid rgba(255,255,255,0.07); border-radius:18px; padding:12px;">
-                <div style="display:grid; grid-template-columns: 2fr 1.2fr 1fr 1.5fr; font-size:10px; font-weight:800; color:#94a3b8; padding-bottom:8px; border-bottom:1px solid rgba(255,255,255,0.06); text-align:center;">
-                    <span style="text-align:left; padding-left:4px;">PLAYER</span>
+            <div id="avSectionLive" style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:18px; padding:12px;">
+                <div style="display:grid; grid-template-columns: 2.2fr 1.2fr 1fr 1.4fr; font-size:10px; font-weight:800; color:var(--text-muted); padding-bottom:8px; border-bottom:1px solid var(--border-color); text-align:center;">
+                    <span style="text-align:left; padding-left:4px;">PLAYER / ID</span>
                     <span>BET (PKR)</span>
                     <span>MULT.</span>
-                    <span>STATUS</span>
+                    <span>WIN / STATUS</span>
                 </div>
-                <div id="aviatorLivePlayersFeed" style="display:flex; flex-direction:column; gap:6px; max-height:220px; overflow-y:auto; margin-top:8px;"></div>
+                <div id="aviatorLivePlayersFeed" style="display:flex; flex-direction:column; gap:5px; max-height:340px; overflow-y:auto; margin-top:8px;"></div>
             </div>
 
-            <div id="avSectionMyBets" style="display:none; background:rgba(15,23,42,0.7); border:1px solid rgba(255,255,255,0.07); border-radius:18px; padding:12px;">
+            <div id="avSectionMyBets" style="display:none; background:var(--bg-card); border:1px solid var(--border-color); border-radius:18px; padding:12px;">
                 <div id="aviatorPersonalHistoryList" style="display:flex; flex-direction:column; gap:8px; max-height:300px; overflow-y:auto;"></div>
             </div>
 
-            <div id="avSectionStats" style="display:none; background:rgba(15,23,42,0.7); border:1px solid rgba(255,255,255,0.07); border-radius:18px; padding:14px;">
+            <div id="avSectionStats" style="display:none; background:var(--bg-card); border:1px solid var(--border-color); border-radius:18px; padding:14px;">
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-                    <div style="background:rgba(255,255,255,0.03); padding:12px; border-radius:14px;">
-                        <span style="font-size:10px; color:#94a3b8;">TOTAL ROUNDS</span>
-                        <h4 id="statTotalRounds" style="font-size:18px; color:#fff; margin-top:3px;">0</h4>
+                    <div style="background:var(--bg-sub); padding:12px; border-radius:14px;">
+                        <span style="font-size:10px; color:var(--text-muted);">TOTAL ROUNDS</span>
+                        <h4 id="statTotalRounds" style="font-size:18px; color:var(--text-main); margin-top:3px;">0</h4>
                     </div>
-                    <div style="background:rgba(255,255,255,0.03); padding:12px; border-radius:14px;">
-                        <span style="font-size:10px; color:#94a3b8;">BIGGEST WIN</span>
+                    <div style="background:var(--bg-sub); padding:12px; border-radius:14px;">
+                        <span style="font-size:10px; color:var(--text-muted);">BIGGEST WIN</span>
                         <h4 id="statBiggestWin" style="font-size:18px; color:#10b981; margin-top:3px;">PKR 0.00</h4>
                     </div>
                 </div>
@@ -707,26 +824,26 @@
     
     <!-- PAGE 3: UNLIMITED MULTI-TIER REFERRAL NETWORK -->
     <div id="pageAffiliate" class="app-view-page">
-        <div class="stats-dashboard" style="margin: 20px 0; background: linear-gradient(135deg, rgba(56,189,248,0.05), rgba(4,8,20,0.2)); border-color: rgba(56,189,248,0.15);">
-            <h3 style="color:#38bdf8; font-size:15px; margin-bottom:12px;"><i class="fa-solid fa-network-wired"></i> Referral & Network Center</h3>
-            <p style="font-size:11px; color:#64748b;">Your Personal Invitation Link (Unlimited Invites Allowed)</p>
-            <div style="background:rgba(0,0,0,0.3); padding:10px; border-radius:12px; display:flex; justify-content:space-between; align-items:center; margin-top:5px;">
-                <span id="lblDisplayInviteLink" style="font-size:12px; color:#94a3b8; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:75%;">Loading referral link...</span>
-                <button class="plan-tab-trigger" onclick="copyUserReferralLink()" style="padding:4px 10px; font-size:11px;">Copy Link</button>
+        <div class="stats-dashboard" style="margin: 20px 0;">
+            <h3 style="color:var(--sky-primary); font-size:15px; margin-bottom:12px;"><i class="fa-solid fa-network-wired"></i> Referral & Network Center</h3>
+            <p style="font-size:11px; color:var(--text-muted);">Your Personal Invitation Link (Unlimited Invites Allowed)</p>
+            <div style="background:var(--bg-sub); padding:10px; border-radius:12px; display:flex; justify-content:space-between; align-items:center; margin-top:5px;">
+                <span id="lblDisplayInviteLink" style="font-size:12px; color:var(--text-main); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:75%;">Loading referral link...</span>
+                <button class="plan-tab-trigger active-tab" onclick="copyUserReferralLink()" style="padding:5px 12px; font-size:11px;">Copy Link</button>
             </div>
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:15px; text-align:left;">
-                <div style="background:rgba(255,255,255,0.02); padding:12px; border-radius:14px; border:1px solid rgba(255,255,255,0.04);">
-                    <span style="font-size:11px; color:#64748b;">Direct Referrals (Tier 1)</span>
-                    <h3 id="cntTotalRefers" style="font-size:20px; color:white; margin-top:2px;">0 Users</h3>
+                <div style="background:var(--bg-sub); padding:12px; border-radius:14px;">
+                    <span style="font-size:11px; color:var(--text-muted);">Direct Referrals (Tier 1)</span>
+                    <h3 id="cntTotalRefers" style="font-size:20px; color:var(--text-main); margin-top:2px;">0 Users</h3>
                 </div>
-                <div style="background:rgba(16,185,129,0.02); padding:12px; border-radius:14px; border:1px solid rgba(16,185,129,0.1);">
-                    <span style="font-size:11px; color:#64748b;">Active Depositors</span>
+                <div style="background:var(--bg-sub); padding:12px; border-radius:14px;">
+                    <span style="font-size:11px; color:var(--text-muted);">Active Depositors</span>
                     <h3 id="cntActiveDepositors" style="font-size:20px; color:#10b981; margin-top:2px;">0 Active</h3>
                 </div>
             </div>
-            <div style="margin-top:12px; background:rgba(234,179,8,0.05); padding:12px; border-radius:12px; border:1px solid rgba(234,179,8,0.2);">
-                <span style="font-size:11px; color:#eab308; font-weight:700;">Multi-Tier Commission Structure:</span>
-                <p style="font-size:10px; color:#94a3b8; margin-top:3px;">Level 1: 10% Bonus | Level 2: 3% Bonus | Level 3: 1% Bonus</p>
+            <div style="margin-top:12px; background:rgba(14,165,233,0.08); padding:12px; border-radius:12px; border:1px solid var(--border-color);">
+                <span style="font-size:11px; color:var(--sky-primary); font-weight:700;">Multi-Tier Commission Structure:</span>
+                <p style="font-size:10px; color:var(--text-muted); margin-top:3px;">Level 1: 10% Bonus | Level 2: 3% Bonus | Level 3: 1% Bonus</p>
                 <p style="font-size:10px; color:#10b981; font-weight:700; margin-top:4px;">Total Multi-Tier Earnings: Rs. <span id="lblMultiTierTotalEarning">0.00</span></p>
             </div>
         </div>
@@ -735,21 +852,21 @@
         <div class="history-card" style="margin-left:0; flex-direction:column; align-items:flex-start; padding:16px;">
             <div style="display:flex; justify-content:space-between; width:100%;">
                 <b>Weekly Salary Reward</b>
-                <span style="color:#38bdf8; font-weight:700;">Rs. 2,500 / Week</span>
+                <span style="color:var(--sky-primary); font-weight:700;">Rs. 2,500 / Week</span>
             </div>
-            <p style="font-size:11px; color:#64748b; margin-top:2px;">Target: 10 Active Direct Depositors</p>
+            <p style="font-size:11px; color:var(--text-muted); margin-top:2px;">Target: 10 Active Direct Depositors</p>
             <div class="salary-bar-container"><div id="barWeeklyProgress" class="salary-bar-fill"></div></div>
-            <span id="lblWeeklyProgressTxt" style="font-size:11px; color:#94a3b8; margin-top:5px; font-weight:600;">Progress: 0 / 10</span>
+            <span id="lblWeeklyProgressTxt" style="font-size:11px; color:var(--text-muted); margin-top:5px; font-weight:600;">Progress: 0 / 10</span>
         </div>
 
         <div class="history-card" style="margin-left:0; flex-direction:column; align-items:flex-start; padding:16px;">
             <div style="display:flex; justify-content:space-between; width:100%;">
                 <b>Monthly Executive Salary</b>
-                <span style="color:#a855f7; font-weight:700;">Rs. 15,000 / Month</span>
+                <span style="color:#0284c7; font-weight:700;">Rs. 15,000 / Month</span>
             </div>
-            <p style="font-size:11px; color:#64748b; margin-top:2px;">Target: 50 Active Direct Depositors</p>
-            <div class="salary-bar-container"><div id="barMonthlyProgress" class="salary-bar-fill" style="background:linear-gradient(90deg, #a855f7, #6366f1);"></div></div>
-            <span id="lblMonthlyProgressTxt" style="font-size:11px; color:#94a3b8; margin-top:5px; font-weight:600;">Progress: 0 / 50</span>
+            <p style="font-size:11px; color:var(--text-muted); margin-top:2px;">Target: 50 Active Direct Depositors</p>
+            <div class="salary-bar-container"><div id="barMonthlyProgress" class="salary-bar-fill"></div></div>
+            <span id="lblMonthlyProgressTxt" style="font-size:11px; color:var(--text-muted); margin-top:5px; font-weight:600;">Progress: 0 / 50</span>
         </div>
     </div>
 
@@ -764,7 +881,7 @@
             <h4>Submit a Support Ticket</h4>
             <input type="text" id="ticketSubjectInput" class="modal-input" placeholder="Issue Subject (e.g., Deposit Delay)" style="margin-top:8px;">
             <textarea id="ticketMessageInput" class="modal-input" placeholder="Describe your issue in detail..." style="margin-top:8px; height:70px; resize:none;"></textarea>
-            <button class="buy-plan-btn" onclick="submitSupportTicketUser()" style="width:100%; margin-top:10px; padding:10px; background:#38bdf8; color:#040814;">Submit Support Ticket</button>
+            <button class="buy-plan-btn" onclick="submitSupportTicketUser()" style="width:100%; margin-top:10px; padding:10px;">Submit Support Ticket</button>
         </div>
 
         <div class="section-title" style="margin-left:0;"><i class="fa-solid fa-ticket"></i> Your Tickets Status</div>
@@ -777,7 +894,7 @@
         <div class="info-card">
             <h4>Vestify Pro Global Network</h4>
             <p><b>Registered Location:</b> 10 Anson Road, International Plaza, Singapore 079903</p>
-            <p style="margin-top: 8px;"><b>Support Email:</b> <a href="mailto:webhub262@gmail.com" style="color:#38bdf8; text-decoration:none;">webhub262@gmail.com</a></p>
+            <p style="margin-top: 8px;"><b>Support Email:</b> <a href="mailto:webhub262@gmail.com" style="color:var(--sky-primary); text-decoration:none;">webhub262@gmail.com</a></p>
             <p style="margin-top: 8px;">Vestify Pro provides user-friendly cloud mining and financial growth tools. By leasing hardware nodes, members can earn daily crypto yields and affiliate rewards safely and seamlessly.</p>
         </div>
 
@@ -797,7 +914,7 @@
             </div>
             <div class="faq-item" onclick="toggleFaqVisibility(this)">
                 <div class="faq-q">How do I get the Aviator 5,000 PKR Free Spin? <i class="fa-solid fa-chevron-down"></i></div>
-                <div class="faq-a">Every time your total Aviator bets reach Rs. 5,000, you unlock 1 free spin awarding between Rs. 20 and Rs. 100 bonus!</div>
+                <div class="faq-a">Every time your total Aviator bets reach Rs. 5,000, you unlock 1 free spin awarding between Rs. 100 and Rs. 50,000 bonus!</div>
             </div>
         </div>
     </div>
@@ -815,43 +932,43 @@
     <div id="depositModal" class="premium-modal">
         <div class="modal-content" style="text-align:left;">
             <div class="close-modal-btn" onclick="closeModal('depositModal')">&times;</div>
-            <h4 style="margin-bottom:12px; color:white; text-align:center;">Deposit Funds</h4>
+            <h4 style="margin-bottom:12px; color:var(--text-main); text-align:center;">Deposit Funds</h4>
             <input type="number" id="pkrDepositInput" class="modal-input" placeholder="Enter Amount in PKR (Min: 200)" oninput="updateDepositCalculations()">
-            <div style="background: rgba(16, 185, 129, 0.05); padding: 10px; border-radius: 12px; margin-top: 10px; font-size:12px;">
-                <div style="display:flex; justify-content:space-between; color:#94a3b8;"><span>Play Bonus Credited:</span> <b id="lblBonusPKR" style="color:#eab308;">Rs. 0 (8% / 4%)</b></div>
-                <div style="display:flex; justify-content:space-between; color:white; font-weight:800; margin-top:4px;"><span>Total Added Balance:</span> <b id="lblTotalCreditedPKR" style="color:#38bdf8;">Rs. 0</b></div>
+            <div style="background: rgba(14, 165, 233, 0.08); padding: 10px; border-radius: 12px; margin-top: 10px; font-size:12px;">
+                <div style="display:flex; justify-content:space-between; color:var(--text-muted);"><span>Play Bonus Credited:</span> <b id="lblBonusPKR" style="color:#eab308;">Rs. 0 (8% / 4%)</b></div>
+                <div style="display:flex; justify-content:space-between; color:var(--text-main); font-weight:800; margin-top:4px;"><span>Total Added Balance:</span> <b id="lblTotalCreditedPKR" style="color:var(--sky-primary);">Rs. 0</b></div>
             </div>
             <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px;">
-                <button id="chkEasyPaisa" class="action-btn" onclick="selectDepositGatewayChannel('EasyPaisa')" style="border-color:#10b981; font-size:10px;"><i class="fa-solid fa-mobile-screen" style="color:#10b981;"></i>EasyPaisa</button>
+                <button id="chkEasyPaisa" class="action-btn" onclick="selectDepositGatewayChannel('EasyPaisa')" style="border-color:#0ea5e9; font-size:10px;"><i class="fa-solid fa-mobile-screen" style="color:#10b981;"></i>EasyPaisa</button>
                 <button id="chkJazzCash" class="action-btn" onclick="selectDepositGatewayChannel('JazzCash')" style="font-size:10px;"><i class="fa-solid fa-wallet" style="color:#eab308;"></i>JazzCash</button>
-                <button id="chkUSDT" class="action-btn" onclick="selectDepositGatewayChannel('USDT')" style="font-size:10px;"><i class="fa-solid fa-circle-dollar-to-slot" style="color:#26a17b;"></i>Binance</button>
+                <button id="chkUSDT" class="action-btn" onclick="selectDepositGatewayChannel('USDT')" style="font-size:10px;"><i class="fa-solid fa-circle-dollar-to-slot" style="color:#0ea5e9;"></i>Binance</button>
             </div>
-            <div style="background:rgba(0,0,0,0.3); padding:12px; border-radius:12px; margin-top:12px; display:flex; justify-content:space-between; align-items:center;">
+            <div style="background:var(--bg-sub); padding:12px; border-radius:12px; margin-top:12px; display:flex; justify-content:space-between; align-items:center;">
                 <div>
-                    <span id="lblAccountTitleType" style="font-size:10px; color:#64748b; text-transform:uppercase;">Account Details</span>
-                    <h4 id="txtMerchantAccountNo" style="font-size:13px; color:white;">Loading...</h4>
-                    <span id="txtMerchantAccountTitle" style="font-size:11px; color:#38bdf8;">Loading...</span>
+                    <span id="lblAccountTitleType" style="font-size:10px; color:var(--text-muted); text-transform:uppercase;">Account Details</span>
+                    <h4 id="txtMerchantAccountNo" style="font-size:13px; color:var(--text-main);">Loading...</h4>
+                    <span id="txtMerchantAccountTitle" style="font-size:11px; color:var(--sky-primary);">Loading...</span>
                 </div>
-                <button class="plan-tab-trigger" onclick="copyMerchantAccountToken()" style="padding:4px 10px; font-size:10px;">Copy Number</button>
+                <button class="plan-tab-trigger active-tab" onclick="copyMerchantAccountToken()" style="padding:5px 10px; font-size:10px;">Copy Number</button>
             </div>
-            <div style="font-size:11px; margin-top:8px; display:flex; justify-content:space-between;"><span>Exact Amount Needed:</span> <b id="txtPayableExactAmount" style="color:#ff416c;">Rs. 0</b></div>
+            <div style="font-size:11px; margin-top:8px; display:flex; justify-content:space-between;"><span>Exact Amount Needed:</span> <b id="txtPayableExactAmount" style="color:var(--sky-primary);">Rs. 0</b></div>
             <input type="text" id="depositTxIDInput" class="modal-input" placeholder="Transaction ID / TID (11-12 Digits)">
             <button class="buy-plan-btn" onclick="submitPkrDepositToFirebase()" style="width:100%; margin-top:14px; padding:12px;">Submit Deposit</button>
         </div>
     </div>
 
-    <!-- MODAL 2: WITHDRAWAL MODAL (WITH METHODS, MIN 100 PKR & WEEKEND FREE TAX) -->
+    <!-- MODAL 2: WITHDRAWAL MODAL -->
     <div id="withdrawModal" class="premium-modal">
         <div class="modal-content" style="text-align:left;">
             <div class="close-modal-btn" onclick="closeModal('withdrawModal')">&times;</div>
-            <h4 style="color:white; text-align:center; margin-bottom:4px;">Request Withdrawal</h4>
+            <h4 style="color:var(--text-main); text-align:center; margin-bottom:4px;">Request Withdrawal</h4>
             <p style="font-size:11px; color:#10b981; text-align:center; margin-bottom:10px;">Withdrawable Balance: <b>Rs. <span id="modalWithdrawableBal">0.00</span></b></p>
 
-            <label style="font-size:11px; color:#94a3b8; font-weight:700;">Select Payment Method:</label>
+            <label style="font-size:11px; color:var(--text-muted); font-weight:700;">Select Payment Method:</label>
             <select id="withdrawMethodSelect" class="modal-input" style="margin-top:4px;" onchange="toggleBankNameField()">
-                <option value="EasyPaisa" style="background:#0b111e;">EasyPaisa</option>
-                <option value="JazzCash" style="background:#0b111e;">JazzCash</option>
-                <option value="Bank Transfer" style="background:#0b111e;">Bank Account Transfer</option>
+                <option value="EasyPaisa">EasyPaisa</option>
+                <option value="JazzCash">JazzCash</option>
+                <option value="Bank Transfer">Bank Account Transfer</option>
             </select>
 
             <input type="text" id="withdrawBankName" class="modal-input" placeholder="Enter Bank Name (e.g. Meezan, HBL, SadaPay)" style="display:none;">
@@ -859,19 +976,19 @@
             <input type="text" id="withdrawNumber" class="modal-input" placeholder="Account Number / IBAN">
             <input type="number" id="withdrawAmount" class="modal-input" placeholder="Withdraw Amount (Min: 100 PKR)" oninput="calculateWithdrawTaxPreview()">
 
-            <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:10px; margin-top:10px; font-size:11px;">
-                <div style="display:flex; justify-content:space-between; color:#94a3b8;">
+            <div style="background:var(--bg-sub); border:1px solid var(--border-color); border-radius:12px; padding:10px; margin-top:10px; font-size:11px;">
+                <div style="display:flex; justify-content:space-between; color:var(--text-muted);">
                     <span>Tax Status (<span id="withdrawDayLabel">Weekday</span>):</span>
                     <b id="withdrawTaxRateLbl" style="color:#eab308;">10% Fee</b>
                 </div>
-                <div style="display:flex; justify-content:space-between; color:#fff; font-weight:800; margin-top:4px;">
+                <div style="display:flex; justify-content:space-between; color:var(--text-main); font-weight:800; margin-top:4px;">
                     <span>Net Receivable Amount:</span>
                     <b id="withdrawNetPayoutLbl" style="color:#10b981;">Rs. 0.00</b>
                 </div>
-                <p style="font-size:9px; color:#64748b; margin-top:4px;">*Saturday & Sunday withdrawals are 100% TAX-FREE (0% Fee).</p>
+                <p style="font-size:9px; color:var(--text-muted); margin-top:4px;">*Saturday & Sunday withdrawals are 100% TAX-FREE (0% Fee).</p>
             </div>
 
-            <button class="buy-plan-btn" onclick="dispatchWithdrawalToCloud()" style="width:100%; margin-top:14px; padding:12px; background:#3b82f6; box-shadow:none;">Submit Cash Out</button>
+            <button class="buy-plan-btn" onclick="dispatchWithdrawalToCloud()" style="width:100%; margin-top:14px; padding:12px;">Submit Cash Out</button>
         </div>
     </div>
 
@@ -879,11 +996,11 @@
     <div id="transferModal" class="premium-modal">
         <div class="modal-content">
             <div class="close-modal-btn" onclick="closeModal('transferModal')">&times;</div>
-            <h4 style="color:#eab308;"><i class="fa-solid fa-paper-plane"></i> Direct Cash Transfer</h4>
-            <p style="font-size:10px; color:#94a3b8; margin-top:4px;">Only Withdrawable Cash can be transferred to other users.</p>
+            <h4 style="color:var(--sky-primary);"><i class="fa-solid fa-paper-plane"></i> Direct Cash Transfer</h4>
+            <p style="font-size:10px; color:var(--text-muted); margin-top:4px;">Only Withdrawable Cash can be transferred to other users.</p>
             <input type="text" id="transferTargetUsername" class="modal-input" placeholder="Recipient Username">
             <input type="number" id="transferAmount" class="modal-input" placeholder="Transfer Amount (PKR)">
-            <button class="buy-plan-btn" onclick="executeP2PInternalTransfer()" style="width:100%; margin-top:14px; padding:12px; background:linear-gradient(135deg, #eab308, #ca8a04); box-shadow:none;">Send Balance</button>
+            <button class="buy-plan-btn" onclick="executeP2PInternalTransfer()" style="width:100%; margin-top:14px; padding:12px;">Send Balance</button>
         </div>
     </div>
 
@@ -891,15 +1008,15 @@
     <div id="profileEditModal" class="premium-modal">
         <div class="modal-content">
             <div class="close-modal-btn" onclick="closeModal('profileEditModal')">&times;</div>
-            <h4 style="color:white;"><i class="fa-solid fa-user-gear"></i> Edit User Profile</h4>
+            <h4 style="color:var(--text-main);"><i class="fa-solid fa-user-gear"></i> Edit User Profile</h4>
             <div style="margin: 15px 0;">
-                <img id="modalProfilePreviewImg" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" style="width:70px; height:70px; border-radius:50%; object-fit:cover; border:2px solid #38bdf8;" alt="Preview">
+                <img id="modalProfilePreviewImg" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" style="width:70px; height:70px; border-radius:50%; object-fit:cover; border:2px solid #0ea5e9;" alt="Preview">
                 <br>
-                <button class="plan-tab-trigger" onclick="triggerProfilePictureFileInput()" style="margin-top:8px; padding:6px 14px; font-size:11px;">Change Photo</button>
+                <button class="plan-tab-trigger active-tab" onclick="triggerProfilePictureFileInput()" style="margin-top:8px; padding:6px 14px; font-size:11px;">Change Photo</button>
             </div>
             <input type="text" id="editUsernameInput" class="modal-input" placeholder="New Username">
             <p id="lblUsernameChangeNotice" style="font-size:10px; color:#eab308; margin-top:4px; text-align:left;">Note: Username can only be changed once every 30 days.</p>
-            <button class="buy-plan-btn" onclick="saveUserProfileChanges()" style="width:100%; margin-top:14px; padding:12px; background:#10b981;">Save Profile Changes</button>
+            <button class="buy-plan-btn" onclick="saveUserProfileChanges()" style="width:100%; margin-top:14px; padding:12px;">Save Profile Changes</button>
         </div>
     </div>
 
@@ -908,7 +1025,7 @@
         <div class="modal-content">
             <div class="close-modal-btn" onclick="closeModal('aviatorMilestoneSpinModal')">&times;</div>
             <h4 style="color:#eab308;"><i class="fa-solid fa-dharmachakra"></i> Aviator VIP Milestone Spin</h4>
-            <p style="font-size:11px; color:#cbd5e1; margin-top:4px;">You played Rs. 5,000 in Aviator! Spin to win <b>Rs. 100 to Rs. 100000</b> bonus!</p>
+            <p style="font-size:11px; color:var(--text-muted); margin-top:4px;">You played Rs. 5,000 in Aviator! Spin to win <b>Rs. 100 to Rs. 50,000</b> bonus!</p>
             <div class="wheel-outer" id="aviatorMilestoneWheel" style="border-color:#eab308; width:140px; height:140px; margin:18px auto;">
                 <span style="font-size:14px; color:#eab308;">100 - 50000<br>PKR</span>
             </div>
@@ -921,8 +1038,8 @@
     <!-- WHATSAPP FLOATING BUTTON -->
     <div style="position: fixed; bottom: 85px; right: 20px; z-index: 9999;">
         <a href="https://chat.whatsapp.com/D6QqMvZFBqLE4Hu4MsYEL5?s=cl&p=a&mlu=4" target="_blank" style="text-decoration: none;">
-            <div style="background: #25d366; width: 54px; height: 54px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.4); cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="white">
+            <div style="background: #0ea5e9; width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(14,165,233,0.45); cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="white">
                     <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397 0 12.008 0c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 12.004-11.95 12.004-.003 0-.005 0-.007 0-2.001-.001-3.972-.5-5.733-1.448L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.623-1.023-5.09-2.885-6.948C16.528 2.008 14.07 1 11.642 1 6.215 1 1.794 5.366 1.79 10.793c-.001 1.701.462 3.361 1.342 4.804l-.101.54-1.028 3.756 3.841-1.002.553-.328z"/>
                 </svg>
             </div>
@@ -946,9 +1063,9 @@
         const auth = firebase.auth();
 
         let currentUserId = null;
-        let userWithdrawableBalance = 0.00; // Nodes profit + Aviator winnings (Withdrawable)
-        let userBonusBalance = 0.00;        // Sign-up, check-in, spin, deposit bonus (Play/Node Only)
-        let aviatorWagerProgress = 0.00;    // Tracks towards 5000 PKR free spin
+        let userWithdrawableBalance = 0.00;
+        let userBonusBalance = 0.00;
+        let aviatorWagerProgress = 0.00;
         let aviatorFreeSpinsAvailable = 0;
 
         let totalActiveCoresCount = 0;
@@ -960,14 +1077,14 @@
         let adminLogoTapCountTracker = 0;
         let cachedUserHistoryLogs = [];
 
-        // Dynamic System Settings (Synced from Firestore)
         let systemSettings = {
             aviatorDifficulty: "house_edge",
             forcedCrashPoint: null,
-            weekdayTaxPercent: 10
+            weekdayTaxPercent: 10,
+            crowdBaseCount: 280,
+            maintenanceMode: false
         };
 
-        // Default Mining Nodes Catalog (Merged with Firestore node_configs)
         const defaultNodesCatalog = [
             { nodeId: "Pod Alpha-1", category: "normal", cost: 200, dailyYield: 16, duration: 30, imageUrl: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=120&auto=format&fit=crop&q=60" },
             { nodeId: "Pod Alpha-2", category: "normal", cost: 500, dailyYield: 42, duration: 30, imageUrl: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=120&auto=format&fit=crop&q=60" },
@@ -985,12 +1102,43 @@
             "USDT": { number: "TRC20-Binance-Wallet-ID", title: "Binance USDT (TRC20)" }
         };
 
+        /* =========================================================================
+           THEME SWITCHER (DARK SKY / LIGHT SKY) & AUTH SLIDER
+           ========================================================================= */
+        window.toggleAppColorTheme = function() {
+            const htmlEl = document.documentElement;
+            const current = htmlEl.getAttribute("data-theme") || "dark";
+            const next = current === "dark" ? "light" : "dark";
+            htmlEl.setAttribute("data-theme", next);
+            localStorage.setItem("vestify_theme", next);
+            updateThemeIconUI(next);
+            triggerToastDisplay(next === "light" ? "Sky Light Mode Activated" : "Sky Dark Mode Activated");
+        };
+
+        function updateThemeIconUI(theme) {
+            const icon = document.getElementById("themeToggleIcon");
+            if (icon) {
+                icon.className = theme === "light" ? "fa-solid fa-moon" : "fa-solid fa-sun";
+            }
+        }
+
+        function startAuthBackgroundSlider() {
+            const slides = document.querySelectorAll(".auth-slide");
+            if (!slides.length) return;
+            let idx = 0;
+            setInterval(() => {
+                slides[idx].classList.remove("active");
+                idx = (idx + 1) % slides.length;
+                slides[idx].classList.add("active");
+            }, 4500);
+        }
+
         function getTotalPlayableBalance() {
             return userWithdrawableBalance + userBonusBalance;
         }
 
         /* =========================================================================
-           AVIATOR PRO ENGINE (BALANCED + 200x-500x SPIKES + AUTO BET & AUTO CASHOUT)
+           AVIATOR PRO ENGINE (DYNAMIC CROWD COUNTER + 70-110 RANDOM + REAL LIVE BETS)
            ========================================================================= */
         const aviatorState = {
             roundId: "RND-" + Date.now(),
@@ -1002,6 +1150,7 @@
             soundEnabled: true,
             audioCtx: null,
             sessionStartTime: Date.now(),
+            displayedPlayerCount: 284,
             panels: {
                 1: { activeBet: false, betAmount: 0, autoBetRemaining: 0 },
                 2: { activeBet: false, betAmount: 0, autoBetRemaining: 0 }
@@ -1009,12 +1158,115 @@
             recentHistory: [1.45, 2.35, 1.18, 14.80, 1.92, 4.10, 215.50, 1.32],
             personalBetsList: [],
             simulatedBots: [],
+            realLiveFirestoreBets: [],
             renderRaf: null,
             loopInterval: null
         };
 
+        const randomPakistaniNames = [
+            "hamza_pk", "ali_khan", "zainab99", "usman_rwp", "bilal_pro", "sana_m", "tariq_gb", "ahmed_77",
+            "kamran_x", "fahad_90", "ayesha_k", "hassan_lhr", "daniyal_01", "mariam_z", "saad_malik", "umer_shah",
+            "noman_ali", "fatima_noor", "arslan_jutt", "waqas_88", "hira_khan", "junaid_pk", "imran_sheikh",
+            "kashif_07", "rabia_m", "salman_r", "zeeshan_55", "mahnoor_s", "adeel_ahmad", "haris_rauf",
+            "yasir_gb", "nida_fatima", "shoaib_ak", "farhan_22", "sadia_khan", "asif_ali", "zubair_99",
+            "komal_shah", "rizwan_pk", "tahir_mehmood", "aqsa_bibi", "naveed_33", "irfan_khan", "mehreen_a"
+        ];
+
+        function generateRandomMaskedPlayerIdentity() {
+            // 50% chance masked mobile number, 50% chance realistic username + digits
+            if (Math.random() < 0.5) {
+                const prefixes = ["0300", "0301", "0312", "0315", "0321", "0333", "0334", "0345", "0346", "0318"];
+                const pref = prefixes[Math.floor(Math.random() * prefixes.length)];
+                const end = String(Math.floor(10 + Math.random() * 89));
+                return `${pref}****${end}`;
+            } else {
+                const base = randomPakistaniNames[Math.floor(Math.random() * randomPakistaniNames.length)];
+                const suffix = Math.random() < 0.6 ? Math.floor(10 + Math.random() * 899) : "";
+                return `${base}${suffix}`;
+            }
+        }
+
+        function generateMassiveSimulatedCrowd() {
+            const count = Math.floor(65 + Math.random() * 45); // 65 to 110 live bets per round
+            const betPool = [50, 100, 150, 200, 300, 500, 750, 1000, 1500, 2000, 3500, 5000, 10000, 15000, 25000];
+            const list = [];
+
+            for (let i = 0; i < count; i++) {
+                const betAmt = betPool[Math.floor(Math.random() * betPool.length)];
+                // Weighted realistic cashout targets
+                const r = Math.random();
+                let target = 1.5;
+                if (r < 0.45) target = parseFloat((1.15 + Math.random() * 0.85).toFixed(2));
+                else if (r < 0.80) target = parseFloat((2.00 + Math.random() * 3.50).toFixed(2));
+                else if (r < 0.95) target = parseFloat((5.50 + Math.random() * 14.50).toFixed(2));
+                else target = parseFloat((20.00 + Math.random() * 120.00).toFixed(2));
+
+                list.push({
+                    name: generateRandomMaskedPlayerIdentity(),
+                    bet: betAmt,
+                    targetMult: target
+                });
+            }
+            aviatorState.simulatedBots = list;
+            updateDynamicPlayerCounter(true);
+        }
+
+        function updateDynamicPlayerCounter(isNewRound = false) {
+            const base = systemSettings.crowdBaseCount || 280;
+            const realCount = aviatorState.realLiveFirestoreBets.length;
+            if (isNewRound) {
+                aviatorState.displayedPlayerCount = base + Math.floor(Math.random() * 160) + realCount;
+            } else {
+                const delta = Math.floor(-6 + Math.random() * 15);
+                aviatorState.displayedPlayerCount = Math.max(85, aviatorState.displayedPlayerCount + delta + (realCount > 0 ? 1 : 0));
+            }
+            const el = document.getElementById("aviatorLivePlayerCount");
+            if (el) el.innerText = aviatorState.displayedPlayerCount.toLocaleString();
+        }
+
+        function broadcastRealBetToLiveFeed(panel, amount, status = "ACTIVE", mult = 0, payout = 0) {
+            if (!currentUserId) return;
+            const docId = `${currentUserId}_P${panel}`;
+            db.collection("aviator_live_bets").doc(docId).set({
+                uid: currentUserId,
+                username: userCustomUsernameToken || "Player",
+                panel: panel,
+                betAmount: amount,
+                status: status,
+                multiplier: mult,
+                payout: payout,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            }).catch(() => {});
+        }
+
+        function removeRealBetFromLiveFeed(panel) {
+            if (!currentUserId) return;
+            db.collection("aviator_live_bets").doc(`${currentUserId}_P${panel}`).delete().catch(() => {});
+        }
+
+        function listenToRealLiveBetsFirestore() {
+            db.collection("aviator_live_bets").onSnapshot(snap => {
+                const now = Date.now();
+                const activeReal = [];
+                snap.forEach(doc => {
+                    const d = doc.data();
+                    const ts = d.updatedAt ? d.updatedAt.toDate().getTime() : now;
+                    // Only show recent live bets from last 2 minutes
+                    if (now - ts < 120000) {
+                        activeReal.push(d);
+                    }
+                });
+                aviatorState.realLiveFirestoreBets = activeReal;
+                updateDynamicPlayerCounter(false);
+                renderLiveBetsFeed();
+            });
+        }
+
+        window.sendAviatorQuickReaction = function(msg) {
+            triggerToastDisplay(`${userCustomUsernameToken || "You"}: ${msg}`);
+        };
+
         function generateSmartCrashMultiplier() {
-            // 1. Check if Admin set a manual override for next round
             if (systemSettings.forcedCrashPoint && systemSettings.forcedCrashPoint >= 1.00) {
                 const manualVal = parseFloat(systemSettings.forcedCrashPoint);
                 systemSettings.forcedCrashPoint = null;
@@ -1022,29 +1274,27 @@
                 return manualVal;
             }
 
-            // 2. Weighted Probability Curve (Exciting spikes up to 500x+ while protecting house edge)
             const r = Math.random() * 100;
             const mode = systemSettings.aviatorDifficulty || "house_edge";
 
             if (mode === "strict") {
-                if (r < 52) return parseFloat((1.01 + Math.random() * 0.44).toFixed(2));       // 52%: 1.01x - 1.45x
-                if (r < 85) return parseFloat((1.46 + Math.random() * 1.54).toFixed(2));       // 33%: 1.46x - 3.00x
-                if (r < 97) return parseFloat((3.01 + Math.random() * 11.99).toFixed(2));      // 12%: 3.01x - 15.00x
-                if (r < 99.5) return parseFloat((15.01 + Math.random() * 84.99).toFixed(2));   // 2.5%: 15x - 100x
-                return parseFloat((100.0 + Math.random() * 400.0).toFixed(2));                 // 0.5%: 100x - 500x
+                if (r < 52) return parseFloat((1.01 + Math.random() * 0.44).toFixed(2));
+                if (r < 85) return parseFloat((1.46 + Math.random() * 1.54).toFixed(2));
+                if (r < 97) return parseFloat((3.01 + Math.random() * 11.99).toFixed(2));
+                if (r < 99.5) return parseFloat((15.01 + Math.random() * 84.99).toFixed(2));
+                return parseFloat((100.0 + Math.random() * 400.0).toFixed(2));
             } else if (mode === "generous") {
-                if (r < 28) return parseFloat((1.05 + Math.random() * 0.45).toFixed(2));       // 28%: 1.05x - 1.50x
-                if (r < 72) return parseFloat((1.51 + Math.random() * 3.49).toFixed(2));       // 44%: 1.51x - 5.00x
-                if (r < 93) return parseFloat((5.01 + Math.random() * 24.99).toFixed(2));      // 21%: 5.01x - 30.00x
-                if (r < 98.5) return parseFloat((30.01 + Math.random() * 169.99).toFixed(2));  // 5.5%: 30x - 200x
-                return parseFloat((200.0 + Math.random() * 800.0).toFixed(2));                 // 1.5%: 200x - 1000x
+                if (r < 28) return parseFloat((1.05 + Math.random() * 0.45).toFixed(2));
+                if (r < 72) return parseFloat((1.51 + Math.random() * 3.49).toFixed(2));
+                if (r < 93) return parseFloat((5.01 + Math.random() * 24.99).toFixed(2));
+                if (r < 98.5) return parseFloat((30.01 + Math.random() * 169.99).toFixed(2));
+                return parseFloat((200.0 + Math.random() * 800.0).toFixed(2));
             } else {
-                // Default Balanced Company Profit Mode
-                if (r < 40) return parseFloat((1.02 + Math.random() * 0.43).toFixed(2));       // 40%: 1.02x - 1.45x
-                if (r < 78) return parseFloat((1.46 + Math.random() * 2.54).toFixed(2));       // 38%: 1.46x - 4.00x
-                if (r < 94) return parseFloat((4.01 + Math.random() * 15.99).toFixed(2));      // 16%: 4.01x - 20.00x
-                if (r < 98.8) return parseFloat((20.01 + Math.random() * 129.99).toFixed(2));  // 4.8%: 20x - 150x
-                return parseFloat((150.0 + Math.random() * 650.0).toFixed(2));                 // 1.2%: 150x - 800x Jackpot
+                if (r < 40) return parseFloat((1.02 + Math.random() * 0.43).toFixed(2));
+                if (r < 78) return parseFloat((1.46 + Math.random() * 2.54).toFixed(2));
+                if (r < 94) return parseFloat((4.01 + Math.random() * 15.99).toFixed(2));
+                if (r < 98.8) return parseFloat((20.01 + Math.random() * 129.99).toFixed(2));
+                return parseFloat((150.0 + Math.random() * 650.0).toFixed(2));
             }
         }
 
@@ -1163,10 +1413,10 @@
                         tag.style.color = "#10b981";
                     } else {
                         btn.disabled = false;
-                        btn.style.background = panel === 1 ? "linear-gradient(135deg, #ff416c, #ff4b2b)" : "linear-gradient(135deg, #a855f7, #7c3aed)";
+                        btn.style.background = panel === 1 ? "linear-gradient(135deg, #0ea5e9, #0284c7)" : "linear-gradient(135deg, #38bdf8, #0369a1)";
                         btn.innerText = `PLACE BET${panel === 2 ? " 2" : ""} (PKR ${inputVal.toLocaleString()})`;
                         tag.innerText = "BETTING OPEN";
-                        tag.style.color = "#38bdf8";
+                        tag.style.color = "#0ea5e9";
                     }
                 } else if (aviatorState.status === "FLYING") {
                     if (pState.activeBet) {
@@ -1194,19 +1444,17 @@
         }
 
         function deductPlayableBalance(amount) {
-            // Deduct from Bonus Wallet first, remaining from Withdrawable Cash
             let fromBonus = Math.min(userBonusBalance, amount);
             let fromWithdrawable = amount - fromBonus;
             userBonusBalance -= fromBonus;
             userWithdrawableBalance -= fromWithdrawable;
 
-            // Update 5,000 PKR Aviator Spin Progress
             aviatorWagerProgress += amount;
             let newSpinsEarned = Math.floor(aviatorWagerProgress / 5000);
             if (newSpinsEarned > 0) {
                 aviatorFreeSpinsAvailable += newSpinsEarned;
                 aviatorWagerProgress = aviatorWagerProgress % 5000;
-                triggerToastDisplay(`🎉 Unlocked ${newSpinsEarned} Aviator Free Spin! Claim above.`);
+                triggerToastDisplay(`Unlocked ${newSpinsEarned} Aviator Free Spin! Claim above.`);
             }
 
             updateWalletUI();
@@ -1246,6 +1494,12 @@
             pState.activeBet = true;
             pState.betAmount = amount;
             playAviatorTone("bet");
+
+            // Increase displayed player count dynamically on every bet & sync real bet live
+            aviatorState.displayedPlayerCount += 1;
+            updateDynamicPlayerCounter(false);
+            broadcastRealBetToLiveFeed(panel, amount, "ACTIVE", 0, 0);
+
             if (!isAuto) triggerToastDisplay(`Panel ${panel} bet confirmed: PKR ${amount.toLocaleString()}`);
             updateAviatorActionButtons();
             renderLiveBetsFeed();
@@ -1261,9 +1515,11 @@
                 : aviatorState.currentMultiplier;
 
             const payout = pState.betAmount * cashMult;
-            // Aviator winnings go directly into WITHDRAWABLE CASH wallet!
             userWithdrawableBalance += payout;
             pState.activeBet = false;
+
+            // Broadcast cashout win to all live players
+            broadcastRealBetToLiveFeed(panel, pState.betAmount, "WON", cashMult, payout);
 
             updateWalletUI();
             if (currentUserId) {
@@ -1294,7 +1550,6 @@
             const pState = aviatorState.panels[panel];
             if (aviatorState.status === "BETTING") {
                 if (pState.activeBet) {
-                    // Refund to withdrawable/bonus balance
                     userWithdrawableBalance += pState.betAmount;
                     updateWalletUI();
                     db.collection("users").doc(currentUserId).update({
@@ -1303,6 +1558,7 @@
                     });
                     pState.activeBet = false;
                     pState.betAmount = 0;
+                    removeRealBetFromLiveFeed(panel);
                     triggerToastDisplay("Bet cancelled & refunded.");
                     updateAviatorActionButtons();
                     renderLiveBetsFeed();
@@ -1314,18 +1570,17 @@
             }
         };
 
-        function generateSimulatedRoundBots() {
-            const names = ["hamza_pk", "ali_khan", "zainab99", "usman_rwp", "bilal_pro", "sana_m", "tariq_gb", "ahmed_77", "kamran_x", "fahad_90"];
-            aviatorState.simulatedBots = names.slice(0, 6).map(n => ({
-                name: n,
-                bet: [100, 250, 500, 1000, 2000][Math.floor(Math.random() * 5)],
-                targetMult: parseFloat((1.25 + Math.random() * 4.5).toFixed(2)),
-                cashedOut: false
-            }));
-        }
-
         function startClientSideAviatorEngine() {
-            generateSimulatedRoundBots();
+            generateMassiveSimulatedCrowd();
+            renderLiveBetsFeed();
+
+            // Fluctuate player count & live bets every 1.4 seconds
+            setInterval(() => {
+                updateDynamicPlayerCounter(false);
+                if (aviatorState.status === "FLYING") {
+                    renderLiveBetsFeed();
+                }
+            }, 1400);
 
             setInterval(() => {
                 const secElapsed = Math.floor((Date.now() - aviatorState.sessionStartTime) / 1000);
@@ -1347,10 +1602,8 @@
                     updateAviatorStageBadge();
                 } else if (aviatorState.status === "FLYING") {
                     const elapsed = (now - aviatorState.flightStartedAt) / 1000;
-                    // Smooth accelerating multiplier curve capable of reaching 200x-500x+
                     aviatorState.currentMultiplier = 1.0 + (elapsed * 0.14) + (Math.pow(elapsed, 2.15) * 0.045);
 
-                    // Check Auto-Cashout for Panel 1 & Panel 2
                     [1, 2].forEach(panel => {
                         const p = aviatorState.panels[panel];
                         const autoCoOn = document.getElementById(`autoCashoutToggle${panel}`).checked;
@@ -1378,6 +1631,7 @@
                                     time: new Date().toLocaleTimeString()
                                 });
                                 p.activeBet = false;
+                                removeRealBetFromLiveFeed(panel);
                             }
                         });
 
@@ -1392,10 +1646,9 @@
                             aviatorState.status = "BETTING";
                             aviatorState.bettingEndsAt = Date.now() + 10000;
                             aviatorState.currentMultiplier = 1.00;
-                            generateSimulatedRoundBots();
+                            generateMassiveSimulatedCrowd();
                             updateAviatorStageBadge();
 
-                            // Trigger Auto-Bet if enabled on Panel 1 or Panel 2
                             [1, 2].forEach(panel => {
                                 const autoToggle = document.getElementById(`autoBetToggle${panel}`);
                                 const pState = aviatorState.panels[panel];
@@ -1440,7 +1693,7 @@
                 const pct = Math.min(100, (remainingMs / 10000) * 100);
 
                 subEl.innerText = remainingMs > 0 ? "BETTING OPEN — TAKING OFF IN" : "TAKING OFF...";
-                subEl.style.color = "#10b981";
+                subEl.style.color = "#38bdf8";
                 multEl.innerText = `${remainingSec}s`;
                 multEl.style.color = "#ffffff";
                 statusEl.innerText = "Set Auto-Cashout or place bets before takeoff";
@@ -1451,7 +1704,7 @@
                 areaPath.setAttribute("d", "");
             } else if (aviatorState.status === "FLYING") {
                 multEl.innerText = `${aviatorState.currentMultiplier.toFixed(2)}x`;
-                multEl.style.color = aviatorState.currentMultiplier >= 50 ? "#ff416c" : (aviatorState.currentMultiplier >= 5 ? "#eab308" : "#38bdf8");
+                multEl.style.color = aviatorState.currentMultiplier >= 50 ? "#10b981" : (aviatorState.currentMultiplier >= 5 ? "#eab308" : "#38bdf8");
                 subEl.innerText = "IN FLIGHT";
                 statusEl.innerText = "Cash out before plane flies away!";
                 barWrap.style.display = "none";
@@ -1505,31 +1758,49 @@
             const feedEl = document.getElementById("aviatorLivePlayersFeed");
             if (!feedEl) return;
             let html = "";
-            if (aviatorState.panels[1].activeBet) {
-                html += `<div style="display:grid; grid-template-columns: 2fr 1.2fr 1fr 1.5fr; font-size:11px; padding:6px 4px; background:rgba(56,189,248,0.1); border-radius:8px; text-align:center;">
-                    <span style="color:#38bdf8; font-weight:800; text-align:left;">${userCustomUsernameToken} (P1)</span>
-                    <span style="color:#fff;">${aviatorState.panels[1].betAmount}</span>
-                    <span style="color:#eab308;">--</span>
-                    <span style="color:#10b981; font-weight:800;">ACTIVE</span>
-                </div>`;
-            }
-            if (aviatorState.panels[2].activeBet) {
-                html += `<div style="display:grid; grid-template-columns: 2fr 1.2fr 1fr 1.5fr; font-size:11px; padding:6px 4px; background:rgba(168,85,247,0.1); border-radius:8px; text-align:center;">
-                    <span style="color:#c084fc; font-weight:800; text-align:left;">${userCustomUsernameToken} (P2)</span>
-                    <span style="color:#fff;">${aviatorState.panels[2].betAmount}</span>
-                    <span style="color:#eab308;">--</span>
-                    <span style="color:#10b981; font-weight:800;">ACTIVE</span>
-                </div>`;
-            }
-            aviatorState.simulatedBots.forEach(b => {
-                const won = aviatorState.status !== "BETTING" && aviatorState.currentMultiplier >= b.targetMult && b.targetMult <= aviatorState.crashPoint;
-                html += `<div style="display:grid; grid-template-columns: 2fr 1.2fr 1fr 1.5fr; font-size:11px; padding:5px 4px; text-align:center; border-bottom:1px solid rgba(255,255,255,0.03);">
-                    <span style="color:#cbd5e1; text-align:left;">${b.name}</span>
-                    <span style="color:#94a3b8;">${b.bet}</span>
-                    <span style="color:${won ? '#10b981' : '#64748b'}; font-weight:700;">${won ? b.targetMult.toFixed(2) + 'x' : '--'}</span>
-                    <span style="color:${won ? '#10b981' : '#94a3b8'}; font-weight:700;">${won ? '+' + (b.bet * b.targetMult).toFixed(0) : 'Playing'}</span>
+            let totalShown = 0;
+
+            // 1. Current User's Active Bets (Always Top)
+            [1, 2].forEach(p => {
+                if (aviatorState.panels[p].activeBet) {
+                    totalShown++;
+                    html += `<div style="display:grid; grid-template-columns: 2.2fr 1.2fr 1fr 1.4fr; font-size:11px; padding:6px 4px; background:rgba(14,165,233,0.16); border:1px solid rgba(56,189,248,0.35); border-radius:8px; text-align:center;">
+                        <span style="color:var(--sky-primary); font-weight:800; text-align:left;">${userCustomUsernameToken} (P${p}) <span class="live-badge-real">YOU</span></span>
+                        <span style="color:var(--text-main); font-weight:700;">${aviatorState.panels[p].betAmount.toLocaleString()}</span>
+                        <span style="color:#eab308;">--</span>
+                        <span style="color:#10b981; font-weight:800;">IN PLAY</span>
+                    </div>`;
+                }
+            });
+
+            // 2. Other Real Players from Firestore Live Bets
+            aviatorState.realLiveFirestoreBets.forEach(rb => {
+                if (rb.uid === currentUserId) return;
+                totalShown++;
+                const isWon = rb.status === "WON";
+                html += `<div style="display:grid; grid-template-columns: 2.2fr 1.2fr 1fr 1.4fr; font-size:11px; padding:6px 4px; background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.3); border-radius:8px; text-align:center;">
+                    <span style="color:#10b981; font-weight:800; text-align:left;">${rb.username} <span class="live-badge-real">LIVE</span></span>
+                    <span style="color:var(--text-main); font-weight:700;">${Number(rb.betAmount).toLocaleString()}</span>
+                    <span style="color:${isWon ? '#10b981' : '#eab308'}; font-weight:700;">${isWon ? Number(rb.multiplier).toFixed(2) + 'x' : '--'}</span>
+                    <span style="color:${isWon ? '#10b981' : '#0ea5e9'}; font-weight:800;">${isWon ? '+' + Number(rb.payout).toFixed(0) : 'Playing'}</span>
                 </div>`;
             });
+
+            // 3. Massive Simulated Crowd (65 - 110+ Random Names & Masked Numbers)
+            aviatorState.simulatedBots.forEach(b => {
+                totalShown++;
+                const won = aviatorState.status !== "BETTING" && aviatorState.currentMultiplier >= b.targetMult && b.targetMult <= aviatorState.crashPoint;
+                const rowBg = won ? "rgba(16, 185, 129, 0.08)" : "transparent";
+                html += `<div style="display:grid; grid-template-columns: 2.2fr 1.2fr 1fr 1.4fr; font-size:11px; padding:5px 4px; background:${rowBg}; border-radius:6px; text-align:center; border-bottom:1px solid var(--border-color);">
+                    <span style="color:var(--text-main); text-align:left; font-weight:600;">${b.name}</span>
+                    <span style="color:var(--text-muted);">${b.bet.toLocaleString()}</span>
+                    <span style="color:${won ? '#10b981' : 'var(--text-muted)'}; font-weight:700;">${won ? b.targetMult.toFixed(2) + 'x' : '--'}</span>
+                    <span style="color:${won ? '#10b981' : 'var(--sky-primary)'}; font-weight:700;">${won ? '+' + Math.round(b.bet * b.targetMult).toLocaleString() : 'Betting'}</span>
+                </div>`;
+            });
+
+            const badgeEl = document.getElementById("liveBetsTotalBadge");
+            if (badgeEl) badgeEl.innerText = totalShown;
             feedEl.innerHTML = html;
         }
 
@@ -1539,22 +1810,22 @@
             let html = "";
             aviatorState.personalBetsList.forEach(b => {
                 let badgeColor = b.status === "won" ? "#10b981" : "#ef4444";
-                html += `<div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); border-radius:12px; padding:10px; display:flex; justify-content:space-between; align-items:center; font-size:11px;">
+                html += `<div style="background:var(--bg-sub); border:1px solid var(--border-color); border-radius:12px; padding:10px; display:flex; justify-content:space-between; align-items:center; font-size:11px;">
                     <div>
-                        <div style="font-weight:800; color:#fff;">Panel ${b.panel} <span style="color:#64748b;">(${b.time})</span></div>
-                        <div style="color:#94a3b8; margin-top:2px;">Bet: <b>PKR ${b.amount}</b> | Cashout: <b>${b.multiplier > 0 ? b.multiplier.toFixed(2) + "x" : "--"}</b></div>
+                        <div style="font-weight:800; color:var(--text-main);">Panel ${b.panel} <span style="color:var(--text-muted);">(${b.time})</span></div>
+                        <div style="color:var(--text-muted); margin-top:2px;">Bet: <b>PKR ${b.amount}</b> | Cashout: <b>${b.multiplier > 0 ? b.multiplier.toFixed(2) + "x" : "--"}</b></div>
                     </div>
                     <div style="font-weight:800; color:${badgeColor};">${b.status === "won" ? "+PKR " + b.payout.toFixed(2) : "CRASHED"}</div>
                 </div>`;
             });
-            listEl.innerHTML = html || `<div style="color:#64748b; text-align:center; padding:14px; font-size:11px;">No personal bets recorded yet.</div>`;
+            listEl.innerHTML = html || `<div style="color:var(--text-muted); text-align:center; padding:14px; font-size:11px;">No personal bets recorded yet.</div>`;
             document.getElementById("statTotalRounds").innerText = String(aviatorState.personalBetsList.length);
             let maxW = aviatorState.personalBetsList.reduce((acc, curr) => Math.max(acc, curr.payout), 0);
             document.getElementById("statBiggestWin").innerText = `PKR ${maxW.toFixed(2)}`;
         }
 
         /* =========================================================================
-           AVIATOR 5,000 PKR MILESTONE SPIN (20 PKR - 100 PKR)
+           AVIATOR 5,000 PKR MILESTONE SPIN
            ========================================================================= */
         function updateAviatorMilestoneUI() {
             const btn = document.getElementById("btnClaimAviatorSpin");
@@ -1587,13 +1858,12 @@
             const wheel = document.getElementById("aviatorMilestoneWheel");
             btn.disabled = true;
 
-            // Random bonus between 7 PKR and 100 PKR
-            const rewardAmount = Math.floor(7 + Math.random() * 81);
+            const rewardAmount = Math.floor(100 + Math.random() * 400);
             wheel.style.transform = "rotate(1800deg)";
 
             setTimeout(() => {
                 aviatorFreeSpinsAvailable -= 1;
-                userBonusBalance += rewardAmount; // Credited to Play/Bonus wallet
+                userBonusBalance += rewardAmount;
                 updateWalletUI();
 
                 db.collection("users").doc(currentUserId).update({
@@ -1601,7 +1871,7 @@
                     bonusBalance: userBonusBalance,
                     balance: getTotalPlayableBalance()
                 }).then(() => {
-                    triggerToastDisplay(`🎉 Aviator Milestone Spin Won +Rs. ${rewardAmount} Bonus!`);
+                    triggerToastDisplay(`Aviator Milestone Spin Won +Rs. ${rewardAmount} Bonus!`);
                     wheel.style.transform = "rotate(0deg)";
                     btn.disabled = false;
                     closeModal("aviatorMilestoneSpinModal");
@@ -1613,16 +1883,22 @@
            CORE APP LOGIC & FIRESTORE SYNC
            ========================================================================= */
         window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem("vestify_theme") || "dark";
+            document.documentElement.setAttribute("data-theme", savedTheme);
+            updateThemeIconUI(savedTheme);
+
             const params = new URLSearchParams(window.location.search);
             if(params.has('ref')) {
                 document.getElementById('authReferralInput').value = params.get('ref');
             }
+            startAuthBackgroundSlider();
             initializeRealtimeBroadcastListener();
             initializeRealtimeNodeConfigSync();
             loadSystemGameAndTaxSettings();
             loadPaymentMethodsFromFirestore();
             startLiveSocialProofTicker();
             startClientSideAviatorEngine();
+            listenToRealLiveBetsFirestore();
             renderRecentHistoryTicker();
         });
 
@@ -1631,6 +1907,7 @@
                 currentUserId = user.uid;
                 document.getElementById('authScreen').style.display = 'none';
                 syncProfileRealtimeMetrics();
+                syncUserActiveLeasesList();
                 syncUserLedgerTracks();
                 syncUserSupportTickets();
                 initializeCountdownClockTicker();
@@ -1785,7 +2062,6 @@
                         return;
                     }
 
-                    // Backward compatibility migration for existing users
                     if (d.withdrawableBalance === undefined && d.bonusBalance === undefined) {
                         userWithdrawableBalance = d.balance || 0.00;
                         userBonusBalance = 0.00;
@@ -1836,6 +2112,34 @@
             });
         }
 
+        function syncUserActiveLeasesList() {
+            db.collection("leases").where("userId", "==", currentUserId).onSnapshot(snap => {
+                const box = document.getElementById("myActiveNodesOverview");
+                const chips = document.getElementById("myActiveNodesChips");
+                const summary = document.getElementById("myDailyReturnSummary");
+                if (!box || !chips || !summary) return;
+
+                if (snap.empty) {
+                    box.style.display = "none";
+                    return;
+                }
+
+                let totalDaily = 0;
+                let html = "";
+                snap.forEach(doc => {
+                    const l = doc.data();
+                    totalDaily += (Number(l.dailyYield) || 0);
+                    html += `<span style="background:var(--bg-card); border:1px solid var(--border-color); font-size:10px; padding:4px 8px; border-radius:8px; font-weight:700; color:var(--text-main);">
+                        <i class="fa-solid fa-bolt" style="color:#0ea5e9;"></i> ${l.planName} (+Rs.${l.dailyYield}/d)
+                    </span>`;
+                });
+
+                box.style.display = "block";
+                chips.innerHTML = html;
+                summary.innerText = `+Rs. ${totalDaily.toLocaleString()}/day`;
+            });
+        }
+
         function executeProfessionalLazyYieldSync(uid, userData) {
             const lastSyncDate = userData.lastYieldSyncTimestamp ? userData.lastYieldSyncTimestamp.toDate() : null;
             const currentTime = new Date();
@@ -1865,7 +2169,6 @@
                         const operationalBatch = db.batch();
                         const userRef = db.collection("users").doc(uid);
 
-                        // Node daily profit goes directly to WITHDRAWABLE CASH!
                         operationalBatch.update(userRef, {
                             withdrawableBalance: firebase.firestore.FieldValue.increment(globalCalculatedProfitToken),
                             balance: firebase.firestore.FieldValue.increment(globalCalculatedProfitToken),
@@ -1894,15 +2197,13 @@
         }
 
         /* =========================================================================
-           DYNAMIC MINING NODES RENDERER & PURCHASE (FIXED)
+           DYNAMIC MINING NODES RENDERER & PURCHASE
            ========================================================================= */
         function initializeRealtimeNodeConfigSync() {
             db.collection("node_configs").onSnapshot(snapshot => {
-                // Start with defaults
                 activeNodesMap = {};
                 defaultNodesCatalog.forEach(n => { activeNodesMap[n.nodeId] = { ...n }; });
 
-                // Override or add from Firestore
                 snapshot.forEach(doc => {
                     const data = doc.data();
                     const id = data.nodeId || doc.id;
@@ -1943,14 +2244,14 @@
                     : (isOffr ? "background: linear-gradient(135deg, #a855f7, #7c3aed);" : "");
                 const iconHtml = isSpec
                     ? `<i class="fa-solid fa-crown" style="color:#eab308; font-size:10px;"></i>`
-                    : (isOffr ? `<i class="fa-solid fa-bolt-lightning" style="color:#a855f7; font-size:10px;"></i>` : `<i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:10px;"></i>`);
+                    : (isOffr ? `<i class="fa-solid fa-bolt-lightning" style="color:#a855f7; font-size:10px;"></i>` : `<i class="fa-solid fa-circle-check" style="color:#0ea5e9; font-size:10px;"></i>`);
 
                 const cardHtml = `<div class="plan-card ${borderClass}">
                     <img src="${node.imageUrl}" class="plan-node-img" alt="Node">
                     <div class="plan-details">
                         <h4>${node.nodeId} ${iconHtml}</h4>
                         <p>Price: <b>Rs. ${node.cost.toLocaleString()}</b> | Daily: <span>Rs. ${node.dailyYield}/Day</span></p>
-                        <p style="color:#64748b; font-size:10px;">Duration: ${node.duration} Days</p>
+                        <p style="color:var(--text-muted); font-size:10px;">Duration: ${node.duration} Days</p>
                     </div>
                     <button class="buy-plan-btn" style="${btnStyle}" onclick="leaseHardwareNode('${node.nodeId.replace(/'/g, "\\'")}', ${node.cost}, ${node.dailyYield}, ${node.duration})">Activate</button>
                 </div>`;
@@ -1967,7 +2268,6 @@
                 return;
             }
             
-            // Deduct from Bonus Wallet first, then Withdrawable Wallet
             let fromBonus = Math.min(userBonusBalance, price);
             let fromWithdrawable = price - fromBonus;
             userBonusBalance -= fromBonus;
@@ -2072,7 +2372,7 @@
         };
 
         /* =========================================================================
-           DEPOSIT, WITHDRAWAL (MIN 100, METHODS & WEEKEND TAX) & P2P
+           DEPOSIT, WITHDRAWAL & P2P
            ========================================================================= */
         window.updateDepositCalculations = function() {
             let amt = parseFloat(document.getElementById('pkrDepositInput').value) || 0;
@@ -2160,7 +2460,7 @@
         };
 
         function isWeekendFreeWithdrawal() {
-            const day = new Date().getDay(); // 0 = Sunday, 6 = Saturday
+            const day = new Date().getDay();
             return day === 0 || day === 6;
         }
 
@@ -2195,22 +2495,10 @@
             const targetNo = document.getElementById('withdrawNumber').value.trim();
             const amt = parseFloat(document.getElementById('withdrawAmount').value);
 
-            if (method === "Bank Transfer" && !bankName) {
-                triggerToastDisplay("Please enter your Bank Name.");
-                return;
-            }
-            if (!title || !targetNo || isNaN(amt)) {
-                triggerToastDisplay("Please fill all withdrawal fields.");
-                return;
-            }
-            if (amt < 100) {
-                triggerToastDisplay("Minimum withdrawal limit is 100 PKR.");
-                return;
-            }
-            if (amt > userWithdrawableBalance) {
-                triggerToastDisplay("Insufficient Withdrawable Cash! (Bonus balance cannot be withdrawn)");
-                return;
-            }
+            if (method === "Bank Transfer" && !bankName) { triggerToastDisplay("Please enter your Bank Name."); return; }
+            if (!title || !targetNo || isNaN(amt)) { triggerToastDisplay("Please fill all withdrawal fields."); return; }
+            if (amt < 100) { triggerToastDisplay("Minimum withdrawal limit is 100 PKR."); return; }
+            if (amt > userWithdrawableBalance) { triggerToastDisplay("Insufficient Withdrawable Cash!"); return; }
 
             const isWeekend = isWeekendFreeWithdrawal();
             const taxPct = isWeekend ? 0 : (systemSettings.weekdayTaxPercent || 10);
@@ -2241,16 +2529,14 @@
         };
 
         /* =========================================================================
-           BONUSES (CREDITED TO PLAY/BONUS WALLET - NON-WITHDRAWABLE)
+           BONUSES
            ========================================================================= */
         window.claimDailyCheckinBonus = function() {
             db.collection("users").doc(currentUserId).update({
                 bonusBalance: firebase.firestore.FieldValue.increment(5),
                 balance: firebase.firestore.FieldValue.increment(5),
                 hasCheckedInToday: true
-            }).then(() => {
-                triggerToastDisplay("Claimed Rs. 5 Daily Play Bonus!");
-            });
+            }).then(() => triggerToastDisplay("Claimed Rs. 5 Daily Play Bonus!"));
         };
 
         window.completeSocialTask = function(taskType) {
@@ -2259,9 +2545,7 @@
                     bonusBalance: firebase.firestore.FieldValue.increment(20),
                     balance: firebase.firestore.FieldValue.increment(20),
                     completedFbTask: true
-                }).then(() => {
-                    triggerToastDisplay("Facebook Task Complete! +Rs. 20 Play Bonus Added.");
-                });
+                }).then(() => triggerToastDisplay("Facebook Task Complete! +Rs. 20 Play Bonus Added."));
             }
         };
 
@@ -2351,23 +2635,23 @@
                     html += `<div class="history-card">
                         <div>
                             <b style="color:#10b981;">+Rs. ${item.amount.toLocaleString()}</b>
-                            <p style="font-size:12px; color:white; margin-top:2px;">${item.identifier} <span style="font-size:10px; color:#38bdf8;">[${item.channel}]</span></p>
-                            <p style="font-size:10px; color:#64748b; margin-top:2px;"><i class="fa-regular fa-clock"></i> ${formattedDateString}</p>
+                            <p style="font-size:12px; color:var(--text-main); margin-top:2px;">${item.identifier} <span style="font-size:10px; color:var(--sky-primary);">[${item.channel}]</span></p>
+                            <p style="font-size:10px; color:var(--text-muted); margin-top:2px;"><i class="fa-regular fa-clock"></i> ${formattedDateString}</p>
                         </div>
-                        <span style="font-size:11px; font-weight:700; color: ${colorStr}; background:rgba(255,255,255,0.03); padding:4px 8px; border-radius:8px;">${item.status.toUpperCase()}</span>
+                        <span style="font-size:11px; font-weight:700; color: ${colorStr}; background:var(--bg-sub); padding:4px 8px; border-radius:8px;">${item.status.toUpperCase()}</span>
                     </div>`;
                 } else {
                     html += `<div class="history-card">
                         <div>
                             <b style="color:#ef4444;">-Rs. ${item.amount.toLocaleString()}</b>
-                            <p style="font-size:12px; color:white; margin-top:2px;">${item.identifier}</p>
-                            <p style="font-size:10px; color:#64748b; margin-top:2px;"><i class="fa-regular fa-clock"></i> ${formattedDateString}</p>
+                            <p style="font-size:12px; color:var(--text-main); margin-top:2px;">${item.identifier}</p>
+                            <p style="font-size:10px; color:var(--text-muted); margin-top:2px;"><i class="fa-regular fa-clock"></i> ${formattedDateString}</p>
                         </div>
-                        <span style="font-size:11px; font-weight:700; color: ${colorStr}; background:rgba(255,255,255,0.03); padding:4px 8px; border-radius:8px;">${item.status.toUpperCase()}</span>
+                        <span style="font-size:11px; font-weight:700; color: ${colorStr}; background:var(--bg-sub); padding:4px 8px; border-radius:8px;">${item.status.toUpperCase()}</span>
                     </div>`;
                 }
             });
-            document.getElementById('userHistoryRecordsList').innerHTML = html || "<div style='color:#64748b; text-align:center;'>No history logs found.</div>";
+            document.getElementById('userHistoryRecordsList').innerHTML = html || "<div style='color:var(--text-muted); text-align:center;'>No history logs found.</div>";
         }
 
         window.filterUserHistoryLogs = function() {
@@ -2392,17 +2676,17 @@
         function syncUserSupportTickets() {
             db.collection("support_tickets").where("userId", "==", currentUserId).onSnapshot(snap => {
                 let html = "";
-                if(snap.empty) { html = "<div style='color:#64748b;'>No tickets submitted yet.</div>"; }
+                if(snap.empty) { html = "<div style='color:var(--text-muted);'>No tickets submitted yet.</div>"; }
                 snap.forEach(doc => {
                     let t = doc.data();
                     let color = t.status === "Resolved" ? "#10b981" : "#eab308";
                     html += `<div class="history-card" style="flex-direction:column; align-items:flex-start; gap:6px;">
                         <div style="display:flex; justify-content:space-between; width:100%;">
-                            <b style="color:white; font-size:13px;">${t.subject}</b>
+                            <b style="color:var(--text-main); font-size:13px;">${t.subject}</b>
                             <span style="font-size:11px; font-weight:700; color:${color}; border:1px solid ${color}; padding:2px 8px; border-radius:6px;">${t.status}</span>
                         </div>
-                        <p style="font-size:11px; color:#94a3b8;">${t.message}</p>
-                        ${t.adminReply ? `<p style="font-size:11px; color:#38bdf8; background:rgba(56,189,248,0.08); padding:6px 8px; border-radius:8px; width:100%;"><b>Admin Reply:</b> ${t.adminReply}</p>` : ""}
+                        <p style="font-size:11px; color:var(--text-muted);">${t.message}</p>
+                        ${t.adminReply ? `<p style="font-size:11px; color:var(--sky-primary); background:rgba(14,165,233,0.1); padding:6px 8px; border-radius:8px; width:100%;"><b>Admin Reply:</b> ${t.adminReply}</p>` : ""}
                     </div>`;
                 });
                 document.getElementById('userSupportTicketsList').innerHTML = html;
@@ -2451,7 +2735,7 @@
         };
 
         /* =========================================================================
-           SUPER ADMIN PANEL FUNCTIONS (ALL WORKING & ENHANCED)
+           SUPER ADMIN PANEL FUNCTIONS
            ========================================================================= */
         window.registerAdminLogoTap = function() {
             adminLogoTapCountTracker++;
@@ -2503,11 +2787,23 @@
                     systemSettings.aviatorDifficulty = data.aviatorDifficulty || "house_edge";
                     systemSettings.forcedCrashPoint = data.forcedCrashPoint || null;
                     systemSettings.weekdayTaxPercent = data.weekdayTaxPercent !== undefined ? Number(data.weekdayTaxPercent) : 10;
+                    systemSettings.crowdBaseCount = data.crowdBaseCount !== undefined ? Number(data.crowdBaseCount) : 280;
+                    systemSettings.maintenanceMode = Boolean(data.maintenanceMode);
 
                     const diffSel = document.getElementById("adminAviatorDifficulty");
                     const taxInp = document.getElementById("adminWithdrawTaxPct");
+                    const crowdInp = document.getElementById("adminCrowdBaseInput");
+                    const maintChk = document.getElementById("adminMaintenanceToggle");
+
                     if (diffSel) diffSel.value = systemSettings.aviatorDifficulty;
                     if (taxInp) taxInp.value = systemSettings.weekdayTaxPercent;
+                    if (crowdInp) crowdInp.value = systemSettings.crowdBaseCount;
+                    if (maintChk) maintChk.checked = systemSettings.maintenanceMode;
+
+                    const maintOverlay = document.getElementById("maintenanceOverlay");
+                    if (maintOverlay) {
+                        maintOverlay.style.display = systemSettings.maintenanceMode ? "flex" : "none";
+                    }
                 }
             });
         }
@@ -2516,17 +2812,21 @@
             const diff = document.getElementById("adminAviatorDifficulty").value;
             const forceVal = parseFloat(document.getElementById("adminForceCrashInput").value);
             const taxPct = parseFloat(document.getElementById("adminWithdrawTaxPct").value);
+            const crowdBase = parseInt(document.getElementById("adminCrowdBaseInput").value);
+            const maintMode = document.getElementById("adminMaintenanceToggle").checked;
 
             const payload = {
                 aviatorDifficulty: diff,
                 weekdayTaxPercent: isNaN(taxPct) ? 10 : Math.max(0, Math.min(50, taxPct)),
+                crowdBaseCount: isNaN(crowdBase) ? 280 : Math.max(50, Math.min(5000, crowdBase)),
+                maintenanceMode: maintMode,
                 forcedCrashPoint: (!isNaN(forceVal) && forceVal >= 1.0) ? forceVal : null,
                 updatedAt: firebase.firestore.FieldValue.serverTimestamp()
             };
 
             db.collection("system_settings").doc("game_tax_config").set(payload, { merge: true }).then(() => {
                 document.getElementById("adminForceCrashInput").value = "";
-                triggerToastDisplay("Aviator & Tax settings updated live!");
+                triggerToastDisplay("System, Aviator & Tax settings updated live!");
             });
         };
 
@@ -2536,7 +2836,7 @@
                 if(snap.empty) { html = "<div style='color:#64748b;'>No users online right now.</div>"; }
                 snap.forEach(doc => {
                     const p = doc.data();
-                    html += `<div style="background:rgba(255,255,255,0.02); padding:10px 12px; border-radius:12px; border:1px solid rgba(16,185,129,0.2); display:flex; justify-content:space-between; align-items:center;">
+                    html += `<div style="background:rgba(255,255,255,0.03); padding:10px 12px; border-radius:12px; border:1px solid rgba(56,189,248,0.2); display:flex; justify-content:space-between; align-items:center;">
                         <div>
                             <b style="color:#38bdf8;">${p.username}</b>
                             <p style="font-size:10px; color:#10b981; margin-top:2px;">Viewing: <b>${p.currentPage || 'Home'}</b></p>
@@ -2554,7 +2854,7 @@
                 if(snap.empty) { html += "<div style='color:#64748b;'>No pending deposits.</div>"; }
                 snap.forEach(doc => {
                     const d = doc.data();
-                    html += `<div style="background:rgba(255,255,255,0.02); padding:10px; border-radius:10px; margin-bottom:6px; border:1px solid rgba(56,189,248,0.2);">
+                    html += `<div style="background:rgba(255,255,255,0.03); padding:10px; border-radius:10px; margin-bottom:6px; border:1px solid rgba(56,189,248,0.25);">
                         <p>Amount: <b style="color:#10b981;">Rs. ${d.amount}</b> | ${d.gatewayChannel}</p>
                         <p>TID: <b>${d.transactionId}</b></p>
                         <div style="display:flex; gap:6px; margin-top:6px;">
@@ -2574,7 +2874,7 @@
                 snap.forEach(doc => {
                     const w = doc.data();
                     const netPay = w.netPayout !== undefined ? w.netPayout : w.amount;
-                    html += `<div style="background:rgba(255,255,255,0.02); padding:10px; border-radius:10px; margin-bottom:6px; border:1px solid rgba(234,179,8,0.25);">
+                    html += `<div style="background:rgba(255,255,255,0.03); padding:10px; border-radius:10px; margin-bottom:6px; border:1px solid rgba(234,179,8,0.25);">
                         <p style="color:#38bdf8; font-weight:800;">Method: ${w.method || 'Wallet'}</p>
                         <p>Account: <b>${w.title}</b> (${w.targetNo})</p>
                         <p>Requested: Rs. ${w.amount} | Tax: ${w.taxPercent || 0}% | <b style="color:#10b981;">Send Net: Rs. ${netPay.toFixed(2)}</b></p>
@@ -2598,7 +2898,6 @@
                     let bonusAmount = depositAmount * (hasDepBefore ? 0.04 : 0.08);
                     let totalAdded = depositAmount + bonusAmount;
 
-                    // Principal goes to withdrawable/playable, bonus goes to non-withdrawable bonusBalance
                     transaction.update(userRef, {
                         withdrawableBalance: firebase.firestore.FieldValue.increment(depositAmount),
                         bonusBalance: firebase.firestore.FieldValue.increment(bonusAmount),
@@ -2642,7 +2941,7 @@
                     let isBlocked = u.isBlocked || false;
                     let wBal = u.withdrawableBalance !== undefined ? u.withdrawableBalance : (u.balance || 0);
                     let bBal = u.bonusBalance || 0;
-                    html += `<div style="background:rgba(255,255,255,0.02); padding:12px; border-radius:14px; margin-bottom:8px; border:1px solid rgba(255,255,255,0.05);">
+                    html += `<div style="background:rgba(255,255,255,0.03); padding:12px; border-radius:14px; margin-bottom:8px; border:1px solid rgba(56,189,248,0.15);">
                         <p>User: <b style="color:#38bdf8;">${u.username || 'N/A'}</b> | <span style="color:${isBlocked ? '#ef4444' : '#10b981'};">${isBlocked ? 'BLOCKED' : 'ACTIVE'}</span></p>
                         <p style="font-size:11px; margin-top:2px;">Cash: <b style="color:#10b981;">Rs. ${wBal.toFixed(0)}</b> | Bonus: <b style="color:#eab308;">Rs. ${bBal.toFixed(0)}</b> | Nodes: ${u.minersCount || 0}</p>
                         <div style="display:flex; gap:6px; margin-top:8px;">
@@ -2733,7 +3032,7 @@
                     html += `<div style="background:rgba(255,255,255,0.03); padding:8px 10px; border-radius:8px; display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
                         <div><b>${d.nodeId}</b> <span style="color:#10b981;">(Rs.${d.cost} → ${d.dailyYield}/d)</span></div>
                         <div style="display:flex; gap:4px;">
-                            <button class="buy-plan-btn" style="padding:4px 8px; font-size:10px; background:#38bdf8; color:#040814;" onclick="populateNodeEditorFromAdmin('${d.nodeId.replace(/'/g, "\\'")}')">Edit</button>
+                            <button class="buy-plan-btn" style="padding:4px 8px; font-size:10px;" onclick="populateNodeEditorFromAdmin('${d.nodeId.replace(/'/g, "\\'")}')">Edit</button>
                             <button class="buy-plan-btn" style="padding:4px 8px; font-size:10px; background:#ef4444;" onclick="deleteNodeFromAdmin('${d.nodeId.replace(/'/g, "\\'")}')">Delete</button>
                         </div>
                     </div>`;
@@ -2752,7 +3051,7 @@
                 if (snap.empty) html = "<div style='color:#64748b;'>No support tickets found.</div>";
                 snap.forEach(doc => {
                     const t = doc.data();
-                    html += `<div style="background:rgba(255,255,255,0.02); padding:10px; border-radius:10px; border:1px solid rgba(255,255,255,0.06);">
+                    html += `<div style="background:rgba(255,255,255,0.03); padding:10px; border-radius:10px; border:1px solid rgba(56,189,248,0.2);">
                         <div style="display:flex; justify-content:space-between;">
                             <b style="color:#38bdf8;">${t.username}: ${t.subject}</b>
                             <span style="color:${t.status === 'Resolved' ? '#10b981' : '#eab308'}; font-weight:700;">${t.status}</span>
@@ -2866,7 +3165,6 @@
                 document.getElementById('repMAU').innerText = activeMonth;
             });
 
-            // Accurate Approved Deposits Revenue Calculation
             db.collection("deposits").where("status", "==", "approved").get().then(depSnap => {
                 let totalRev = 0;
                 depSnap.forEach(doc => {
@@ -2881,10 +3179,10 @@
 
         function startLiveSocialProofTicker() {
             const messages = [
-                "zain_pk withdrew Rs. 2,400 via EasyPaisa",
+                "0300****82 withdrew Rs. 2,400 via EasyPaisa",
                 "hamza_77 won Rs. 14,500 @ 14.5x in Aviator!",
                 "ayesha_m activated Rig Stratum-1 Node",
-                "usman_rwp withdrew Rs. 4,850 via JazzCash",
+                "0315****19 withdrew Rs. 4,850 via JazzCash",
                 "bilal_pro won Rs. 42,000 @ 84.0x in Aviator!",
                 "sana_k unlocked Aviator 5,000 PKR Free Spin!"
             ];
