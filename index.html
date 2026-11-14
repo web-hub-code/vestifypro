@@ -32,8 +32,7 @@
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Vestify Pro - Cloud Mining & Aviator Casino Platform">
-    <meta name="twitter:description" content="Earn daily crypto yields and play Aviator crash game on Vestify Pro. Trusted platform with referral network and instant local payouts.">
-</head>
+    <meta name="twitter:description" content="Earn daily crypto yields and play Aviator crash game on Vestify Pro. Trusted platform with referral network and instant local Payouts.">
 
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -58,7 +57,6 @@
             --sky-dark: #0284c7;
             --sky-glow: rgba(14, 165, 233, 0.35);
 
-            /* Dark Sky Theme (Default) */
             --bg-main: #030b17;
             --bg-header: rgba(7, 19, 38, 0.88);
             --bg-card: rgba(12, 28, 52, 0.78);
@@ -71,7 +69,6 @@
         }
 
         [data-theme="light"] {
-            /* Light Sky-Blue Theme */
             --bg-main: #f0f9ff;
             --bg-header: rgba(224, 242, 254, 0.92);
             --bg-card: rgba(255, 255, 255, 0.92);
@@ -89,28 +86,43 @@
         .bg-glow-1 { position: fixed; width: 380px; height: 380px; background: radial-gradient(circle, rgba(14, 165, 233, 0.22) 0%, rgba(0,0,0,0) 70%); top: -60px; left: -60px; z-index: -1; pointer-events: none; }
         .bg-glow-2 { position: fixed; width: 460px; height: 460px; background: radial-gradient(circle, rgba(56, 189, 248, 0.18) 0%, rgba(0,0,0,0) 70%); bottom: 90px; right: -100px; z-index: -1; pointer-events: none; }
 
-                /* MODERN AUTH SCREEN WITH LIGHT SKY BLUE THEME */
-        #authScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); z-index: 99999; display: flex; align-items: center; justify-content: center; padding: 18px; overflow-y: auto; }
-        .auth-bg-slider { position: fixed; inset: 0; z-index: 0; overflow: hidden; opacity: 0.15; }
-        .auth-slide { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0; transform: scale(1.06); transition: opacity 1.4s ease-in-out, transform 7s ease-out; }
-        .auth-slide.active { opacity: 0.4; transform: scale(1); }
-        .auth-bg-overlay { position: fixed; inset: 0; background: linear-gradient(180deg, rgba(240, 249, 255, 0.85) 0%, rgba(224, 242, 254, 0.95) 100%); z-index: 1; }
+        /* ULTRA-MODERN HIGH-CONVERTING AUTH SCREEN */
+        #authScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #f0f9ff 0%, #bae6fd 100%); z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 14px 16px 30px 16px; overflow-y: auto; }
+        .auth-bg-slider { position: fixed; inset: 0; z-index: 0; overflow: hidden; opacity: 0.2; }
+        .auth-slide { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0; transform: scale(1.06); transition: opacity 1.5s ease-in-out, transform 8s ease-out; }
+        .auth-slide.active { opacity: 0.45; transform: scale(1); }
+        .auth-bg-overlay { position: fixed; inset: 0; background: linear-gradient(180deg, rgba(240, 249, 255, 0.85) 0%, rgba(224, 242, 254, 0.96) 100%); z-index: 1; }
+
+        .auth-live-payout-strip { position: relative; z-index: 2; width: 100%; max-width: 470px; background: rgba(255, 255, 255, 0.92); border: 1px solid rgba(14, 165, 233, 0.35); border-radius: 14px; padding: 8px 12px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; box-shadow: 0 6px 20px rgba(14, 165, 233, 0.12); font-size: 11px; color: #0369a1; font-weight: 700; }
+        .pulse-dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; box-shadow: 0 0 0 rgba(16, 185, 129, 0.7); animation: pulseGreen 1.5s infinite; flex-shrink: 0; }
+        @keyframes pulseGreen { 0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); } 70% { box-shadow: 0 0 0 7px rgba(16, 185, 129, 0); } 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
 
         #secretAdminScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 8, 20, 0.96); z-index: 99999; display: flex; align-items: center; justify-content: center; padding: 20px; overflow-y: auto; }
-        .auth-container { position: relative; z-index: 2; background: rgba(255, 255, 255, 0.92); border: 1px solid rgba(14, 165, 233, 0.28); border-radius: 28px; padding: 28px 22px; width: 100%; max-width: 450px; text-align: center; backdrop-filter: blur(22px); box-shadow: 0 25px 50px rgba(14, 165, 233, 0.18); color: #0f172a; }
+        .auth-container { position: relative; z-index: 2; background: rgba(255, 255, 255, 0.95); border: 1px solid rgba(14, 165, 233, 0.32); border-radius: 28px; padding: 24px 20px; width: 100%; max-width: 470px; text-align: center; backdrop-filter: blur(24px); box-shadow: 0 25px 60px rgba(14, 165, 233, 0.22); color: #0f172a; }
         .admin-container { background: #071326; border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 28px; padding: 26px 20px; width: 100%; max-width: 540px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.75); color: #fff; }
 
-        .auth-feature-pills { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 14px 0 18px 0; }
-        .auth-pill-box { background: rgba(14, 165, 233, 0.1); border: 1px solid rgba(14, 165, 233, 0.22); border-radius: 12px; padding: 8px 4px; }
-        .auth-pill-box b { display: block; font-size: 12px; color: #0284c7; }
-        .auth-pill-box span { font-size: 9px; color: #475569; }
+        .auth-stats-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; background: linear-gradient(135deg, #0ea5e9, #0284c7); border-radius: 14px; padding: 10px 6px; margin: 12px 0; color: #fff; box-shadow: 0 6px 18px rgba(14, 165, 233, 0.3); }
+        .auth-stat-item b { display: block; font-size: 13px; font-weight: 800; }
+        .auth-stat-item span { font-size: 9px; opacity: 0.9; font-weight: 600; text-transform: uppercase; }
 
-        .auth-tabs { display: flex; gap: 8px; margin-bottom: 16px; background: rgba(14, 165, 233, 0.08); padding: 6px; border-radius: 14px; }
-        .auth-tab-btn { flex: 1; padding: 10px; border-radius: 10px; border: none; background: transparent; color: #475569; font-weight: 700; cursor: pointer; transition: all 0.3s; }
+        .auth-feature-pills { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 12px 0; }
+        .auth-pill-box { background: rgba(14, 165, 233, 0.08); border: 1px solid rgba(14, 165, 233, 0.22); border-radius: 12px; padding: 8px 4px; transition: transform 0.2s; }
+        .auth-pill-box:hover { transform: translateY(-2px); background: rgba(14, 165, 233, 0.14); }
+        .auth-pill-box b { display: block; font-size: 11px; color: #0284c7; }
+        .auth-pill-box span { font-size: 9px; color: #475569; font-weight: 600; }
+
+        .auth-promo-banner { background: linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(14, 165, 233, 0.12)); border: 1px dashed #10b981; border-radius: 12px; padding: 8px 10px; margin-bottom: 14px; font-size: 11px; color: #065f46; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 6px; }
+
+        .auth-tabs { display: flex; gap: 8px; margin-bottom: 14px; background: rgba(14, 165, 233, 0.09); padding: 5px; border-radius: 14px; }
+        .auth-tab-btn { flex: 1; padding: 10px; border-radius: 10px; border: none; background: transparent; color: #475569; font-weight: 700; cursor: pointer; transition: all 0.3s; font-size: 12px; }
         .auth-tab-btn.active { background: linear-gradient(135deg, #0ea5e9, #0284c7); color: white; box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4); }
         
-        .google-auth-btn { width: 100%; padding: 13px; border-radius: 12px; border: 1px solid rgba(14, 165, 233, 0.3); background: #ffffff; color: #0f172a; font-weight: 700; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 12px; transition: background 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .password-wrapper { position: relative; width: 100%; }
+        .password-eye-btn { position: absolute; right: 12px; top: 58%; transform: translateY(-50%); color: #64748b; cursor: pointer; font-size: 14px; }
+
+        .google-auth-btn { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid rgba(14, 165, 233, 0.3); background: #ffffff; color: #0f172a; font-weight: 700; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 10px; transition: background 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
         .google-auth-btn:hover { background: rgba(14, 165, 233, 0.08); }
+        .auth-container .modal-input { background: #f8fafc; color: #0f172a; border: 1px solid rgba(14, 165, 233, 0.28); width: 100%; padding: 11px 14px; border-radius: 10px; font-size: 12px; margin-top: 10px; outline: none; }
 
         .vestify-header { padding: 14px 16px; background: var(--bg-header); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100; }
         .brand-row { display: flex; justify-content: space-between; align-items: center; }
@@ -176,43 +188,8 @@
 
         .info-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; padding: 18px; margin-bottom: 14px; }
         .info-card h4 { font-size: 14px; color: var(--sky-primary); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
-        /* ULTRA-MODERN HIGH-CONVERTING AUTH SCREEN */
-        #authScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #f0f9ff 0%, #bae6fd 100%); z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 14px 16px 30px 16px; overflow-y: auto; }
-        .auth-bg-slider { position: fixed; inset: 0; z-index: 0; overflow: hidden; opacity: 0.2; }
-        .auth-slide { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0; transform: scale(1.06); transition: opacity 1.5s ease-in-out, transform 8s ease-out; }
-        .auth-slide.active { opacity: 0.45; transform: scale(1); }
-        .auth-bg-overlay { position: fixed; inset: 0; background: linear-gradient(180deg, rgba(240, 249, 255, 0.85) 0%, rgba(224, 242, 254, 0.96) 100%); z-index: 1; }
 
-        .auth-live-payout-strip { position: relative; z-index: 2; width: 100%; max-width: 470px; background: rgba(255, 255, 255, 0.92); border: 1px solid rgba(14, 165, 233, 0.35); border-radius: 14px; padding: 8px 12px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; box-shadow: 0 6px 20px rgba(14, 165, 233, 0.12); font-size: 11px; color: #0369a1; font-weight: 700; }
-        .pulse-dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; box-shadow: 0 0 0 rgba(16, 185, 129, 0.7); animation: pulseGreen 1.5s infinite; flex-shrink: 0; }
-        @keyframes pulseGreen { 0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); } 70% { box-shadow: 0 0 0 7px rgba(16, 185, 129, 0); } 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
-
-        .auth-container { position: relative; z-index: 2; background: rgba(255, 255, 255, 0.95); border: 1px solid rgba(14, 165, 233, 0.32); border-radius: 28px; padding: 24px 20px; width: 100%; max-width: 470px; text-align: center; backdrop-filter: blur(24px); box-shadow: 0 25px 60px rgba(14, 165, 233, 0.22); color: #0f172a; }
-
-        .auth-stats-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; background: linear-gradient(135deg, #0ea5e9, #0284c7); border-radius: 14px; padding: 10px 6px; margin: 12px 0; color: #fff; box-shadow: 0 6px 18px rgba(14, 165, 233, 0.3); }
-        .auth-stat-item b { display: block; font-size: 13px; font-weight: 800; }
-        .auth-stat-item span { font-size: 9px; opacity: 0.9; font-weight: 600; text-transform: uppercase; }
-
-        .auth-feature-pills { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 12px 0; }
-        .auth-pill-box { background: rgba(14, 165, 233, 0.08); border: 1px solid rgba(14, 165, 233, 0.22); border-radius: 12px; padding: 8px 4px; transition: transform 0.2s; }
-        .auth-pill-box:hover { transform: translateY(-2px); background: rgba(14, 165, 233, 0.14); }
-        .auth-pill-box b { display: block; font-size: 11px; color: #0284c7; }
-        .auth-pill-box span { font-size: 9px; color: #475569; font-weight: 600; }
-
-        .auth-promo-banner { background: linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(14, 165, 233, 0.12)); border: 1px dashed #10b981; border-radius: 12px; padding: 8px 10px; margin-bottom: 14px; font-size: 11px; color: #065f46; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 6px; }
-
-        .auth-tabs { display: flex; gap: 8px; margin-bottom: 14px; background: rgba(14, 165, 233, 0.09); padding: 5px; border-radius: 14px; }
-        .auth-tab-btn { flex: 1; padding: 10px; border-radius: 10px; border: none; background: transparent; color: #475569; font-weight: 700; cursor: pointer; transition: all 0.3s; font-size: 12px; }
-        .auth-tab-btn.active { background: linear-gradient(135deg, #0ea5e9, #0284c7); color: white; box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4); }
-
-        .password-wrapper { position: relative; width: 100%; }
-        .password-eye-btn { position: absolute; right: 12px; top: 58%; transform: translateY(-50%); color: #64748b; cursor: pointer; font-size: 14px; }
-
-        .google-auth-btn { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid rgba(14, 165, 233, 0.3); background: #ffffff; color: #0f172a; font-weight: 700; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 10px; transition: background 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        .google-auth-btn:hover { background: rgba(14, 165, 233, 0.08); }
-        .auth-container .modal-input { background: #f8fafc; color: #0f172a; border: 1px solid rgba(14, 165, 233, 0.28); }
-        
-                /* CLASSIC AVIATOR RED / MAROON THEME STYLES */
+        /* CLASSIC AVIATOR RED / MAROON THEME STYLES */
         .aviator-wrap { margin: 16px 0; display: flex; flex-direction: column; gap: 12px; }
         .aviator-topbar { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 18px; padding: 12px 14px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; }
         .aviator-status-pill { font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 20px; letter-spacing: 0.5px; display: inline-flex; align-items: center; gap: 6px; }
@@ -250,6 +227,27 @@
         input:checked + .toggle-slider:before { transform: translateX(16px); }
 
         .live-badge-real { background: rgba(16, 185, 129, 0.2); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.45); font-size: 9px; padding: 1px 5px; border-radius: 5px; font-weight: 800; margin-left: 4px; }
+        
+        .reward-toast { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(50px); background: #0ea5e9; color: #fff; padding: 10px 20px; border-radius: 30px; font-size: 12px; font-weight: 800; opacity: 0; transition: all 0.3s ease; z-index: 999999; box-shadow: 0 8px 25px rgba(14,165,233,0.4); pointer-events: none; }
+        .reward-toast.toast-show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--bg-header); backdrop-filter: blur(16px); border-top: 1px solid var(--border-color); display: flex; justify-content: space-around; padding: 8px 0 12px 0; z-index: 100; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 3px; color: var(--text-muted); font-size: 10px; font-weight: 700; cursor: pointer; }
+        .nav-item i { font-size: 18px; }
+        .nav-item.active { color: var(--sky-primary); }
+
+        .premium-modal { position: fixed; inset: 0; background: rgba(2, 8, 20, 0.82); backdrop-filter: blur(8px); z-index: 99999; display: flex; align-items: center; justify-content: center; padding: 16px; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+        .premium-modal.modal-open { opacity: 1; pointer-events: auto; }
+        .modal-content { background: var(--bg-card-solid); border: 1px solid var(--border-color); border-radius: 24px; padding: 22px; width: 100%; max-width: 420px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.6); position: relative; }
+        .close-modal-btn { position: absolute; top: 14px; right: 16px; font-size: 20px; color: var(--text-muted); cursor: pointer; font-weight: 800; }
+
+        .section-title { font-size: 13px; font-weight: 800; color: var(--text-main); margin: 18px 16px 10px 16px; display: flex; align-items: center; gap: 8px; }
+        .task-card { background: var(--bg-card); border: 1px solid var(--border-color); padding: 14px; border-radius: 16px; margin: 0 16px 10px 16px; display: flex; justify-content: space-between; align-items: center; }
+        .task-info { display: flex; align-items: center; gap: 12px; }
+        .task-icon { width: 38px; height: 38px; background: rgba(14, 165, 233, 0.12); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--sky-primary); font-size: 16px; }
+        .faq-item { border-bottom: 1px solid var(--border-color); padding: 12px 0; cursor: pointer; }
+        .faq-q { font-size: 12px; font-weight: 700; display: flex; justify-content: space-between; align-items: center; }
+        .faq-a { font-size: 11px; color: var(--text-muted); margin-top: 6px; display: none; line-height: 1.5; }
     </style>
 </head>
 <body>
@@ -369,7 +367,7 @@
         <div class="admin-container">
             <div class="close-modal-btn" onclick="closeAdminPortal()" style="position: static; text-align: right; margin-bottom: 10px; color:#38bdf8;">&times; Close Admin</div>
             <h3 style="color: #38bdf8; font-weight: 800; margin-bottom: 5px;"><i class="fa-solid fa-user-shield"></i> Super Admin Control Panel</h3>
-            <p style="font-size: 11px; color: #94a3b8; margin-bottom: 16px;">Full Control: Users, Nodes, Aviator Traffic, Taxes & Maintenance</p>
+            <p style="font-size: 11px; color: #94a3b8; margin-bottom: 16px;">Full Control: Users, Nodes, Aviator Traffic, Taxes & Maintenance ON/OFF</p>
             
             <input type="password" id="adminSecretKeyField" class="modal-input" placeholder="Enter Admin Secret Password" style="margin-top:0;">
             <button class="buy-plan-btn" onclick="authenticateAdminSystemKey()" style="width:100%; margin:12px 0; padding:10px;">Login Admin</button>
@@ -438,9 +436,9 @@
                     <div id="adminExistingNodesList" style="font-size: 11px; display: flex; flex-direction: column; gap: 6px;">Loading nodes...</div>
                 </div>
 
-                <!-- 5. AVIATOR, TAX & SYSTEM CONTROL -->
+                <!-- 5. AVIATOR, TAX & MAINTENANCE SYSTEM CONTROL -->
                 <div id="adminGameControlSection" style="display: none;">
-                    <h5 style="font-size: 13px; color: #38bdf8; margin-bottom: 10px;"><i class="fa-solid fa-sliders"></i> Aviator Algorithm, Crowd & System Control</h5>
+                    <h5 style="font-size: 13px; color: #38bdf8; margin-bottom: 10px;"><i class="fa-solid fa-sliders"></i> Aviator Algorithm, Crowd & Maintenance Control</h5>
                     
                     <div style="background:rgba(255,255,255,0.03); padding:12px; border-radius:14px; margin-bottom:12px; border:1px solid rgba(56,189,248,0.25);">
                         <label style="font-size:11px; color:#38bdf8; font-weight:700;">Aviator Win Difficulty Mode:</label>
@@ -459,15 +457,18 @@
                         <label style="font-size:11px; color:#38bdf8; font-weight:700; display:block; margin-top:10px;">Aviator Base Online Crowd Multiplier:</label>
                         <input type="number" id="adminCrowdBaseInput" class="modal-input" placeholder="Default: 280 (Live counter fluctuates around this)" value="280" style="margin-top:4px;">
 
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px; padding:8px; background:rgba(239,68,68,0.1); border-radius:10px;">
-                            <span style="font-size:11px; color:#fca5a5; font-weight:700;">Maintenance Mode (Lock User Access):</span>
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px; padding:10px; background:rgba(239,68,68,0.12); border-radius:10px; border:1px solid rgba(239,68,68,0.3);">
+                            <div>
+                                <span style="font-size:11px; color:#fca5a5; font-weight:800; display:block;">Maintenance Mode (ON / OFF):</span>
+                                <span style="font-size:9px; color:#94a3b8;">Turn ON to lock app for maintenance, OFF to restore instantly.</span>
+                            </div>
                             <label class="toggle-switch">
                                 <input type="checkbox" id="adminMaintenanceToggle">
                                 <span class="toggle-slider"></span>
                             </label>
                         </div>
 
-                        <button class="buy-plan-btn" onclick="saveSystemGameAndTaxSettings()" style="width:100%; margin-top:12px; padding:10px;">Save All System Settings</button>
+                        <button class="buy-plan-btn" onclick="saveSystemGameAndTaxSettings()" style="width:100%; margin-top:14px; padding:11px; background:linear-gradient(135deg, #10b981, #059669);">Save All System Settings</button>
                     </div>
                 </div>
 
@@ -660,7 +661,7 @@
         </div>
     </div>
 
-        <!-- PAGE 2: AVIATOR CLASSIC CRASH GAME MODULE -->
+    <!-- PAGE 2: AVIATOR CLASSIC CRASH GAME MODULE -->
     <div id="pageAviator" class="app-view-page">
         <div class="aviator-wrap">
             <div class="aviator-topbar">
@@ -1251,7 +1252,6 @@
         ];
 
         function generateRandomMaskedPlayerIdentity() {
-            // 50% chance masked mobile number, 50% chance realistic username + digits
             if (Math.random() < 0.5) {
                 const prefixes = ["0300", "0301", "0312", "0315", "0321", "0333", "0334", "0345", "0346", "0318"];
                 const pref = prefixes[Math.floor(Math.random() * prefixes.length)];
@@ -1265,13 +1265,12 @@
         }
 
         function generateMassiveSimulatedCrowd() {
-            const count = Math.floor(65 + Math.random() * 45); // 65 to 110 live bets per round
+            const count = Math.floor(65 + Math.random() * 45);
             const betPool = [50, 100, 150, 200, 300, 500, 750, 1000, 1500, 2000, 3500, 5000, 10000, 15000, 25000];
             const list = [];
 
             for (let i = 0; i < count; i++) {
                 const betAmt = betPool[Math.floor(Math.random() * betPool.length)];
-                // Weighted realistic cashout targets
                 const r = Math.random();
                 let target = 1.5;
                 if (r < 0.45) target = parseFloat((1.15 + Math.random() * 0.85).toFixed(2));
@@ -1329,7 +1328,6 @@
                 snap.forEach(doc => {
                     const d = doc.data();
                     const ts = d.updatedAt ? d.updatedAt.toDate().getTime() : now;
-                    // Only show recent live bets from last 2 minutes
                     if (now - ts < 120000) {
                         activeReal.push(d);
                     }
@@ -1573,7 +1571,6 @@
             pState.betAmount = amount;
             playAviatorTone("bet");
 
-            // Increase displayed player count dynamically on every bet & sync real bet live
             aviatorState.displayedPlayerCount += 1;
             updateDynamicPlayerCounter(false);
             broadcastRealBetToLiveFeed(panel, amount, "ACTIVE", 0, 0);
@@ -1596,7 +1593,6 @@
             userWithdrawableBalance += payout;
             pState.activeBet = false;
 
-            // Broadcast cashout win to all live players
             broadcastRealBetToLiveFeed(panel, pState.betAmount, "WON", cashMult, payout);
 
             updateWalletUI();
@@ -1652,7 +1648,6 @@
             generateMassiveSimulatedCrowd();
             renderLiveBetsFeed();
 
-            // Fluctuate player count & live bets every 1.4 seconds
             setInterval(() => {
                 updateDynamicPlayerCounter(false);
                 if (aviatorState.status === "FLYING") {
@@ -1838,7 +1833,6 @@
             let html = "";
             let totalShown = 0;
 
-            // 1. Current User's Active Bets (Always Top)
             [1, 2].forEach(p => {
                 if (aviatorState.panels[p].activeBet) {
                     totalShown++;
@@ -1851,7 +1845,6 @@
                 }
             });
 
-            // 2. Other Real Players from Firestore Live Bets
             aviatorState.realLiveFirestoreBets.forEach(rb => {
                 if (rb.uid === currentUserId) return;
                 totalShown++;
@@ -1864,7 +1857,6 @@
                 </div>`;
             });
 
-            // 3. Massive Simulated Crowd (65 - 110+ Random Names & Masked Numbers)
             aviatorState.simulatedBots.forEach(b => {
                 totalShown++;
                 const won = aviatorState.status !== "BETTING" && aviatorState.currentMultiplier >= b.targetMult && b.targetMult <= aviatorState.crashPoint;
@@ -2904,7 +2896,7 @@
 
             db.collection("system_settings").doc("game_tax_config").set(payload, { merge: true }).then(() => {
                 document.getElementById("adminForceCrashInput").value = "";
-                triggerToastDisplay("System, Aviator & Tax settings updated live!");
+                triggerToastDisplay(maintMode ? "System & Maintenance Mode activated!" : "Maintenance turned OFF. App is Live!");
             });
         };
 
@@ -3256,7 +3248,6 @@
         }
 
         function startLiveSocialProofTicker() {
-                function startLiveSocialProofTicker() {
             const messages = [
                 "0300****82 withdrew Rs. 2,400 via EasyPaisa",
                 "hamza_77 won Rs. 14,500 @ 14.5x in Aviator!",
@@ -3286,7 +3277,7 @@
                 idx = (idx + 1) % messages.length;
                 if (el) el.innerText = messages[idx];
                 if (authTickerEl) authTickerEl.innerText = messages[idx];
-            }, 4000);
+            }, 3500);
         }
 
         function triggerToastDisplay(message) {
