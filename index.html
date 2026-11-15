@@ -2649,7 +2649,7 @@
             db.collection("users").doc(currentUserId).get().then(doc => {
                 if(doc.data().hasSpunToday) { triggerToastDisplay("You already spun today! Come back tomorrow."); return; }
                 
-                const matrixPrizes = [5, 10, 4, 8, 10, 15, 20, 25, 12, 18];
+                const matrixPrizes = [5, 10, 4, 0, 10, 15, 20, 0, 12, 18];
                 const winToken = matrixPrizes[Math.floor(Math.random() * matrixPrizes.length)];
                 const wheel = document.getElementById('luckyBonusWheel');
                 
