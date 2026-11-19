@@ -118,11 +118,10 @@
         .auth-tab-btn.active { background: linear-gradient(135deg, #0ea5e9, #0284c7); color: white; box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4); }
         
         .password-wrapper { position: relative; width: 100%; }
-        .password-eye-btn { position: absolute; right: 12px; top: 58%; transform: translateY(-50%); color: #64748b; cursor: pointer; font-size: 14px; }
-
         .google-auth-btn { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid rgba(14, 165, 233, 0.3); background: #ffffff; color: #0f172a; font-weight: 700; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 10px; transition: background 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
         .google-auth-btn:hover { background: rgba(14, 165, 233, 0.08); }
-        .auth-container .modal-input { background: #f8fafc; color: #0f172a; border: 1px solid rgba(14, 165, 233, 0.28); width: 100%; padding: 11px 14px; border-radius: 10px; font-size: 12px; margin-top: 10px; outline: none; }
+        .modal-input { background: var(--input-bg); color: var(--text-main); border: 1px solid var(--border-color); width: 100%; padding: 11px 14px; border-radius: 10px; font-size: 12px; margin-top: 10px; outline: none; }
+        .auth-container .modal-input { background: #f8fafc; color: #0f172a; border: 1px solid rgba(14, 165, 233, 0.28); }
 
         .vestify-header { padding: 14px 16px; background: var(--bg-header); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100; }
         .brand-row { display: flex; justify-content: space-between; align-items: center; }
@@ -218,7 +217,45 @@
         .aviator-pill-mid { background: rgba(168, 85, 247, 0.16); color: #a855f7; border: 1px solid rgba(168, 85, 247, 0.3); }
         .aviator-pill-high { background: rgba(234, 179, 8, 0.18); color: #eab308; border: 1px solid rgba(234, 179, 8, 0.35); }
         .aviator-pill-mega { background: rgba(16, 185, 129, 0.22); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.45); }
-        
+
+        /* CASINO GAMES HUB (DRAGON TIGER, ANDAR BAHAR, MINES) */
+        .games-hub-tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 14px 0; }
+        .game-hub-tab-btn { background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-muted); padding: 11px 6px; border-radius: 14px; font-size: 11px; font-weight: 800; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; transition: all 0.2s; }
+        .game-hub-tab-btn.active { background: linear-gradient(135deg, #0ea5e9, #0284c7); color: #fff; border-color: #38bdf8; box-shadow: 0 4px 14px var(--sky-glow); }
+        .game-module-pane { display: none; flex-direction: column; gap: 12px; }
+        .game-module-pane.active { display: flex; }
+
+        .casino-table-felt { background: radial-gradient(circle at 50% 35%, #0c3b2e 0%, #051c16 90%); border: 2px solid rgba(16, 185, 129, 0.35); border-radius: 22px; padding: 16px 12px; box-shadow: inset 0 0 35px rgba(0,0,0,0.75); color: #fff; }
+        .dt-table-felt { background: radial-gradient(circle at 50% 35%, #3b0d14 0%, #160407 90%); border: 2px solid rgba(239, 68, 68, 0.38); }
+
+        .playing-card-slot { width: 72px; height: 100px; border-radius: 12px; background: linear-gradient(135deg, #1e293b, #0f172a); border: 2px dashed rgba(255,255,255,0.28); display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 800; transition: transform 0.35s ease, background 0.35s ease; box-shadow: 0 8px 20px rgba(0,0,0,0.45); }
+        .playing-card-slot.revealed { background: #ffffff; border: 2px solid #e2e8f0; transform: scale(1.04); }
+        .card-red { color: #dc2626; }
+        .card-black { color: #0f172a; }
+
+        .bet-zone-grid-3 { display: grid; grid-template-columns: 1fr 0.85fr 1fr; gap: 8px; margin-top: 12px; }
+        .bet-zone-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+        .table-bet-zone { background: rgba(255,255,255,0.06); border: 1.5px solid rgba(255,255,255,0.22); border-radius: 16px; padding: 12px 8px; text-align: center; cursor: pointer; transition: transform 0.15s, border-color 0.2s, background 0.2s; position: relative; }
+        .table-bet-zone:active { transform: scale(0.96); }
+        .table-bet-zone.winner-glow { border-color: #eab308; background: rgba(234, 179, 8, 0.22); box-shadow: 0 0 18px rgba(234, 179, 8, 0.45); }
+        .zone-my-chip { display: inline-block; margin-top: 6px; background: #eab308; color: #0f172a; font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 99px; }
+
+        .poker-chips-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
+        .poker-chip { aspect-ratio: 1; border-radius: 50%; border: 3px dashed rgba(255,255,255,0.75); font-size: 10px; font-weight: 800; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform 0.15s, box-shadow 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.35); }
+        .poker-chip.selected { transform: translateY(-4px) scale(1.08); box-shadow: 0 0 0 3px #eab308, 0 6px 14px rgba(234,179,8,0.5); }
+
+        .ab-cards-track { display: flex; gap: 4px; overflow-x: auto; min-height: 44px; padding: 6px; background: rgba(0,0,0,0.28); border-radius: 10px; align-items: center; margin-top: 6px; }
+        .mini-deal-card { min-width: 30px; height: 40px; background: #fff; border-radius: 6px; font-size: 11px; font-weight: 800; display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 2px 6px rgba(0,0,0,0.4); }
+
+        /* MINES 5x5 GRID */
+        .mines-grid-5x5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; background: var(--bg-sub); border: 1px solid var(--border-color); padding: 12px; border-radius: 20px; }
+        .mine-tile { aspect-ratio: 1; border-radius: 12px; background: linear-gradient(145deg, #162c4e, #0c1b33); border: 1px solid rgba(56, 189, 248, 0.28); display: flex; align-items: center; justify-content: center; font-size: 20px; cursor: pointer; transition: transform 0.15s, background 0.25s; box-shadow: 0 4px 10px rgba(0,0,0,0.25); }
+        [data-theme="light"] .mine-tile { background: linear-gradient(145deg, #e0f2fe, #bae6fd); border-color: rgba(14, 165, 233, 0.4); }
+        .mine-tile:active { transform: scale(0.93); }
+        .mine-tile.safe-revealed { background: linear-gradient(135deg, #10b981, #059669); border-color: #6ee7b7; color: #fff; cursor: default; }
+        .mine-tile.bomb-revealed { background: linear-gradient(135deg, #ef4444, #b91c1c); border-color: #fca5a5; color: #fff; cursor: default; }
+        .mine-tile.dim-revealed { opacity: 0.48; cursor: default; }
+
         .toggle-switch { position: relative; display: inline-block; width: 36px; height: 20px; }
         .toggle-switch input { opacity: 0; width: 0; height: 0; }
         .toggle-slider { position: absolute; cursor: pointer; inset: 0; background-color: #475569; transition: .3s; border-radius: 20px; }
@@ -228,12 +265,12 @@
 
         .live-badge-real { background: rgba(16, 185, 129, 0.2); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.45); font-size: 9px; padding: 1px 5px; border-radius: 5px; font-weight: 800; margin-left: 4px; }
         
-        .reward-toast { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(50px); background: #0ea5e9; color: #fff; padding: 10px 20px; border-radius: 30px; font-size: 12px; font-weight: 800; opacity: 0; transition: all 0.3s ease; z-index: 999999; box-shadow: 0 8px 25px rgba(14,165,233,0.4); pointer-events: none; }
+        .reward-toast { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(50px); background: #0ea5e9; color: #fff; padding: 10px 20px; border-radius: 30px; font-size: 12px; font-weight: 800; opacity: 0; transition: all 0.3s ease; z-index: 999999; box-shadow: 0 8px 25px rgba(14,165,233,0.4); pointer-events: none; text-align: center; max-width: 90%; }
         .reward-toast.toast-show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
         .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--bg-header); backdrop-filter: blur(16px); border-top: 1px solid var(--border-color); display: flex; justify-content: space-around; padding: 8px 0 12px 0; z-index: 100; }
         .nav-item { display: flex; flex-direction: column; align-items: center; gap: 3px; color: var(--text-muted); font-size: 10px; font-weight: 700; cursor: pointer; }
-        .nav-item i { font-size: 18px; }
+        .nav-item i { font-size: 17px; }
         .nav-item.active { color: var(--sky-primary); }
 
         .premium-modal { position: fixed; inset: 0; background: rgba(2, 8, 20, 0.82); backdrop-filter: blur(8px); z-index: 99999; display: flex; align-items: center; justify-content: center; padding: 16px; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
@@ -286,7 +323,7 @@
                 <i class="fa-solid fa-cloud-bolt"></i>
             </div>
             <h2 style="font-weight: 800; color: #0f172a; letter-spacing: 0.8px; font-size: 20px;">VESTIFY PRO</h2>
-            <p style="font-size: 11px; color: #0284c7; margin-top: 2px; font-weight: 700;">Cloud Mining Nodes & Live Aviator Crash Gaming</p>
+            <p style="font-size: 11px; color: #0284c7; margin-top: 2px; font-weight: 700;">Cloud Mining Nodes, Aviator & Live Casino Hub</p>
 
             <!-- LIVE PLATFORM STATS BAR -->
             <div class="auth-stats-bar">
@@ -300,7 +337,7 @@
                 </div>
                 <div class="auth-stat-item">
                     <b>500x</b>
-                    <span>Aviator Max</span>
+                    <span>Max Multiplier</span>
                 </div>
             </div>
 
@@ -311,8 +348,8 @@
                     <span>Auto Daily Profit</span>
                 </div>
                 <div class="auth-pill-box">
-                    <b><i class="fa-solid fa-plane-up"></i> Aviator Pro</b>
-                    <span>Instant Cashout</span>
+                    <b><i class="fa-solid fa-gamepad"></i> Live Games</b>
+                    <span>Aviator, DT, Mines</span>
                 </div>
                 <div class="auth-pill-box">
                     <b><i class="fa-solid fa-wallet"></i> Fast Payout</b>
@@ -334,7 +371,6 @@
             <input type="text" id="authUsername" class="modal-input" placeholder="Choose Unique Username" style="margin-top:0; display:none;">
             <input type="email" id="authEmail" class="modal-input" placeholder="Email Address">
             
-            <!-- PASSWORD FIELD WITH SHOW/HIDE EYE TOGGLE -->
             <div class="password-wrapper" style="position: relative; width: 100%;">
                 <input type="password" id="authPassword" class="modal-input" placeholder="Password" style="padding-right: 38px;">
                 <i id="authPassEye" class="fa-solid fa-eye" style="position: absolute; right: 12px; top: 58%; transform: translateY(-50%); color: #64748b; cursor: pointer; font-size: 14px;" onclick="const p=document.getElementById('authPassword'); p.type=p.type==='password'?'text':'password'; this.classList.toggle('fa-eye-slash');"></i>
@@ -524,7 +560,7 @@
                 <div class="logo-icon"><i class="fa-solid fa-cloud-bolt"></i></div>
                 <div class="logo-text">
                     <h1>VESTIFY PRO</h1>
-                    <p style="font-size:10px; color:var(--sky-primary); font-weight: 700;">Sky Cloud Mining & Aviator</p>
+                    <p style="font-size:10px; color:var(--sky-primary); font-weight: 700;">Sky Cloud Mining & Live Games</p>
                 </div>
             </div>
             <div style="display:flex; align-items:center; gap:8px;">
@@ -579,7 +615,7 @@
                 <div class="wallet-sub-box">
                     <span style="font-size:10px; color:#eab308; font-weight:700;"><i class="fa-solid fa-gift"></i> Bonus / Play Wallet</span>
                     <h4 style="font-size:15px; color:var(--text-main); margin-top:3px;">Rs. <span id="bonusBalanceDisplay">0.00</span></h4>
-                    <span style="font-size:9px; color:var(--text-muted);">For Nodes & Aviator Only</span>
+                    <span style="font-size:9px; color:var(--text-muted);">For Nodes & Games Only</span>
                 </div>
             </div>
 
@@ -683,8 +719,8 @@
             <div style="background: linear-gradient(135deg, rgba(239,68,68,0.16), rgba(185,28,28,0.12)); border: 1px solid rgba(239,68,68,0.4); border-radius: 16px; padding: 12px 14px;">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
                     <div>
-                        <span style="font-size:11px; font-weight:800; color:#ef4444;"><i class="fa-solid fa-dharmachakra"></i> AVIATOR 5,000 PKR SPIN REWARD</span>
-                        <p style="font-size:10px; color:var(--text-muted); margin-top:2px;">Play Rs. 5,000 in Aviator to unlock 1 Free Spin (Win Rs. 100 – Rs. 50,000!)</p>
+                        <span style="font-size:11px; font-weight:800; color:#ef4444;"><i class="fa-solid fa-dharmachakra"></i> VIP 5,000 PKR SPIN REWARD</span>
+                        <p style="font-size:10px; color:var(--text-muted); margin-top:2px;">Play Rs. 5,000 in games to unlock 1 Free Spin (Win Rs. 100 – Rs. 50,000!)</p>
                     </div>
                     <button id="btnClaimAviatorSpin" class="buy-plan-btn" onclick="openAviatorMilestoneSpinModal()" style="padding:7px 12px; font-size:11px; background:linear-gradient(135deg, #eab308, #ca8a04); color:#040814;" disabled>
                         <i class="fa-solid fa-lock"></i> 0 / 5,000
@@ -900,6 +936,219 @@
             </div>
         </div>
     </div>
+
+    <!-- PAGE 2B: CASINO GAMES HUB (DRAGON TIGER, ANDAR BAHAR, MINES) -->
+    <div id="pageGamesHub" class="app-view-page">
+        <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:16px; padding:12px 14px; margin-top:14px; display:flex; justify-content:space-between; align-items:center;">
+            <div>
+                <span style="font-size:10px; color:var(--text-muted); font-weight:700;">SHARED GAME WALLET</span>
+                <h4 style="font-size:16px; color:var(--sky-primary); font-weight:800;">Rs. <span id="hubSharedBalanceLbl">0.00</span></h4>
+            </div>
+            <button class="buy-plan-btn" onclick="openDepositModal()" style="padding:7px 14px; font-size:11px;">+ Add Funds</button>
+        </div>
+
+        <div class="games-hub-tabs">
+            <button class="game-hub-tab-btn active" id="hubTabDT" onclick="switchCasinoHubGame('dt')">
+                <i class="fa-solid fa-dragon" style="font-size:16px; color:#ef4444;"></i>
+                <span>Dragon Tiger</span>
+            </button>
+            <button class="game-hub-tab-btn" id="hubTabAB" onclick="switchCasinoHubGame('ab')">
+                <i class="fa-solid fa-clone" style="font-size:16px; color:#10b981;"></i>
+                <span>Andar Bahar</span>
+            </button>
+            <button class="game-hub-tab-btn" id="hubTabMines" onclick="switchCasinoHubGame('mines')">
+                <i class="fa-solid fa-bomb" style="font-size:16px; color:#eab308;"></i>
+                <span>Mines</span>
+            </button>
+        </div>
+
+        <!-- GAME 1: DRAGON TIGER -->
+        <div id="gamePaneDT" class="game-module-pane active">
+            <div class="casino-table-felt dt-table-felt">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                    <span style="font-size:12px; font-weight:800; color:#fca5a5;"><i class="fa-solid fa-dragon"></i> DRAGON TIGER LIVE</span>
+                    <span id="dtTimerBadge" style="background:#eab308; color:#0f172a; font-size:11px; font-weight:800; padding:3px 10px; border-radius:99px;">Betting: 15s</span>
+                </div>
+
+                <!-- Trend Strip -->
+                <div id="dtTrendStrip" style="display:flex; gap:5px; overflow-x:auto; padding:6px; background:rgba(0,0,0,0.3); border-radius:10px; margin-bottom:12px;"></div>
+
+                <!-- Card Table -->
+                <div style="display:flex; justify-content:space-around; align-items:center; padding:8px 0;">
+                    <div style="text-align:center;">
+                        <span style="font-size:11px; font-weight:800; color:#f87171; display:block; margin-bottom:6px;">DRAGON</span>
+                        <div id="dtDragonCardSlot" class="playing-card-slot"><i class="fa-solid fa-dragon" style="font-size:24px; color:#ef4444; opacity:0.6;"></i></div>
+                    </div>
+                    <div style="font-size:16px; font-weight:800; color:#eab308;">VS</div>
+                    <div style="text-align:center;">
+                        <span style="font-size:11px; font-weight:800; color:#fbbf24; display:block; margin-bottom:6px;">TIGER</span>
+                        <div id="dtTigerCardSlot" class="playing-card-slot"><i class="fa-solid fa-paw" style="font-size:24px; color:#eab308; opacity:0.6;"></i></div>
+                    </div>
+                </div>
+
+                <p id="dtStatusBanner" style="text-align:center; font-size:11px; color:#fde68a; font-weight:700; margin-top:8px;">Select a chip & tap Dragon, Tie, or Tiger</p>
+
+                <!-- 3 Betting Zones -->
+                <div class="bet-zone-grid-3">
+                    <div class="table-bet-zone" id="dtZoneDragon" onclick="placeDtChipBet('dragon')">
+                        <b style="font-size:13px; color:#f87171;">DRAGON</b>
+                        <span style="display:block; font-size:10px; color:#cbd5e1;">Payout 1:1</span>
+                        <span class="zone-my-chip" id="dtBetLblDragon">Rs. 0</span>
+                    </div>
+                    <div class="table-bet-zone" id="dtZoneTie" onclick="placeDtChipBet('tie')">
+                        <b style="font-size:13px; color:#10b981;">TIE</b>
+                        <span style="display:block; font-size:10px; color:#cbd5e1;">Payout 8:1</span>
+                        <span class="zone-my-chip" id="dtBetLblTie">Rs. 0</span>
+                    </div>
+                    <div class="table-bet-zone" id="dtZoneTiger" onclick="placeDtChipBet('tiger')">
+                        <b style="font-size:13px; color:#fbbf24;">TIGER</b>
+                        <span style="display:block; font-size:10px; color:#cbd5e1;">Payout 1:1</span>
+                        <span class="zone-my-chip" id="dtBetLblTiger">Rs. 0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chip Selector & Controls -->
+            <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:18px; padding:12px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                    <span style="font-size:11px; font-weight:800; color:var(--text-muted);">SELECT CHIP (MIN RS. 10)</span>
+                    <div style="display:flex; gap:6px;">
+                        <button class="aviator-chip-btn" onclick="repeatDtLastBets()" style="padding:5px 10px; color:#0ea5e9;">Repeat</button>
+                        <button class="aviator-chip-btn" onclick="clearDtCurrentBets()" style="padding:5px 10px; color:#ef4444;">Clear</button>
+                    </div>
+                </div>
+                <div class="poker-chips-row" id="dtChipsContainer">
+                    <button class="poker-chip selected" style="background:#0284c7;" onclick="selectDtChip(10, this)">10</button>
+                    <button class="poker-chip" style="background:#059669;" onclick="selectDtChip(50, this)">50</button>
+                    <button class="poker-chip" style="background:#d97706;" onclick="selectDtChip(100, this)">100</button>
+                    <button class="poker-chip" style="background:#dc2626;" onclick="selectDtChip(500, this)">500</button>
+                    <button class="poker-chip" style="background:#7c3aed;" onclick="selectDtChip(1000, this)">1K</button>
+                    <button class="poker-chip" style="background:#be185d;" onclick="selectDtChip(5000, this)">5K</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- GAME 2: ANDAR BAHAR -->
+        <div id="gamePaneAB" class="game-module-pane">
+            <div class="casino-table-felt">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                    <span style="font-size:12px; font-weight:800; color:#6ee7b7;"><i class="fa-solid fa-clone"></i> ANDAR BAHAR LIVE</span>
+                    <span id="abTimerBadge" style="background:#eab308; color:#0f172a; font-size:11px; font-weight:800; padding:3px 10px; border-radius:99px;">Betting: 15s</span>
+                </div>
+
+                <!-- Trend Strip -->
+                <div id="abTrendStrip" style="display:flex; gap:5px; overflow-x:auto; padding:6px; background:rgba(0,0,0,0.3); border-radius:10px; margin-bottom:10px;"></div>
+
+                <!-- Joker Center Card -->
+                <div style="display:flex; flex-direction:column; align-items:center; margin-bottom:10px;">
+                    <span style="font-size:10px; font-weight:800; color:#fde68a; letter-spacing:0.6px; margin-bottom:4px;">JOKER (MIDDLE CARD)</span>
+                    <div id="abJokerCardSlot" class="playing-card-slot" style="width:64px; height:88px;"><i class="fa-solid fa-crown" style="font-size:20px; color:#eab308;"></i></div>
+                </div>
+
+                <!-- Dealt Cards Tracks -->
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                    <div>
+                        <span style="font-size:10px; font-weight:800; color:#38bdf8;">ANDAR CARDS</span>
+                        <div id="abAndarTrack" class="ab-cards-track"></div>
+                    </div>
+                    <div>
+                        <span style="font-size:10px; font-weight:800; color:#f87171;">BAHAR CARDS</span>
+                        <div id="abBaharTrack" class="ab-cards-track"></div>
+                    </div>
+                </div>
+
+                <p id="abStatusBanner" style="text-align:center; font-size:11px; color:#a7f3d0; font-weight:700; margin-top:8px;">Place your bet on Andar or Bahar</p>
+
+                <!-- 2 Betting Zones -->
+                <div class="bet-zone-grid-2">
+                    <div class="table-bet-zone" id="abZoneAndar" onclick="placeAbChipBet('andar')">
+                        <b style="font-size:14px; color:#38bdf8;">ANDAR</b>
+                        <span style="display:block; font-size:10px; color:#cbd5e1;">Payout 0.9:1 (1.90x)</span>
+                        <span class="zone-my-chip" id="abBetLblAndar">Rs. 0</span>
+                    </div>
+                    <div class="table-bet-zone" id="abZoneBahar" onclick="placeAbChipBet('bahar')">
+                        <b style="font-size:14px; color:#f87171;">BAHAR</b>
+                        <span style="display:block; font-size:10px; color:#cbd5e1;">Payout 1:1 (2.00x)</span>
+                        <span class="zone-my-chip" id="abBetLblBahar">Rs. 0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chip Selector & Controls -->
+            <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:18px; padding:12px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                    <span style="font-size:11px; font-weight:800; color:var(--text-muted);">SELECT CHIP (MIN RS. 10)</span>
+                    <div style="display:flex; gap:6px;">
+                        <button class="aviator-chip-btn" onclick="repeatAbLastBets()" style="padding:5px 10px; color:#0ea5e9;">Repeat</button>
+                        <button class="aviator-chip-btn" onclick="clearAbCurrentBets()" style="padding:5px 10px; color:#ef4444;">Clear</button>
+                    </div>
+                </div>
+                <div class="poker-chips-row">
+                    <button class="poker-chip selected" style="background:#0284c7;" onclick="selectAbChip(10, this)">10</button>
+                    <button class="poker-chip" style="background:#059669;" onclick="selectAbChip(50, this)">50</button>
+                    <button class="poker-chip" style="background:#d97706;" onclick="selectAbChip(100, this)">100</button>
+                    <button class="poker-chip" style="background:#dc2626;" onclick="selectAbChip(500, this)">500</button>
+                    <button class="poker-chip" style="background:#7c3aed;" onclick="selectAbChip(1000, this)">1K</button>
+                    <button class="poker-chip" style="background:#be185d;" onclick="selectAbChip(5000, this)">5K</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- GAME 3: MINES (5x5 GRID) -->
+        <div id="gamePaneMines" class="game-module-pane">
+            <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:18px; padding:12px 14px; display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <span style="font-size:10px; color:var(--text-muted); font-weight:700;">CURRENT MULTIPLIER</span>
+                    <h4 id="minesCurrentMultLbl" style="font-size:18px; color:#10b981; font-weight:800;">1.00x</h4>
+                </div>
+                <div style="text-align:right;">
+                    <span style="font-size:10px; color:var(--text-muted); font-weight:700;">NEXT TILE</span>
+                    <h4 id="minesNextMultLbl" style="font-size:16px; color:#eab308; font-weight:800;">1.13x</h4>
+                </div>
+            </div>
+
+            <!-- 5x5 Grid -->
+            <div class="mines-grid-5x5" id="minesGridContainer"></div>
+
+            <!-- Mines Controls -->
+            <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:20px; padding:14px; display:flex; flex-direction:column; gap:10px;">
+                <div style="display:grid; grid-template-columns:1.3fr 1fr; gap:10px;">
+                    <div>
+                        <label style="font-size:10px; font-weight:800; color:var(--text-muted);">BET AMOUNT (MIN 10)</label>
+                        <input type="number" id="minesBetInput" class="modal-input" value="50" min="10" max="50000" style="margin-top:4px; font-weight:800;">
+                    </div>
+                    <div>
+                        <label style="font-size:10px; font-weight:800; color:var(--text-muted);">MINES (1 - 24)</label>
+                        <select id="minesCountSelect" class="modal-input" onchange="updateMinesPreviewMultiplier()" style="margin-top:4px; font-weight:800;">
+                            <option value="1">1 Mine</option>
+                            <option value="3" selected>3 Mines</option>
+                            <option value="5">5 Mines</option>
+                            <option value="10">10 Mines</option>
+                            <option value="15">15 Mines</option>
+                            <option value="20">20 Mines</option>
+                            <option value="24">24 Mines</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="aviator-quick-grid">
+                    <button class="aviator-chip-btn" onclick="adjustMinesBet('min')">Min</button>
+                    <button class="aviator-chip-btn" onclick="adjustMinesBet('half')">1/2</button>
+                    <button class="aviator-chip-btn" onclick="adjustMinesBet('double')">2x</button>
+                    <button class="aviator-chip-btn" onclick="adjustMinesBet('max')">Max</button>
+                </div>
+
+                <div style="display:flex; gap:8px;">
+                    <button id="btnMinesRandomTile" class="aviator-chip-btn" onclick="pickRandomMineTile()" style="padding:12px; flex:0.45; display:none; color:#eab308; border-color:rgba(234,179,8,0.4);">
+                        <i class="fa-solid fa-shuffle"></i> Random
+                    </button>
+                    <button id="btnMinesMainAction" class="buy-plan-btn" onclick="handleMinesMainAction()" style="flex:1; padding:13px; font-size:13px; font-weight:800;">
+                        START MINES GAME
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <!-- PAGE 3: UNLIMITED MULTI-TIER REFERRAL NETWORK -->
     <div id="pageAffiliate" class="app-view-page">
@@ -974,14 +1223,14 @@
             <h4>Vestify Pro Global Network</h4>
             <p><b>Registered Location:</b> 10 Anson Road, International Plaza, Singapore 079903</p>
             <p style="margin-top: 8px;"><b>Support Email:</b> <a href="mailto:webhub262@gmail.com" style="color:var(--sky-primary); text-decoration:none;">webhub262@gmail.com</a></p>
-            <p style="margin-top: 8px;">Vestify Pro provides user-friendly cloud mining and financial growth tools. By leasing hardware nodes, members can earn daily crypto yields and affiliate rewards safely and seamlessly.</p>
+            <p style="margin-top: 8px;">Vestify Pro provides user-friendly cloud mining and financial growth tools. By leasing hardware nodes, members can earn daily crypto yields, play live games, and earn affiliate rewards seamlessly.</p>
         </div>
 
         <div class="section-title" style="margin-left:0;"><i class="fa-solid fa-shield-halved"></i> Wallet & Withdrawal Rules</div>
         <div class="info-card">
             <h4>Fair Play & Payout Policy</h4>
-            <p>• <b>Bonus Wallet:</b> Sign-up bonuses, daily check-ins, and spin rewards can be used to purchase Mining Nodes or play Aviator, and cannot be withdrawn directly.<br>
-               • <b>Withdrawable Cash:</b> All Mining Node yields and Aviator game winnings go directly into your Withdrawable Cash wallet.<br>
+            <p>• <b>Bonus Wallet:</b> Sign-up bonuses, daily check-ins, and spin rewards can be used to purchase Mining Nodes or play Aviator, Dragon Tiger, Andar Bahar & Mines.<br>
+               • <b>Withdrawable Cash:</b> All Mining Node yields and game winnings go directly into your Withdrawable Cash wallet.<br>
                • <b>Weekend Free Payouts:</b> Minimum withdrawal is Rs. 100. Standard service fee applies Mon–Fri, while Saturday & Sunday withdrawals are <b>100% Tax-Free</b>!</p>
         </div>
 
@@ -992,16 +1241,17 @@
                 <div class="faq-a">Minimum deposit is Rs. 200 PKR and minimum withdrawal is Rs. 100 PKR via EasyPaisa, JazzCash, or Bank Transfer.</div>
             </div>
             <div class="faq-item" onclick="toggleFaqVisibility(this)">
-                <div class="faq-q">How do I get the Aviator 5,000 PKR Free Spin? <i class="fa-solid fa-chevron-down"></i></div>
-                <div class="faq-a">Every time your total Aviator bets reach Rs. 5,000, you unlock 1 free spin awarding between Rs. 100 and Rs. 50,000 bonus!</div>
+                <div class="faq-q">How do I get the 5,000 PKR Free Spin? <i class="fa-solid fa-chevron-down"></i></div>
+                <div class="faq-a">Every time your total game bets reach Rs. 5,000, you unlock 1 free spin awarding between Rs. 100 and Rs. 50,000 bonus!</div>
             </div>
         </div>
     </div>
 
-    <!-- BOTTOM NAVIGATION BAR -->
+    <!-- BOTTOM NAVIGATION BAR (6 TABS INCLUDING GAMES HUB) -->
     <div class="bottom-nav">
         <div class="nav-item active" id="nvHome" onclick="routeToView('pageHome', 'nvHome')"><i class="fa-solid fa-house"></i><span>Home</span></div>
         <div class="nav-item" id="nvAviator" onclick="routeToView('pageAviator', 'nvAviator')"><i class="fa-solid fa-rocket"></i><span>Aviator</span></div>
+        <div class="nav-item" id="nvGames" onclick="routeToView('pageGamesHub', 'nvGames')"><i class="fa-solid fa-dice"></i><span>Games</span></div>
         <div class="nav-item" id="nvAffiliate" onclick="routeToView('pageAffiliate', 'nvAffiliate')"><i class="fa-solid fa-users-gear"></i><span>Network</span></div>
         <div class="nav-item" id="nvHistory" onclick="routeToView('pageHistory', 'nvHistory')"><i class="fa-solid fa-receipt"></i><span>History</span></div>
         <div class="nav-item" id="nvLegal" onclick="routeToView('pageLegalHub', 'nvLegal')"><i class="fa-solid fa-folder-open"></i><span>Info Hub</span></div>
@@ -1099,12 +1349,12 @@
         </div>
     </div>
 
-    <!-- MODAL 5: AVIATOR 5,000 PKR MILESTONE FREE SPIN MODAL -->
+    <!-- MODAL 5: VIP 5,000 PKR MILESTONE FREE SPIN MODAL -->
     <div id="aviatorMilestoneSpinModal" class="premium-modal">
         <div class="modal-content">
             <div class="close-modal-btn" onclick="closeModal('aviatorMilestoneSpinModal')">&times;</div>
-            <h4 style="color:#eab308;"><i class="fa-solid fa-dharmachakra"></i> Aviator VIP Milestone Spin</h4>
-            <p style="font-size:11px; color:var(--text-muted); margin-top:4px;">You played Rs. 5,000 in Aviator! Spin to win <b>Rs. 100 to Rs. 50,000</b> bonus!</p>
+            <h4 style="color:#eab308;"><i class="fa-solid fa-dharmachakra"></i> VIP Milestone Spin</h4>
+            <p style="font-size:11px; color:var(--text-muted); margin-top:4px;">You played Rs. 5,000 in games! Spin to win <b>Rs. 100 to Rs. 50,000</b> bonus!</p>
             <div class="wheel-outer" id="aviatorMilestoneWheel" style="border-color:#eab308; width:140px; height:140px; margin:18px auto;">
                 <span style="font-size:14px; color:#eab308;">100 - 50000<br>PKR</span>
             </div>
@@ -1217,7 +1467,548 @@
         }
 
         /* =========================================================================
-           AVIATOR PRO ENGINE (DYNAMIC CROWD COUNTER + 70-110 RANDOM + REAL LIVE BETS)
+           CENTRALIZED GAME WALLET HELPER (SHARED BY AVIATOR, DT, AB, MINES)
+           ========================================================================= */
+        function placeSharedGameBet(amount) {
+            if (!currentUserId) {
+                triggerToastDisplay("Please sign in to play.");
+                return false;
+            }
+            if (isNaN(amount) || amount < 10) {
+                triggerToastDisplay("Minimum bet is Rs. 10.");
+                return false;
+            }
+            if (amount > getTotalPlayableBalance()) {
+                triggerToastDisplay("Insufficient balance! Please deposit funds.");
+                return false;
+            }
+            deductPlayableBalance(amount);
+            return true;
+        }
+
+        function creditSharedGameWin(payoutAmount) {
+            if (!currentUserId || payoutAmount <= 0) return;
+            userWithdrawableBalance += payoutAmount;
+            updateWalletUI();
+            db.collection("users").doc(currentUserId).update({
+                withdrawableBalance: userWithdrawableBalance,
+                balance: getTotalPlayableBalance()
+            });
+        }
+
+        function deductPlayableBalance(amount) {
+            let fromBonus = Math.min(userBonusBalance, amount);
+            let fromWithdrawable = amount - fromBonus;
+            userBonusBalance -= fromBonus;
+            userWithdrawableBalance -= fromWithdrawable;
+
+            aviatorWagerProgress += amount;
+            let newSpinsEarned = Math.floor(aviatorWagerProgress / 5000);
+            if (newSpinsEarned > 0) {
+                aviatorFreeSpinsAvailable += newSpinsEarned;
+                aviatorWagerProgress = aviatorWagerProgress % 5000;
+                triggerToastDisplay(`Unlocked ${newSpinsEarned} VIP Free Spin! Claim in Aviator.`);
+            }
+
+            updateWalletUI();
+            if (currentUserId) {
+                db.collection("users").doc(currentUserId).update({
+                    bonusBalance: userBonusBalance,
+                    withdrawableBalance: userWithdrawableBalance,
+                    balance: getTotalPlayableBalance(),
+                    aviatorWagerProgress: aviatorWagerProgress,
+                    aviatorFreeSpins: aviatorFreeSpinsAvailable
+                });
+            }
+        }
+
+        /* =========================================================================
+           CASINO GAMES HUB (DRAGON TIGER, ANDAR BAHAR, MINES)
+           ========================================================================= */
+        window.switchCasinoHubGame = function(gameKey) {
+            const map = {
+                dt: ["hubTabDT", "gamePaneDT"],
+                ab: ["hubTabAB", "gamePaneAB"],
+                mines: ["hubTabMines", "gamePaneMines"]
+            };
+            Object.keys(map).forEach(k => {
+                document.getElementById(map[k][0]).classList.toggle("active", k === gameKey);
+                document.getElementById(map[k][1]).classList.toggle("active", k === gameKey);
+            });
+        };
+
+        const cardSuits = [
+            { symbol: "♥", color: "card-red" },
+            { symbol: "♦", color: "card-red" },
+            { symbol: "♠", color: "card-black" },
+            { symbol: "♣", color: "card-black" }
+        ];
+        const cardRanks = [
+            { label: "A", val: 1 }, { label: "2", val: 2 }, { label: "3", val: 3 }, { label: "4", val: 4 },
+            { label: "5", val: 5 }, { label: "6", val: 6 }, { label: "7", val: 7 }, { label: "8", val: 8 },
+            { label: "9", val: 9 }, { label: "10", val: 10 }, { label: "J", val: 11 }, { label: "Q", val: 12 }, { label: "K", val: 13 }
+        ];
+
+        function drawRandomPlayingCard() {
+            const suit = cardSuits[Math.floor(Math.random() * cardSuits.length)];
+            const rank = cardRanks[Math.floor(Math.random() * cardRanks.length)];
+            return { label: rank.label, val: rank.val, suit: suit.symbol, color: suit.color };
+        }
+
+        /* --- 1. DRAGON TIGER ENGINE --- */
+        const dtState = {
+            selectedChip: 10,
+            phase: "BETTING",
+            timeLeft: 15,
+            bets: { dragon: 0, tie: 0, tiger: 0 },
+            lastBets: { dragon: 0, tie: 0, tiger: 0 },
+            history: ["D", "T", "D", "D", "TIE", "T", "D", "T"]
+        };
+
+        window.selectDtChip = function(val, btn) {
+            dtState.selectedChip = val;
+            document.querySelectorAll("#dtChipsContainer .poker-chip").forEach(c => c.classList.remove("selected"));
+            if (btn) btn.classList.add("selected");
+        };
+
+        window.placeDtChipBet = function(zone) {
+            if (dtState.phase !== "BETTING") {
+                triggerToastDisplay("Wait for next Dragon Tiger round.");
+                return;
+            }
+            if (!placeSharedGameBet(dtState.selectedChip)) return;
+            dtState.bets[zone] += dtState.selectedChip;
+            playAviatorTone("bet");
+            updateDtBetLabels();
+        };
+
+        window.clearDtCurrentBets = function() {
+            if (dtState.phase !== "BETTING") return;
+            const total = dtState.bets.dragon + dtState.bets.tie + dtState.bets.tiger;
+            if (total > 0) {
+                creditSharedGameWin(total);
+                dtState.bets = { dragon: 0, tie: 0, tiger: 0 };
+                updateDtBetLabels();
+                triggerToastDisplay("Dragon Tiger bets cleared & refunded.");
+            }
+        };
+
+        window.repeatDtLastBets = function() {
+            if (dtState.phase !== "BETTING") return;
+            const total = dtState.lastBets.dragon + dtState.lastBets.tie + dtState.lastBets.tiger;
+            if (total <= 0) { triggerToastDisplay("No previous bet to repeat."); return; }
+            if (!placeSharedGameBet(total)) return;
+            dtState.bets.dragon += dtState.lastBets.dragon;
+            dtState.bets.tie += dtState.lastBets.tie;
+            dtState.bets.tiger += dtState.lastBets.tiger;
+            playAviatorTone("bet");
+            updateDtBetLabels();
+        };
+
+        function updateDtBetLabels() {
+            document.getElementById("dtBetLblDragon").innerText = `Rs. ${dtState.bets.dragon}`;
+            document.getElementById("dtBetLblTie").innerText = `Rs. ${dtState.bets.tie}`;
+            document.getElementById("dtBetLblTiger").innerText = `Rs. ${dtState.bets.tiger}`;
+        }
+
+        function renderDtTrends() {
+            const el = document.getElementById("dtTrendStrip");
+            if (!el) return;
+            el.innerHTML = dtState.history.map(item => {
+                const bg = item === "D" ? "#ef4444" : (item === "T" ? "#eab308" : "#10b981");
+                const txt = item === "T" ? "#0f172a" : "#fff";
+                return `<span style="background:${bg}; color:${txt}; font-size:10px; font-weight:800; padding:2px 7px; border-radius:99px; flex-shrink:0;">${item}</span>`;
+            }).join("");
+        }
+
+        function startDragonTigerLoop() {
+            renderDtTrends();
+            setInterval(() => {
+                const badge = document.getElementById("dtTimerBadge");
+                const statusEl = document.getElementById("dtStatusBanner");
+                if (!badge) return;
+
+                if (dtState.phase === "BETTING") {
+                    dtState.timeLeft--;
+                    badge.innerText = `Betting: ${dtState.timeLeft}s`;
+                    badge.style.background = "#eab308";
+
+                    if (dtState.timeLeft <= 0) {
+                        dtState.phase = "REVEAL";
+                        badge.innerText = "Dealing...";
+                        badge.style.background = "#ef4444";
+                        statusEl.innerText = "No more bets! Revealing cards...";
+
+                        const dCard = drawRandomPlayingCard();
+                        const tCard = drawRandomPlayingCard();
+
+                        setTimeout(() => {
+                            const dSlot = document.getElementById("dtDragonCardSlot");
+                            const tSlot = document.getElementById("dtTigerCardSlot");
+                            dSlot.classList.add("revealed");
+                            tSlot.classList.add("revealed");
+                            dSlot.innerHTML = `<span class="${dCard.color}" style="font-size:22px;">${dCard.label}</span><span class="${dCard.color}" style="font-size:20px;">${dCard.suit}</span>`;
+                            tSlot.innerHTML = `<span class="${tCard.color}" style="font-size:22px;">${tCard.label}</span><span class="${tCard.color}" style="font-size:20px;">${tCard.suit}</span>`;
+
+                            let winner = "tie";
+                            if (dCard.val > tCard.val) winner = "dragon";
+                            else if (tCard.val > dCard.val) winner = "tiger";
+
+                            document.getElementById("dtZoneDragon").classList.toggle("winner-glow", winner === "dragon");
+                            document.getElementById("dtZoneTie").classList.toggle("winner-glow", winner === "tie");
+                            document.getElementById("dtZoneTiger").classList.toggle("winner-glow", winner === "tiger");
+
+                            let payout = 0;
+                            if (winner === "dragon" && dtState.bets.dragon > 0) payout += dtState.bets.dragon * 2;
+                            if (winner === "tiger" && dtState.bets.tiger > 0) payout += dtState.bets.tiger * 2;
+                            if (winner === "tie" && dtState.bets.tie > 0) payout += dtState.bets.tie * 9;
+                            if (winner === "tie" && (dtState.bets.dragon > 0 || dtState.bets.tiger > 0)) {
+                                payout += (dtState.bets.dragon + dtState.bets.tiger) * 0.5;
+                            }
+
+                            if (payout > 0) {
+                                creditSharedGameWin(payout);
+                                playAviatorTone("cashout");
+                                triggerToastDisplay(`Dragon Tiger (${winner.toUpperCase()}) Won +Rs. ${payout.toFixed(0)}!`);
+                            }
+
+                            statusEl.innerText = `${winner.toUpperCase()} WINS! (${dCard.label}${dCard.suit} vs ${tCard.label}${tCard.suit})`;
+                            dtState.history.unshift(winner === "dragon" ? "D" : (winner === "tiger" ? "T" : "TIE"));
+                            if (dtState.history.length > 16) dtState.history.pop();
+                            renderDtTrends();
+
+                            setTimeout(() => {
+                                if (dtState.bets.dragon + dtState.bets.tie + dtState.bets.tiger > 0) {
+                                    dtState.lastBets = { ...dtState.bets };
+                                }
+                                dtState.bets = { dragon: 0, tie: 0, tiger: 0 };
+                                updateDtBetLabels();
+                                dSlot.classList.remove("revealed");
+                                tSlot.classList.remove("revealed");
+                                dSlot.innerHTML = `<i class="fa-solid fa-dragon" style="font-size:24px; color:#ef4444; opacity:0.6;"></i>`;
+                                tSlot.innerHTML = `<i class="fa-solid fa-paw" style="font-size:24px; color:#eab308; opacity:0.6;"></i>`;
+                                document.querySelectorAll("#gamePaneDT .table-bet-zone").forEach(z => z.classList.remove("winner-glow"));
+                                dtState.phase = "BETTING";
+                                dtState.timeLeft = 15;
+                                statusEl.innerText = "Select a chip & tap Dragon, Tie, or Tiger";
+                            }, 3500);
+                        }, 700);
+                    }
+                }
+            }, 1000);
+        }
+
+        /* --- 2. ANDAR BAHAR ENGINE --- */
+        const abState = {
+            selectedChip: 10,
+            phase: "BETTING",
+            timeLeft: 15,
+            bets: { andar: 0, bahar: 0 },
+            lastBets: { andar: 0, bahar: 0 },
+            history: ["A", "B", "A", "A", "B", "B", "A"]
+        };
+
+        window.selectAbChip = function(val, btn) {
+            abState.selectedChip = val;
+            document.querySelectorAll("#gamePaneAB .poker-chip").forEach(c => c.classList.remove("selected"));
+            if (btn) btn.classList.add("selected");
+        };
+
+        window.placeAbChipBet = function(side) {
+            if (abState.phase !== "BETTING") {
+                triggerToastDisplay("Wait for next Andar Bahar round.");
+                return;
+            }
+            if (!placeSharedGameBet(abState.selectedChip)) return;
+            abState.bets[side] += abState.selectedChip;
+            playAviatorTone("bet");
+            updateAbBetLabels();
+        };
+
+        window.clearAbCurrentBets = function() {
+            if (abState.phase !== "BETTING") return;
+            const total = abState.bets.andar + abState.bets.bahar;
+            if (total > 0) {
+                creditSharedGameWin(total);
+                abState.bets = { andar: 0, bahar: 0 };
+                updateAbBetLabels();
+                triggerToastDisplay("Andar Bahar bets cleared & refunded.");
+            }
+        };
+
+        window.repeatAbLastBets = function() {
+            if (abState.phase !== "BETTING") return;
+            const total = abState.lastBets.andar + abState.lastBets.bahar;
+            if (total <= 0) { triggerToastDisplay("No previous bet to repeat."); return; }
+            if (!placeSharedGameBet(total)) return;
+            abState.bets.andar += abState.lastBets.andar;
+            abState.bets.bahar += abState.lastBets.bahar;
+            playAviatorTone("bet");
+            updateAbBetLabels();
+        };
+
+        function updateAbBetLabels() {
+            document.getElementById("abBetLblAndar").innerText = `Rs. ${abState.bets.andar}`;
+            document.getElementById("abBetLblBahar").innerText = `Rs. ${abState.bets.bahar}`;
+        }
+
+        function renderAbTrends() {
+            const el = document.getElementById("abTrendStrip");
+            if (!el) return;
+            el.innerHTML = abState.history.map(item => {
+                const bg = item === "A" ? "#0ea5e9" : "#ef4444";
+                return `<span style="background:${bg}; color:#fff; font-size:10px; font-weight:800; padding:2px 8px; border-radius:99px; flex-shrink:0;">${item}</span>`;
+            }).join("");
+        }
+
+        function startAndarBaharLoop() {
+            renderAbTrends();
+            setInterval(() => {
+                const badge = document.getElementById("abTimerBadge");
+                const statusEl = document.getElementById("abStatusBanner");
+                if (!badge) return;
+
+                if (abState.phase === "BETTING") {
+                    abState.timeLeft--;
+                    badge.innerText = `Betting: ${abState.timeLeft}s`;
+                    badge.style.background = "#eab308";
+
+                    if (abState.timeLeft <= 0) {
+                        abState.phase = "DEALING";
+                        badge.innerText = "Dealing...";
+                        badge.style.background = "#ef4444";
+
+                        const joker = drawRandomPlayingCard();
+                        const jSlot = document.getElementById("abJokerCardSlot");
+                        jSlot.classList.add("revealed");
+                        jSlot.innerHTML = `<span class="${joker.color}" style="font-size:20px;">${joker.label}</span><span class="${joker.color}" style="font-size:18px;">${joker.suit}</span>`;
+                        statusEl.innerText = `Joker is ${joker.label}${joker.suit} — Dealing Andar & Bahar...`;
+
+                        const andarTrack = document.getElementById("abAndarTrack");
+                        const baharTrack = document.getElementById("abBaharTrack");
+                        andarTrack.innerHTML = "";
+                        baharTrack.innerHTML = "";
+
+                        let step = 0;
+                        let matchedSide = null;
+                        const dealTimer = setInterval(() => {
+                            const side = step % 2 === 0 ? "andar" : "bahar";
+                            let card = drawRandomPlayingCard();
+                            if (step >= 10 && card.label !== joker.label) {
+                                card = { ...joker, suit: cardSuits[step % 4].symbol, color: cardSuits[step % 4].color };
+                            }
+
+                            const cardHtml = `<div class="mini-deal-card ${card.color}"><span>${card.label}</span><span>${card.suit}</span></div>`;
+                            if (side === "andar") {
+                                andarTrack.innerHTML += cardHtml;
+                                andarTrack.scrollLeft = andarTrack.scrollWidth;
+                            } else {
+                                baharTrack.innerHTML += cardHtml;
+                                baharTrack.scrollLeft = baharTrack.scrollWidth;
+                            }
+
+                            if (card.label === joker.label) {
+                                clearInterval(dealTimer);
+                                matchedSide = side;
+
+                                document.getElementById("abZoneAndar").classList.toggle("winner-glow", matchedSide === "andar");
+                                document.getElementById("abZoneBahar").classList.toggle("winner-glow", matchedSide === "bahar");
+
+                                let payout = 0;
+                                if (matchedSide === "andar" && abState.bets.andar > 0) payout = abState.bets.andar * 1.9;
+                                if (matchedSide === "bahar" && abState.bets.bahar > 0) payout = abState.bets.bahar * 2.0;
+
+                                if (payout > 0) {
+                                    creditSharedGameWin(payout);
+                                    playAviatorTone("cashout");
+                                    triggerToastDisplay(`Andar Bahar (${matchedSide.toUpperCase()}) Won +Rs. ${payout.toFixed(0)}!`);
+                                }
+
+                                statusEl.innerText = `MATCHED ON ${matchedSide.toUpperCase()}!`;
+                                abState.history.unshift(matchedSide === "andar" ? "A" : "B");
+                                if (abState.history.length > 16) abState.history.pop();
+                                renderAbTrends();
+
+                                setTimeout(() => {
+                                    if (abState.bets.andar + abState.bets.bahar > 0) {
+                                        abState.lastBets = { ...abState.bets };
+                                    }
+                                    abState.bets = { andar: 0, bahar: 0 };
+                                    updateAbBetLabels();
+                                    jSlot.classList.remove("revealed");
+                                    jSlot.innerHTML = `<i class="fa-solid fa-crown" style="font-size:20px; color:#eab308;"></i>`;
+                                    andarTrack.innerHTML = "";
+                                    baharTrack.innerHTML = "";
+                                    document.querySelectorAll("#gamePaneAB .table-bet-zone").forEach(z => z.classList.remove("winner-glow"));
+                                    abState.phase = "BETTING";
+                                    abState.timeLeft = 15;
+                                    statusEl.innerText = "Place your bet on Andar or Bahar";
+                                }, 3200);
+                            }
+                            step++;
+                        }, 420);
+                    }
+                }
+            }, 1000);
+        }
+
+        /* --- 3. MINES (5x5 GRID) ENGINE --- */
+        const minesState = {
+            active: false,
+            betAmount: 50,
+            minesCount: 3,
+            minePositions: new Set(),
+            revealedPositions: new Set(),
+            currentMultiplier: 1.00
+        };
+
+        function calculateMinesStepMultiplier(mines, safeRevealedCount) {
+            let mult = 0.96;
+            for (let i = 0; i < safeRevealedCount; i++) {
+                mult *= (25 - i) / (25 - mines - i);
+            }
+            return Math.max(1.01, mult);
+        }
+
+        function renderMinesGrid() {
+            const container = document.getElementById("minesGridContainer");
+            if (!container) return;
+            let html = "";
+            for (let i = 0; i < 25; i++) {
+                const isRevealed = minesState.revealedPositions.has(i);
+                const isMine = minesState.minePositions.has(i);
+                let cls = "mine-tile";
+                let inner = `<i class="fa-solid fa-question" style="font-size:13px; opacity:0.35;"></i>`;
+
+                if (isRevealed) {
+                    if (isMine) {
+                        cls += " bomb-revealed";
+                        inner = `<i class="fa-solid fa-bomb"></i>`;
+                    } else {
+                        cls += " safe-revealed";
+                        inner = `<i class="fa-solid fa-gem"></i>`;
+                    }
+                } else if (!minesState.active && minesState.minePositions.size > 0) {
+                    cls += " dim-revealed";
+                    inner = isMine ? `<i class="fa-solid fa-bomb" style="color:#ef4444;"></i>` : `<i class="fa-solid fa-gem" style="color:#10b981;"></i>`;
+                }
+
+                html += `<div class="${cls}" onclick="clickMineTile(${i})">${inner}</div>`;
+            }
+            container.innerHTML = html;
+        }
+
+        window.updateMinesPreviewMultiplier = function() {
+            const mines = parseInt(document.getElementById("minesCountSelect").value) || 3;
+            const nextMult = calculateMinesStepMultiplier(mines, minesState.revealedPositions.size + 1);
+            document.getElementById("minesNextMultLbl").innerText = `${nextMult.toFixed(2)}x`;
+        };
+
+        window.adjustMinesBet = function(action) {
+            if (minesState.active) return;
+            const inp = document.getElementById("minesBetInput");
+            let val = parseFloat(inp.value) || 50;
+            if (action === "min") val = 10;
+            else if (action === "half") val = Math.max(10, Math.floor(val / 2));
+            else if (action === "double") val = Math.min(50000, val * 2);
+            else if (action === "max") val = Math.max(10, Math.floor(Math.min(50000, getTotalPlayableBalance())));
+            inp.value = val;
+        };
+
+        window.handleMinesMainAction = function() {
+            const btn = document.getElementById("btnMinesMainAction");
+            const randBtn = document.getElementById("btnMinesRandomTile");
+
+            if (!minesState.active) {
+                const bet = parseFloat(document.getElementById("minesBetInput").value);
+                const mines = parseInt(document.getElementById("minesCountSelect").value) || 3;
+                if (isNaN(bet) || bet < 10 || bet > 50000) {
+                    triggerToastDisplay("Bet must be between Rs. 10 and Rs. 50,000.");
+                    return;
+                }
+                if (!placeSharedGameBet(bet)) return;
+
+                minesState.active = true;
+                minesState.betAmount = bet;
+                minesState.minesCount = mines;
+                minesState.revealedPositions.clear();
+                minesState.minePositions.clear();
+                minesState.currentMultiplier = 1.00;
+
+                while (minesState.minePositions.size < mines) {
+                    minesState.minePositions.add(Math.floor(Math.random() * 25));
+                }
+
+                playAviatorTone("bet");
+                document.getElementById("minesCurrentMultLbl").innerText = "1.00x";
+                updateMinesPreviewMultiplier();
+                btn.innerText = "PICK A TILE TO WIN";
+                btn.style.background = "linear-gradient(135deg, #10b981, #059669)";
+                randBtn.style.display = "inline-block";
+                renderMinesGrid();
+            } else {
+                if (minesState.revealedPositions.size === 0) {
+                    triggerToastDisplay("Open at least 1 safe tile before cashing out!");
+                    return;
+                }
+                const payout = minesState.betAmount * minesState.currentMultiplier;
+                minesState.active = false;
+                creditSharedGameWin(payout);
+                playAviatorTone("cashout");
+                triggerToastDisplay(`Mines Cashed Out @ ${minesState.currentMultiplier.toFixed(2)}x! +Rs. ${payout.toFixed(2)}`);
+
+                btn.innerText = "START MINES GAME";
+                btn.style.background = "linear-gradient(135deg, #0ea5e9, #0284c7)";
+                randBtn.style.display = "none";
+                renderMinesGrid();
+            }
+        };
+
+        window.clickMineTile = function(idx) {
+            if (!minesState.active || minesState.revealedPositions.has(idx)) return;
+            minesState.revealedPositions.add(idx);
+
+            if (minesState.minePositions.has(idx)) {
+                minesState.active = false;
+                playAviatorTone("crash");
+                triggerToastDisplay("BOOM! You hit a mine!");
+                const btn = document.getElementById("btnMinesMainAction");
+                btn.innerText = "START MINES GAME";
+                btn.style.background = "linear-gradient(135deg, #0ea5e9, #0284c7)";
+                document.getElementById("btnMinesRandomTile").style.display = "none";
+                renderMinesGrid();
+                return;
+            }
+
+            minesState.currentMultiplier = calculateMinesStepMultiplier(minesState.minesCount, minesState.revealedPositions.size);
+            const liveWin = minesState.betAmount * minesState.currentMultiplier;
+            document.getElementById("minesCurrentMultLbl").innerText = `${minesState.currentMultiplier.toFixed(2)}x`;
+            updateMinesPreviewMultiplier();
+
+            const btn = document.getElementById("btnMinesMainAction");
+            btn.innerText = `CASH OUT — Rs. ${liveWin.toFixed(2)}`;
+            playAviatorTone("bet");
+            renderMinesGrid();
+
+            if (minesState.revealedPositions.size >= 25 - minesState.minesCount) {
+                handleMinesMainAction();
+            }
+        };
+
+        window.pickRandomMineTile = function() {
+            if (!minesState.active) return;
+            const unrevealed = [];
+            for (let i = 0; i < 25; i++) {
+                if (!minesState.revealedPositions.has(i)) unrevealed.push(i);
+            }
+            if (unrevealed.length > 0) {
+                const pick = unrevealed[Math.floor(Math.random() * unrevealed.length)];
+                clickMineTile(pick);
+            }
+        };
+
+        /* =========================================================================
+           AVIATOR PRO ENGINE
            ========================================================================= */
         const aviatorState = {
             roundId: "RND-" + Date.now(),
@@ -1416,7 +2207,7 @@
 
         window.toggleAviatorSound = function() {
             aviatorState.soundEnabled = !aviatorState.soundEnabled;
-            triggerToastDisplay(aviatorState.soundEnabled ? "Aviator sound enabled" : "Aviator sound muted");
+            triggerToastDisplay(aviatorState.soundEnabled ? "Game sound enabled" : "Game sound muted");
         };
 
         window.switchAviatorSubTab = function(tab) {
@@ -1519,32 +2310,6 @@
             });
         }
 
-        function deductPlayableBalance(amount) {
-            let fromBonus = Math.min(userBonusBalance, amount);
-            let fromWithdrawable = amount - fromBonus;
-            userBonusBalance -= fromBonus;
-            userWithdrawableBalance -= fromWithdrawable;
-
-            aviatorWagerProgress += amount;
-            let newSpinsEarned = Math.floor(aviatorWagerProgress / 5000);
-            if (newSpinsEarned > 0) {
-                aviatorFreeSpinsAvailable += newSpinsEarned;
-                aviatorWagerProgress = aviatorWagerProgress % 5000;
-                triggerToastDisplay(`Unlocked ${newSpinsEarned} Aviator Free Spin! Claim above.`);
-            }
-
-            updateWalletUI();
-            if (currentUserId) {
-                db.collection("users").doc(currentUserId).update({
-                    bonusBalance: userBonusBalance,
-                    withdrawableBalance: userWithdrawableBalance,
-                    balance: getTotalPlayableBalance(),
-                    aviatorWagerProgress: aviatorWagerProgress,
-                    aviatorFreeSpins: aviatorFreeSpinsAvailable
-                });
-            }
-        }
-
         function placeBetOnPanel(panel, isAuto = false) {
             if (!currentUserId) { triggerToastDisplay("Please sign in to play."); return false; }
             const pState = aviatorState.panels[panel];
@@ -1590,18 +2355,10 @@
                 : aviatorState.currentMultiplier;
 
             const payout = pState.betAmount * cashMult;
-            userWithdrawableBalance += payout;
+            creditSharedGameWin(payout);
             pState.activeBet = false;
 
             broadcastRealBetToLiveFeed(panel, pState.betAmount, "WON", cashMult, payout);
-
-            updateWalletUI();
-            if (currentUserId) {
-                db.collection("users").doc(currentUserId).update({
-                    withdrawableBalance: userWithdrawableBalance,
-                    balance: getTotalPlayableBalance()
-                });
-            }
 
             playAviatorTone("cashout");
             triggerToastDisplay(`${isAutoCashout ? "AUTO " : ""}CASHED OUT @ ${cashMult.toFixed(2)}x! +PKR ${payout.toFixed(2)} Cash`);
@@ -1624,12 +2381,7 @@
             const pState = aviatorState.panels[panel];
             if (aviatorState.status === "BETTING") {
                 if (pState.activeBet) {
-                    userWithdrawableBalance += pState.betAmount;
-                    updateWalletUI();
-                    db.collection("users").doc(currentUserId).update({
-                        withdrawableBalance: userWithdrawableBalance,
-                        balance: getTotalPlayableBalance()
-                    });
+                    creditSharedGameWin(pState.betAmount);
                     pState.activeBet = false;
                     pState.betAmount = 0;
                     removeRealBetFromLiveFeed(panel);
@@ -1675,21 +2427,22 @@
                     updateAviatorStageBadge();
                 } else if (aviatorState.status === "FLYING") {
                     const elapsed = (now - aviatorState.flightStartedAt) / 1000;
-                    aviatorState.currentMultiplier = 1.0 + (elapsed * 0.14) + (Math.pow(elapsed, 2.15) * 0.045);
+                    const nextMult = 1.0 + (elapsed * 0.14) + (Math.pow(elapsed, 2.15) * 0.045);
 
                     [1, 2].forEach(panel => {
                         const p = aviatorState.panels[panel];
                         const autoCoOn = document.getElementById(`autoCashoutToggle${panel}`).checked;
                         const autoCoTarget = parseFloat(document.getElementById(`autoCashoutVal${panel}`).value) || 2.00;
-                        if (p.activeBet && autoCoOn && aviatorState.currentMultiplier >= autoCoTarget && autoCoTarget <= aviatorState.crashPoint) {
+                        if (p.activeBet && autoCoOn && nextMult >= autoCoTarget && autoCoTarget <= aviatorState.crashPoint) {
                             cashoutPanel(panel, true);
                         }
                     });
 
+                    aviatorState.currentMultiplier = nextMult;
+
                     if (aviatorState.currentMultiplier >= aviatorState.crashPoint) {
                         aviatorState.status = "CRASHED";
                         playAviatorTone("crash");
-                        triggerToastDisplay(`CRASHED @ ${aviatorState.crashPoint.toFixed(2)}x!`);
 
                         [1, 2].forEach(panel => {
                             const p = aviatorState.panels[panel];
@@ -1895,7 +2648,7 @@
         }
 
         /* =========================================================================
-           AVIATOR 5,000 PKR MILESTONE SPIN
+           VIP 5,000 PKR MILESTONE SPIN
            ========================================================================= */
         function updateAviatorMilestoneUI() {
             const btn = document.getElementById("btnClaimAviatorSpin");
@@ -1916,7 +2669,7 @@
 
         window.openAviatorMilestoneSpinModal = function() {
             if (aviatorFreeSpinsAvailable <= 0) {
-                triggerToastDisplay("Play Rs. 5,000 in Aviator to unlock a free spin!");
+                triggerToastDisplay("Play Rs. 5,000 in games to unlock a free spin!");
                 return;
             }
             openModal("aviatorMilestoneSpinModal");
@@ -1928,7 +2681,14 @@
             const wheel = document.getElementById("aviatorMilestoneWheel");
             btn.disabled = true;
 
-            const rewardAmount = Math.floor(3 + Math.random() * 100);
+            const prizeTiers = [100, 150, 200, 250, 500, 1000, 2500, 5000, 10000, 50000];
+            const weights = [35, 25, 18, 10, 6, 3, 1.8, 0.8, 0.3, 0.1];
+            let rand = Math.random() * 100, sum = 0, rewardAmount = 100;
+            for (let i = 0; i < prizeTiers.length; i++) {
+                sum += weights[i];
+                if (rand <= sum) { rewardAmount = prizeTiers[i]; break; }
+            }
+
             wheel.style.transform = "rotate(1800deg)";
 
             setTimeout(() => {
@@ -1941,7 +2701,7 @@
                     bonusBalance: userBonusBalance,
                     balance: getTotalPlayableBalance()
                 }).then(() => {
-                    triggerToastDisplay(`Aviator Milestone Spin Won +Rs. ${rewardAmount} Bonus!`);
+                    triggerToastDisplay(`VIP Milestone Spin Won +Rs. ${rewardAmount.toLocaleString()} Bonus!`);
                     wheel.style.transform = "rotate(0deg)";
                     btn.disabled = false;
                     closeModal("aviatorMilestoneSpinModal");
@@ -1968,6 +2728,9 @@
             loadPaymentMethodsFromFirestore();
             startLiveSocialProofTicker();
             startClientSideAviatorEngine();
+            startDragonTigerLoop();
+            startAndarBaharLoop();
+            renderMinesGrid();
             listenToRealLiveBetsFirestore();
             renderRecentHistoryTicker();
         });
@@ -1990,10 +2753,13 @@
 
         function updateWalletUI() {
             const total = getTotalPlayableBalance();
-            document.getElementById('assetDisplay').innerText = total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            const fmtTotal = total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            document.getElementById('assetDisplay').innerText = fmtTotal;
             document.getElementById('withdrawableBalanceDisplay').innerText = userWithdrawableBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
             document.getElementById('bonusBalanceDisplay').innerText = userBonusBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-            document.getElementById('aviatorWalletBalanceLbl').innerText = total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            document.getElementById('aviatorWalletBalanceLbl').innerText = fmtTotal;
+            const hubLbl = document.getElementById('hubSharedBalanceLbl');
+            if (hubLbl) hubLbl.innerText = fmtTotal;
             document.getElementById('avCashSubLbl').innerText = userWithdrawableBalance.toFixed(0);
             document.getElementById('avBonusSubLbl').innerText = userBonusBalance.toFixed(0);
             updateAviatorMilestoneUI();
@@ -2292,6 +3058,7 @@
                 });
 
                 renderAllNodeCards();
+                renderAdminNodesList();
             });
         }
 
@@ -2370,7 +3137,7 @@
         };
 
         /* =========================================================================
-           MULTI-TIER REFERRALS & COMMISSIONS
+           MULTI-TIER REFERRALS & COMMISSIONS (TIER 1, 2 & 3)
            ========================================================================= */
         function calculateMultiTierNetworkHierarchy(userUsername) {
             db.collection("users").where("referredBy", "==", userUsername).onSnapshot(snapLevel1 => {
@@ -2430,6 +3197,21 @@
                             withdrawableBalance: firebase.firestore.FieldValue.increment(rewardL2),
                             balance: firebase.firestore.FieldValue.increment(rewardL2),
                             multiTierEarned: firebase.firestore.FieldValue.increment(rewardL2)
+                        });
+
+                        let level3Referrer = docL2.data().referredBy;
+                        if(!level3Referrer || level3Referrer === "none") return;
+
+                        db.collection("users").where("username", "==", level3Referrer).get().then(snapL3 => {
+                            if(snapL3.empty) return;
+                            let uidL3 = snapL3.docs[0].id;
+                            let rewardL3 = depositAmount * 0.01;
+
+                            db.collection("users").doc(uidL3).update({
+                                withdrawableBalance: firebase.firestore.FieldValue.increment(rewardL3),
+                                balance: firebase.firestore.FieldValue.increment(rewardL3),
+                                multiTierEarned: firebase.firestore.FieldValue.increment(rewardL3)
+                            });
                         });
                     });
                 });
@@ -2506,6 +3288,9 @@
 
                 if(destUid === currentUserId) { throw new Error("You cannot transfer balance to yourself."); }
 
+                userWithdrawableBalance -= amountField;
+                updateWalletUI();
+
                 const operationalBatch = db.batch();
                 operationalBatch.update(db.collection("users").doc(currentUserId), {
                     withdrawableBalance: firebase.firestore.FieldValue.increment(-amountField),
@@ -2519,7 +3304,13 @@
                 const sendLogRef = db.collection("deposits").doc();
                 operationalBatch.set(sendLogRef, {
                     userId: currentUserId, amount: amountField, transactionId: "TRF-OUT-" + Math.floor(Math.random()*100000),
-                    gatewayChannel: "Transfer Sent", status: "approved", timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    gatewayChannel: `Transfer Sent to ${targetUserField}`, status: "approved", timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                const recvLogRef = db.collection("deposits").doc();
+                operationalBatch.set(recvLogRef, {
+                    userId: destUid, amount: amountField, transactionId: "TRF-IN-" + Math.floor(Math.random()*100000),
+                    gatewayChannel: `Transfer Received from ${userCustomUsernameToken}`, status: "approved", timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 });
 
                 return operationalBatch.commit();
@@ -2575,6 +3366,9 @@
             const taxAmt = (amt * taxPct) / 100;
             const netPayout = amt - taxAmt;
             const fullMethodLabel = method === "Bank Transfer" ? `Bank (${bankName})` : method;
+
+            userWithdrawableBalance -= amt;
+            updateWalletUI();
 
             db.collection("users").doc(currentUserId).update({
                 withdrawableBalance: firebase.firestore.FieldValue.increment(-amt),
@@ -2660,7 +3454,7 @@
                         balance: firebase.firestore.FieldValue.increment(winToken),
                         hasSpunToday: true
                     }).then(() => {
-                        triggerToastDisplay(`Won +Rs. ${winToken} Play Bonus! Use on Nodes or Aviator.`);
+                        triggerToastDisplay(`Won +Rs. ${winToken} Play Bonus! Use on Nodes or Games.`);
                         wheel.style.transform = "rotate(0deg)";
                     });
                 }, 3000);
@@ -2677,348 +3471,384 @@
                     depSnap.forEach(doc => {
                         const d = doc.data();
                         cachedUserHistoryLogs.push({
-                            type: 'deposit', amount: d.amount, identifier: d.transactionId || 'DEPOSIT',
-                            channel: d.gatewayChannel, status: d.status, date: d.timestamp ? d.timestamp.toDate() : new Date()
+                            type: "credit", title: `${d.gatewayChannel} Credit`, sub: `TID: ${d.transactionId}`,
+                            amount: d.amount, status: d.status, ts: d.timestamp ? d.timestamp.toDate().getTime() : 0
                         });
                     });
                     withSnap.forEach(doc => {
                         const w = doc.data();
                         cachedUserHistoryLogs.push({
-                            type: 'withdrawal', amount: w.amount,
-                            identifier: `${w.method || 'Wallet'}: ${w.targetNo} (Net: Rs.${(w.netPayout || w.amount).toFixed(0)})`,
-                            channel: 'Withdrawal Payout', status: w.status, date: w.timestamp ? w.timestamp.toDate() : new Date()
+                            type: "debit", title: `${w.method || "Cash Out"} (${w.targetNo})`, sub: `${w.title} | Net: Rs.${(w.netPayout || w.amount).toFixed(0)}`,
+                            amount: w.amount, status: w.status, ts: w.timestamp ? w.timestamp.toDate().getTime() : 0
                         });
                     });
-                    cachedUserHistoryLogs.sort((a, b) => b.date - a.date);
+
+                    cachedUserHistoryLogs.sort((a, b) => b.ts - a.ts);
                     renderFilteredHistoryLogs(cachedUserHistoryLogs);
                 });
             });
         }
 
-        function renderFilteredHistoryLogs(logsArray) {
+        function renderFilteredHistoryLogs(logsList) {
             let html = "";
-            logsArray.forEach(item => {
-                let colorStr = item.status === 'approved' ? '#10b981' : (item.status === 'rejected' ? '#ef4444' : '#eab308');
-                let formattedDateString = item.date.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+            logsList.forEach(item => {
+                let statusColor = item.status === 'approved' ? '#10b981' : (item.status === 'rejected' ? '#ef4444' : '#eab308');
+                let amountSign = item.type === 'credit' ? '+' : '-';
+                let amountColor = item.type === 'credit' ? '#10b981' : '#ef4444';
                 
-                if(item.type === 'deposit') {
-                    html += `<div class="history-card">
-                        <div>
-                            <b style="color:#10b981;">+Rs. ${item.amount.toLocaleString()}</b>
-                            <p style="font-size:12px; color:var(--text-main); margin-top:2px;">${item.identifier} <span style="font-size:10px; color:var(--sky-primary);">[${item.channel}]</span></p>
-                            <p style="font-size:10px; color:var(--text-muted); margin-top:2px;"><i class="fa-regular fa-clock"></i> ${formattedDateString}</p>
-                        </div>
-                        <span style="font-size:11px; font-weight:700; color: ${colorStr}; background:var(--bg-sub); padding:4px 8px; border-radius:8px;">${item.status.toUpperCase()}</span>
-                    </div>`;
-                } else {
-                    html += `<div class="history-card">
-                        <div>
-                            <b style="color:#ef4444;">-Rs. ${item.amount.toLocaleString()}</b>
-                            <p style="font-size:12px; color:var(--text-main); margin-top:2px;">${item.identifier}</p>
-                            <p style="font-size:10px; color:var(--text-muted); margin-top:2px;"><i class="fa-regular fa-clock"></i> ${formattedDateString}</p>
-                        </div>
-                        <span style="font-size:11px; font-weight:700; color: ${colorStr}; background:var(--bg-sub); padding:4px 8px; border-radius:8px;">${item.status.toUpperCase()}</span>
-                    </div>`;
-                }
+                html += `<div class="history-card">
+                    <div>
+                        <b style="font-size:13px; color:var(--text-main);">${item.title}</b>
+                        <p style="font-size:10px; color:var(--text-muted); margin-top:2px;">${item.sub}</p>
+                        <span style="font-size:9px; color:${statusColor}; font-weight:700; text-transform:uppercase;">${item.status}</span>
+                    </div>
+                    <b style="color:${amountColor}; font-size:13px;">${amountSign}Rs. ${item.amount.toLocaleString()}</b>
+                </div>`;
             });
-            document.getElementById('userHistoryRecordsList').innerHTML = html || "<div style='color:var(--text-muted); text-align:center;'>No history logs found.</div>";
+            document.getElementById('userHistoryRecordsList').innerHTML = html || "<p style='color:var(--text-muted); font-size:12px; text-align:center;'>No transaction history found.</p>";
         }
 
         window.filterUserHistoryLogs = function() {
-            let query = document.getElementById('historySearchInput').value.toLowerCase();
-            let filtered = cachedUserHistoryLogs.filter(item => item.identifier.toLowerCase().includes(query) || item.channel.toLowerCase().includes(query) || item.status.toLowerCase().includes(query));
+            let query = document.getElementById('historySearchInput').value.trim().toLowerCase();
+            let filtered = cachedUserHistoryLogs.filter(item => 
+                item.title.toLowerCase().includes(query) || item.sub.toLowerCase().includes(query) || item.status.toLowerCase().includes(query)
+            );
             renderFilteredHistoryLogs(filtered);
         };
 
         window.submitSupportTicketUser = function() {
-            let subject = document.getElementById('ticketSubjectInput').value.trim();
+            let subj = document.getElementById('ticketSubjectInput').value.trim();
             let msg = document.getElementById('ticketMessageInput').value.trim();
-            if(!subject || !msg) { triggerToastDisplay("Please enter subject and message."); return; }
+            if(!subj || !msg) { triggerToastDisplay("Please enter subject and message."); return; }
 
             db.collection("support_tickets").add({
-                userId: currentUserId, username: userCustomUsernameToken, subject: subject, message: msg, status: "Pending", adminReply: "", timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                userId: currentUserId, username: userCustomUsernameToken, subject: subj, message: msg,
+                adminReply: "", status: "open", timestamp: firebase.firestore.FieldValue.serverTimestamp()
             }).then(() => {
-                triggerToastDisplay("Support ticket submitted!");
-                document.getElementById('ticketSubjectInput').value = ""; document.getElementById('ticketMessageInput').value = "";
+                triggerToastDisplay("Support Ticket Submitted!");
+                document.getElementById('ticketSubjectInput').value = "";
+                document.getElementById('ticketMessageInput').value = "";
             });
         };
 
         function syncUserSupportTickets() {
             db.collection("support_tickets").where("userId", "==", currentUserId).onSnapshot(snap => {
                 let html = "";
-                if(snap.empty) { html = "<div style='color:var(--text-muted);'>No tickets submitted yet.</div>"; }
                 snap.forEach(doc => {
                     let t = doc.data();
-                    let color = t.status === "Resolved" ? "#10b981" : "#eab308";
-                    html += `<div class="history-card" style="flex-direction:column; align-items:flex-start; gap:6px;">
-                        <div style="display:flex; justify-content:space-between; width:100%;">
-                            <b style="color:var(--text-main); font-size:13px;">${t.subject}</b>
-                            <span style="font-size:11px; font-weight:700; color:${color}; border:1px solid ${color}; padding:2px 8px; border-radius:6px;">${t.status}</span>
+                    let badgeColor = t.status === "resolved" ? "#10b981" : "#eab308";
+                    html += `<div class="info-card" style="padding:14px; margin-bottom:10px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <b style="font-size:13px; color:var(--text-main);">${t.subject}</b>
+                            <span style="font-size:9px; color:${badgeColor}; font-weight:800; text-transform:uppercase;">${t.status}</span>
                         </div>
-                        <p style="font-size:11px; color:var(--text-muted);">${t.message}</p>
-                        ${t.adminReply ? `<p style="font-size:11px; color:var(--sky-primary); background:rgba(14,165,233,0.1); padding:6px 8px; border-radius:8px; width:100%;"><b>Admin Reply:</b> ${t.adminReply}</p>` : ""}
+                        <p style="font-size:11px; color:var(--text-muted); margin-top:4px;">${t.message}</p>
+                        ${t.adminReply ? `<div style="background:rgba(14,165,233,0.12); padding:8px; border-radius:8px; margin-top:8px; font-size:11px; color:var(--sky-primary);"><b>Admin Reply:</b> ${t.adminReply}</div>` : ""}
                     </div>`;
                 });
-                document.getElementById('userSupportTicketsList').innerHTML = html;
+                document.getElementById('userSupportTicketsList').innerHTML = html || "<p style='color:var(--text-muted); font-size:11px;'>No support tickets created.</p>";
             });
         }
 
         window.openProfileEditModal = function() {
             document.getElementById('editUsernameInput').value = userCustomUsernameToken;
+            if(lastUsernameChangeDate) {
+                const daysSinceLastChange = (new Date() - lastUsernameChangeDate) / (1000 * 60 * 60 * 24);
+                if(daysSinceLastChange < 30) {
+                    const remainingDays = Math.ceil(30 - daysSinceLastChange);
+                    document.getElementById('editUsernameInput').disabled = true;
+                    document.getElementById('lblUsernameChangeNotice').innerText = `Username change locked. Available in ${remainingDays} days.`;
+                } else {
+                    document.getElementById('editUsernameInput').disabled = false;
+                }
+            }
             openModal('profileEditModal');
         };
 
-        window.triggerProfilePictureFileInput = function() { document.getElementById('profileImageFileInput').click(); };
+        window.triggerProfilePictureFileInput = function() {
+            document.getElementById('profileImageFileInput').click();
+        };
 
         window.handleProfileImageSelect = function(event) {
             const file = event.target.files[0];
-            if(file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    userProfilePicBase64 = e.target.result;
+            if(!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement("canvas");
+                    canvas.width = 120; canvas.height = 120;
+                    const ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, 0, 0, 120, 120);
+                    userProfilePicBase64 = canvas.toDataURL("image/jpeg", 0.7);
                     document.getElementById('modalProfilePreviewImg').src = userProfilePicBase64;
                 };
-                reader.readAsDataURL(file);
-            }
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
         };
 
         window.saveUserProfileChanges = function() {
-            let newUsername = document.getElementById('editUsernameInput').value.trim().toLowerCase();
-            if(!newUsername) { triggerToastDisplay("Please enter a valid username."); return; }
+            const newUsername = document.getElementById('editUsernameInput').value.trim().toLowerCase();
+            let updates = {};
+            if(userProfilePicBase64) updates.profilePic = userProfilePicBase64;
 
-            let usernameChanged = (newUsername !== userCustomUsernameToken);
-            if(usernameChanged && lastUsernameChangeDate) {
-                let diffDays = (new Date() - lastUsernameChangeDate) / (1000 * 60 * 60 * 24);
-                if(diffDays < 30) {
-                    triggerToastDisplay(`You can change username again in ${Math.ceil(30 - diffDays)} days.`);
-                    return;
+            if(newUsername && newUsername !== userCustomUsernameToken) {
+                if(lastUsernameChangeDate && (new Date() - lastUsernameChangeDate) < (30 * 24 * 60 * 60 * 1000)) {
+                    triggerToastDisplay("Username can only be changed once every 30 days."); return;
                 }
+                db.collection("users").where("username", "==", newUsername).get().then(snap => {
+                    if(!snap.empty) { triggerToastDisplay("Username is already taken."); return; }
+                    updates.username = newUsername;
+                    updates.lastUsernameChangeDate = firebase.firestore.FieldValue.serverTimestamp();
+                    db.collection("users").doc(currentUserId).update(updates).then(() => {
+                        closeModal('profileEditModal'); triggerToastDisplay("Profile updated successfully!");
+                    });
+                });
+            } else {
+                if(Object.keys(updates).length > 0) {
+                    db.collection("users").doc(currentUserId).update(updates).then(() => {
+                        closeModal('profileEditModal'); triggerToastDisplay("Profile photo updated!");
+                    });
+                } else { closeModal('profileEditModal'); }
             }
-
-            db.collection("users").doc(currentUserId).update({
-                profilePic: userProfilePicBase64,
-                ...(usernameChanged ? { username: newUsername, lastUsernameChangeDate: firebase.firestore.FieldValue.serverTimestamp() } : {})
-            }).then(() => {
-                closeModal('profileEditModal');
-                triggerToastDisplay("Profile updated successfully!");
-            });
         };
 
         /* =========================================================================
-           SUPER ADMIN PANEL FUNCTIONS
+           SUPER ADMIN PANEL FUNCTIONS & SYSTEM CONTROLS
            ========================================================================= */
-        window.registerAdminLogoTap = function() {
-            adminLogoTapCountTracker++;
-            if(adminLogoTapCountTracker >= 5) {
-                adminLogoTapCountTracker = 0;
-                document.getElementById('secretAdminScreen').style.display = 'flex';
-                triggerToastDisplay("Admin mode detected.");
-            }
-        };
-        
-        window.closeAdminPortal = function() {
-            document.getElementById('secretAdminScreen').style.display = 'none';
-            document.getElementById('adminContentBody').style.display = 'none';
-            document.getElementById('adminSecretKeyField').value = "";
-        };
-
-        window.authenticateAdminSystemKey = function() {
-            const key = document.getElementById('adminSecretKeyField').value;
-            if(key === "vestify786") {
-                document.getElementById('adminContentBody').style.display = 'block';
-                triggerToastDisplay("Welcome Admin!");
-                loadAdminLiveTracker();
-                loadAdminPendingDepositsArray();
-                loadAdminPendingWithdrawalsArray();
-                loadAdminUsersArray();
-                loadAdminAnalyticsReports();
-                loadAdminNodesList();
-                loadAdminSupportTickets();
-                loadSelectedPaymentDetailsAdmin();
-            } else {
-                triggerToastDisplay("Wrong Admin Password!");
-            }
-        };
-
-        window.switchAdminSubView = function(viewName) {
-            const sections = ['tracker', 'deposits', 'users', 'nodes', 'gameControl', 'tickets', 'payments', 'broadcast', 'analytics'];
-            sections.forEach(sec => {
-                const el = document.getElementById('admin' + sec.charAt(0).toUpperCase() + sec.slice(1) + 'Section');
-                if(el) el.style.display = (sec === viewName) ? 'block' : 'none';
-                const btn = document.getElementById('adminTab' + sec.charAt(0).toUpperCase() + sec.slice(1));
-                if(btn) btn.classList.toggle('active', sec === viewName);
-            });
-        };
-
         function loadSystemGameAndTaxSettings() {
             db.collection("system_settings").doc("game_tax_config").onSnapshot(doc => {
                 if (doc.exists) {
-                    const data = doc.data();
-                    systemSettings.aviatorDifficulty = data.aviatorDifficulty || "house_edge";
-                    systemSettings.forcedCrashPoint = data.forcedCrashPoint || null;
-                    systemSettings.weekdayTaxPercent = data.weekdayTaxPercent !== undefined ? Number(data.weekdayTaxPercent) : 10;
-                    systemSettings.crowdBaseCount = data.crowdBaseCount !== undefined ? Number(data.crowdBaseCount) : 280;
-                    systemSettings.maintenanceMode = Boolean(data.maintenanceMode);
+                    const d = doc.data();
+                    if (d.aviatorDifficulty) systemSettings.aviatorDifficulty = d.aviatorDifficulty;
+                    systemSettings.forcedCrashPoint = d.forcedCrashPoint || null;
+                    if (d.weekdayTaxPercent !== undefined) systemSettings.weekdayTaxPercent = Number(d.weekdayTaxPercent);
+                    if (d.crowdBaseCount !== undefined) systemSettings.crowdBaseCount = Number(d.crowdBaseCount);
+                    systemSettings.maintenanceMode = Boolean(d.maintenanceMode);
+
+                    const maintEl = document.getElementById("maintenanceOverlay");
+                    if (maintEl) {
+                        maintEl.style.display = systemSettings.maintenanceMode ? "flex" : "none";
+                    }
 
                     const diffSel = document.getElementById("adminAviatorDifficulty");
                     const taxInp = document.getElementById("adminWithdrawTaxPct");
                     const crowdInp = document.getElementById("adminCrowdBaseInput");
-                    const maintChk = document.getElementById("adminMaintenanceToggle");
-
+                    const maintToggle = document.getElementById("adminMaintenanceToggle");
                     if (diffSel) diffSel.value = systemSettings.aviatorDifficulty;
                     if (taxInp) taxInp.value = systemSettings.weekdayTaxPercent;
                     if (crowdInp) crowdInp.value = systemSettings.crowdBaseCount;
-                    if (maintChk) maintChk.checked = systemSettings.maintenanceMode;
-
-                    const maintOverlay = document.getElementById("maintenanceOverlay");
-                    if (maintOverlay) {
-                        maintOverlay.style.display = systemSettings.maintenanceMode ? "flex" : "none";
-                    }
+                    if (maintToggle) maintToggle.checked = systemSettings.maintenanceMode;
                 }
             });
         }
 
         window.saveSystemGameAndTaxSettings = function() {
             const diff = document.getElementById("adminAviatorDifficulty").value;
-            const forceVal = parseFloat(document.getElementById("adminForceCrashInput").value);
+            const forcedCrash = parseFloat(document.getElementById("adminForceCrashInput").value);
             const taxPct = parseFloat(document.getElementById("adminWithdrawTaxPct").value);
             const crowdBase = parseInt(document.getElementById("adminCrowdBaseInput").value);
-            const maintMode = document.getElementById("adminMaintenanceToggle").checked;
+            const maintOn = document.getElementById("adminMaintenanceToggle").checked;
 
             const payload = {
                 aviatorDifficulty: diff,
-                weekdayTaxPercent: isNaN(taxPct) ? 10 : Math.max(0, Math.min(50, taxPct)),
-                crowdBaseCount: isNaN(crowdBase) ? 280 : Math.max(50, Math.min(5000, crowdBase)),
-                maintenanceMode: maintMode,
-                forcedCrashPoint: (!isNaN(forceVal) && forceVal >= 1.0) ? forceVal : null,
-                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                forcedCrashPoint: (!isNaN(forcedCrash) && forcedCrash >= 1.00) ? forcedCrash : null,
+                weekdayTaxPercent: (!isNaN(taxPct) && taxPct >= 0) ? taxPct : 10,
+                crowdBaseCount: (!isNaN(crowdBase) && crowdBase >= 50) ? crowdBase : 280,
+                maintenanceMode: maintOn
             };
 
             db.collection("system_settings").doc("game_tax_config").set(payload, { merge: true }).then(() => {
                 document.getElementById("adminForceCrashInput").value = "";
-                triggerToastDisplay(maintMode ? "System & Maintenance Mode activated!" : "Maintenance turned OFF. App is Live!");
+                triggerToastDisplay("System, Aviator & Maintenance Settings Saved!");
+            });
+        };
+
+        function initializeRealtimeBroadcastListener() {
+            db.collection("broadcasts").orderBy("timestamp", "desc").limit(1).onSnapshot(snapshot => {
+                if(!snapshot.empty) {
+                    const data = snapshot.docs[0].data();
+                    document.getElementById('tickerBroadcastTitle').innerText = data.title;
+                    document.getElementById('tickerBroadcastMsg').innerText = data.message;
+                    document.getElementById('liveBroadcastTickerContainer').style.display = 'flex';
+                }
+            });
+        }
+
+        function startLiveSocialProofTicker() {
+            const msgs = [
+                "0300****82 just withdrew Rs. 2,400 via EasyPaisa!",
+                "hamza_pk won Rs. 14,500 on Aviator (14.5x)!",
+                "0315****19 activated Rig Stratum-1 (+Rs. 380/Day)!",
+                "zainab99 won Rs. 4,500 on Dragon Tiger!",
+                "0345****91 withdrew Rs. 8,500 0% Tax-Free!"
+            ];
+            let idx = 0;
+            const homeEl = document.getElementById('liveSocialProofText');
+            const authEl = document.getElementById('authLiveTickerMsg');
+            if(homeEl) homeEl.innerText = msgs[0];
+            if(authEl) authEl.innerText = msgs[0];
+
+            setInterval(() => {
+                idx = (idx + 1) % msgs.length;
+                if(homeEl) homeEl.innerText = msgs[idx];
+                if(authEl) authEl.innerText = msgs[idx];
+            }, 4000);
+        }
+
+        window.registerAdminLogoTap = function() {
+            adminLogoTapCountTracker++;
+            if(adminLogoTapCountTracker >= 7) {
+                adminLogoTapCountTracker = 0;
+                document.getElementById('secretAdminScreen').style.display = 'flex';
+            }
+        };
+
+        window.closeAdminPortal = function() { document.getElementById('secretAdminScreen').style.display = 'none'; };
+
+        window.authenticateAdminSystemKey = function() {
+            if(document.getElementById('adminSecretKeyField').value === "vestify786") {
+                document.getElementById('adminContentBody').style.display = 'block';
+                loadAdminLiveTracker();
+                loadAdminTransactionsList();
+                loadAdminUsersList();
+                loadAdminSupportTicketsList();
+                loadAdminAnalyticsReport();
+                loadSelectedPaymentDetailsAdmin();
+                renderAdminNodesList();
+            } else { triggerToastDisplay("Invalid Admin Password."); }
+        };
+
+        window.switchAdminSubView = function(tab) {
+            const sections = {
+                tracker: ['adminTabTracker', 'adminTrackerSection'],
+                deposits: ['adminTabDep', 'adminDepositsSection'],
+                users: ['adminTabUsers', 'adminUsersSection'],
+                nodes: ['adminTabNodes', 'adminNodesSection'],
+                gameControl: ['adminTabGameControl', 'adminGameControlSection'],
+                tickets: ['adminTabTickets', 'adminTicketsSection'],
+                payments: ['adminTabPayments', 'adminPaymentsSection'],
+                broadcast: ['adminTabBroadcast', 'adminBroadcastSection'],
+                analytics: ['adminTabAnalytics', 'adminAnalyticsSection']
+            };
+            Object.keys(sections).forEach(key => {
+                document.getElementById(sections[key][0]).classList.toggle('active', key === tab);
+                document.getElementById(sections[key][1]).style.display = key === tab ? 'block' : 'none';
             });
         };
 
         function loadAdminLiveTracker() {
-            db.collection("presence").onSnapshot(snap => {
+            db.collection("presence").orderBy("lastActive", "desc").onSnapshot(snap => {
                 let html = "";
-                if(snap.empty) { html = "<div style='color:#64748b;'>No users online right now.</div>"; }
+                const now = new Date();
                 snap.forEach(doc => {
-                    const p = doc.data();
-                    html += `<div style="background:rgba(255,255,255,0.03); padding:10px 12px; border-radius:12px; border:1px solid rgba(56,189,248,0.2); display:flex; justify-content:space-between; align-items:center;">
-                        <div>
-                            <b style="color:#38bdf8;">${p.username}</b>
-                            <p style="font-size:10px; color:#10b981; margin-top:2px;">Viewing: <b>${p.currentPage || 'Home'}</b></p>
-                        </div>
-                        <span style="width:8px; height:8px; background:#10b981; border-radius:50%;"></span>
-                    </div>`;
+                    let p = doc.data();
+                    let lastTime = p.lastActive ? p.lastActive.toDate() : null;
+                    let isOnline = lastTime && (now - lastTime) < 120000;
+                    if(isOnline) {
+                        html += `<div style="background:rgba(255,255,255,0.03); padding:10px; border-radius:10px; display:flex; justify-content:space-between; align-items:center;">
+                            <div><b>${p.username}</b> <span style="font-size:10px; color:#10b981;">● Online</span><br><span style="font-size:10px; color:#94a3b8;">Viewing: ${p.currentPage}</span></div>
+                            <span style="font-size:10px; color:#38bdf8;">${lastTime.toLocaleTimeString()}</span>
+                        </div>`;
+                    }
                 });
-                document.getElementById('adminLiveTrackerFeed').innerHTML = html;
+                document.getElementById('adminLiveTrackerFeed').innerHTML = html || "<p style='color:#94a3b8;'>No users currently active online.</p>";
             });
         }
 
-        function loadAdminPendingDepositsArray() {
+        function loadAdminTransactionsList() {
             db.collection("deposits").where("status", "==", "pending").onSnapshot(snap => {
-                let html = "<h6 style='color:#38bdf8; margin-bottom:6px;'>Pending Deposits</h6>";
-                if(snap.empty) { html += "<div style='color:#64748b;'>No pending deposits.</div>"; }
+                let html = "";
                 snap.forEach(doc => {
-                    const d = doc.data();
-                    html += `<div style="background:rgba(255,255,255,0.03); padding:10px; border-radius:10px; margin-bottom:6px; border:1px solid rgba(56,189,248,0.25);">
-                        <p>Amount: <b style="color:#10b981;">Rs. ${d.amount}</b> | ${d.gatewayChannel}</p>
-                        <p>TID: <b>${d.transactionId}</b></p>
+                    let d = doc.data();
+                    html += `<div style="background:rgba(255,255,255,0.03); padding:10px; border-radius:10px; border-left:3px solid #eab308;">
+                        <b>Deposit: Rs. ${d.amount} (${d.gatewayChannel})</b><br>
+                        <span style="font-size:11px; color:#94a3b8;">TID: ${d.transactionId}</span>
                         <div style="display:flex; gap:6px; margin-top:6px;">
-                            <button class="buy-plan-btn" style="flex:1; padding:5px; font-size:10px; background:#10b981;" onclick="approveDepositFromAdmin('${doc.id}', '${d.userId}', ${d.amount})">Approve</button>
-                            <button class="buy-plan-btn" style="flex:1; padding:5px; font-size:10px; background:#ef4444;" onclick="rejectDepositFromAdmin('${doc.id}')">Reject</button>
+                            <button class="buy-plan-btn" onclick="approveDepositReq('${doc.id}', '${d.userId}', ${d.amount})" style="padding:4px 10px; font-size:11px; background:#10b981;">Approve</button>
+                            <button class="buy-plan-btn" onclick="rejectTransactionReq('deposits', '${doc.id}')" style="padding:4px 10px; font-size:11px; background:#ef4444;">Reject</button>
                         </div>
                     </div>`;
                 });
-                document.getElementById('adminPendingDepositsTrack').innerHTML = html;
+                document.getElementById('adminPendingDepositsTrack').innerHTML = html || "<p style='color:#94a3b8;'>No pending deposits.</p>";
             });
-        }
 
-        function loadAdminPendingWithdrawalsArray() {
             db.collection("withdrawals").where("status", "==", "pending").onSnapshot(snap => {
-                let html = "<h6 style='color:#eab308; margin-bottom:6px; margin-top:10px;'>Pending Withdrawals</h6>";
-                if(snap.empty) { html += "<div style='color:#64748b;'>No pending withdrawals.</div>"; }
+                let html = "";
                 snap.forEach(doc => {
-                    const w = doc.data();
+                    let w = doc.data();
                     const netPay = w.netPayout !== undefined ? w.netPayout : w.amount;
-                    html += `<div style="background:rgba(255,255,255,0.03); padding:10px; border-radius:10px; margin-bottom:6px; border:1px solid rgba(234,179,8,0.25);">
-                        <p style="color:#38bdf8; font-weight:800;">Method: ${w.method || 'Wallet'}</p>
-                        <p>Account: <b>${w.title}</b> (${w.targetNo})</p>
-                        <p>Requested: Rs. ${w.amount} | Tax: ${w.taxPercent || 0}% | <b style="color:#10b981;">Send Net: Rs. ${netPay.toFixed(2)}</b></p>
+                    html += `<div style="background:rgba(255,255,255,0.03); padding:10px; border-radius:10px; border-left:3px solid #ef4444;">
+                        <b>Withdraw: Rs. ${w.amount} | Net Pay: Rs. ${netPay.toFixed(0)}</b><br>
+                        <span style="font-size:11px; color:#38bdf8;">${w.method || 'Account'} — ${w.title} (${w.targetNo})</span>
                         <div style="display:flex; gap:6px; margin-top:6px;">
-                            <button class="buy-plan-btn" style="flex:1; padding:5px; font-size:10px; background:#10b981;" onclick="approveWithdrawalFromAdmin('${doc.id}')">Mark Paid</button>
-                            <button class="buy-plan-btn" style="flex:1; padding:5px; font-size:10px; background:#ef4444;" onclick="rejectWithdrawalFromAdmin('${doc.id}', '${w.userId}', ${w.amount})">Reject & Refund</button>
+                            <button class="buy-plan-btn" onclick="approveWithdrawReq('${doc.id}')" style="padding:4px 10px; font-size:11px; background:#0ea5e9;">Mark Paid</button>
+                            <button class="buy-plan-btn" onclick="rejectWithdrawReq('${doc.id}', '${w.userId}', ${w.amount})" style="padding:4px 10px; font-size:11px; background:#ef4444;">Reject & Refund</button>
                         </div>
                     </div>`;
                 });
-                document.getElementById('adminPendingWithdrawalsTrack').innerHTML = html;
+                document.getElementById('adminPendingWithdrawalsTrack').innerHTML = html || "<p style='color:#94a3b8;'>No pending withdrawals.</p>";
             });
         }
 
-        window.approveDepositFromAdmin = function(docId, targetUid, depositAmount) {
-            const userRef = db.collection("users").doc(targetUid);
-            db.runTransaction(transaction => {
-                return transaction.get(userRef).then(userDoc => {
-                    if (!userDoc.exists) { throw new Error("User missing."); }
-                    let d = userDoc.data();
-                    let hasDepBefore = d.hasDepositedBefore || false;
-                    let bonusAmount = depositAmount * (hasDepBefore ? 0.04 : 0.08);
-                    let totalAdded = depositAmount + bonusAmount;
+        window.approveDepositReq = function(docId, userId, amount) {
+            db.collection("users").doc(userId).get().then(doc => {
+                let hasDepositedBefore = doc.exists ? (doc.data().hasDepositedBefore || false) : false;
+                let bonusRate = hasDepositedBefore ? 0.04 : 0.08;
+                let bonusAmount = amount * bonusRate;
 
-                    transaction.update(userRef, {
-                        withdrawableBalance: firebase.firestore.FieldValue.increment(depositAmount),
-                        bonusBalance: firebase.firestore.FieldValue.increment(bonusAmount),
-                        balance: firebase.firestore.FieldValue.increment(totalAdded),
-                        hasDepositedBefore: true
-                    });
-                    transaction.update(db.collection("deposits").doc(docId), { status: "approved" });
+                const batch = db.batch();
+                batch.update(db.collection("deposits").doc(docId), { status: "approved" });
+                batch.update(db.collection("users").doc(userId), {
+                    withdrawableBalance: firebase.firestore.FieldValue.increment(amount),
+                    bonusBalance: firebase.firestore.FieldValue.increment(bonusAmount),
+                    balance: firebase.firestore.FieldValue.increment(amount + bonusAmount),
+                    hasDepositedBefore: true
                 });
-            }).then(() => {
-                processMultiTierReferralBonus(targetUid, depositAmount);
-                triggerToastDisplay("Deposit Approved & Bonus Credited!");
-            }).catch(err => triggerToastDisplay("Error: " + err.message));
+
+                batch.commit().then(() => {
+                    processMultiTierReferralBonus(userId, amount);
+                    triggerToastDisplay(`Deposit Approved! Rs.${amount} Cash + Rs.${bonusAmount} Play Bonus.`);
+                });
+            });
         };
 
-        window.rejectDepositFromAdmin = function(docId) {
-            db.collection("deposits").doc(docId).update({ status: "rejected" }).then(() => triggerToastDisplay("Deposit Rejected."));
+        window.rejectTransactionReq = function(col, docId) {
+            db.collection(col).doc(docId).update({ status: "rejected" }).then(() => triggerToastDisplay("Request Rejected."));
         };
 
-        window.approveWithdrawalFromAdmin = function(docId) {
+        window.approveWithdrawReq = function(docId) {
             db.collection("withdrawals").doc(docId).update({ status: "approved" }).then(() => triggerToastDisplay("Withdrawal Marked Paid!"));
         };
 
-        window.rejectWithdrawalFromAdmin = function(docId, targetUid, refundAmount) {
-            const userRef = db.collection("users").doc(targetUid);
-            db.runTransaction(transaction => {
-                return transaction.get(userRef).then(() => {
-                    transaction.update(userRef, {
-                        withdrawableBalance: firebase.firestore.FieldValue.increment(refundAmount),
-                        balance: firebase.firestore.FieldValue.increment(refundAmount)
-                    });
-                    transaction.update(db.collection("withdrawals").doc(docId), { status: "rejected" });
-                });
-            }).then(() => triggerToastDisplay("Withdrawal Rejected & Refunded to Withdrawable Cash."));
+        window.rejectWithdrawReq = function(docId, userId, amt) {
+            const batch = db.batch();
+            batch.update(db.collection("withdrawals").doc(docId), { status: "rejected" });
+            batch.update(db.collection("users").doc(userId), {
+                withdrawableBalance: firebase.firestore.FieldValue.increment(amt),
+                balance: firebase.firestore.FieldValue.increment(amt)
+            });
+            batch.commit().then(() => triggerToastDisplay("Withdrawal Rejected & Refunded to Withdrawable Cash!"));
         };
 
-        function loadAdminUsersArray() {
+        function loadAdminUsersList() {
             db.collection("users").onSnapshot(snap => {
                 let html = "";
                 snap.forEach(doc => {
-                    const u = doc.data();
-                    let isBlocked = u.isBlocked || false;
+                    let u = doc.data();
+                    let blockText = u.isBlocked ? "Unblock" : "Block";
+                    let blockColor = u.isBlocked ? "#10b981" : "#ef4444";
                     let wBal = u.withdrawableBalance !== undefined ? u.withdrawableBalance : (u.balance || 0);
                     let bBal = u.bonusBalance || 0;
-                    html += `<div style="background:rgba(255,255,255,0.03); padding:12px; border-radius:14px; margin-bottom:8px; border:1px solid rgba(56,189,248,0.15);">
-                        <p>User: <b style="color:#38bdf8;">${u.username || 'N/A'}</b> | <span style="color:${isBlocked ? '#ef4444' : '#10b981'};">${isBlocked ? 'BLOCKED' : 'ACTIVE'}</span></p>
-                        <p style="font-size:11px; margin-top:2px;">Cash: <b style="color:#10b981;">Rs. ${wBal.toFixed(0)}</b> | Bonus: <b style="color:#eab308;">Rs. ${bBal.toFixed(0)}</b> | Nodes: ${u.minersCount || 0}</p>
-                        <div style="display:flex; gap:6px; margin-top:8px;">
-                            <input type="number" id="adminAddBal_${doc.id}" class="modal-input" placeholder="Amount" style="margin-top:0; padding:6px; flex:1;">
-                            <button class="buy-plan-btn" style="padding:6px 10px; font-size:10px; background:#10b981;" onclick="adminModifyUserBalance('${doc.id}', 'cash')">+Cash</button>
-                            <button class="buy-plan-btn" style="padding:6px 10px; font-size:10px; background:#eab308; color:#040814;" onclick="adminModifyUserBalance('${doc.id}', 'bonus')">+Bonus</button>
-                            <button class="buy-plan-btn" style="padding:6px 10px; font-size:10px; background:${isBlocked ? '#10b981' : '#ef4444'};" onclick="adminToggleBlockStatus('${doc.id}', ${isBlocked})">${isBlocked ? 'Unblock' : 'Block'}</button>
+                    html += `<div style="background:rgba(255,255,255,0.03); padding:10px; border-radius:10px; display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <b>${u.username}</b> <span style="font-size:10px; color:#94a3b8;">(${u.email})</span><br>
+                            <span style="font-size:10px; color:#10b981;">Cash: Rs.${wBal}</span> | <span style="font-size:10px; color:#eab308;">Bonus: Rs.${bBal}</span>
+                        </div>
+                        <div style="display:flex; gap:5px;">
+                            <button class="buy-plan-btn" onclick="adminAddBalanceToUser('${doc.id}', '${u.username}')" style="padding:4px 8px; font-size:10px; background:#eab308; color:#000;">+Cash</button>
+                            <button class="buy-plan-btn" onclick="adminToggleBlockUser('${doc.id}', ${u.isBlocked})" style="padding:4px 8px; font-size:10px; background:${blockColor};">${blockText}</button>
                         </div>
                     </div>`;
                 });
@@ -3026,62 +3856,55 @@
             });
         }
 
-        window.adminModifyUserBalance = function(targetUid, walletType) {
-            let inputFieldVal = parseFloat(document.getElementById(`adminAddBal_${targetUid}`).value);
-            if(isNaN(inputFieldVal) || inputFieldVal === 0) { triggerToastDisplay("Enter valid amount."); return; }
-
-            const fieldToUpdate = walletType === "bonus" ? "bonusBalance" : "withdrawableBalance";
-            db.collection("users").doc(targetUid).update({
-                [fieldToUpdate]: firebase.firestore.FieldValue.increment(inputFieldVal),
-                balance: firebase.firestore.FieldValue.increment(inputFieldVal)
-            }).then(() => {
-                triggerToastDisplay(`Added Rs. ${inputFieldVal} to ${walletType.toUpperCase()} wallet!`);
-                document.getElementById(`adminAddBal_${targetUid}`).value = "";
-            });
+        window.adminAddBalanceToUser = function(uid, uname) {
+            let addAmt = parseFloat(prompt(`Enter Withdrawable Cash PKR amount to add to ${uname}:`));
+            if(!isNaN(addAmt) && addAmt > 0) {
+                db.collection("users").doc(uid).update({
+                    withdrawableBalance: firebase.firestore.FieldValue.increment(addAmt),
+                    balance: firebase.firestore.FieldValue.increment(addAmt)
+                }).then(() => triggerToastDisplay(`Added Rs. ${addAmt} Cash to ${uname}!`));
+            }
         };
 
-        window.adminToggleBlockStatus = function(targetUid, currentlyBlocked) {
-            db.collection("users").doc(targetUid).update({ isBlocked: !currentlyBlocked }).then(() => triggerToastDisplay("Block status updated."));
+        window.adminToggleBlockUser = function(uid, currentStatus) {
+            db.collection("users").doc(uid).update({ isBlocked: !currentStatus }).then(() => triggerToastDisplay(currentStatus ? "User Unblocked!" : "User Blocked!"));
         };
 
         window.createCustomBonusCode = function() {
             let code = document.getElementById('adminGiftCode').value.trim().toUpperCase();
             let amt = parseFloat(document.getElementById('adminGiftAmount').value);
-            if(!code || isNaN(amt) || amt <= 0) { triggerToastDisplay("Enter valid code & amount."); return; }
+            if(!code || isNaN(amt) || amt <= 0) { triggerToastDisplay("Enter valid code name and amount."); return; }
 
             db.collection("gift_codes").doc(code).set({
-                code: code, amount: amt, isRedeemed: false, createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                code: code, amount: amt, isRedeemed: false, timestamp: firebase.firestore.FieldValue.serverTimestamp()
             }).then(() => {
-                triggerToastDisplay(`Gift Code ${code} Created!`);
-                document.getElementById('adminGiftCode').value = ""; document.getElementById('adminGiftAmount').value = "";
+                triggerToastDisplay(`Gift Code ${code} (Rs. ${amt} Play Bonus) Created!`);
+                document.getElementById('adminGiftCode').value = "";
+                document.getElementById('adminGiftAmount').value = "";
             });
         };
 
-        window.saveNodeConfigOverride = function() {
-            const category = document.getElementById('editNodeCategory').value;
-            const nodeNameId = document.getElementById('editNodeName').value.trim();
-            const newPrice = parseFloat(document.getElementById('editNodePrice').value);
-            const newDaily = parseFloat(document.getElementById('editNodeDaily').value);
-            const newDuration = parseInt(document.getElementById('editNodeDuration').value) || 30;
-            const imgVal = document.getElementById('editNodeImg').value.trim();
-
-            if(!nodeNameId || isNaN(newPrice) || isNaN(newDaily)) { triggerToastDisplay("Please enter Node Name, Cost, and Daily Profit."); return; }
-
-            db.collection("node_configs").doc(nodeNameId).set({
-                nodeId: nodeNameId,
-                category: category,
-                cost: newPrice,
-                dailyYield: newDaily,
-                duration: newDuration,
-                imageUrl: imgVal || (activeNodesMap[nodeNameId] && activeNodesMap[nodeNameId].imageUrl) || "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=120&auto=format&fit=crop&q=60",
-                isDeleted: false,
-                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-            }, { merge: true }).then(() => {
-                triggerToastDisplay(`Node "${nodeNameId}" saved & updated live!`);
+        /* ADMIN NODES MANAGER (ADD, EDIT, DELETE) */
+        function renderAdminNodesList() {
+            const listEl = document.getElementById('adminExistingNodesList');
+            if (!listEl) return;
+            let html = "";
+            Object.values(activeNodesMap).forEach(n => {
+                html += `<div style="background:rgba(255,255,255,0.04); padding:8px 10px; border-radius:10px; display:flex; justify-content:space-between; align-items:center;">
+                    <div>
+                        <b style="color:#fff;">${n.nodeId}</b> <span style="font-size:9px; color:#38bdf8;">[${n.category.toUpperCase()}]</span><br>
+                        <span style="color:#94a3b8;">Cost: Rs.${n.cost} | Daily: Rs.${n.dailyYield} | ${n.duration}d</span>
+                    </div>
+                    <div style="display:flex; gap:5px;">
+                        <button class="buy-plan-btn" style="padding:4px 8px; font-size:10px;" onclick="populateAdminNodeEditor('${n.nodeId.replace(/'/g, "\\'")}')">Edit</button>
+                        <button class="buy-plan-btn" style="padding:4px 8px; font-size:10px; background:#ef4444;" onclick="deleteNodeConfigOverride('${n.nodeId.replace(/'/g, "\\'")}')">Del</button>
+                    </div>
+                </div>`;
             });
-        };
+            listEl.innerHTML = html || "<p style='color:#94a3b8;'>No nodes configured.</p>";
+        }
 
-        window.populateNodeEditorFromAdmin = function(nodeId) {
+        window.populateAdminNodeEditor = function(nodeId) {
             const n = activeNodesMap[nodeId];
             if (!n) return;
             document.getElementById('editNodeCategory').value = n.category;
@@ -3090,246 +3913,199 @@
             document.getElementById('editNodeDaily').value = n.dailyYield;
             document.getElementById('editNodeDuration').value = n.duration;
             document.getElementById('editNodeImg').value = n.imageUrl;
-            triggerToastDisplay(`Loaded ${nodeId} into editor.`);
+            triggerToastDisplay(`Loaded ${n.nodeId} into editor!`);
         };
 
-        function loadAdminNodesList() {
-            setInterval(() => {
-                const container = document.getElementById('adminExistingNodesList');
-                if (!container) return;
-                let html = "";
-                Object.values(activeNodesMap).forEach(d => {
-                    html += `<div style="background:rgba(255,255,255,0.03); padding:8px 10px; border-radius:8px; display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-                        <div><b>${d.nodeId}</b> <span style="color:#10b981;">(Rs.${d.cost} → ${d.dailyYield}/d)</span></div>
-                        <div style="display:flex; gap:4px;">
-                            <button class="buy-plan-btn" style="padding:4px 8px; font-size:10px;" onclick="populateNodeEditorFromAdmin('${d.nodeId.replace(/'/g, "\\'")}')">Edit</button>
-                            <button class="buy-plan-btn" style="padding:4px 8px; font-size:10px; background:#ef4444;" onclick="deleteNodeFromAdmin('${d.nodeId.replace(/'/g, "\\'")}')">Delete</button>
-                        </div>
-                    </div>`;
-                });
-                container.innerHTML = html;
-            }, 1500);
-        }
+        window.saveNodeConfigOverride = function() {
+            let category = document.getElementById('editNodeCategory').value;
+            let nodeId = document.getElementById('editNodeName').value.trim();
+            let cost = parseFloat(document.getElementById('editNodePrice').value);
+            let dailyYield = parseFloat(document.getElementById('editNodeDaily').value);
+            let duration = parseInt(document.getElementById('editNodeDuration').value) || 30;
+            let imgUrl = document.getElementById('editNodeImg').value.trim();
 
-        window.deleteNodeFromAdmin = function(nodeId) {
-            db.collection("node_configs").doc(nodeId).set({ nodeId: nodeId, isDeleted: true }, { merge: true }).then(() => triggerToastDisplay(`Node "${nodeId}" removed!`));
+            if(!nodeId || isNaN(cost) || isNaN(dailyYield)) { triggerToastDisplay("Enter valid Node Name, Price, and Daily Yield."); return; }
+
+            let payload = {
+                nodeId: nodeId,
+                category: category,
+                cost: cost,
+                dailyYield: dailyYield,
+                duration: duration,
+                isDeleted: false,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+            if(imgUrl) payload.imageUrl = imgUrl;
+
+            db.collection("node_configs").doc(nodeId).set(payload, { merge: true }).then(() => {
+                triggerToastDisplay(`Saved ${nodeId} successfully!`);
+            });
         };
 
-        function loadAdminSupportTickets() {
-            db.collection("support_tickets").onSnapshot(snap => {
+        window.deleteNodeConfigOverride = function(nodeId) {
+            db.collection("node_configs").doc(nodeId).set({ nodeId: nodeId, isDeleted: true }, { merge: true }).then(() => {
+                triggerToastDisplay(`Removed ${nodeId}`);
+            });
+        };
+
+        function loadAdminSupportTicketsList() {
+            db.collection("support_tickets").orderBy("timestamp", "desc").onSnapshot(snap => {
                 let html = "";
-                if (snap.empty) html = "<div style='color:#64748b;'>No support tickets found.</div>";
                 snap.forEach(doc => {
-                    const t = doc.data();
-                    html += `<div style="background:rgba(255,255,255,0.03); padding:10px; border-radius:10px; border:1px solid rgba(56,189,248,0.2);">
-                        <div style="display:flex; justify-content:space-between;">
-                            <b style="color:#38bdf8;">${t.username}: ${t.subject}</b>
-                            <span style="color:${t.status === 'Resolved' ? '#10b981' : '#eab308'}; font-weight:700;">${t.status}</span>
-                        </div>
-                        <p style="color:#cbd5e1; font-size:11px; margin:4px 0;">${t.message}</p>
-                        <div style="display:flex; gap:6px; margin-top:6px;">
-                            <input type="text" id="replyInp_${doc.id}" class="modal-input" placeholder="Type reply..." value="${t.adminReply || ''}" style="margin-top:0; padding:6px; flex:1;">
-                            <button class="buy-plan-btn" style="padding:6px 10px; font-size:10px; background:#10b981;" onclick="resolveSupportTicketAdmin('${doc.id}')">Reply & Resolve</button>
-                        </div>
+                    let t = doc.data();
+                    html += `<div style="background:rgba(255,255,255,0.03); padding:10px; border-radius:10px; border-left:3px solid #38bdf8;">
+                        <b>${t.subject}</b> <span style="font-size:10px; color:#94a3b8;">by ${t.username}</span><br>
+                        <p style="font-size:11px; color:#fff; margin-top:4px;">${t.message}</p>
+                        ${t.adminReply ? `<p style="font-size:10px; color:#10b981; margin-top:4px;">Replied: ${t.adminReply}</p>` : 
+                        `<button class="buy-plan-btn" onclick="adminReplySupportTicket('${doc.id}')" style="margin-top:6px; padding:4px 10px; font-size:10px;">Reply & Resolve</button>`}
                     </div>`;
                 });
-                document.getElementById("adminTicketsListFeed").innerHTML = html;
+                document.getElementById('adminTicketsListFeed').innerHTML = html || "<p style='color:#94a3b8;'>No support tickets.</p>";
             });
         }
 
-        window.resolveSupportTicketAdmin = function(ticketId) {
-            const replyText = document.getElementById(`replyInp_${ticketId}`).value.trim();
-            db.collection("support_tickets").doc(ticketId).update({
-                adminReply: replyText || "Resolved by support team.",
-                status: "Resolved"
-            }).then(() => triggerToastDisplay("Ticket marked Resolved!"));
+        window.adminReplySupportTicket = function(ticketId) {
+            let replyMsg = prompt("Enter reply message to user:");
+            if(replyMsg) {
+                db.collection("support_tickets").doc(ticketId).update({ adminReply: replyMsg, status: "resolved" }).then(() => triggerToastDisplay("Reply Sent!"));
+            }
         };
 
         window.loadSelectedPaymentDetailsAdmin = function() {
-            let key = document.getElementById('adminPaymentSelect').value;
-            let conf = paymentGatewayMerchantConfig[key] || { title: "", number: "" };
-            document.getElementById('adminPayTitle').value = conf.title;
-            document.getElementById('adminPayNumber').value = conf.number;
+            let method = document.getElementById('adminPaymentSelect').value;
+            let currentConf = paymentGatewayMerchantConfig[method] || { title: "", number: "" };
+            document.getElementById('adminPayTitle').value = currentConf.title;
+            document.getElementById('adminPayNumber').value = currentConf.number;
         };
 
         window.updatePaymentMethodDetailsAdmin = function() {
-            let key = document.getElementById('adminPaymentSelect').value;
+            let method = document.getElementById('adminPaymentSelect').value;
             let title = document.getElementById('adminPayTitle').value.trim();
-            let num = document.getElementById('adminPayNumber').value.trim();
-            if(!title || !num) { triggerToastDisplay("Enter title and account number."); return; }
+            let number = document.getElementById('adminPayNumber').value.trim();
+            if(!title || !number) { triggerToastDisplay("Enter account title and number."); return; }
 
-            db.collection("system_settings").doc("payment_gateways").set({
-                [key]: { title: title, number: num }
-            }, { merge: true }).then(() => triggerToastDisplay(`${key} details updated!`));
+            let payload = {};
+            payload[method] = { title: title, number: number };
+            db.collection("system_settings").doc("payment_gateways").set(payload, { merge: true }).then(() => triggerToastDisplay(`${method} Payment Details Updated!`));
         };
+
+        window.dispatchGlobalBroadcast = function() {
+            let title = document.getElementById('broadcastTitleInput').value.trim();
+            let msg = document.getElementById('broadcastMessageInput').value.trim();
+            if(!title || !msg) { triggerToastDisplay("Enter announcement title and message."); return; }
+
+            db.collection("broadcasts").add({ title: title, message: msg, timestamp: firebase.firestore.FieldValue.serverTimestamp() }).then(() => {
+                triggerToastDisplay("Global Broadcast Sent!");
+                document.getElementById('broadcastTitleInput').value = "";
+                document.getElementById('broadcastMessageInput').value = "";
+            });
+        };
+
+        function loadAdminAnalyticsReport() {
+            db.collection("users").get().then(snap => {
+                let totalUsers = snap.size;
+                document.getElementById('repDAU').innerText = Math.max(1, Math.floor(totalUsers * 0.6));
+                document.getElementById('repWAU').innerText = Math.max(1, Math.floor(totalUsers * 0.85));
+                document.getElementById('repMAU').innerText = totalUsers;
+            });
+
+            db.collection("deposits").where("status", "==", "approved").get().then(snap => {
+                let sum = 0;
+                snap.forEach(doc => { if(!doc.data().gatewayChannel.includes("Profit")) sum += (doc.data().amount || 0); });
+                document.getElementById('repTotalRevenue').innerText = "Rs. " + sum.toLocaleString();
+            });
+        }
 
         window.exportUserDataCSV = function() {
             db.collection("users").get().then(snap => {
-                let csvContent = "data:text/csv;charset=utf-8,UID,Username,Email,WithdrawableCash,BonusBalance\n";
-                snap.forEach(doc => { let u = doc.data(); csvContent += `${u.uid},${u.username},${u.email},${u.withdrawableBalance || 0},${u.bonusBalance || 0}\n`; });
-                downloadCSVFile(csvContent, "Vestify_Users_Report.csv");
+                let csv = "UID,Username,Email,WithdrawableCash,BonusBalance,Miners,Sponsor\n";
+                snap.forEach(doc => {
+                    let u = doc.data();
+                    csv += `${doc.id},${u.username},${u.email},${u.withdrawableBalance || 0},${u.bonusBalance || 0},${u.minersCount || 0},${u.referredBy || 'none'}\n`;
+                });
+                downloadCSVFile(csv, "VestifyPro_Users_Report.csv");
             });
         };
 
         window.exportTransactionDataCSV = function() {
             db.collection("deposits").get().then(snap => {
-                let csvContent = "data:text/csv;charset=utf-8,ID,UserID,Amount,Channel,Status\n";
-                snap.forEach(doc => { let d = doc.data(); csvContent += `${doc.id},${d.userId},${d.amount},${d.gatewayChannel},${d.status}\n`; });
-                downloadCSVFile(csvContent, "Vestify_Transactions_Report.csv");
-            });
-        };
-
-        function downloadCSVFile(csvContent, fileName) {
-            var encodedUri = encodeURI(csvContent);
-            var link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", fileName);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-
-        window.dispatchGlobalBroadcast = function() {
-            const title = document.getElementById('broadcastTitleInput').value.trim();
-            const message = document.getElementById('broadcastMessageInput').value.trim();
-            if(!title || !message) { triggerToastDisplay("Enter title and message."); return; }
-
-            db.collection("global_broadcasts").add({
-                title: title, message: message, timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            }).then(() => {
-                triggerToastDisplay("Broadcast sent!");
-                document.getElementById('broadcastTitleInput').value = ""; document.getElementById('broadcastMessageInput').value = "";
-            });
-        };
-
-        function initializeRealtimeBroadcastListener() {
-            db.collection("global_broadcasts").orderBy("timestamp", "desc").limit(1).onSnapshot(snapshot => {
-                const bannerContainer = document.getElementById('liveBroadcastTickerContainer');
-                const titleElem = document.getElementById('tickerBroadcastTitle');
-                const msgElem = document.getElementById('tickerBroadcastMsg');
-                if(!snapshot.empty) {
-                    const latestBroadcast = snapshot.docs[0].data();
-                    if(titleElem && msgElem && bannerContainer) {
-                        titleElem.innerText = latestBroadcast.title || "Announcement";
-                        msgElem.innerText = latestBroadcast.message || "";
-                        bannerContainer.style.display = "flex";
-                    }
-                } else if(bannerContainer) { bannerContainer.style.display = "none"; }
-            });
-        }
-
-        function loadAdminAnalyticsReports() {
-            db.collection("users").get().then(snap => {
-                let activeToday = 0, activeWeek = 0, activeMonth = 0, now = new Date();
+                let csv = "DocID,UserID,Amount,Channel,TransactionID,Status\n";
                 snap.forEach(doc => {
                     let d = doc.data();
-                    if(d.timestamp) {
-                        let diffDays = (now - d.timestamp.toDate()) / (1000 * 60 * 60 * 24);
-                        if(diffDays <= 1) activeToday++;
-                        if(diffDays <= 7) activeWeek++;
-                        if(diffDays <= 30) activeMonth++;
-                    }
+                    csv += `${doc.id},${d.userId},${d.amount},${d.gatewayChannel},${d.transactionId},${d.status}\n`;
                 });
-                document.getElementById('repDAU').innerText = activeToday;
-                document.getElementById('repWAU').innerText = activeWeek;
-                document.getElementById('repMAU').innerText = activeMonth;
+                downloadCSVFile(csv, "VestifyPro_Transactions_Report.csv");
             });
-
-            db.collection("deposits").where("status", "==", "approved").get().then(depSnap => {
-                let totalRev = 0;
-                depSnap.forEach(doc => {
-                    const d = doc.data();
-                    if (["EasyPaisa", "JazzCash", "USDT"].includes(d.gatewayChannel)) {
-                        totalRev += (Number(d.amount) || 0);
-                    }
-                });
-                document.getElementById('repTotalRevenue').innerText = `Rs. ${totalRev.toLocaleString()}`;
-            });
-        }
-
-        function startLiveSocialProofTicker() {
-            const messages = [
-                "0300****82 withdrew Rs. 2,400 via EasyPaisa",
-                "hamza_77 won Rs. 14,500 @ 14.5x in Aviator!",
-                "ayesha_m activated Rig Stratum-1 Node",
-                "0315****19 withdrew Rs. 4,850 via JazzCash",
-                "bilal_pro won Rs. 42,000 @ 84.0x in Aviator!",
-                "sana_k unlocked Aviator 5,000 PKR Free Spin!",
-                "0321****94 withdrew Rs. 12,500 via EasyPaisa",
-                "zainab99 won Rs. 8,900 @ 6.2x in Aviator!",
-                "usman_rwp activated Matrix Overdrive-1",
-                "0333****41 withdrew Rs. 3,100 via JazzCash",
-                "fahad_90 won Rs. 25,000 @ 31.4x in Aviator!",
-                "mahnoor_s deposited Rs. 5,000 successfully",
-                "0345****67 withdrew Rs. 18,200 via EasyPaisa",
-                "kamran_x won Rs. 6,400 @ 4.8x in Aviator!",
-                "fatima_noor activated Pod Alpha-3 Node",
-                "0301****55 withdrew Rs. 7,600 via JazzCash"
-            ];
-            let idx = 0;
-            const el = document.getElementById("liveSocialProofText");
-            const authTickerEl = document.getElementById("authLiveTickerMsg");
-            
-            if (el) el.innerText = messages[0];
-            if (authTickerEl) authTickerEl.innerText = messages[0];
-
-            setInterval(() => {
-                idx = (idx + 1) % messages.length;
-                if (el) el.innerText = messages[idx];
-                if (authTickerEl) authTickerEl.innerText = messages[idx];
-            }, 3500);
-        }
-
-        function triggerToastDisplay(message) {
-            const toast = document.getElementById('rewardToast');
-            toast.innerText = message;
-            toast.classList.add('toast-show');
-            setTimeout(() => toast.classList.remove('toast-show'), 3200);
-        }
-
-        function openModal(id) { document.getElementById(id).classList.add('modal-open'); }
-        function closeModal(id) { document.getElementById(id).classList.remove('modal-open'); }
-
-        window.openDepositModal = function() { openModal('depositModal'); };
-        window.openTransferModal = function() { openModal('transferModal'); };
-
-        window.routeToView = function(pageId, navId) {
-            document.querySelectorAll('.app-view-page').forEach(p => p.classList.remove('active-page'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active-page');
-            document.getElementById(navId).classList.add('active');
-            updateLivePresenceActivity(pageId);
         };
 
-        window.switchPlanCategory = function(gridId, tabId) {
-            document.querySelectorAll('.plans-grid').forEach(g => g.classList.remove('active-grid'));
-            document.querySelectorAll('.plan-tab-trigger').forEach(t => t.classList.remove('active-tab'));
-            document.getElementById(gridId).classList.add('active-grid');
-            document.getElementById(tabId).classList.add('active-tab');
-        };
-
-        window.selectDepositGatewayChannel = function(channel) {
-            activeGatewayChannel = channel;
-            const config = paymentGatewayMerchantConfig[channel] || { title: channel, number: "Not set" };
-            document.getElementById('lblAccountTitleType').innerText = config.title;
-            document.getElementById('txtMerchantAccountNo').innerText = config.number;
-            document.getElementById('txtMerchantAccountTitle').innerText = config.title;
-            updateDepositCalculations();
-        };
-
-        function toggleFaqVisibility(elem) {
-            const ans = elem.querySelector('.faq-a');
-            const icon = elem.querySelector('.faq-q i');
-            ans.style.display = (ans.style.display === 'block') ? 'none' : 'block';
-            if(icon) icon.style.transform = (ans.style.display === 'block') ? 'rotate(180deg)' : 'rotate(0deg)';
+        function downloadCSVFile(csvContent, filename) {
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = filename; a.click();
+            triggerToastDisplay(`Downloaded ${filename}!`);
         }
 
         function initializeCountdownClockTicker() {
             setInterval(() => {
                 const now = new Date();
+                const midnight = new Date();
+                midnight.setHours(24, 0, 0, 0);
+                const diff = midnight - now;
+                const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+                const m = Math.floor((diff / 1000 / 60) % 60);
+                const s = Math.floor((diff / 1000) % 60);
                 document.getElementById('countdownTimerClock').innerText = 
-                    `${(23 - now.getHours()).toString().padStart(2, '0')}:${(59 - now.getMinutes()).toString().padStart(2, '0')}:${(59 - now.getSeconds()).toString().padStart(2, '0')}`;
+                    `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
             }, 1000);
+        }
+
+        window.toggleFaqVisibility = function(el) {
+            const ans = el.querySelector('.faq-a');
+            ans.style.display = ans.style.display === 'block' ? 'none' : 'block';
+        };
+
+        window.routeToView = function(pageId, navId) {
+            document.querySelectorAll('.app-view-page').forEach(p => p.classList.remove('active-page'));
+            document.getElementById(pageId).classList.add('active-page');
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById(navId).classList.add('active');
+            updateLivePresenceActivity(pageId.replace('page', ''));
+        };
+
+        window.switchPlanCategory = function(gridId, tabId) {
+            document.querySelectorAll('.plans-grid').forEach(g => g.classList.remove('active-grid'));
+            document.getElementById(gridId).classList.add('active-grid');
+            document.querySelectorAll('.plan-tab-trigger').forEach(t => t.classList.remove('active-tab'));
+            document.getElementById(tabId).classList.add('active-tab');
+        };
+
+        window.selectDepositGatewayChannel = function(method) {
+            activeGatewayChannel = method;
+            ['chkEasyPaisa', 'chkJazzCash', 'chkUSDT'].forEach(id => {
+                const el = document.getElementById(id);
+                if(el) el.style.borderColor = 'var(--border-color)';
+            });
+            const targetBtn = document.getElementById('chk' + method);
+            if(targetBtn) targetBtn.style.borderColor = '#0ea5e9';
+            
+            const conf = paymentGatewayMerchantConfig[method] || { number: "03379827882", title: "Account" };
+            document.getElementById('txtMerchantAccountNo').innerText = conf.number;
+            document.getElementById('txtMerchantAccountTitle').innerText = conf.title;
+        };
+
+        window.openDepositModal = function() {
+            selectDepositGatewayChannel(activeGatewayChannel);
+            openModal('depositModal');
+        };
+        window.openTransferModal = () => openModal('transferModal');
+        window.openModal = id => document.getElementById(id).classList.add('modal-open');
+        window.closeModal = id => document.getElementById(id).classList.remove('modal-open');
+
+        function triggerToastDisplay(msg) {
+            const t = document.getElementById('rewardToast');
+            t.innerText = msg; t.classList.add('toast-show');
+            setTimeout(() => t.classList.remove('toast-show'), 3500);
         }
     </script>
 </body>
