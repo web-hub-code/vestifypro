@@ -1,580 +1,2416 @@
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vestify Pro Ultra - Cloud Mining & Live Games</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <style>
-        :root {
-            --bg-main: #071326;
-            --bg-card: rgba(15, 23, 42, 0.86);
-            --bg-sub: rgba(30, 41, 59, 0.78);
-            --border-color: rgba(56, 189, 248, 0.22);
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --sky-primary: #38bdf8;
-        }
-        html[data-theme="light"] {
-            --bg-main: #f1f5f9;
-            --bg-card: rgba(255, 255, 255, 0.92);
-            --bg-sub: rgba(226, 232, 240, 0.85);
-            --border-color: rgba(15, 23, 42, 0.14);
-            --text-main: #0f172a;
-            --text-muted: #475569;
-            --sky-primary: #0284c7;
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
-        body {
-            background: var(--bg-main);
-            color: var(--text-main);
-            min-height: 100vh;
-            padding-bottom: 84px;
-            max-width: 520px;
-            margin: 0 auto;
-        }
-        .vestify-header {
-            padding: 12px 16px;
-            background: var(--bg-card);
-            border-bottom: 1px solid var(--border-color);
-            position: sticky;
-            top: 0;
-            z-index: 30;
-        }
-        .brand-row { display: flex; justify-content: space-between; align-items: center; }
-        .logo-block { display: flex; align-items: center; gap: 10px; cursor: pointer; }
-        .logo-icon {
-            width: 34px; height: 34px; border-radius: 10px;
-            background: linear-gradient(135deg, #0ea5e9, #2563eb);
-            display: grid; place-items: center; color: #fff;
-        }
-        .app-view-page { display: none; padding: 14px 0; }
-        .app-view-page.active-page { display: block; }
-        .stats-dashboard {
-            margin: 12px 16px;
-            padding: 16px;
-            border-radius: 20px;
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-        }
-        .wallet-split-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
-        .wallet-sub-box { background: var(--bg-sub); padding: 10px; border-radius: 12px; border: 1px solid var(--border-color); }
-        .quick-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 0 16px 14px 16px; }
-        .action-btn {
-            padding: 10px; border-radius: 12px; border: 1px solid var(--border-color);
-            background: var(--bg-card); color: var(--text-main); font-weight: 700; font-size: 12px; cursor: pointer;
-        }
-        .section-title { font-size: 14px; font-weight: 800; margin: 14px 16px 8px 16px; color: var(--text-main); }
-        .modal-input {
-            width: 100%; padding: 10px 12px; border-radius: 10px;
-            border: 1px solid var(--border-color); background: var(--bg-sub); color: var(--text-main); font-size: 12px;
-        }
-        .buy-plan-btn {
-            background: linear-gradient(135deg, #0ea5e9, #0284c7);
-            color: #fff; border: none; border-radius: 10px; padding: 8px 14px; font-weight: 700; cursor: pointer;
-        }
-        .plan-tab-trigger {
-            background: var(--bg-sub); color: var(--text-main); border: 1px solid var(--border-color);
-            border-radius: 99px; padding: 6px 12px; font-size: 11px; font-weight: 700; cursor: pointer;
-        }
-        .bottom-nav {
-            position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
-            width: 100%; max-width: 520px; background: var(--bg-card);
-            border-top: 1px solid var(--border-color); display: grid; grid-template-columns: repeat(6, 1fr);
-            padding: 6px 4px; z-index: 40;
-        }
-        .nav-item {
-            display: flex; flex-direction: column; align-items: center; gap: 3px;
-            font-size: 10px; color: var(--text-muted); padding: 6px 2px; border-radius: 10px; cursor: pointer;
-        }
-        .nav-item.active { color: var(--sky-primary); font-weight: 800; background: rgba(56, 189, 248, 0.12); }
-        .game-module-pane { display: none; padding: 12px 16px; }
-        .game-module-pane.active { display: block; }
-        .games-hub-tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 12px 16px 0 16px; }
-        .game-hub-tab-btn {
-            padding: 10px; border-radius: 12px; border: 1px solid var(--border-color);
-            background: var(--bg-card); color: var(--text-main); font-weight: 700; font-size: 11px; cursor: pointer;
-        }
-        .game-hub-tab-btn.active { border-color: var(--sky-primary); background: rgba(56, 189, 248, 0.14); }
-        .mines-grid-5x5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 12px 0; }
-        .mine-tile {
-            aspect-ratio: 1; border-radius: 12px; background: var(--bg-sub);
-            border: 1px solid var(--border-color); display: grid; place-items: center; cursor: pointer; font-weight: 800;
-        }
-        .mine-tile.safe-revealed { background: rgba(16, 185, 129, 0.22); border-color: #10b981; color: #10b981; }
-        .mine-tile.bomb-revealed { background: rgba(239, 68, 68, 0.25); border-color: #ef4444; color: #ef4444; }
-        .premium-modal {
-            display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.72);
-            z-index: 60; padding: 16px; overflow-y: auto;
-        }
-        .premium-modal.modal-open { display: grid; place-items: center; }
-        .modal-content {
-            width: 100%; max-width: 480px; background: var(--bg-card);
-            border: 1px solid var(--border-color); border-radius: 20px; padding: 18px; position: relative;
-        }
-        .close-modal-btn { position: absolute; top: 12px; right: 14px; font-size: 20px; cursor: pointer; color: var(--text-muted); }
-        .reward-toast {
-            position: fixed; top: 68px; left: 50%; transform: translateX(-50%) translateY(-16px);
-            background: #0f172a; color: #fff; border: 1px solid #38bdf8;
-            padding: 9px 16px; border-radius: 99px; font-size: 12px; font-weight: 700;
-            opacity: 0; pointer-events: none; transition: all 0.25s ease; z-index: 90;
-        }
-        .reward-toast.toast-show { opacity: 1; transform: translateX(-50%) translateY(0); }
-        .toggle-switch { position: relative; display: inline-block; width: 42px; height: 22px; }
-        .toggle-switch input { opacity: 0; width: 0; height: 0; }
-        .toggle-slider {
-            position: absolute; cursor: pointer; inset: 0; background: #475569;
-            border-radius: 99px; transition: 0.25s;
-        }
-        .toggle-slider:before {
-            content: ""; position: absolute; height: 16px; width: 16px; left: 3px; bottom: 3px;
-            background: #fff; border-radius: 50%; transition: 0.25s;
-        }
-        input:checked + .toggle-slider { background: #10b981; }
-        input:checked + .toggle-slider:before { transform: translateX(20px); }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>VestifyPro — Virtual Nodes, Arcade & VIP Lounge</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+    :root {
+      --bg-dark: #070b14;
+      --bg-card: #0e1627;
+      --bg-card-2: #131f36;
+      --accent-cyan: #00f0ff;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
+      --accent-violet: #8b5cf6;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg-dark);
+      color: #f8fafc;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    h1, h2, h3, h4, .font-display {
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .glass {
+      background: rgba(14, 22, 39, 0.78);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(148, 163, 184, 0.14);
+    }
+
+    .glass-strong {
+      background: rgba(10, 16, 30, 0.92);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      border: 1px solid rgba(0, 240, 255, 0.16);
+    }
+
+    .neon-border {
+      box-shadow: 0 0 0 1px rgba(0, 240, 255, 0.22), 0 12px 32px -10px rgba(0, 240, 255, 0.22);
+    }
+
+    .btn-cyan {
+      background: linear-gradient(135deg, #00f0ff 0%, #0284c7 100%);
+      color: #04101d;
+      font-weight: 700;
+      transition: transform 0.15s ease, box-shadow 0.2s ease, filter 0.2s ease;
+    }
+    .btn-cyan:hover {
+      filter: brightness(1.08);
+      box-shadow: 0 8px 24px rgba(0, 240, 255, 0.35);
+    }
+    .btn-cyan:active { transform: scale(0.97); }
+
+    .btn-gold {
+      background: linear-gradient(135deg, #fbbf24 0%, #ea580c 100%);
+      color: #160900;
+      font-weight: 800;
+      transition: transform 0.15s ease, box-shadow 0.2s ease;
+    }
+    .btn-gold:active { transform: scale(0.97); }
+
+    /* 3D Card Flip Animation */
+    .card-3d-scene {
+      perspective: 900px;
+      width: 78px;
+      height: 112px;
+    }
+    .card-3d {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.58s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .card-3d.is-flipped {
+      transform: rotateY(180deg);
+    }
+    .card-face {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
+    }
+    .card-back {
+      background:
+        radial-gradient(circle at 25% 25%, rgba(0, 240, 255, 0.25), transparent 55%),
+        repeating-linear-gradient(45deg, rgba(139, 92, 246, 0.22) 0px, rgba(139, 92, 246, 0.22) 6px, rgba(15, 23, 42, 0.95) 6px, rgba(15, 23, 42, 0.95) 12px);
+      align-items: center;
+      justify-content: center;
+    }
+    .card-front {
+      background: linear-gradient(165deg, #ffffff 0%, #f1f5f9 100%);
+      color: #0f172a;
+      transform: rotateY(180deg);
+    }
+    .card-front.red-suit { color: #e11d48; }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #070b14; }
+    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 999px; }
+    ::-webkit-scrollbar-thumb:hover { background: #334155; }
+
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(0, 240, 255, 0.35); }
+      50% { box-shadow: 0 0 0 10px rgba(0, 240, 255, 0); }
+    }
+    .pulse-cyan { animation: pulseGlow 2.4s infinite; }
+
+    .ticker-wrap {
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .ticker-move {
+      display: inline-flex;
+      gap: 2.5rem;
+      animation: tickerScroll 26s linear infinite;
+    }
+    @keyframes tickerScroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+  </style>
 </head>
-<body>
-    <div id="rewardToast" class="reward-toast"></div>
+<body class="min-h-screen bg-[#070b14] text-slate-100 selection:bg-cyan-400 selection:text-slate-950">
 
-    <!-- SUPER ADMIN PORTAL MODAL -->
-    <div id="secretAdminScreen" class="premium-modal">
-        <div class="modal-content">
-            <div class="close-modal-btn" onclick="closeAdminPortal()">&times;</div>
-            <h3 style="color:#38bdf8; font-weight:800;"><i class="fa-solid fa-user-shield"></i> Super Admin Control Panel</h3>
-            <p style="font-size:11px; color:var(--text-muted); margin-bottom:12px;">Full Control: Users, Nodes, Aviator, DT, AB, Mines, Taxes, Broadcast & Audit Logs</p>
+  <!-- FIREBASE CONFIG NOTICE BANNER (Shown only if placeholder config is detected) -->
+  <div id="configBanner" class="hidden bg-amber-500/15 border-b border-amber-400/40 text-amber-200 px-4 py-2 text-xs flex items-center justify-between gap-3">
+    <span><i class="fa-solid fa-triangle-exclamation mr-1.5 text-amber-400"></i><strong>Demo Mode Active:</strong> Replace <code>FIREBASE_CONFIG</code> in the script with your Firebase Realtime Database credentials for live multi-user cloud persistence.</span>
+    <button onclick="this.parentElement.classList.add('hidden')" class="text-amber-300 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+  </div>
 
-            <input type="password" id="adminSecretKeyField" class="modal-input" placeholder="Enter Admin Secret Password">
-            <button class="buy-plan-btn" onclick="authenticateAdminSystemKey()" style="width:100%; margin:10px 0;">Login Admin</button>
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast" class="fixed top-20 right-4 z-[90] max-w-sm w-full pointer-events-none opacity-0 translate-y-2 transition-all duration-300">
+    <div class="glass-strong rounded-2xl p-3.5 shadow-2xl flex items-start gap-3 border border-cyan-400/30">
+      <div id="toastIcon" class="w-8 h-8 rounded-xl bg-cyan-500/20 text-cyan-300 flex items-center justify-center shrink-0 mt-0.5">
+        <i class="fa-solid fa-bolt"></i>
+      </div>
+      <div class="flex-1 min-w-0">
+        <p id="toastTitle" class="text-xs font-bold uppercase tracking-wider text-cyan-300">Notice</p>
+        <p id="toastMsg" class="text-sm text-slate-100 leading-snug mt-0.5"></p>
+      </div>
+    </div>
+  </div>
 
-            <div id="adminContentBody" style="display:none; max-height:460px; overflow-y:auto; padding-top:8px; border-top:1px solid var(--border-color);">
-                <div style="display:flex; flex-wrap:wrap; gap:5px; margin-bottom:12px;">
-                    <button class="plan-tab-trigger" onclick="switchAdminSubView('tracker')">Live Online</button>
-                    <button class="plan-tab-trigger" onclick="switchAdminSubView('deposits')">Transactions</button>
-                    <button class="plan-tab-trigger" onclick="switchAdminSubView('users')">Users & Promos</button>
-                    <button class="plan-tab-trigger" onclick="switchAdminSubView('nodes')">Nodes</button>
-                    <button class="plan-tab-trigger" onclick="switchAdminSubView('gameControl')">Games & System</button>
-                    <button class="plan-tab-trigger" onclick="switchAdminSubView('broadcast')">Broadcast</button>
-                </div>
-
-                <div id="adminTrackerSection">
-                    <h5 style="font-size:12px; color:#38bdf8; margin-bottom:6px;">Active Online Users</h5>
-                    <div id="adminLiveTrackerFeed" style="font-size:11px;">Scanning active users...</div>
-                </div>
-
-                <div id="adminDepositsSection" style="display:none;">
-                    <h5 style="font-size:12px; color:#38bdf8; margin-bottom:6px;">Pending Deposits & Withdrawals</h5>
-                    <div id="adminPendingDepositsTrack" style="font-size:11px;">No pending deposits.</div>
-                    <div id="adminPendingWithdrawalsTrack" style="font-size:11px; margin-top:8px;">No pending withdrawals.</div>
-                </div>
-
-                <div id="adminUsersSection" style="display:none;">
-                    <h5 style="font-size:12px; color:#eab308; margin-bottom:6px;">Create Promo / Gift Code</h5>
-                    <input type="text" id="adminGiftCode" class="modal-input" placeholder="Code (e.g. VIP500)" style="margin-bottom:6px;">
-                    <input type="number" id="adminGiftAmount" class="modal-input" placeholder="Bonus Amount (PKR)" style="margin-bottom:6px;">
-                    <button class="buy-plan-btn" onclick="createCustomBonusCode()" style="width:100%; margin-bottom:10px;">Create Gift Code</button>
-                    <div id="adminUsersTrack" style="font-size:11px;">Loading users...</div>
-                </div>
-
-                <div id="adminNodesSection" style="display:none;">
-                    <h5 style="font-size:12px; color:#38bdf8; margin-bottom:6px;">Quick Node Manager</h5>
-                    <input type="text" id="editNodeName" class="modal-input" placeholder="Node Name (e.g. Rig Pro)" style="margin-bottom:6px;">
-                    <input type="number" id="editNodePrice" class="modal-input" placeholder="Price (PKR)" style="margin-bottom:6px;">
-                    <input type="number" id="editNodeDaily" class="modal-input" placeholder="Daily Profit (PKR)" style="margin-bottom:6px;">
-                    <button class="buy-plan-btn" onclick="saveNodeConfigOverride()" style="width:100%;">Save Node</button>
-                    <div id="adminExistingNodesList" style="font-size:11px; margin-top:8px;"></div>
-                </div>
-
-                <div id="adminGameControlSection" style="display:none;">
-                    <h5 style="font-size:12px; color:#38bdf8; margin-bottom:8px;">Master Game Engine, Tax & Maintenance Control</h5>
-                    <label style="font-size:11px; color:#38bdf8; font-weight:700;">Aviator Difficulty Mode:</label>
-                    <select id="adminAviatorDifficulty" class="modal-input" style="margin:4px 0 8px 0;">
-                        <option value="house_edge">Company Profit Mode</option>
-                        <option value="strict">High Profit Mode</option>
-                        <option value="generous">Promo Traffic Mode</option>
-                    </select>
-
-                    <label style="font-size:11px; color:#eab308; font-weight:700;">Force Next Aviator Crash (Optional):</label>
-                    <input type="number" step="0.01" id="adminForceCrashInput" class="modal-input" placeholder="e.g. 1.50 or 50.00" style="margin:4px 0 8px 0;">
-
-                    <label style="font-size:11px; color:#10b981; font-weight:700;">Mon–Fri Withdrawal Tax (%):</label>
-                    <input type="number" id="adminWithdrawTaxPct" class="modal-input" value="10" style="margin:4px 0 8px 0;">
-
-                    <div style="display:flex; justify-content:space-between; align-items:center; padding:8px; border-radius:10px; background:rgba(239,68,68,0.12); margin-bottom:8px;">
-                        <span style="font-size:11px; font-weight:700; color:#fca5a5;">Maintenance Mode</span>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="adminMaintenanceToggle">
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-
-                    <!-- SUPER ADMIN: CASINO HUB GAMES ENGINE CONTROL (DT, AB & MINES) -->
-                    <div style="margin-top:10px; padding:10px; background:rgba(14,165,233,0.08); border-radius:12px; border:1px solid rgba(56,189,248,0.28);">
-                        <span style="font-size:11px; color:#38bdf8; font-weight:800; display:block; margin-bottom:6px;"><i class="fa-solid fa-dice"></i> Casino Hub Games Engine Control (DT, AB & Mines)</span>
-                        <label style="font-size:10px; color:#cbd5e1; font-weight:700;">Casino Win / House-Edge Mode:</label>
-                        <select id="adminCasinoEngineMode" class="modal-input" style="margin-top:4px;">
-                            <option value="balanced">Balanced Fair Mode (Standard Odds)</option>
-                            <option value="house_profit">High Company Profit Mode (Smart House Bias)</option>
-                            <option value="promo_boost">Promo Event Mode (Boost Player Wins)</option>
-                        </select>
-                        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin-top:8px;">
-                            <label style="font-size:10px; color:#fca5a5; display:flex; align-items:center; gap:4px;"><input type="checkbox" id="adminEnableDT" checked> DT ON</label>
-                            <label style="font-size:10px; color:#6ee7b7; display:flex; align-items:center; gap:4px;"><input type="checkbox" id="adminEnableAB" checked> AB ON</label>
-                            <label style="font-size:10px; color:#fde047; display:flex; align-items:center; gap:4px;"><input type="checkbox" id="adminEnableMines" checked> Mines ON</label>
-                        </div>
-                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:8px;">
-                            <div>
-                                <label style="font-size:9px; color:#94a3b8;">Max Casino Bet (PKR)</label>
-                                <input type="number" id="adminCasinoMaxBet" class="modal-input" value="50000" style="margin-top:2px; padding:7px;">
-                            </div>
-                            <div>
-                                <label style="font-size:9px; color:#94a3b8;">DT Tie Payout (x)</label>
-                                <input type="number" id="adminDtTiePayout" class="modal-input" value="8" style="margin-top:2px; padding:7px;">
-                            </div>
-                        </div>
-                    </div>
-
-                    <button class="buy-plan-btn" onclick="saveSystemGameAndTaxSettings()" style="width:100%; margin-top:12px; padding:10px; background:linear-gradient(135deg,#10b981,#059669);">Save All System Settings</button>
-
-                    <!-- SUPER ADMIN: LIVE ACTION AUDIT LOG -->
-                    <div style="margin-top:12px; padding:10px; background:rgba(234,179,8,0.08); border-radius:12px; border:1px solid rgba(234,179,8,0.28);">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-                            <span style="font-size:11px; color:#eab308; font-weight:800;"><i class="fa-solid fa-shield-halved"></i> Super Admin Audit Log</span>
-                            <button class="plan-tab-trigger" onclick="loadSuperAdminAuditLogs()" style="padding:3px 8px; font-size:9px;">Refresh</button>
-                        </div>
-                        <div id="superAdminAuditFeed" style="max-height:130px; overflow-y:auto; font-size:10px; color:#cbd5e1; display:flex; flex-direction:column; gap:4px;">
-                            <span>Audit logger active...</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="adminBroadcastSection" style="display:none;">
-                    <h5 style="font-size:12px; color:#38bdf8; margin-bottom:6px;">Global Announcement</h5>
-                    <input type="text" id="broadcastTitleInput" class="modal-input" placeholder="Title" style="margin-bottom:6px;">
-                    <textarea id="broadcastMessageInput" class="modal-input" placeholder="Message for all users..." style="margin-bottom:6px;"></textarea>
-                    <button class="buy-plan-btn" onclick="dispatchGlobalBroadcast()" style="width:100%;">Send Broadcast</button>
-                </div>
-            </div>
-        </div>
+  <!-- ===================================================================== -->
+  <!-- AUTHENTICATION SCREEN (SCROLLABLE WITH UNSPLASH GALLERY & HIGHLIGHTS) -->
+  <!-- ===================================================================== -->
+  <section id="authScreen" class="min-h-screen relative flex flex-col justify-between overflow-y-auto">
+    <!-- Ambient Background -->
+    <div class="fixed inset-0 pointer-events-none z-0">
+      <div class="absolute -top-32 -left-24 w-96 h-96 bg-cyan-500/15 rounded-full blur-3xl"></div>
+      <div class="absolute top-1/3 -right-24 w-96 h-96 bg-violet-600/15 rounded-full blur-3xl"></div>
+      <div class="absolute bottom-0 left-1/3 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl"></div>
     </div>
 
-    <!-- HEADER -->
-    <div class="vestify-header">
-        <div class="brand-row">
-            <div class="logo-block" onclick="registerAdminLogoTap()">
-                <div class="logo-icon"><i class="fa-solid fa-cloud-bolt"></i></div>
-                <div>
-                    <h1 style="font-size:16px; font-weight:800;">VESTIFY PRO</h1>
-                    <p style="font-size:10px; color:var(--sky-primary); font-weight:700;">Cloud Mining & Live Games</p>
-                </div>
-            </div>
-            <div style="display:flex; gap:6px;">
-                <button class="plan-tab-trigger" onclick="toggleAppColorTheme()"><i class="fa-solid fa-circle-half-stroke"></i></button>
-                <button class="plan-tab-trigger" onclick="openModal('secretAdminScreen')">Admin</button>
-            </div>
+    <!-- Top Auth Header -->
+    <header class="relative z-10 max-w-6xl w-full mx-auto px-4 pt-5 pb-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-2xl btn-cyan flex items-center justify-center shadow-lg">
+          <i class="fa-solid fa-cubes-stacked text-lg"></i>
         </div>
+        <div>
+          <span class="font-display font-bold text-xl tracking-tight text-white">Vestify<span class="text-cyan-400">Pro</span></span>
+          <p class="text-[11px] text-slate-400">Nodes • Arcade • VIP Rewards</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2 text-xs">
+        <a href="#authShowcase" class="hidden sm:inline-flex px-3 py-1.5 rounded-xl glass hover:border-cyan-400/40 text-slate-300 transition">Explore Features</a>
+        <a href="#authGallery" class="hidden sm:inline-flex px-3 py-1.5 rounded-xl glass hover:border-cyan-400/40 text-slate-300 transition">Visuals</a>
+        <span class="px-3 py-1.5 rounded-xl bg-emerald-500/15 border border-emerald-400/30 text-emerald-300 font-semibold">
+          <i class="fa-solid fa-circle text-[7px] mr-1.5 animate-pulse"></i>PKR Ready
+        </span>
+      </div>
+    </header>
+
+    <!-- Live Payout / Activity Ticker -->
+    <div class="relative z-10 border-y border-slate-800/80 bg-slate-950/60 py-2 ticker-wrap">
+      <div class="ticker-move text-xs text-slate-300">
+        <span><i class="fa-solid fa-fire text-amber-400 mr-1.5"></i><strong>Zain_K</strong> won <strong>Rs. 4,850</strong> on Dragon Tiger</span>
+        <span><i class="fa-solid fa-gem text-cyan-400 mr-1.5"></i><strong>Hira_M</strong> hit <strong>3.40x</strong> on Aviator</span>
+        <span><i class="fa-solid fa-crown text-violet-400 mr-1.5"></i><strong>Bilal_R</strong> cleared <strong>12 Mines</strong> for <strong>Rs. 2,900</strong></span>
+        <span><i class="fa-solid fa-gift text-emerald-400 mr-1.5"></i><strong>Sana_A</strong> redeemed a VIP Promo Code</span>
+        <span><i class="fa-solid fa-server text-sky-400 mr-1.5"></i><strong>Tariq_N</strong> activated <strong>Atlas Node</strong></span>
+        <!-- Duplicate for seamless loop -->
+        <span><i class="fa-solid fa-fire text-amber-400 mr-1.5"></i><strong>Zain_K</strong> won <strong>Rs. 4,850</strong> on Dragon Tiger</span>
+        <span><i class="fa-solid fa-gem text-cyan-400 mr-1.5"></i><strong>Hira_M</strong> hit <strong>3.40x</strong> on Aviator</span>
+        <span><i class="fa-solid fa-crown text-violet-400 mr-1.5"></i><strong>Bilal_R</strong> cleared <strong>12 Mines</strong> for <strong>Rs. 2,900</strong></span>
+        <span><i class="fa-solid fa-gift text-emerald-400 mr-1.5"></i><strong>Sana_A</strong> redeemed a VIP Promo Code</span>
+        <span><i class="fa-solid fa-server text-sky-400 mr-1.5"></i><strong>Tariq_N</strong> activated <strong>Atlas Node</strong></span>
+      </div>
     </div>
 
-    <!-- PAGE 1: HOME DASHBOARD -->
-    <div id="pageHome" class="app-view-page active-page">
-        <div id="liveBroadcastTickerContainer" style="display:none; margin:0 16px 10px 16px; padding:10px; border-radius:12px; background:rgba(56,189,248,0.12); border:1px solid var(--border-color);">
-            <b id="tickerBroadcastTitle" style="font-size:12px; display:block;"></b>
-            <span id="tickerBroadcastMsg" style="font-size:11px; color:var(--text-muted);"></span>
+    <!-- Main Auth Split Container -->
+    <main class="relative z-10 max-w-6xl w-full mx-auto px-4 py-8 grid lg:grid-cols-12 gap-8 items-center">
+      <!-- Left Hero Column -->
+      <div class="lg:col-span-7 space-y-5">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-400/30 text-cyan-300 text-xs font-semibold">
+          <i class="fa-solid fa-sparkles"></i> Next-Gen Virtual Nodes & Instant Arcade Tables
+        </div>
+        <h1 class="font-display text-3xl sm:text-5xl font-bold leading-tight text-white">
+          Grow Virtual Nodes & Play <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-sky-300 to-violet-400">High-Speed Arcade</span>
+        </h1>
+        <p class="text-slate-300 text-sm sm:text-base max-w-xl leading-relaxed">
+          Manage virtual compute nodes, spin VIP milestone wheels up to <strong>Rs. 50,000</strong>, redeem exclusive promo codes, and jump straight into <strong>Aviator</strong>, <strong>Dragon Tiger</strong>, <strong>Andar Bahar</strong>, and <strong>5x5 Mines</strong>.
+        </p>
+
+        <!-- Key Stats Grid -->
+        <div class="grid grid-cols-3 gap-3 max-w-xl pt-1">
+          <div class="glass rounded-2xl p-3.5">
+            <div class="text-lg sm:text-2xl font-display font-bold text-cyan-400">Rs. 50K</div>
+            <div class="text-[11px] text-slate-400 mt-0.5">VIP Milestone Spin</div>
+          </div>
+          <div class="glass rounded-2xl p-3.5">
+            <div class="text-lg sm:text-2xl font-display font-bold text-emerald-400">4 Games</div>
+            <div class="text-[11px] text-slate-400 mt-0.5">Aviator, DT, AB, Mines</div>
+          </div>
+          <div class="glass rounded-2xl p-3.5">
+            <div class="text-lg sm:text-2xl font-display font-bold text-amber-400">24/7 Live</div>
+            <div class="text-[11px] text-slate-400 mt-0.5">Instant Wallet Sync</div>
+          </div>
         </div>
 
-        <div class="stats-dashboard">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-                <b id="lblHeaderUsername" style="font-size:15px;">Guest Trader</b>
-                <span style="font-size:10px; color:#10b981; font-weight:800;">● LIVE SYNC</span>
-            </div>
-            <p style="font-size:11px; color:var(--text-muted); margin-top:8px;">Total Combined Balance</p>
-            <h2 style="font-size:28px; font-weight:800; margin-top:2px;">Rs. <span id="assetDisplay">5,000.00</span></h2>
-
-            <div class="wallet-split-grid">
-                <div class="wallet-sub-box">
-                    <span style="font-size:10px; color:#10b981; font-weight:700;">Withdrawable Cash</span>
-                    <h4 style="font-size:14px; margin-top:2px;">Rs. <span id="withdrawableBalanceDisplay">3,500.00</span></h4>
-                </div>
-                <div class="wallet-sub-box">
-                    <span style="font-size:10px; color:#eab308; font-weight:700;">Bonus / Play Wallet</span>
-                    <h4 style="font-size:14px; margin-top:2px;">Rs. <span id="bonusBalanceDisplay">1,500.00</span></h4>
-                </div>
-            </div>
-        </div>
-
-        <div class="quick-actions">
-            <button class="action-btn" onclick="openDepositModal()"><i class="fa-solid fa-wallet"></i> Deposit</button>
-            <button class="action-btn" onclick="openWithdrawModal()"><i class="fa-solid fa-money-bill-transfer"></i> Withdraw</button>
-            <button class="action-btn" onclick="claimDailyCheckinBonus()"><i class="fa-solid fa-gift"></i> Daily +Rs.5</button>
-        </div>
-
-        <div id="myActiveNodesOverview" style="display:none; margin:0 16px 14px 16px; background:rgba(14,165,233,0.08); border:1px solid var(--border-color); border-radius:16px; padding:12px;">
-            <b style="font-size:11px; color:var(--sky-primary);">ACTIVE NODES</b>
-            <div id="myActiveNodesChips" style="margin-top:6px; font-size:11px;"></div>
-        </div>
-
-        <!-- NEW ULTRA USER FEATURE: MINING ROI SIMULATOR, AUTO-REINVEST & VIP TIER -->
-        <div style="margin: 0 16px 14px 16px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 18px; padding: 14px;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                <span style="font-size:12px; font-weight:800; color:var(--sky-primary);"><i class="fa-solid fa-chart-line"></i> ROI & COMPOUNDING SIMULATOR</span>
-                <span id="userVipTierBadge" style="font-size:10px; font-weight:800; background:rgba(234,179,8,0.16); color:#eab308; padding:3px 9px; border-radius:99px;">VIP TIER I</span>
-            </div>
-            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px;">
-                <div>
-                    <label style="font-size:9px; color:var(--text-muted); font-weight:700;">INVEST (PKR)</label>
-                    <input type="number" id="roiSimAmount" class="modal-input" value="5000" min="100" oninput="runUserRoiSimulator()" style="margin-top:3px; padding:8px; font-size:12px;">
-                </div>
-                <div>
-                    <label style="font-size:9px; color:var(--text-muted); font-weight:700;">DAILY %</label>
-                    <input type="number" id="roiSimRate" class="modal-input" value="8" step="0.5" min="1" oninput="runUserRoiSimulator()" style="margin-top:3px; padding:8px; font-size:12px;">
-                </div>
-                <div>
-                    <label style="font-size:9px; color:var(--text-muted); font-weight:700;">DAYS</label>
-                    <input type="number" id="roiSimDays" class="modal-input" value="30" min="1" max="365" oninput="runUserRoiSimulator()" style="margin-top:3px; padding:8px; font-size:12px;">
-                </div>
-            </div>
-            <div style="margin-top:10px; padding:10px; border-radius:12px; background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.25); display:flex; justify-content:space-between; align-items:center; gap:8px;">
-                <div>
-                    <span style="font-size:10px; color:var(--text-muted); display:block;">Simple Profit Return: <b id="roiSimSimple" style="color:var(--text-main);">Rs. 17,000</b></span>
-                    <span style="font-size:10px; color:#10b981; font-weight:700;">Compounded Return: <b id="roiSimCompound">Rs. 50,313</b></span>
-                </div>
-                <button class="buy-plan-btn" id="btnAutoReinvestToggle" onclick="toggleUserAutoReinvest()" style="padding:7px 11px; font-size:10px; white-space:nowrap;">Auto-Reinvest: OFF</button>
-            </div>
-        </div>
-
-        <div class="section-title"><i class="fa-solid fa-ticket"></i> Redeem Gift / Promo Code</div>
-        <div style="margin:0 16px; display:flex; gap:8px;">
-            <input type="text" id="userGiftCodeInput" class="modal-input" placeholder="Enter Promo Code">
-            <button class="buy-plan-btn" onclick="redeemGiftCodeUser()">Redeem</button>
-        </div>
-    </div>
-
-    <!-- PAGE 2: AVIATOR -->
-    <div id="pageAviator" class="app-view-page">
-        <div class="stats-dashboard">
-            <h3 style="color:#ef4444; font-size:16px;"><i class="fa-solid fa-plane-departure"></i> AVIATOR CRASH</h3>
-            <p style="font-size:11px; color:var(--text-muted); margin-top:4px;">Multiplier: <b id="aviatorMultText" style="color:#10b981; font-size:18px;">1.00x</b></p>
-            <div style="display:flex; gap:8px; margin-top:10px;">
-                <input type="number" id="aviatorBetInput" class="modal-input" value="100" min="10">
-                <button class="buy-plan-btn" onclick="runQuickAviatorRound()">Bet & Cashout</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- PAGE 2B: CASINO GAMES HUB (DRAGON TIGER, ANDAR BAHAR, MINES) -->
-    <div id="pageGamesHub" class="app-view-page">
-        <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:16px; padding:12px 14px; margin:0 16px; display:flex; justify-content:space-between; align-items:center;">
+        <!-- Hero Unsplash Banner -->
+        <div class="relative rounded-3xl overflow-hidden border border-slate-800 max-w-xl h-48 sm:h-56 shadow-2xl">
+          <img
+            src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=1200&q=80"
+            alt="Digital network nodes and glowing analytics"
+            class="w-full h-full object-cover opacity-80"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-[#070b14] via-[#070b14]/40 to-transparent flex items-end p-5">
             <div>
-                <span style="font-size:10px; color:var(--text-muted); font-weight:700;">SHARED GAME WALLET</span>
-                <h4 style="font-size:16px; color:var(--sky-primary); font-weight:800;">Rs. <span id="hubSharedBalanceLbl">5,000.00</span></h4>
+              <span class="text-[11px] uppercase tracking-wider font-bold text-cyan-300">Unified Account</span>
+              <p class="text-sm text-white font-semibold">One wallet for Nodes, VIP Spins, Promo Codes & Live Arcade</p>
             </div>
-            <button class="buy-plan-btn" onclick="openDepositModal()" style="padding:7px 14px; font-size:11px;">+ Add Funds</button>
+          </div>
         </div>
+      </div>
 
-        <div class="games-hub-tabs">
-            <button class="game-hub-tab-btn active" id="hubTabDT" onclick="switchCasinoHubGame('dt')"><i class="fa-solid fa-dragon"></i> Dragon Tiger</button>
-            <button class="game-hub-tab-btn" id="hubTabAB" onclick="switchCasinoHubGame('ab')"><i class="fa-solid fa-clone"></i> Andar Bahar</button>
-            <button class="game-hub-tab-btn" id="hubTabMines" onclick="switchCasinoHubGame('mines')"><i class="fa-solid fa-bomb"></i> Mines</button>
-        </div>
+      <!-- Right Auth Card -->
+      <div class="lg:col-span-5">
+        <div class="glass-strong rounded-3xl p-6 sm:p-7 neon-border">
+          <!-- Mode Switcher -->
+          <div class="grid grid-cols-2 p-1 rounded-2xl bg-slate-900/90 border border-slate-800 mb-6">
+            <button id="tabLogin" onclick="switchAuthTab('login')" class="py-2.5 rounded-xl text-sm font-bold btn-cyan">
+              Sign In
+            </button>
+            <button id="tabRegister" onclick="switchAuthTab('register')" class="py-2.5 rounded-xl text-sm font-bold text-slate-400 hover:text-white transition">
+              Create Account
+            </button>
+          </div>
 
-        <div id="gamePaneDT" class="game-module-pane active">
-            <div class="stats-dashboard" style="margin:0;">
-                <b>Dragon Tiger Instant Round</b>
-                <p id="dtStatusBanner" style="font-size:11px; color:#fde68a; margin:6px 0;">Choose side & bet amount</p>
-                <div style="display:flex; gap:6px;">
-                    <input type="number" id="dtBetInput" class="modal-input" value="50" min="10">
-                    <select id="dtSideSelect" class="modal-input">
-                        <option value="dragon">Dragon</option>
-                        <option value="tiger">Tiger</option>
-                        <option value="tie">Tie</option>
-                    </select>
-                    <button class="buy-plan-btn" onclick="playDtRound()">Deal</button>
-                </div>
-            </div>
-        </div>
-
-        <div id="gamePaneAB" class="game-module-pane">
-            <div class="stats-dashboard" style="margin:0;">
-                <b>Andar Bahar Instant Round</b>
-                <p id="abStatusBanner" style="font-size:11px; color:#a7f3d0; margin:6px 0;">Choose Andar or Bahar</p>
-                <div style="display:flex; gap:6px;">
-                    <input type="number" id="abBetInput" class="modal-input" value="50" min="10">
-                    <select id="abSideSelect" class="modal-input">
-                        <option value="andar">Andar</option>
-                        <option value="bahar">Bahar</option>
-                    </select>
-                    <button class="buy-plan-btn" onclick="playAbRound()">Draw</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- GAME 3: MINES (5x5 GRID) -->
-        <div id="gamePaneMines" class="game-module-pane">
-            <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:18px; padding:12px 14px; display:flex; justify-content:space-between; align-items:center;">
-                <div>
-                    <span style="font-size:10px; color:var(--text-muted); font-weight:700;">CURRENT MULTIPLIER</span>
-                    <h4 id="minesCurrentMultLbl" style="font-size:18px; color:#10b981; font-weight:800;">1.00x</h4>
-                </div>
-                <div style="text-align:right;">
-                    <span style="font-size:10px; color:var(--text-muted); font-weight:700;">NEXT TILE</span>
-                    <h4 id="minesNextMultLbl" style="font-size:16px; color:#eab308; font-weight:800;">1.13x</h4>
-                </div>
+          <form id="authForm" onsubmit="handleAuthSubmit(event)" class="space-y-4">
+            <div id="registerNameField" class="hidden">
+              <label class="block text-xs font-semibold text-slate-300 mb-1.5">Full Name / Display Handle</label>
+              <div class="relative">
+                <i class="fa-solid fa-user absolute left-3.5 top-3.5 text-slate-400 text-sm"></i>
+                <input id="authName" type="text" placeholder="e.g. Ali Raza" class="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700/80 text-sm text-white focus:outline-none focus:border-cyan-400" />
+              </div>
             </div>
 
-            <div class="mines-grid-5x5" id="minesGridContainer"></div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1.5">Email Address</label>
+              <div class="relative">
+                <i class="fa-solid fa-envelope absolute left-3.5 top-3.5 text-slate-400 text-sm"></i>
+                <input id="authEmail" type="email" required placeholder="you@example.com" class="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700/80 text-sm text-white focus:outline-none focus:border-cyan-400" />
+              </div>
+            </div>
 
-            <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:20px; padding:14px; display:flex; flex-direction:column; gap:10px;">
-                <div style="display:grid; grid-template-columns:1.3fr 1fr; gap:10px;">
-                    <div>
-                        <label style="font-size:10px; font-weight:800; color:var(--text-muted);">BET AMOUNT (MIN 10)</label>
-                        <input type="number" id="minesBetInput" class="modal-input" value="50" min="10" max="50000" style="margin-top:4px; font-weight:800;">
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1.5">Password</label>
+              <div class="relative">
+                <i class="fa-solid fa-lock absolute left-3.5 top-3.5 text-slate-400 text-sm"></i>
+                <input id="authPassword" type="password" required minlength="6" placeholder="••••••••" class="w-full pl-10 pr-11 py-3 rounded-xl bg-slate-900/90 border border-slate-700/80 text-sm text-white focus:outline-none focus:border-cyan-400" />
+                <button type="button" onclick="togglePasswordVisibility()" class="absolute right-3.5 top-3 text-slate-400 hover:text-white">
+                  <i id="pwdEyeIcon" class="fa-regular fa-eye"></i>
+                </button>
+              </div>
+            </div>
+
+            <div id="registerExtraFields" class="hidden space-y-3 pt-1">
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1.5">Referral / Invite Code (Optional)</label>
+                <input id="authRefCode" type="text" placeholder="e.g. VIP100" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700/80 text-sm text-white uppercase focus:outline-none focus:border-cyan-400" />
+              </div>
+              <label class="flex items-start gap-2.5 text-xs text-slate-400 cursor-pointer">
+                <input id="authTerms" type="checkbox" class="mt-0.5 rounded accent-cyan-400" />
+                <span>I confirm I am 18+ and agree to fair-play wallet & platform terms.</span>
+              </label>
+            </div>
+
+            <button id="authSubmitBtn" type="submit" class="w-full py-3.5 rounded-xl btn-cyan text-sm flex items-center justify-center gap-2">
+              <span>Sign In to Dashboard</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </form>
+
+          <!-- Quick Demo Access for Instant Preview -->
+          <div class="mt-5 pt-4 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
+            <span class="text-slate-400">Want a quick test run?</span>
+            <button type="button" onclick="quickDemoLogin()" class="px-3 py-1.5 rounded-xl bg-violet-500/15 hover:bg-violet-500/25 border border-violet-400/30 text-violet-300 font-semibold transition">
+              <i class="fa-solid fa-flask mr-1"></i>Instant Demo Account
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Scrollable Auth Showcase & Unsplash Gallery -->
+    <section id="authShowcase" class="relative z-10 max-w-6xl w-full mx-auto px-4 py-10 border-t border-slate-800/70">
+      <div class="text-center max-w-2xl mx-auto mb-8">
+        <span class="text-xs font-bold uppercase tracking-widest text-cyan-400">How VestifyPro Works</span>
+        <h2 class="font-display text-2xl sm:text-3xl font-bold text-white mt-1">Built for Speed, Transparency & Fun</h2>
+      </div>
+
+      <div class="grid md:grid-cols-4 gap-4 mb-12">
+        <div class="glass rounded-2xl p-5">
+          <div class="w-10 h-10 rounded-xl bg-cyan-500/15 text-cyan-300 flex items-center justify-center mb-3 font-bold">01</div>
+          <h3 class="font-display font-bold text-white mb-1">Fund & Claim</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">Add PKR balance, apply one-time-per-user promo codes, and track every request in your Inbox.</p>
+        </div>
+        <div class="glass rounded-2xl p-5">
+          <div class="w-10 h-10 rounded-xl bg-emerald-500/15 text-emerald-300 flex items-center justify-center mb-3 font-bold">02</div>
+          <h3 class="font-display font-bold text-white mb-1">Deploy Nodes</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">Activate virtual compute nodes with clear daily yield rates and real-time claimable rewards.</p>
+        </div>
+        <div class="glass rounded-2xl p-5">
+          <div class="w-10 h-10 rounded-xl bg-amber-500/15 text-amber-300 flex items-center justify-center mb-3 font-bold">03</div>
+          <h3 class="font-display font-bold text-white mb-1">Play 4 Arcade Modes</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">Jump into Aviator, 3D-animated Dragon Tiger & Andar Bahar, or custom 5x5 Mines.</p>
+        </div>
+        <div class="glass rounded-2xl p-5">
+          <div class="w-10 h-10 rounded-xl bg-violet-500/15 text-violet-300 flex items-center justify-center mb-3 font-bold">04</div>
+          <h3 class="font-display font-bold text-white mb-1">Unlock VIP Spins</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">Hit wagering milestones to spin the VIP wheel with prizes from Rs. 100 up to Rs. 50,000.</p>
+        </div>
+      </div>
+
+      <div id="authGallery" class="grid sm:grid-cols-3 gap-4">
+        <div class="rounded-2xl overflow-hidden border border-slate-800 glass">
+          <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80" alt="Hardware node architecture" class="w-full h-40 object-cover" />
+          <div class="p-4">
+            <h4 class="font-display font-bold text-sm text-white">Virtual Node Clusters</h4>
+            <p class="text-xs text-slate-400 mt-1">Monitor uptime, daily payouts, and active node tiers cleanly.</p>
+          </div>
+        </div>
+        <div class="rounded-2xl overflow-hidden border border-slate-800 glass">
+          <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=800&q=80" alt="Gaming lounge neon atmosphere" class="w-full h-40 object-cover" />
+          <div class="p-4">
+            <h4 class="font-display font-bold text-sm text-white">Interactive Table & Mine Action</h4>
+            <p class="text-xs text-slate-400 mt-1">Smooth card flips, live table action, and customizable mine counts.</p>
+          </div>
+        </div>
+        <div class="rounded-2xl overflow-hidden border border-slate-800 glass">
+          <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80" alt="Analytics and wallet insights" class="w-full h-40 object-cover" />
+          <div class="p-4">
+            <h4 class="font-display font-bold text-sm text-white">Transparent Ledger & Alerts</h4>
+            <p class="text-xs text-slate-400 mt-1">Real-time notifications for deposits, withdrawals, promos, and wins.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </section>
+
+  <!-- ===================================================================== -->
+  <!-- MAIN APPLICATION SHELL                                                  -->
+  <!-- ===================================================================== -->
+  <div id="appShell" class="hidden min-h-screen flex flex-col">
+    <!-- Top Navigation Bar -->
+    <header class="sticky top-0 z-40 glass-strong border-b border-slate-800/90">
+      <div class="max-w-7xl mx-auto px-3 sm:px-6 h-16 flex items-center justify-between gap-2">
+        <!-- Brand -->
+        <div class="flex items-center gap-2.5 cursor-pointer" onclick="navigateTo('dashboard')">
+          <div class="w-9 h-9 rounded-xl btn-cyan flex items-center justify-center">
+            <i class="fa-solid fa-cubes-stacked"></i>
+          </div>
+          <div class="leading-none">
+            <span class="font-display font-bold text-lg text-white">Vestify<span class="text-cyan-400">Pro</span></span>
+            <span id="roleBadge" class="hidden ml-1.5 px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 text-[10px] font-bold">ADMIN</span>
+          </div>
+        </div>
+
+        <!-- Desktop Nav Links -->
+        <nav class="hidden md:flex items-center gap-1 text-sm font-medium">
+          <button data-nav="dashboard" onclick="navigateTo('dashboard')" class="nav-btn px-3.5 py-2 rounded-xl text-cyan-300 bg-cyan-500/10">Dashboard</button>
+          <button data-nav="nodes" onclick="navigateTo('nodes')" class="nav-btn px-3.5 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800/70">Nodes</button>
+          <button data-nav="games" onclick="navigateTo('games')" class="nav-btn px-3.5 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800/70">Arcade Hub</button>
+          <button data-nav="wallet" onclick="navigateTo('wallet')" class="nav-btn px-3.5 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800/70">Wallet & Promos</button>
+          <button data-nav="info" onclick="navigateTo('info')" class="nav-btn px-3.5 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800/70">Info Hub</button>
+          <button id="adminNavBtn" data-nav="admin" onclick="navigateTo('admin')" class="nav-btn hidden px-3.5 py-2 rounded-xl text-amber-300 hover:bg-amber-500/15">Admin</button>
+        </nav>
+
+        <!-- Right Wallet + Notifications + User Menu -->
+        <div class="flex items-center gap-2">
+          <!-- Balance Pill -->
+          <button onclick="navigateTo('wallet')" class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900 border border-cyan-400/30 hover:border-cyan-400 transition">
+            <i class="fa-solid fa-wallet text-cyan-400 text-xs"></i>
+            <span id="headerBalance" class="font-display font-bold text-xs sm:text-sm text-white">Rs. 0.00</span>
+          </button>
+
+          <!-- VIP Spin Quick Button -->
+          <button onclick="openVipSpinModal()" title="VIP Milestone Spin" class="relative w-9 h-9 rounded-xl bg-amber-500/15 border border-amber-400/35 text-amber-300 hover:bg-amber-500/25 flex items-center justify-center transition">
+            <i class="fa-solid fa-dharmachakra text-sm"></i>
+          </button>
+
+          <!-- Notifications Inbox Bell -->
+          <button onclick="toggleNotificationsDrawer()" title="Notifications" class="relative w-9 h-9 rounded-xl glass hover:border-cyan-400/40 text-slate-200 flex items-center justify-center transition">
+            <i class="fa-regular fa-bell text-sm"></i>
+            <span id="notifBadge" class="hidden absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-rose-500 text-white text-[10px] font-bold flex items-center justify-center">0</span>
+          </button>
+
+          <!-- Logout -->
+          <button onclick="logoutUser()" title="Sign Out" class="w-9 h-9 rounded-xl glass hover:border-rose-400/40 text-slate-300 hover:text-rose-300 flex items-center justify-center transition">
+            <i class="fa-solid fa-right-from-bracket text-sm"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Broadcast Banner (When Admin Broadcast is Set) -->
+    <div id="broadcastBar" class="hidden bg-gradient-to-r from-cyan-500/15 via-violet-500/15 to-amber-500/15 border-b border-cyan-400/25 px-4 py-2 text-xs text-cyan-100">
+      <div class="max-w-7xl mx-auto flex items-center justify-between gap-3">
+        <div class="flex items-center gap-2 truncate">
+          <span class="px-2 py-0.5 rounded bg-cyan-400/20 text-cyan-300 font-bold text-[10px] uppercase shrink-0">Announcement</span>
+          <span id="broadcastText" class="truncate"></span>
+        </div>
+        <button onclick="document.getElementById('broadcastBar').classList.add('hidden')" class="text-slate-400 hover:text-white shrink-0"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+    </div>
+
+    <!-- Main Page Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 py-6 pb-24 md:pb-10 space-y-6">
+
+      <!-- ================================================================= -->
+      <!-- 1. DASHBOARD PAGE                                                 -->
+      <!-- ================================================================= -->
+      <section id="page-dashboard" class="space-y-6">
+        <!-- Welcome & Quick Actions -->
+        <div class="glass rounded-3xl p-5 sm:p-7 relative overflow-hidden">
+          <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
+            <div>
+              <p class="text-xs uppercase tracking-widest text-cyan-400 font-bold">Welcome back</p>
+              <h1 id="dashUserName" class="font-display text-2xl sm:text-3xl font-bold text-white mt-0.5">Player</h1>
+              <p id="dashUserEmail" class="text-xs text-slate-400 mt-1"></p>
+            </div>
+            <div class="flex flex-wrap gap-2.5">
+              <button onclick="navigateTo('wallet')" class="px-4 py-2.5 rounded-xl btn-cyan text-xs sm:text-sm flex items-center gap-2">
+                <i class="fa-solid fa-plus-circle"></i> Deposit / Promo
+              </button>
+              <button onclick="navigateTo('games')" class="px-4 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white font-bold text-xs sm:text-sm flex items-center gap-2 transition">
+                <i class="fa-solid fa-gamepad"></i> Play Arcade
+              </button>
+              <button onclick="openVipSpinModal()" class="px-4 py-2.5 rounded-xl btn-gold text-xs sm:text-sm flex items-center gap-2">
+                <i class="fa-solid fa-dharmachakra"></i> VIP Spin (Up to Rs. 50K)
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- KPI Summary Cards -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="glass rounded-2xl p-4 sm:p-5">
+            <div class="flex items-center justify-between text-slate-400 text-xs mb-2">
+              <span>Wallet Balance</span>
+              <i class="fa-solid fa-wallet text-cyan-400"></i>
+            </div>
+            <div id="statBalance" class="font-display text-xl sm:text-2xl font-bold text-white">Rs. 0.00</div>
+            <div class="text-[11px] text-emerald-400 mt-1">Available for Nodes & Games</div>
+          </div>
+
+          <div class="glass rounded-2xl p-4 sm:p-5">
+            <div class="flex items-center justify-between text-slate-400 text-xs mb-2">
+              <span>Active Nodes</span>
+              <i class="fa-solid fa-server text-emerald-400"></i>
+            </div>
+            <div id="statActiveNodes" class="font-display text-xl sm:text-2xl font-bold text-white">0</div>
+            <div id="statDailyYield" class="text-[11px] text-slate-400 mt-1">Est. Daily: Rs. 0.00</div>
+          </div>
+
+          <div class="glass rounded-2xl p-4 sm:p-5">
+            <div class="flex items-center justify-between text-slate-400 text-xs mb-2">
+              <span>Arcade Wagered</span>
+              <i class="fa-solid fa-dice text-amber-400"></i>
+            </div>
+            <div id="statWagered" class="font-display text-xl sm:text-2xl font-bold text-white">Rs. 0</div>
+            <div id="statSpinProgress" class="text-[11px] text-amber-300 mt-1">Next VIP Spin: 0 / 5,000 PKR</div>
+          </div>
+
+          <div class="glass rounded-2xl p-4 sm:p-5">
+            <div class="flex items-center justify-between text-slate-400 text-xs mb-2">
+              <span>Unread Alerts</span>
+              <i class="fa-solid fa-bell text-violet-400"></i>
+            </div>
+            <div id="statUnreadNotifs" class="font-display text-xl sm:text-2xl font-bold text-white">0</div>
+            <button onclick="toggleNotificationsDrawer()" class="text-[11px] text-cyan-400 hover:underline mt-1">Open Inbox →</button>
+          </div>
+        </div>
+
+        <!-- Featured Arcade Quick Cards -->
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <h2 class="font-display text-lg font-bold text-white">Featured Arcade Tables</h2>
+            <button onclick="navigateTo('games')" class="text-xs text-cyan-400 hover:underline font-semibold">View All 4 Games →</button>
+          </div>
+          <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div onclick="openGame('aviator')" class="glass rounded-2xl p-4 hover:border-cyan-400/50 cursor-pointer transition group">
+              <div class="flex items-center justify-between mb-3">
+                <span class="w-10 h-10 rounded-xl bg-cyan-500/15 text-cyan-300 flex items-center justify-center"><i class="fa-solid fa-plane-up"></i></span>
+                <span class="text-[11px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 font-semibold">LIVE</span>
+              </div>
+              <h3 class="font-display font-bold text-white group-hover:text-cyan-300 transition">Aviator Multiplier</h3>
+              <p class="text-xs text-slate-400 mt-1">Watch the curve climb and cash out before liftoff ends.</p>
+            </div>
+
+            <div onclick="openGame('dragontiger')" class="glass rounded-2xl p-4 hover:border-rose-400/50 cursor-pointer transition group">
+              <div class="flex items-center justify-between mb-3">
+                <span class="w-10 h-10 rounded-xl bg-rose-500/15 text-rose-300 flex items-center justify-center"><i class="fa-solid fa-dragon"></i></span>
+                <span class="text-[11px] px-2 py-0.5 rounded-full bg-rose-500/15 text-rose-300 font-semibold">3D FLIP</span>
+              </div>
+              <h3 class="font-display font-bold text-white group-hover:text-rose-300 transition">Dragon Tiger</h3>
+              <p class="text-xs text-slate-400 mt-1">Single-card showdown between Dragon, Tiger, and Tie with live table bets.</p>
+            </div>
+
+            <div onclick="openGame('andarbahar')" class="glass rounded-2xl p-4 hover:border-amber-400/50 cursor-pointer transition group">
+              <div class="flex items-center justify-between mb-3">
+                <span class="w-10 h-10 rounded-xl bg-amber-500/15 text-amber-300 flex items-center justify-center"><i class="fa-solid fa-layer-group"></i></span>
+                <span class="text-[11px] px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-300 font-semibold">3D FLIP</span>
+              </div>
+              <h3 class="font-display font-bold text-white group-hover:text-amber-300 transition">Andar Bahar</h3>
+              <p class="text-xs text-slate-400 mt-1">Match the Joker rank across Andar & Bahar with animated flips & live bets.</p>
+            </div>
+
+            <div onclick="openGame('mines')" class="glass rounded-2xl p-4 hover:border-violet-400/50 cursor-pointer transition group">
+              <div class="flex items-center justify-between mb-3">
+                <span class="w-10 h-10 rounded-xl bg-violet-500/15 text-violet-300 flex items-center justify-center"><i class="fa-solid fa-bomb"></i></span>
+                <span class="text-[11px] px-2 py-0.5 rounded-full bg-violet-500/15 text-violet-300 font-semibold">5x5 GRID</span>
+              </div>
+              <h3 class="font-display font-bold text-white group-hover:text-violet-300 transition">5x5 Mines</h3>
+              <p class="text-xs text-slate-400 mt-1">Choose 3, 4, 5+ mines, uncover gems, and bank rising multipliers.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Activity Feed -->
+        <div class="glass rounded-3xl p-5 sm:p-6">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="font-display text-lg font-bold text-white">Recent Ledger & Activity</h2>
+            <button onclick="navigateTo('wallet')" class="text-xs text-cyan-400 hover:underline">Full Wallet →</button>
+          </div>
+          <div id="recentActivityList" class="divide-y divide-slate-800/80 text-sm">
+            <p class="text-slate-400 text-xs py-4">No recent transactions yet.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- 2. VIRTUAL NODES PAGE                                             -->
+      <!-- ================================================================= -->
+      <section id="page-nodes" class="hidden space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div>
+            <h1 class="font-display text-2xl sm:text-3xl font-bold text-white">Virtual Compute Nodes</h1>
+            <p class="text-xs sm:text-sm text-slate-400">Deploy virtual nodes with your wallet balance and claim accumulated payouts.</p>
+          </div>
+          <button onclick="claimAllNodeRewards()" class="px-4 py-2.5 rounded-xl btn-cyan text-xs sm:text-sm self-start">
+            <i class="fa-solid fa-coins mr-1.5"></i>Claim All Pending Yield
+          </button>
+        </div>
+
+        <div id="nodePlansGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+
+        <div class="glass rounded-3xl p-5 sm:p-6">
+          <h2 class="font-display text-lg font-bold text-white mb-4">My Deployed Nodes</h2>
+          <div id="userNodesList" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <p class="text-xs text-slate-400">You haven't deployed any nodes yet.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- 3. ARCADE GAMES HUB PAGE                                          -->
+      <!-- ================================================================= -->
+      <section id="page-games" class="hidden space-y-6">
+        <!-- Game Selector Bar -->
+        <div class="glass rounded-2xl p-2 flex flex-wrap gap-2">
+          <button id="gameTab-aviator" onclick="openGame('aviator')" class="game-tab-btn flex-1 min-w-[130px] py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold btn-cyan">
+            <i class="fa-solid fa-plane-up mr-1.5"></i>Aviator
+          </button>
+          <button id="gameTab-dragontiger" onclick="openGame('dragontiger')" class="game-tab-btn flex-1 min-w-[130px] py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:bg-slate-800/70">
+            <i class="fa-solid fa-dragon mr-1.5"></i>Dragon Tiger
+          </button>
+          <button id="gameTab-andarbahar" onclick="openGame('andarbahar')" class="game-tab-btn flex-1 min-w-[130px] py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:bg-slate-800/70">
+            <i class="fa-solid fa-layer-group mr-1.5"></i>Andar Bahar
+          </button>
+          <button id="gameTab-mines" onclick="openGame('mines')" class="game-tab-btn flex-1 min-w-[130px] py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:bg-slate-800/70">
+            <i class="fa-solid fa-bomb mr-1.5"></i>5x5 Mines
+          </button>
+        </div>
+
+        <!-- SHARED CHIP SELECTOR -->
+        <div class="glass rounded-2xl p-4 flex flex-wrap items-center justify-between gap-4">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-400 mr-1">Stake:</span>
+            <button onclick="setBetAmount(50)" class="chip-btn px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold">Rs. 50</button>
+            <button onclick="setBetAmount(100)" class="chip-btn px-3 py-1.5 rounded-xl bg-cyan-500/20 border border-cyan-400 text-cyan-300 text-xs font-bold">Rs. 100</button>
+            <button onclick="setBetAmount(250)" class="chip-btn px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold">Rs. 250</button>
+            <button onclick="setBetAmount(500)" class="chip-btn px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold">Rs. 500</button>
+            <button onclick="setBetAmount(1000)" class="chip-btn px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold">Rs. 1,000</button>
+            <input id="customBetInput" type="number" min="10" step="10" value="100" onchange="setBetAmount(Number(this.value))" class="w-28 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-700 text-xs font-bold text-white focus:outline-none focus:border-cyan-400" />
+          </div>
+          <div class="text-xs text-slate-300">
+            Wallet: <strong id="gamesWalletDisplay" class="text-cyan-400">Rs. 0.00</strong>
+          </div>
+        </div>
+
+        <!-- ================= AVIATOR PANEL ================= -->
+        <div id="gamePanel-aviator" class="glass rounded-3xl p-5 sm:p-6 space-y-5">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <h2 class="font-display text-xl font-bold text-white">Aviator Multiplier</h2>
+              <p class="text-xs text-slate-400">Place a bet and cash out before the plane flies away.</p>
+            </div>
+            <div id="aviatorHistory" class="flex items-center gap-1.5 flex-wrap"></div>
+          </div>
+
+          <div class="relative rounded-2xl bg-slate-950 border border-slate-800 h-64 flex flex-col items-center justify-center overflow-hidden">
+            <canvas id="aviatorCanvas" class="absolute inset-0 w-full h-full"></canvas>
+            <div class="relative z-10 text-center pointer-events-none">
+              <div id="aviatorMultiplier" class="font-display text-5xl sm:text-6xl font-bold text-cyan-400 drop-shadow">1.00x</div>
+              <div id="aviatorStatus" class="text-xs font-semibold uppercase tracking-widest text-slate-300 mt-2">Ready for Next Flight</div>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-3">
+            <button id="aviatorBetBtn" onclick="aviatorPlaceBet()" class="flex-1 min-w-[180px] py-3.5 rounded-xl btn-cyan text-sm">
+              <i class="fa-solid fa-play mr-1.5"></i>Launch & Bet (<span class="current-stake-label">Rs. 100</span>)
+            </button>
+            <button id="aviatorCashoutBtn" onclick="aviatorCashOut()" disabled class="flex-1 min-w-[180px] py-3.5 rounded-xl bg-emerald-500 disabled:opacity-35 text-slate-950 font-extrabold text-sm transition">
+              <i class="fa-solid fa-hand-holding-dollar mr-1.5"></i>Cash Out Now
+            </button>
+          </div>
+        </div>
+
+        <!-- ================= DRAGON TIGER PANEL ================= -->
+        <div id="gamePanel-dragontiger" class="hidden grid lg:grid-cols-12 gap-5">
+          <div class="lg:col-span-8 glass rounded-3xl p-5 sm:p-6 space-y-6">
+            <div class="flex items-center justify-between">
+              <div>
+                <h2 class="font-display text-xl font-bold text-white">Dragon Tiger Table</h2>
+                <p class="text-xs text-slate-400">Higher card wins (Ace = 1, King = 13). Tie pays 8x.</p>
+              </div>
+              <span class="px-3 py-1 rounded-full text-xs font-bold bg-rose-500/15 text-rose-300 border border-rose-400/30">3D Card Flip</span>
+            </div>
+
+            <!-- 3D Cards Stage -->
+            <div class="rounded-2xl bg-slate-950/90 border border-slate-800 p-6 flex items-center justify-around gap-4">
+              <div class="flex flex-col items-center gap-2">
+                <span class="text-xs font-bold uppercase tracking-wider text-rose-400">Dragon</span>
+                <div class="card-3d-scene">
+                  <div id="dtDragonCard" class="card-3d">
+                    <div class="card-face card-back"><i class="fa-solid fa-dragon text-cyan-300 text-2xl"></i></div>
+                    <div id="dtDragonFront" class="card-face card-front">
+                      <span class="dt-rank font-display font-bold text-lg">A</span>
+                      <span class="dt-suit text-2xl self-center">♠</span>
+                      <span class="dt-rank font-display font-bold text-lg self-end rotate-180">A</span>
                     </div>
-                    <div>
-                        <label style="font-size:10px; font-weight:800; color:var(--text-muted);">MINES (1 - 24)</label>
-                        <select id="minesCountSelect" class="modal-input" onchange="updateMinesPreviewMultiplier()" style="margin-top:4px; font-weight:800;">
-                            <option value="1">1 Mine</option>
-                            <option value="3" selected>3 Mines</option>
-                            <option value="5">5 Mines</option>
-                            <option value="10">10 Mines</option>
-                            <option value="15">15 Mines</option>
-                            <option value="20">20 Mines</option>
-                            <option value="24">24 Mines</option>
-                        </select>
-                    </div>
+                  </div>
                 </div>
-                <button id="btnMinesMainAction" class="buy-plan-btn" onclick="handleMinesMainAction()" style="width:100%; padding:12px; font-size:13px; font-weight:800;">START MINES GAME</button>
+              </div>
+
+              <div class="text-center">
+                <div class="w-10 h-10 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center font-display font-bold text-xs text-amber-300 mx-auto">VS</div>
+                <p id="dtOutcomeText" class="text-xs font-bold text-slate-300 mt-2 min-h-[2rem]">Pick Dragon, Tiger, or Tie</p>
+              </div>
+
+              <div class="flex flex-col items-center gap-2">
+                <span class="text-xs font-bold uppercase tracking-wider text-amber-400">Tiger</span>
+                <div class="card-3d-scene">
+                  <div id="dtTigerCard" class="card-3d">
+                    <div class="card-face card-back"><i class="fa-solid fa-paw text-amber-300 text-2xl"></i></div>
+                    <div id="dtTigerFront" class="card-face card-front">
+                      <span class="dt-rank font-display font-bold text-lg">K</span>
+                      <span class="dt-suit text-2xl self-center">♥</span>
+                      <span class="dt-rank font-display font-bold text-lg self-end rotate-180">K</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-        </div>
 
-        <!-- NEW ULTRA USER FEATURE: CASINO HUB PERSONAL HISTORY & ANALYTICS -->
-        <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:18px; padding:14px; margin:14px 16px 0 16px;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                <span style="font-size:12px; font-weight:800; color:var(--sky-primary);"><i class="fa-solid fa-clock-rotate-left"></i> MY CASINO HISTORY & STATS</span>
-                <span id="casinoPersonalNetLbl" style="font-size:10px; font-weight:800; color:#10b981;">Rounds: 0 | Net: Rs. 0</span>
+            <!-- Bet Choices -->
+            <div class="grid grid-cols-3 gap-3">
+              <button onclick="selectDtSide('dragon')" id="dtPick-dragon" class="dt-pick py-3.5 px-2 rounded-2xl bg-rose-500/20 border-2 border-rose-400 text-rose-200 font-bold text-xs sm:text-sm">
+                Dragon <span class="block text-[11px] font-normal opacity-80">Pays 1.95x</span>
+              </button>
+              <button onclick="selectDtSide('tie')" id="dtPick-tie" class="dt-pick py-3.5 px-2 rounded-2xl bg-slate-800/80 border-2 border-transparent hover:border-emerald-400/50 text-emerald-200 font-bold text-xs sm:text-sm">
+                Tie <span class="block text-[11px] font-normal opacity-80">Pays 8.0x</span>
+              </button>
+              <button onclick="selectDtSide('tiger')" id="dtPick-tiger" class="dt-pick py-3.5 px-2 rounded-2xl bg-slate-800/80 border-2 border-transparent hover:border-amber-400/50 text-amber-200 font-bold text-xs sm:text-sm">
+                Tiger <span class="block text-[11px] font-normal opacity-80">Pays 1.95x</span>
+              </button>
             </div>
-            <div id="casinoPersonalHistoryList" style="display:flex; flex-direction:column; gap:6px; max-height:220px; overflow-y:auto; font-size:11px;">
-                <span style="color:var(--text-muted);">No Dragon Tiger, Andar Bahar, or Mines rounds played yet.</span>
+
+            <button id="dtDealBtn" onclick="playDragonTiger()" class="w-full py-3.5 rounded-xl btn-cyan text-sm">
+              <i class="fa-solid fa-cards mr-1.5"></i>Deal Cards (<span class="current-stake-label">Rs. 100</span>)
+            </button>
+          </div>
+
+          <!-- Live / Simulated Table Bets Sidebar -->
+          <div class="lg:col-span-4 glass rounded-3xl p-5 flex flex-col">
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="font-display font-bold text-white text-sm">Live Table Bets</h3>
+              <span class="text-[11px] text-emerald-400 font-semibold"><i class="fa-solid fa-circle text-[7px] mr-1 animate-pulse"></i>Active</span>
             </div>
+            <div id="dtLiveBets" class="space-y-2 text-xs flex-1 max-h-80 overflow-y-auto"></div>
+          </div>
         </div>
-    </div>
 
-    <!-- PAGE 3: NETWORK -->
-    <div id="pageAffiliate" class="app-view-page">
-        <div class="stats-dashboard">
-            <h3><i class="fa-solid fa-network-wired"></i> Referral Center</h3>
-            <p style="font-size:11px; color:var(--text-muted); margin-top:4px;">Tier 1: 10% • Tier 2: 3% • Tier 3: 1%</p>
+        <!-- ================= ANDAR BAHAR PANEL ================= -->
+        <div id="gamePanel-andarbahar" class="hidden grid lg:grid-cols-12 gap-5">
+          <div class="lg:col-span-8 glass rounded-3xl p-5 sm:p-6 space-y-6">
+            <div class="flex items-center justify-between">
+              <div>
+                <h2 class="font-display text-xl font-bold text-white">Andar Bahar</h2>
+                <p class="text-xs text-slate-400">Cards deal alternately to Andar and Bahar until a matching rank appears.</p>
+              </div>
+              <span class="px-3 py-1 rounded-full text-xs font-bold bg-amber-500/15 text-amber-300 border border-amber-400/30">3D Card Flip</span>
+            </div>
+
+            <div class="rounded-2xl bg-slate-950/90 border border-slate-800 p-5 space-y-5">
+              <!-- Joker Card -->
+              <div class="flex flex-col items-center">
+                <span class="text-[11px] uppercase tracking-wider font-bold text-cyan-300 mb-2">Target Joker Card</span>
+                <div class="card-3d-scene">
+                  <div id="abJokerCard" class="card-3d">
+                    <div class="card-face card-back"><i class="fa-solid fa-crown text-amber-300 text-2xl"></i></div>
+                    <div id="abJokerFront" class="card-face card-front">
+                      <span class="ab-rank font-display font-bold text-lg">7</span>
+                      <span class="ab-suit text-2xl self-center">♦</span>
+                      <span class="ab-rank font-display font-bold text-lg self-end rotate-180">7</span>
+                    </div>
+                  </div>
+                </div>
+                <p id="abOutcomeText" class="text-xs font-bold text-slate-300 mt-3">Select Andar or Bahar and deal</p>
+              </div>
+
+              <!-- Dealing Lanes -->
+              <div class="grid sm:grid-cols-2 gap-4 pt-2">
+                <div class="rounded-xl bg-slate-900/80 border border-slate-800 p-3">
+                  <div class="text-xs font-bold text-cyan-300 mb-2">ANDAR (In)</div>
+                  <div id="abAndarLane" class="flex flex-wrap gap-1.5 min-h-[44px]"></div>
+                </div>
+                <div class="rounded-xl bg-slate-900/80 border border-slate-800 p-3">
+                  <div class="text-xs font-bold text-amber-300 mb-2">BAHAR (Out)</div>
+                  <div id="abBaharLane" class="flex flex-wrap gap-1.5 min-h-[44px]"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <button onclick="selectAbSide('andar')" id="abPick-andar" class="ab-pick py-3.5 rounded-2xl bg-cyan-500/20 border-2 border-cyan-400 text-cyan-200 font-bold text-sm">
+                Bet Andar <span class="block text-[11px] font-normal opacity-80">Pays 1.90x</span>
+              </button>
+              <button onclick="selectAbSide('bahar')" id="abPick-bahar" class="ab-pick py-3.5 rounded-2xl bg-slate-800/80 border-2 border-transparent hover:border-amber-400/50 text-amber-200 font-bold text-sm">
+                Bet Bahar <span class="block text-[11px] font-normal opacity-80">Pays 1.95x</span>
+              </button>
+            </div>
+
+            <button id="abDealBtn" onclick="playAndarBahar()" class="w-full py-3.5 rounded-xl btn-cyan text-sm">
+              <i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i>Start Deal (<span class="current-stake-label">Rs. 100</span>)
+            </button>
+          </div>
+
+          <!-- Live / Simulated Table Bets Sidebar -->
+          <div class="lg:col-span-4 glass rounded-3xl p-5 flex flex-col">
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="font-display font-bold text-white text-sm">Live Table Bets</h3>
+              <span class="text-[11px] text-emerald-400 font-semibold"><i class="fa-solid fa-circle text-[7px] mr-1 animate-pulse"></i>Active</span>
+            </div>
+            <div id="abLiveBets" class="space-y-2 text-xs flex-1 max-h-80 overflow-y-auto"></div>
+          </div>
         </div>
-    </div>
 
-    <!-- PAGE 4: HISTORY -->
-    <div id="pageHistory" class="app-view-page">
-        <div class="stats-dashboard">
-            <h3><i class="fa-solid fa-receipt"></i> Activity Logs</h3>
-            <div id="userHistoryRecordsList" style="font-size:11px; margin-top:8px;">All wallet & game logs appear here.</div>
+        <!-- ================= 5x5 MINES PANEL ================= -->
+        <div id="gamePanel-mines" class="hidden glass rounded-3xl p-5 sm:p-6 space-y-5">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h2 class="font-display text-xl font-bold text-white">5x5 Mines</h2>
+              <p class="text-xs text-slate-400">Pick your mine count, reveal safe gems, and cash out before hitting a mine.</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <label class="text-xs text-slate-300 font-semibold">Mines:</label>
+              <select id="minesCountSelect" onchange="resetMinesPreview()" class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs font-bold text-white focus:outline-none focus:border-cyan-400">
+                <option value="3" selected>3 Mines (Safer)</option>
+                <option value="4">4 Mines</option>
+                <option value="5">5 Mines</option>
+                <option value="8">8 Mines</option>
+                <option value="12">12 Mines (High Risk)</option>
+                <option value="18">18 Mines (Extreme)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid lg:grid-cols-12 gap-6 items-center">
+            <!-- 5x5 Grid -->
+            <div class="lg:col-span-7">
+              <div id="minesGrid" class="grid grid-cols-5 gap-2.5 max-w-md mx-auto"></div>
+            </div>
+
+            <!-- Mines Controls & Multiplier -->
+            <div class="lg:col-span-5 glass rounded-2xl p-5 space-y-4">
+              <div class="flex items-center justify-between">
+                <span class="text-xs text-slate-400">Current Multiplier</span>
+                <span id="minesMultiplierDisplay" class="font-display text-2xl font-bold text-emerald-400">1.00x</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-xs text-slate-400">Potential Payout</span>
+                <span id="minesPayoutDisplay" class="font-display text-lg font-bold text-white">Rs. 0.00</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-xs text-slate-400">Gems Found</span>
+                <span id="minesGemsCount" class="text-xs font-bold text-cyan-300">0</span>
+              </div>
+
+              <button id="minesStartBtn" onclick="startMinesRound()" class="w-full py-3.5 rounded-xl btn-cyan text-sm">
+                <i class="fa-solid fa-play mr-1.5"></i>Start Round (<span class="current-stake-label">Rs. 100</span>)
+              </button>
+              <button id="minesCashoutBtn" onclick="cashoutMinesRound()" disabled class="w-full py-3.5 rounded-xl bg-emerald-500 disabled:opacity-35 text-slate-950 font-extrabold text-sm transition">
+                <i class="fa-solid fa-sack-dollar mr-1.5"></i>Cash Out Gems
+              </button>
+            </div>
+          </div>
         </div>
-    </div>
+      </section>
 
-    <!-- PAGE 5: INFO HUB -->
-    <div id="pageLegalHub" class="app-view-page">
-        <div class="stats-dashboard">
-            <h3><i class="fa-solid fa-circle-info"></i> Vestify Pro Info</h3>
-            <p style="font-size:11px; color:var(--text-muted); margin-top:6px;">Support: webhub262@gmail.com</p>
+      <!-- ================================================================= -->
+      <!-- 4. WALLET, PROMO CODES & INBOX PAGE                               -->
+      <!-- ================================================================= -->
+      <section id="page-wallet" class="hidden space-y-6">
+        <div class="grid lg:grid-cols-3 gap-5">
+          <!-- Deposit Request -->
+          <div class="glass rounded-3xl p-5 sm:p-6 space-y-4">
+            <h2 class="font-display text-lg font-bold text-white"><i class="fa-solid fa-arrow-down text-emerald-400 mr-2"></i>Deposit PKR</h2>
+            <p class="text-xs text-slate-400">Submit a deposit request with a reference / transaction ID.</p>
+            <div>
+              <label class="block text-xs text-slate-300 mb-1">Amount (PKR)</label>
+              <input id="depositAmount" type="number" min="100" step="50" placeholder="500" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white" />
+            </div>
+            <div>
+              <label class="block text-xs text-slate-300 mb-1">Method</label>
+              <select id="depositMethod" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white">
+                <option value="JazzCash">JazzCash</option>
+                <option value="EasyPaisa">EasyPaisa</option>
+                <option value="Bank Transfer">Bank Transfer</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs text-slate-300 mb-1">Transaction / Ref ID</label>
+              <input id="depositRef" type="text" placeholder="e.g. TXN-98412" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white" />
+            </div>
+            <button onclick="submitDepositRequest()" class="w-full py-3 rounded-xl btn-cyan text-sm">Submit Deposit</button>
+          </div>
+
+          <!-- Withdraw Request -->
+          <div class="glass rounded-3xl p-5 sm:p-6 space-y-4">
+            <h2 class="font-display text-lg font-bold text-white"><i class="fa-solid fa-arrow-up text-amber-400 mr-2"></i>Withdraw PKR</h2>
+            <p class="text-xs text-slate-400">Request a payout to your account. Balance is reserved immediately.</p>
+            <div>
+              <label class="block text-xs text-slate-300 mb-1">Amount (PKR)</label>
+              <input id="withdrawAmount" type="number" min="100" step="50" placeholder="500" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white" />
+            </div>
+            <div>
+              <label class="block text-xs text-slate-300 mb-1">Payout Channel</label>
+              <select id="withdrawMethod" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white">
+                <option value="JazzCash">JazzCash</option>
+                <option value="EasyPaisa">EasyPaisa</option>
+                <option value="Bank Transfer">Bank Transfer</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs text-slate-300 mb-1">Account Title & Number</label>
+              <input id="withdrawAccount" type="text" placeholder="0300-1234567" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white" />
+            </div>
+            <button onclick="submitWithdrawRequest()" class="w-full py-3 rounded-xl btn-gold text-sm">Request Withdrawal</button>
+          </div>
+
+          <!-- Multi-User One-Time-Per-Account Promo Code Redemption -->
+          <div class="glass rounded-3xl p-5 sm:p-6 space-y-4">
+            <h2 class="font-display text-lg font-bold text-white"><i class="fa-solid fa-gift text-violet-400 mr-2"></i>Promo Code Redemption</h2>
+            <p class="text-xs text-slate-400">Each valid promo code can be claimed <strong>once per user account</strong> while capacity remains.</p>
+            <div>
+              <label class="block text-xs text-slate-300 mb-1">Promo Code</label>
+              <input id="promoCodeInput" type="text" placeholder="e.g. WELCOME50" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white uppercase focus:outline-none focus:border-cyan-400" />
+            </div>
+            <button onclick="redeemPromoCode()" class="w-full py-3 rounded-xl bg-violet-600 hover:bg-violet-500 text-white font-bold text-sm transition">
+              Claim Bonus
+            </button>
+            <div class="rounded-xl bg-slate-900/80 border border-slate-800 p-3 text-[11px] text-slate-400">
+              Tip: Try default code <code class="text-cyan-300 font-bold">WELCOME50</code> or create custom codes inside the Admin panel.
+            </div>
+          </div>
         </div>
-    </div>
 
-    <!-- BOTTOM NAVIGATION -->
-    <div class="bottom-nav">
-        <div class="nav-item active" id="nvHome" onclick="routeToView('pageHome', 'nvHome')"><i class="fa-solid fa-house"></i><span>Home</span></div>
-        <div class="nav-item" id="nvAviator" onclick="routeToView('pageAviator', 'nvAviator')"><i class="fa-solid fa-rocket"></i><span>Aviator</span></div>
-        <div class="nav-item" id="nvGames" onclick="routeToView('pageGamesHub', 'nvGames')"><i class="fa-solid fa-dice"></i><span>Games</span></div>
-        <div class="nav-item" id="nvAffiliate" onclick="routeToView('pageAffiliate', 'nvAffiliate')"><i class="fa-solid fa-users-gear"></i><span>Network</span></div>
-        <div class="nav-item" id="nvHistory" onclick="routeToView('pageHistory', 'nvHistory')"><i class="fa-solid fa-receipt"></i><span>History</span></div>
-        <div class="nav-item" id="nvLegal" onclick="routeToView('pageLegalHub', 'nvLegal')"><i class="fa-solid fa-folder-open"></i><span>Info</span></div>
-    </div>
-
-    <!-- DEPOSIT MODAL -->
-    <div id="depositModal" class="premium-modal">
-        <div class="modal-content">
-            <div class="close-modal-btn" onclick="closeModal('depositModal')">&times;</div>
-            <h4>Deposit Funds</h4>
-            <input type="number" id="pkrDepositInput" class="modal-input" placeholder="Amount in PKR (Min 200)" style="margin:10px 0;">
-            <button class="buy-plan-btn" onclick="submitDemoDeposit()" style="width:100%;">Submit Deposit</button>
+        <!-- Wallet Requests History -->
+        <div class="glass rounded-3xl p-5 sm:p-6">
+          <h3 class="font-display text-lg font-bold text-white mb-4">Deposit & Withdrawal Requests</h3>
+          <div id="walletRequestsList" class="space-y-2.5 text-xs">
+            <p class="text-slate-400">No wallet requests submitted yet.</p>
+          </div>
         </div>
-    </div>
+      </section>
 
-    <!-- WITHDRAW MODAL -->
-    <div id="withdrawModal" class="premium-modal">
-        <div class="modal-content">
-            <div class="close-modal-btn" onclick="closeModal('withdrawModal')">&times;</div>
-            <h4>Withdraw Cash</h4>
-            <input type="number" id="pkrWithdrawInput" class="modal-input" placeholder="Amount in PKR (Min 100)" style="margin:10px 0;">
-            <button class="buy-plan-btn" onclick="submitDemoWithdraw()" style="width:100%;">Request Withdrawal</button>
+      <!-- ================================================================= -->
+      <!-- 5. MODERNIZED INFO HUB PAGE                                       -->
+      <!-- ================================================================= -->
+      <section id="page-info" class="hidden space-y-6">
+        <div class="glass rounded-3xl p-6 sm:p-8">
+          <span class="text-xs font-bold uppercase tracking-widest text-cyan-400">Platform Documentation</span>
+          <h1 class="font-display text-2xl sm:text-3xl font-bold text-white mt-1">VestifyPro Info Hub</h1>
+          <p class="text-sm text-slate-300 mt-2 max-w-2xl">
+            Everything you need to know about virtual node mechanics, arcade table rules, wallet processing, privacy, and fair play.
+          </p>
+
+          <!-- Info Tabs -->
+          <div class="flex flex-wrap gap-2 mt-6">
+            <button onclick="switchInfoTab('overview')" id="infoTab-overview" class="info-tab px-4 py-2 rounded-xl text-xs font-bold btn-cyan">Overview</button>
+            <button onclick="switchInfoTab('rules')" id="infoTab-rules" class="info-tab px-4 py-2 rounded-xl text-xs font-bold bg-slate-800 text-slate-300">Rules & Fair Play</button>
+            <button onclick="switchInfoTab('privacy')" id="infoTab-privacy" class="info-tab px-4 py-2 rounded-xl text-xs font-bold bg-slate-800 text-slate-300">Privacy Policy</button>
+            <button onclick="switchInfoTab('faq')" id="infoTab-faq" class="info-tab px-4 py-2 rounded-xl text-xs font-bold bg-slate-800 text-slate-300">FAQ</button>
+          </div>
         </div>
-    </div>
 
-    <script>
-        const firebaseConfig = {
-            apiKey: "YOUR_FIREBASE_API_KEY",
-            authDomain: "vestify-pro.firebaseapp.com",
-            databaseURL: "https://vestify-pro-default-rtdb.firebaseio.com",
-            projectId: "vestify-pro",
-            storageBucket: "vestify-pro.firebasestorage.app"
+        <div id="infoContent-overview" class="info-panel glass rounded-3xl p-6 space-y-4 text-sm text-slate-300">
+          <h2 class="font-display text-xl font-bold text-white">About VestifyPro</h2>
+          <p class="leading-relaxed">
+            VestifyPro brings together virtual compute nodes, VIP milestone spin rewards (Rs. 100 up to Rs. 50,000), multi-user promo codes, and four interactive arcade experiences inside a single responsive interface.
+          </p>
+          <div class="grid sm:grid-cols-3 gap-4 pt-2">
+            <div class="rounded-2xl bg-slate-900/80 p-4 border border-slate-800">
+              <div class="font-bold text-cyan-300 mb-1">Virtual Nodes</div>
+              <p class="text-xs text-slate-400">Select a node plan, deploy from your wallet, and claim yield whenever ready.</p>
+            </div>
+            <div class="rounded-2xl bg-slate-900/80 p-4 border border-slate-800">
+              <div class="font-bold text-emerald-300 mb-1">VIP Milestone Spin</div>
+              <p class="text-xs text-slate-400">Every 5,000 PKR wagered in arcade games unlocks a VIP wheel spin.</p>
+            </div>
+            <div class="rounded-2xl bg-slate-900/80 p-4 border border-slate-800">
+              <div class="font-bold text-amber-300 mb-1">Instant Alerts</div>
+              <p class="text-xs text-slate-400">Track deposits, withdrawals, promo redemptions, and broadcasts in your Inbox.</p>
+            </div>
+          </div>
+        </div>
+
+        <div id="infoContent-rules" class="info-panel hidden glass rounded-3xl p-6 space-y-3 text-sm text-slate-300">
+          <h2 class="font-display text-xl font-bold text-white">Terms & Fair Play</h2>
+          <ul class="list-disc pl-5 space-y-2 text-xs sm:text-sm text-slate-300">
+            <li>Users must be 18+ and responsible for maintaining the security of their account credentials.</li>
+            <li>Promo codes are redeemable once per unique user account and may have a global redemption cap or expiration set by administrators.</li>
+            <li>Arcade games (Aviator, Dragon Tiger, Andar Bahar, Mines) carry risk; only play with amounts you are comfortable wagering.</li>
+            <li>Abuse, multi-accounting, or automated exploitation may result in account review or suspension.</li>
+          </ul>
+        </div>
+
+        <div id="infoContent-privacy" class="info-panel hidden glass rounded-3xl p-6 space-y-3 text-sm text-slate-300">
+          <h2 class="font-display text-xl font-bold text-white">Privacy Policy</h2>
+          <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+            We store account profile identifiers, wallet balances, node holdings, transaction logs, and in-app notifications necessary to operate your account. We do not sell personal contact details to third-party data brokers.
+          </p>
+        </div>
+
+        <div id="infoContent-faq" class="info-panel hidden glass rounded-3xl p-6 space-y-4 text-sm text-slate-300">
+          <h2 class="font-display text-xl font-bold text-white">Frequently Asked Questions</h2>
+          <div class="space-y-3">
+            <div class="rounded-2xl bg-slate-900/80 p-4 border border-slate-800">
+              <p class="font-bold text-white text-xs sm:text-sm">Why did a promo code say "already redeemed by your account"?</p>
+              <p class="text-xs text-slate-400 mt-1">Promo codes are configured as one-time-per-user so each player claims their bonus once while other eligible users can still use an active code.</p>
+            </div>
+            <div class="rounded-2xl bg-slate-900/80 p-4 border border-slate-800">
+              <p class="font-bold text-white text-xs sm:text-sm">How do I earn VIP Milestone Spins?</p>
+              <p class="text-xs text-slate-400 mt-1">Every 5,000 PKR in total arcade bets grants 1 VIP spin ticket (up to Rs. 50,000 prizes).</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- 6. ADMIN CONTROL PANEL (MULTI-GAME EDGE, PROMOS, WALLET, BROADCAST) -->
+      <!-- ================================================================= -->
+      <section id="page-admin" class="hidden space-y-6">
+        <div class="glass rounded-3xl p-5 sm:p-6 flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-widest text-amber-400">Administrator Console</span>
+            <h1 class="font-display text-2xl font-bold text-white">Platform & Multi-Game Controls</h1>
+          </div>
+          <span class="px-3 py-1.5 rounded-xl bg-amber-500/15 border border-amber-400/30 text-amber-300 text-xs font-bold">Live Sync</span>
+        </div>
+
+        <!-- Multi-Game House Edge & Win Controls -->
+        <div class="glass rounded-3xl p-5 sm:p-6 space-y-4">
+          <h2 class="font-display text-lg font-bold text-white"><i class="fa-solid fa-sliders text-cyan-400 mr-2"></i>Arcade House-Edge & Win Rate Controls</h2>
+          <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
+            <div class="rounded-2xl bg-slate-900/80 p-4 border border-slate-800 space-y-2">
+              <div class="font-bold text-cyan-300">Aviator</div>
+              <label class="block text-slate-400">House Edge / Crash Bias (%)</label>
+              <input id="adminAviatorEdge" type="number" min="1" max="50" value="8" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-white font-bold" />
+            </div>
+
+            <div class="rounded-2xl bg-slate-900/80 p-4 border border-slate-800 space-y-2">
+              <div class="font-bold text-rose-300">Dragon Tiger</div>
+              <label class="block text-slate-400">Player Win Bias (%)</label>
+              <input id="adminDtWinRate" type="number" min="5" max="80" value="44" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-white font-bold" />
+            </div>
+
+            <div class="rounded-2xl bg-slate-900/80 p-4 border border-slate-800 space-y-2">
+              <div class="font-bold text-amber-300">Andar Bahar</div>
+              <label class="block text-slate-400">Player Win Bias (%)</label>
+              <input id="adminAbWinRate" type="number" min="5" max="80" value="45" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-white font-bold" />
+            </div>
+
+            <div class="rounded-2xl bg-slate-900/80 p-4 border border-slate-800 space-y-2">
+              <div class="font-bold text-violet-300">5x5 Mines</div>
+              <label class="block text-slate-400">House Edge (%)</label>
+              <input id="adminMinesEdge" type="number" min="1" max="45" value="6" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-white font-bold" />
+            </div>
+          </div>
+          <button onclick="saveAdminGameSettings()" class="px-5 py-2.5 rounded-xl btn-cyan text-xs font-bold">
+            Save Arcade Settings
+          </button>
+        </div>
+
+        <!-- Promo Code Creator + Broadcast -->
+        <div class="grid lg:grid-cols-2 gap-5">
+          <div class="glass rounded-3xl p-5 sm:p-6 space-y-3">
+            <h2 class="font-display text-lg font-bold text-white"><i class="fa-solid fa-ticket text-violet-400 mr-2"></i>Create Multi-User Promo Code</h2>
+            <p class="text-xs text-slate-400">Each user can claim once; set optional max total users.</p>
+            <div class="grid sm:grid-cols-3 gap-3">
+              <input id="newPromoCode" type="text" placeholder="CODE200" class="px-3 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white uppercase" />
+              <input id="newPromoAmount" type="number" min="10" placeholder="Reward PKR" class="px-3 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" />
+              <input id="newPromoMaxUsers" type="number" min="1" placeholder="Max Users (e.g. 100)" class="px-3 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" />
+            </div>
+            <button onclick="createAdminPromoCode()" class="px-4 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-xs font-bold">Create Promo Code</button>
+            <div id="adminPromoList" class="space-y-1.5 pt-2 text-xs max-h-40 overflow-y-auto"></div>
+          </div>
+
+          <div class="glass rounded-3xl p-5 sm:p-6 space-y-3">
+            <h2 class="font-display text-lg font-bold text-white"><i class="fa-solid fa-bullhorn text-amber-400 mr-2"></i>Global Broadcast Banner</h2>
+            <p class="text-xs text-slate-400">Push an announcement to all active users.</p>
+            <input id="adminBroadcastInput" type="text" placeholder="e.g. Weekend bonus active! Check your promo codes." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white" />
+            <div class="flex gap-2">
+              <button onclick="publishBroadcast()" class="px-4 py-2.5 rounded-xl btn-gold text-xs">Publish Broadcast</button>
+              <button onclick="clearBroadcast()" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold">Clear</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pending Wallet Requests Queue -->
+        <div class="glass rounded-3xl p-5 sm:p-6 space-y-3">
+          <h2 class="font-display text-lg font-bold text-white"><i class="fa-solid fa-clipboard-check text-emerald-400 mr-2"></i>Wallet Requests Queue</h2>
+          <div id="adminWalletQueue" class="space-y-2.5 text-xs">
+            <p class="text-slate-400">No pending requests.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="md:hidden fixed bottom-0 inset-x-0 z-40 glass-strong border-t border-slate-800/90 px-2 py-1.5 flex items-center justify-around text-[11px]">
+      <button onclick="navigateTo('dashboard')" class="flex flex-col items-center gap-0.5 py-1 px-2 text-cyan-400">
+        <i class="fa-solid fa-house text-base"></i><span>Home</span>
+      </button>
+      <button onclick="navigateTo('nodes')" class="flex flex-col items-center gap-0.5 py-1 px-2 text-slate-400">
+        <i class="fa-solid fa-server text-base"></i><span>Nodes</span>
+      </button>
+      <button onclick="navigateTo('games')" class="flex flex-col items-center gap-0.5 py-1 px-2 text-slate-400">
+        <i class="fa-solid fa-gamepad text-base"></i><span>Arcade</span>
+      </button>
+      <button onclick="navigateTo('wallet')" class="flex flex-col items-center gap-0.5 py-1 px-2 text-slate-400">
+        <i class="fa-solid fa-wallet text-base"></i><span>Wallet</span>
+      </button>
+      <button onclick="navigateTo('info')" class="flex flex-col items-center gap-0.5 py-1 px-2 text-slate-400">
+        <i class="fa-solid fa-circle-info text-base"></i><span>Info</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- NOTIFICATIONS INBOX DRAWER                                            -->
+  <!-- ===================================================================== -->
+  <div id="notifDrawerBackdrop" onclick="toggleNotificationsDrawer(false)" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex justify-end">
+    <aside onclick="event.stopPropagation()" class="w-full max-w-md bg-[#0b1220] border-l border-slate-800 h-full flex flex-col">
+      <div class="p-4 border-b border-slate-800 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i class="fa-regular fa-bell text-cyan-400"></i>
+          <h3 class="font-display font-bold text-white">Notifications Inbox</h3>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="markAllNotificationsRead()" class="text-xs text-cyan-400 hover:underline">Mark all read</button>
+          <button onclick="toggleNotificationsDrawer(false)" class="w-8 h-8 rounded-lg bg-slate-800/80 text-slate-300 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+      </div>
+      <div id="notificationsList" class="flex-1 overflow-y-auto p-4 space-y-2.5 text-xs">
+        <p class="text-slate-400 text-center py-8">No notifications yet.</p>
+      </div>
+    </aside>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- VIP MILESTONE SPIN MODAL (Rs. 100 – Rs. 50,000)                      -->
+  <!-- ===================================================================== -->
+  <div id="vipSpinModal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="glass-strong rounded-3xl max-w-md w-full p-6 border border-amber-400/35 space-y-5 relative">
+      <button onclick="closeVipSpinModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-800 text-slate-300 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+      <div class="text-center">
+        <span class="px-3 py-1 rounded-full bg-amber-500/15 text-amber-300 text-xs font-bold">VIP Milestone Wheel</span>
+        <h3 class="font-display text-2xl font-bold text-white mt-2">Win Rs. 100 – Rs. 50,000</h3>
+        <p class="text-xs text-slate-400 mt-1">Earn 1 spin every 5,000 PKR wagered in Arcade games.</p>
+      </div>
+
+      <div class="rounded-2xl bg-slate-900/90 border border-slate-800 p-4 text-center space-y-2">
+        <div class="text-xs text-slate-400">Available VIP Spins: <strong id="vipSpinTickets" class="text-amber-300 text-sm">0</strong></div>
+        <div id="vipSpinProgressBarWrap" class="w-full h-2.5 rounded-full bg-slate-800 overflow-hidden">
+          <div id="vipSpinProgressBar" class="h-full bg-gradient-to-r from-amber-400 to-cyan-400 w-0 transition-all duration-300"></div>
+        </div>
+        <p id="vipSpinProgressLabel" class="text-[11px] text-slate-400">0 / 5,000 PKR toward next spin</p>
+      </div>
+
+      <div id="vipWheelResult" class="rounded-2xl bg-slate-950 border border-slate-800 p-5 text-center">
+        <span class="text-xs uppercase tracking-wider text-slate-400">Last Prize</span>
+        <div id="vipPrizeDisplay" class="font-display text-3xl font-bold text-amber-400 mt-1">Ready</div>
+      </div>
+
+      <button id="vipSpinActionBtn" onclick="spinVipMilestoneWheel()" class="w-full py-3.5 rounded-xl btn-gold text-sm">
+        <i class="fa-solid fa-dharmachakra mr-1.5"></i>Spin VIP Wheel
+      </button>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- APPLICATION JAVASCRIPT                                                -->
+  <!-- ===================================================================== -->
+  <script>
+    // -----------------------------------------------------------------------
+    // 1. FIREBASE CONFIGURATION (Replace with your own project credentials)
+    // -----------------------------------------------------------------------
+    const FIREBASE_CONFIG = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT.firebaseapp.com",
+      databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
+      projectId: "YOUR_PROJECT",
+      storageBucket: "YOUR_PROJECT.appspot.com",
+      messagingSenderId: "000000000000",
+      appId: "1:000000000000:web:000000000000"
+    };
+
+    const ADMIN_EMAILS = ["admin@vestifypro.local"]; // Add your admin email(s)
+
+    let db = null;
+    let auth = null;
+    let cloudEnabled = false;
+
+    try {
+      if (!FIREBASE_CONFIG.apiKey.startsWith("YOUR_")) {
+        firebase.initializeApp(FIREBASE_CONFIG);
+        auth = firebase.auth();
+        db = firebase.database();
+        cloudEnabled = true;
+      } else {
+        document.getElementById("configBanner").classList.remove("hidden");
+      }
+    } catch (err) {
+      console.warn("Firebase init fallback to local/demo store:", err);
+      document.getElementById("configBanner").classList.remove("hidden");
+    }
+
+    // -----------------------------------------------------------------------
+    // 2. APPLICATION STATE & DEFAULT DATA
+    // -----------------------------------------------------------------------
+    const STORAGE_KEY = "vestifypro_state_v1";
+
+    const NODE_PLANS = [
+      { id: "node_micro", name: "Spark Node", price: 500, dailyYield: 45, badge: "Starter" },
+      { id: "node_pulse", name: "Pulse Node", price: 1500, dailyYield: 145, badge: "Popular" },
+      { id: "node_atlas", name: "Atlas Pro Node", price: 5000, dailyYield: 520, badge: "High Yield" }
+    ];
+
+    const DEFAULT_STATE = {
+      sessionUser: null,
+      users: {}, // uid -> user profile & wallet state
+      promoCodes: {
+        WELCOME50: {
+          code: "WELCOME50",
+          amount: 50,
+          maxRedemptions: 500,
+          redeemedBy: {} // { [uid]: timestamp }
+        }
+      },
+      walletRequests: [],
+      broadcast: { active: false, message: "" },
+      gameSettings: {
+        aviatorEdge: 8,
+        dtWinRate: 44,
+        abWinRate: 45,
+        minesEdge: 6
+      },
+      aviatorHistory: [1.82, 3.15, 1.24, 5.40, 2.08]
+    };
+
+    let state = loadState();
+    let currentBet = 100;
+    let dtSelectedSide = "dragon";
+    let abSelectedSide = "andar";
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return structuredClone(DEFAULT_STATE);
+        const parsed = JSON.parse(raw);
+        return {
+          ...structuredClone(DEFAULT_STATE),
+          ...parsed,
+          promoCodes: { ...structuredClone(DEFAULT_STATE.promoCodes), ...(parsed.promoCodes || {}) },
+          gameSettings: { ...structuredClone(DEFAULT_STATE.gameSettings), ...(parsed.gameSettings || {}) }
         };
-        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        const auth = firebase.auth();
+      } catch {
+        return structuredClone(DEFAULT_STATE);
+      }
+    }
 
-        let withdrawableBalance = 3500;
-        let bonusBalance = 1500;
-        let adminTapCount = 0;
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      if (cloudEnabled && db) {
+        db.ref("vestifypro_public_sync").set({
+          promoCodes: state.promoCodes,
+          gameSettings: state.gameSettings,
+          broadcast: state.broadcast,
+          walletRequests: state.walletRequests
+        }).catch(() => {});
+        if (state.sessionUser) {
+          const u = getCurrentUser();
+          if (u) db.ref("vestifypro_users/" + u.uid).set(u).catch(() => {});
+        }
+      }
+    }
 
-        const minesState = {
-            active: false,
-            betAmount: 50,
-            minesCount: 3,
-            minePositions: new Set(),
-            revealedPositions: new Set(),
-            currentMultiplier: 1.00
+    function getCurrentUser() {
+      if (!state.sessionUser) return null;
+      return state.users[state.sessionUser.uid] || null;
+    }
+
+    function formatPKR(num) {
+      const val = Number(num) || 0;
+      return "Rs. " + val.toLocaleString("en-PK", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function showToast(title, message, iconClass = "fa-bolt") {
+      const toast = document.getElementById("toast");
+      document.getElementById("toastTitle").textContent = title;
+      document.getElementById("toastMsg").textContent = message;
+      document.getElementById("toastIcon").innerHTML = `<i class="fa-solid ${iconClass}"></i>`;
+      toast.classList.remove("opacity-0", "translate-y-2");
+      toast.classList.add("opacity-100", "translate-y-0");
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => {
+        toast.classList.remove("opacity-100", "translate-y-0");
+        toast.classList.add("opacity-0", "translate-y-2");
+      }, 3400);
+    }
+
+    function pushNotification(user, title, body, type = "info") {
+      if (!user) return;
+      user.notifications = user.notifications || [];
+      user.notifications.unshift({
+        id: "n_" + Date.now() + "_" + Math.random().toString(36).slice(2, 6),
+        title,
+        body,
+        type,
+        read: false,
+        createdAt: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+      });
+      if (user.notifications.length > 40) user.notifications.length = 40;
+    }
+
+    function addLedgerEntry(user, label, amountDelta, type = "info") {
+      if (!user) return;
+      user.ledger = user.ledger || [];
+      user.ledger.unshift({
+        id: "l_" + Date.now() + "_" + Math.random().toString(36).slice(2, 5),
+        label,
+        amountDelta,
+        type,
+        time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+      });
+      if (user.ledger.length > 30) user.ledger.length = 30;
+    }
+
+    // -----------------------------------------------------------------------
+    // 3. AUTHENTICATION & USER BOOTSTRAP
+    // -----------------------------------------------------------------------
+    function switchAuthTab(mode) {
+      const isReg = mode === "register";
+      document.getElementById("tabLogin").className = isReg
+        ? "py-2.5 rounded-xl text-sm font-bold text-slate-400 hover:text-white transition"
+        : "py-2.5 rounded-xl text-sm font-bold btn-cyan";
+      document.getElementById("tabRegister").className = isReg
+        ? "py-2.5 rounded-xl text-sm font-bold btn-cyan"
+        : "py-2.5 rounded-xl text-sm font-bold text-slate-400 hover:text-white transition";
+
+      document.getElementById("registerNameField").classList.toggle("hidden", !isReg);
+      document.getElementById("registerExtraFields").classList.toggle("hidden", !isReg);
+      document.getElementById("authSubmitBtn").innerHTML = isReg
+        ? '<span>Create Free Account</span><i class="fa-solid fa-user-plus"></i>'
+        : '<span>Sign In to Dashboard</span><i class="fa-solid fa-arrow-right"></i>';
+      document.getElementById("authForm").dataset.mode = mode;
+    }
+
+    function togglePasswordVisibility() {
+      const inp = document.getElementById("authPassword");
+      const icon = document.getElementById("pwdEyeIcon");
+      if (inp.type === "password") {
+        inp.type = "text";
+        icon.className = "fa-regular fa-eye-slash";
+      } else {
+        inp.type = "password";
+        icon.className = "fa-regular fa-eye";
+      }
+    }
+
+    function ensureUserProfile(uid, email, name) {
+      if (!state.users[uid]) {
+        state.users[uid] = {
+          uid,
+          email,
+          name: name || email.split("@")[0],
+          balance: 1000, // Starter welcome balance for smooth testing
+          wagered: 0,
+          vipSpinsAvailable: 0,
+          vipSpinsClaimed: 0,
+          activeNodes: [],
+          notifications: [],
+          ledger: []
         };
+        pushNotification(state.users[uid], "Welcome to VestifyPro!", "Your account is ready with Rs. 1,000 starter balance. Try promo code WELCOME50 too!", "success");
+        addLedgerEntry(state.users[uid], "Starter Welcome Balance", 1000, "credit");
+      }
+      return state.users[uid];
+    }
 
-        function getTotalPlayableBalance() {
-            return withdrawableBalance + bonusBalance;
+    function handleAuthSubmit(e) {
+      e.preventDefault();
+      const mode = document.getElementById("authForm").dataset.mode || "login";
+      const email = document.getElementById("authEmail").value.trim().toLowerCase();
+      const nameInput = document.getElementById("authName").value.trim();
+
+      if (mode === "register") {
+        const agreed = document.getElementById("authTerms").checked;
+        if (!agreed) {
+          showToast("Terms Required", "Please confirm you are 18+ and accept the terms.", "fa-circle-exclamation");
+          return;
         }
+      }
 
-        function placeSharedGameBet(amount) {
-            if (getTotalPlayableBalance() < amount) {
-                triggerToastDisplay("Insufficient balance!");
-                return false;
-            }
-            if (bonusBalance >= amount) bonusBalance -= amount;
-            else {
-                const rem = amount - bonusBalance;
-                bonusBalance = 0;
-                withdrawableBalance -= rem;
-            }
-            updateWalletUI();
-            return true;
+      const uid = "u_" + btoa(email).replace(/[^a-zA-Z0-9]/g, "").slice(0, 14);
+      const user = ensureUserProfile(uid, email, nameInput);
+      state.sessionUser = { uid, email };
+      saveState();
+      enterApp();
+      showToast("Signed In", `Welcome, ${user.name}!`, "fa-circle-check");
+    }
+
+    function quickDemoLogin() {
+      const uid = "u_demo_player";
+      const user = ensureUserProfile(uid, "demo@vestifypro.local", "Demo Player");
+      state.sessionUser = { uid, email: user.email };
+      saveState();
+      enterApp();
+      showToast("Demo Session", "Logged in as Demo Player.", "fa-flask");
+    }
+
+    function logoutUser() {
+      state.sessionUser = null;
+      saveState();
+      document.getElementById("appShell").classList.add("hidden");
+      document.getElementById("authScreen").classList.remove("hidden");
+    }
+
+    function enterApp() {
+      const user = getCurrentUser();
+      if (!user) return;
+      document.getElementById("authScreen").classList.add("hidden");
+      document.getElementById("appShell").classList.remove("hidden");
+
+      const isAdmin = ADMIN_EMAILS.includes(user.email.toLowerCase()) || user.email.toLowerCase().includes("admin");
+      document.getElementById("roleBadge").classList.toggle("hidden", !isAdmin);
+      document.getElementById("adminNavBtn").classList.toggle("hidden", !isAdmin);
+
+      syncAdminInputs();
+      renderAll();
+      navigateTo("dashboard");
+    }
+
+    // -----------------------------------------------------------------------
+    // 4. NAVIGATION & RENDERING
+    // -----------------------------------------------------------------------
+    function navigateTo(pageId) {
+      const pages = ["dashboard", "nodes", "games", "wallet", "info", "admin"];
+      pages.forEach(p => {
+        const el = document.getElementById("page-" + p);
+        if (el) el.classList.toggle("hidden", p !== pageId);
+      });
+      document.querySelectorAll(".nav-btn").forEach(btn => {
+        const active = btn.dataset.nav === pageId;
+        btn.className = active
+          ? "nav-btn px-3.5 py-2 rounded-xl text-cyan-300 bg-cyan-500/10"
+          : (btn.id === "adminNavBtn"
+            ? "nav-btn px-3.5 py-2 rounded-xl text-amber-300 hover:bg-amber-500/15"
+            : "nav-btn px-3.5 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800/70");
+      });
+      if (pageId === "games") {
+        resetMinesPreview();
+        renderLiveTableBets("dtLiveBets");
+        renderLiveTableBets("abLiveBets");
+      }
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function renderAll() {
+      const user = getCurrentUser();
+      if (!user) return;
+
+      document.getElementById("headerBalance").textContent = formatPKR(user.balance);
+      document.getElementById("gamesWalletDisplay").textContent = formatPKR(user.balance);
+      document.getElementById("statBalance").textContent = formatPKR(user.balance);
+      document.getElementById("dashUserName").textContent = user.name;
+      document.getElementById("dashUserEmail").textContent = user.email;
+
+      const activeNodes = user.activeNodes || [];
+      const dailyYield = activeNodes.reduce((sum, n) => sum + (n.dailyYield || 0), 0);
+      document.getElementById("statActiveNodes").textContent = String(activeNodes.length);
+      document.getElementById("statDailyYield").textContent = `Est. Daily: ${formatPKR(dailyYield)}`;
+
+      const wagered = Number(user.wagered) || 0;
+      const milestoneStep = 5000;
+      const progressInStep = wagered % milestoneStep;
+      const earnedSpins = Math.floor(wagered / milestoneStep);
+      const usedSpins = Number(user.vipSpinsClaimed) || 0;
+      user.vipSpinsAvailable = Math.max(0, earnedSpins - usedSpins);
+
+      document.getElementById("statWagered").textContent = formatPKR(wagered).replace(".00", "");
+      document.getElementById("statSpinProgress").textContent = `Next VIP Spin: ${Math.floor(progressInStep).toLocaleString()} / 5,000 PKR`;
+
+      // Notifications badge
+      const unread = (user.notifications || []).filter(n => !n.read).length;
+      const badge = document.getElementById("notifBadge");
+      badge.textContent = String(unread);
+      badge.classList.toggle("hidden", unread === 0);
+      document.getElementById("statUnreadNotifs").textContent = String(unread);
+
+      // Broadcast banner
+      if (state.broadcast && state.broadcast.active && state.broadcast.message) {
+        document.getElementById("broadcastBar").classList.remove("hidden");
+        document.getElementById("broadcastText").textContent = state.broadcast.message;
+      } else {
+        document.getElementById("broadcastBar").classList.add("hidden");
+      }
+
+      renderLedger();
+      renderNodePlans();
+      renderUserNodes();
+      renderWalletRequests();
+      renderNotifications();
+      renderAviatorHistory();
+      renderAdminQueues();
+      updateVipSpinUI();
+    }
+
+    function renderLedger() {
+      const user = getCurrentUser();
+      const box = document.getElementById("recentActivityList");
+      if (!user || !user.ledger || user.ledger.length === 0) {
+        box.innerHTML = '<p class="text-slate-400 text-xs py-4">No recent transactions yet.</p>';
+        return;
+      }
+      box.innerHTML = user.ledger.slice(0, 8).map(item => {
+        const pos = item.amountDelta >= 0;
+        return `
+          <div class="py-3 flex items-center justify-between gap-3">
+            <div>
+              <p class="font-medium text-slate-200 text-xs sm:text-sm">${escapeHtml(item.label)}</p>
+              <span class="text-[11px] text-slate-500">${escapeHtml(item.time)}</span>
+            </div>
+            <span class="font-display font-bold text-xs sm:text-sm ${pos ? "text-emerald-400" : "text-rose-400"}">
+              ${pos ? "+" : ""}${formatPKR(item.amountDelta)}
+            </span>
+          </div>
+        `;
+      }).join("");
+    }
+
+    // -----------------------------------------------------------------------
+    // 5. VIRTUAL NODES
+    // -----------------------------------------------------------------------
+    function renderNodePlans() {
+      const grid = document.getElementById("nodePlansGrid");
+      grid.innerHTML = NODE_PLANS.map(plan => `
+        <div class="glass rounded-3xl p-5 flex flex-col justify-between border border-slate-800 hover:border-cyan-400/40 transition">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="px-2.5 py-1 rounded-full bg-cyan-500/15 text-cyan-300 text-[11px] font-bold">${plan.badge}</span>
+              <i class="fa-solid fa-microchip text-cyan-400 text-lg"></i>
+            </div>
+            <h3 class="font-display text-xl font-bold text-white">${plan.name}</h3>
+            <div class="font-display text-2xl font-bold text-emerald-400 mt-2">${formatPKR(plan.price)}</div>
+            <p class="text-xs text-slate-400 mt-1">Estimated Yield: <strong class="text-slate-200">${formatPKR(plan.dailyYield)} / day</strong></p>
+          </div>
+          <button onclick="deployNode('${plan.id}')" class="mt-5 w-full py-3 rounded-xl btn-cyan text-xs sm:text-sm">
+            Deploy Node
+          </button>
+        </div>
+      `).join("");
+    }
+
+    function deployNode(planId) {
+      const user = getCurrentUser();
+      const plan = NODE_PLANS.find(p => p.id === planId);
+      if (!user || !plan) return;
+      if (user.balance < plan.price) {
+        showToast("Insufficient Balance", "Add funds in Wallet or redeem a promo code first.", "fa-wallet");
+        return;
+      }
+      user.balance -= plan.price;
+      user.activeNodes.push({
+        instanceId: "inst_" + Date.now(),
+        planId: plan.id,
+        name: plan.name,
+        price: plan.price,
+        dailyYield: plan.dailyYield,
+        pendingReward: plan.dailyYield, // Ready to test claiming right away
+        deployedAt: new Date().toLocaleDateString()
+      });
+      addLedgerEntry(user, `Deployed ${plan.name}`, -plan.price, "debit");
+      pushNotification(user, "Node Deployed", `${plan.name} is now active and generating ${formatPKR(plan.dailyYield)}/day.`, "success");
+      saveState();
+      renderAll();
+      showToast("Node Active", `${plan.name} deployed!`, "fa-server");
+    }
+
+    function renderUserNodes() {
+      const user = getCurrentUser();
+      const wrap = document.getElementById("userNodesList");
+      if (!user || !user.activeNodes || user.activeNodes.length === 0) {
+        wrap.innerHTML = '<p class="text-xs text-slate-400">You haven\'t deployed any nodes yet.</p>';
+        return;
+      }
+      wrap.innerHTML = user.activeNodes.map((n, idx) => `
+        <div class="rounded-2xl bg-slate-900/80 border border-slate-800 p-4 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="font-display font-bold text-white text-sm">${escapeHtml(n.name)}</span>
+            <span class="text-[11px] px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300">Running</span>
+          </div>
+          <div class="text-xs text-slate-400">Claimable Yield: <strong class="text-emerald-400">${formatPKR(n.pendingReward)}</strong></div>
+          <button onclick="claimSingleNode(${idx})" ${(n.pendingReward || 0) <= 0 ? "disabled" : ""} class="w-full py-2 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 disabled:opacity-40 text-emerald-300 text-xs font-bold transition">
+            Claim Yield
+          </button>
+        </div>
+      `).join("");
+    }
+
+    function claimSingleNode(idx) {
+      const user = getCurrentUser();
+      const node = user?.activeNodes?.[idx];
+      if (!node || !node.pendingReward) return;
+      const amt = node.pendingReward;
+      node.pendingReward = 0;
+      user.balance += amt;
+      addLedgerEntry(user, `Claimed ${node.name} Yield`, amt, "credit");
+      pushNotification(user, "Yield Claimed", `Credited ${formatPKR(amt)} from ${node.name}.`, "success");
+      saveState();
+      renderAll();
+      showToast("Yield Claimed", `+${formatPKR(amt)} added to wallet.`, "fa-coins");
+    }
+
+    function claimAllNodeRewards() {
+      const user = getCurrentUser();
+      if (!user || !user.activeNodes?.length) return;
+      let total = 0;
+      user.activeNodes.forEach(n => {
+        total += (n.pendingReward || 0);
+        n.pendingReward = 0;
+      });
+      if (total <= 0) {
+        showToast("Nothing to Claim", "No pending node yield available right now.", "fa-info-circle");
+        return;
+      }
+      user.balance += total;
+      addLedgerEntry(user, "Claimed All Node Rewards", total, "credit");
+      pushNotification(user, "All Node Rewards Claimed", `Collected ${formatPKR(total)} across your nodes.`, "success");
+      saveState();
+      renderAll();
+      showToast("Rewards Collected", `+${formatPKR(total)} added!`, "fa-coins");
+    }
+
+    // -----------------------------------------------------------------------
+    // 6. MULTI-USER ONE-TIME-PER-ACCOUNT PROMO CODES & WALLET
+    // -----------------------------------------------------------------------
+    function redeemPromoCode() {
+      const user = getCurrentUser();
+      const codeRaw = document.getElementById("promoCodeInput").value.trim().toUpperCase();
+      if (!user) return;
+      if (!codeRaw) {
+        showToast("Enter Code", "Please type a promo code first.", "fa-ticket");
+        return;
+      }
+      const promo = state.promoCodes[codeRaw];
+      if (!promo) {
+        showToast("Invalid Code", "This promo code does not exist or has expired.", "fa-circle-xmark");
+        return;
+      }
+
+      promo.redeemedBy = promo.redeemedBy || {};
+      if (promo.redeemedBy[user.uid]) {
+        showToast("Already Claimed", "You have already redeemed this promo code on your account.", "fa-ban");
+        pushNotification(user, "Duplicate Promo Attempt", `Code ${codeRaw} was already claimed by your account.`, "warning");
+        saveState();
+        renderAll();
+        return;
+      }
+
+      const redeemedCount = Object.keys(promo.redeemedBy).length;
+      if (promo.maxRedemptions && redeemedCount >= promo.maxRedemptions) {
+        showToast("Limit Reached", "This promo code has reached its total redemption limit.", "fa-hourglass-end");
+        return;
+      }
+
+      promo.redeemedBy[user.uid] = Date.now();
+      const bonus = Number(promo.amount) || 0;
+      user.balance += bonus;
+      document.getElementById("promoCodeInput").value = "";
+
+      addLedgerEntry(user, `Promo Code (${codeRaw})`, bonus, "credit");
+      pushNotification(user, "Promo Bonus Credited", `Code ${codeRaw} added ${formatPKR(bonus)} to your wallet.`, "success");
+      saveState();
+      renderAll();
+      showToast("Promo Redeemed!", `+${formatPKR(bonus)} credited to your balance.`, "fa-gift");
+    }
+
+    function submitDepositRequest() {
+      const user = getCurrentUser();
+      const amount = Number(document.getElementById("depositAmount").value);
+      const method = document.getElementById("depositMethod").value;
+      const ref = document.getElementById("depositRef").value.trim();
+      if (!user || !amount || amount < 50) {
+        showToast("Invalid Amount", "Enter a valid deposit amount.", "fa-circle-exclamation");
+        return;
+      }
+      const req = {
+        id: "dep_" + Date.now(),
+        type: "deposit",
+        uid: user.uid,
+        userName: user.name,
+        userEmail: user.email,
+        amount,
+        method,
+        ref: ref || "N/A",
+        status: "pending",
+        createdAt: new Date().toLocaleString()
+      };
+      state.walletRequests.unshift(req);
+      document.getElementById("depositAmount").value = "";
+      document.getElementById("depositRef").value = "";
+      pushNotification(user, "Deposit Request Sent", `${formatPKR(amount)} via ${method} is pending review.`, "info");
+      saveState();
+      renderAll();
+      showToast("Deposit Submitted", "Your request is in the review queue.", "fa-check");
+    }
+
+    function submitWithdrawRequest() {
+      const user = getCurrentUser();
+      const amount = Number(document.getElementById("withdrawAmount").value);
+      const method = document.getElementById("withdrawMethod").value;
+      const account = document.getElementById("withdrawAccount").value.trim();
+      if (!user || !amount || amount < 50) {
+        showToast("Invalid Amount", "Enter a valid withdrawal amount.", "fa-circle-exclamation");
+        return;
+      }
+      if (user.balance < amount) {
+        showToast("Insufficient Funds", "Withdrawal exceeds available wallet balance.", "fa-wallet");
+        return;
+      }
+      if (!account) {
+        showToast("Account Required", "Enter your payout account details.", "fa-id-card");
+        return;
+      }
+      user.balance -= amount;
+      const req = {
+        id: "wd_" + Date.now(),
+        type: "withdraw",
+        uid: user.uid,
+        userName: user.name,
+        userEmail: user.email,
+        amount,
+        method,
+        account,
+        status: "pending",
+        createdAt: new Date().toLocaleString()
+      };
+      state.walletRequests.unshift(req);
+      document.getElementById("withdrawAmount").value = "";
+      document.getElementById("withdrawAccount").value = "";
+      addLedgerEntry(user, `Withdrawal Request (${method})`, -amount, "debit");
+      pushNotification(user, "Withdrawal Requested", `${formatPKR(amount)} reserved for ${method} payout.`, "info");
+      saveState();
+      renderAll();
+      showToast("Withdrawal Sent", `${formatPKR(amount)} reserved for payout.`, "fa-paper-plane");
+    }
+
+    function renderWalletRequests() {
+      const user = getCurrentUser();
+      const box = document.getElementById("walletRequestsList");
+      if (!user) return;
+      const mine = state.walletRequests.filter(r => r.uid === user.uid);
+      if (mine.length === 0) {
+        box.innerHTML = '<p class="text-slate-400">No wallet requests submitted yet.</p>';
+        return;
+      }
+      box.innerHTML = mine.map(r => {
+        const color = r.status === "approved" ? "text-emerald-400 bg-emerald-500/15"
+          : r.status === "rejected" ? "text-rose-400 bg-rose-500/15"
+          : "text-amber-300 bg-amber-500/15";
+        return `
+          <div class="rounded-xl bg-slate-900/80 border border-slate-800 p-3.5 flex items-center justify-between gap-3">
+            <div>
+              <span class="font-bold uppercase text-white">${r.type}</span> • <span class="text-slate-300">${formatPKR(r.amount)}</span>
+              <div class="text-[11px] text-slate-400">${r.method} • ${escapeHtml(r.ref || r.account || "")} • ${r.createdAt}</div>
+            </div>
+            <span class="px-2.5 py-1 rounded-full font-bold uppercase text-[10px] ${color}">${r.status}</span>
+          </div>
+        `;
+      }).join("");
+    }
+
+    // -----------------------------------------------------------------------
+    // 7. NOTIFICATIONS DRAWER
+    // -----------------------------------------------------------------------
+    function toggleNotificationsDrawer(forceState) {
+      const backdrop = document.getElementById("notifDrawerBackdrop");
+      const shouldOpen = typeof forceState === "boolean" ? forceState : backdrop.classList.contains("hidden");
+      backdrop.classList.toggle("hidden", !shouldOpen);
+      if (shouldOpen) renderNotifications();
+    }
+
+    function renderNotifications() {
+      const user = getCurrentUser();
+      const list = document.getElementById("notificationsList");
+      if (!user || !user.notifications || user.notifications.length === 0) {
+        list.innerHTML = '<p class="text-slate-400 text-center py-8">No notifications yet.</p>';
+        return;
+      }
+      list.innerHTML = user.notifications.map(n => `
+        <div class="rounded-2xl p-3.5 border ${n.read ? "bg-slate-900/50 border-slate-800/70 opacity-75" : "bg-slate-900 border-cyan-400/35"}">
+          <div class="flex items-center justify-between gap-2">
+            <span class="font-bold text-white">${escapeHtml(n.title)}</span>
+            <span class="text-[10px] text-slate-400">${escapeHtml(n.createdAt)}</span>
+          </div>
+          <p class="text-slate-300 mt-1 leading-relaxed">${escapeHtml(n.body)}</p>
+        </div>
+      `).join("");
+    }
+
+    function markAllNotificationsRead() {
+      const user = getCurrentUser();
+      if (!user || !user.notifications) return;
+      user.notifications.forEach(n => { n.read = true; });
+      saveState();
+      renderAll();
+    }
+
+    // -----------------------------------------------------------------------
+    // 8. VIP MILESTONE SPIN (Rs. 100 – Rs. 50,000)
+    // -----------------------------------------------------------------------
+    function openVipSpinModal() {
+      updateVipSpinUI();
+      document.getElementById("vipSpinModal").classList.remove("hidden");
+    }
+
+    function closeVipSpinModal() {
+      document.getElementById("vipSpinModal").classList.add("hidden");
+    }
+
+    function updateVipSpinUI() {
+      const user = getCurrentUser();
+      if (!user) return;
+      const wagered = Number(user.wagered) || 0;
+      const progress = wagered % 5000;
+      const pct = Math.min(100, Math.round((progress / 5000) * 100));
+      document.getElementById("vipSpinTickets").textContent = String(user.vipSpinsAvailable || 0);
+      document.getElementById("vipSpinProgressBar").style.width = pct + "%";
+      document.getElementById("vipSpinProgressLabel").textContent = `${Math.floor(progress).toLocaleString()} / 5,000 PKR toward next spin`;
+      document.getElementById("vipSpinActionBtn").disabled = (user.vipSpinsAvailable || 0) <= 0;
+    }
+
+    function spinVipMilestoneWheel() {
+      const user = getCurrentUser();
+      if (!user || (user.vipSpinsAvailable || 0) <= 0) {
+        showToast("No Spins Available", "Wager 5,000 PKR in Arcade games to earn a VIP spin.", "fa-dharmachakra");
+        return;
+      }
+      user.vipSpinsClaimed = (user.vipSpinsClaimed || 0) + 1;
+      user.vipSpinsAvailable = Math.max(0, user.vipSpinsAvailable - 1);
+
+      // Weighted prize tiers from Rs. 100 up to Rs. 50,000
+      const roll = Math.random();
+      let prize = 100;
+      if (roll > 0.992) prize = 50000;
+      else if (roll > 0.97) prize = 10000;
+      else if (roll > 0.91) prize = 2500;
+      else if (roll > 0.75) prize = 1000;
+      else if (roll > 0.45) prize = 500;
+      else prize = 100;
+
+      user.balance += prize;
+      document.getElementById("vipPrizeDisplay").textContent = formatPKR(prize).replace(".00", "");
+      addLedgerEntry(user, "VIP Milestone Spin Prize", prize, "credit");
+      pushNotification(user, "VIP Spin Reward!", `You won ${formatPKR(prize)} from the VIP Milestone Wheel!`, "success");
+      saveState();
+      renderAll();
+      showToast("VIP Prize Won!", `You won ${formatPKR(prize)}!`, "fa-crown");
+    }
+
+    // -----------------------------------------------------------------------
+    // 9. ARCADE GAMES: SHARED HELPERS, AVIATOR, DRAGON TIGER, ANDAR BAHAR, MINES
+    // -----------------------------------------------------------------------
+    function openGame(gameKey) {
+      const keys = ["aviator", "dragontiger", "andarbahar", "mines"];
+      keys.forEach(k => {
+        document.getElementById("gamePanel-" + k).classList.toggle("hidden", k !== gameKey);
+        const tab = document.getElementById("gameTab-" + k);
+        tab.className = k === gameKey
+          ? "game-tab-btn flex-1 min-w-[130px] py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold btn-cyan"
+          : "game-tab-btn flex-1 min-w-[130px] py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:bg-slate-800/70";
+      });
+    }
+
+    function setBetAmount(amt) {
+      const val = Math.max(10, Number(amt) || 100);
+      currentBet = val;
+      document.getElementById("customBetInput").value = val;
+      document.querySelectorAll(".current-stake-label").forEach(el => {
+        el.textContent = "Rs. " + val.toLocaleString();
+      });
+      if (minesRound.active) {
+        updateMinesPayoutUI();
+      }
+    }
+
+    function placeArcadeStake(user, stake, label) {
+      if (!user) return false;
+      if (user.balance < stake) {
+        showToast("Insufficient Balance", "Add balance in Wallet or claim a promo code.", "fa-wallet");
+        return false;
+      }
+      user.balance -= stake;
+      user.wagered = (Number(user.wagered) || 0) + stake;
+      addLedgerEntry(user, `${label} Bet`, -stake, "debit");
+      return true;
+    }
+
+    function settleArcadeWin(user, payout, label) {
+      if (!user || payout <= 0) return;
+      user.balance += payout;
+      addLedgerEntry(user, `${label} Win`, payout, "credit");
+      pushNotification(user, `${label} Win`, `You won ${formatPKR(payout)}!`, "success");
+    }
+
+    // --- AVIATOR ---
+    let aviatorState = { running: false, betPlaced: false, stake: 0, mult: 1.0, crashAt: 2.0, rafId: null };
+
+    function renderAviatorHistory() {
+      const box = document.getElementById("aviatorHistory");
+      box.innerHTML = (state.aviatorHistory || []).slice(0, 8).map(m => {
+        const high = m >= 2.0;
+        return `<span class="px-2.5 py-1 rounded-lg text-xs font-bold ${high ? "bg-emerald-500/15 text-emerald-300" : "bg-rose-500/15 text-rose-300"}">${m.toFixed(2)}x</span>`;
+      }).join("");
+    }
+
+    function aviatorPlaceBet() {
+      const user = getCurrentUser();
+      if (aviatorState.running) return;
+      if (!placeArcadeStake(user, currentBet, "Aviator")) return;
+
+      const edge = Number(state.gameSettings?.aviatorEdge) || 8;
+      // Generate crash point influenced by house edge
+      const r = Math.random();
+      const rawCrash = Math.max(1.08, (1 - edge / 100) / Math.max(0.05, 1 - r * 0.92));
+      aviatorState = {
+        running: true,
+        betPlaced: true,
+        stake: currentBet,
+        mult: 1.0,
+        crashAt: Number(Math.min(18, rawCrash).toFixed(2)),
+        rafId: null
+      };
+
+      document.getElementById("aviatorBetBtn").disabled = true;
+      document.getElementById("aviatorCashoutBtn").disabled = false;
+      document.getElementById("aviatorStatus").textContent = "Flying — Cash Out Anytime!";
+      document.getElementById("aviatorMultiplier").className = "font-display text-5xl sm:text-6xl font-bold text-cyan-400 drop-shadow";
+
+      saveState();
+      renderAll();
+
+      const startTime = performance.now();
+      function tick(now) {
+        if (!aviatorState.running) return;
+        const elapsed = (now - startTime) / 1000;
+        aviatorState.mult = Number((1 + Math.pow(elapsed * 0.72, 1.45)).toFixed(2));
+        document.getElementById("aviatorMultiplier").textContent = aviatorState.mult.toFixed(2) + "x";
+        drawAviatorCanvas(aviatorState.mult, false);
+
+        if (aviatorState.mult >= aviatorState.crashAt) {
+          aviatorCrash();
+          return;
         }
+        aviatorState.rafId = requestAnimationFrame(tick);
+      }
+      aviatorState.rafId = requestAnimationFrame(tick);
+    }
 
-        function creditSharedGameWin(payoutAmount) {
-            withdrawableBalance += Number(payoutAmount) || 0;
-            updateWalletUI();
+    function aviatorCashOut() {
+      if (!aviatorState.running || !aviatorState.betPlaced) return;
+      const user = getCurrentUser();
+      const payout = Number((aviatorState.stake * aviatorState.mult).toFixed(2));
+      aviatorState.betPlaced = false;
+      document.getElementById("aviatorCashoutBtn").disabled = true;
+      settleArcadeWin(user, payout, "Aviator");
+      saveState();
+      renderAll();
+      showToast("Cashed Out!", `Collected ${formatPKR(payout)} at ${aviatorState.mult.toFixed(2)}x!`, "fa-plane-circle-check");
+    }
+
+    function aviatorCrash() {
+      aviatorState.running = false;
+      aviatorState.betPlaced = false;
+      cancelAnimationFrame(aviatorState.rafId);
+      state.aviatorHistory.unshift(aviatorState.crashAt);
+      if (state.aviatorHistory.length > 20) state.aviatorHistory.pop();
+
+      document.getElementById("aviatorMultiplier").textContent = aviatorState.crashAt.toFixed(2) + "x";
+      document.getElementById("aviatorMultiplier").className = "font-display text-5xl sm:text-6xl font-bold text-rose-400 drop-shadow";
+      document.getElementById("aviatorStatus").textContent = "Flew Away!";
+      document.getElementById("aviatorBetBtn").disabled = false;
+      document.getElementById("aviatorCashoutBtn").disabled = true;
+      drawAviatorCanvas(aviatorState.mult, true);
+      saveState();
+      renderAll();
+    }
+
+    function drawAviatorCanvas(mult, crashed) {
+      const canvas = document.getElementById("aviatorCanvas");
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const progress = Math.min(1, (mult - 1) / 4);
+      const endX = 40 + progress * (canvas.width - 80);
+      const endY = (canvas.height - 35) - Math.pow(progress, 0.8) * (canvas.height - 90);
+
+      ctx.beginPath();
+      ctx.moveTo(30, canvas.height - 30);
+      ctx.quadraticCurveTo(30 + (endX - 30) * 0.5, canvas.height - 30, endX, endY);
+      ctx.strokeStyle = crashed ? "#f43f5e" : "#00f0ff";
+      ctx.lineWidth = 3.5;
+      ctx.stroke();
+    }
+
+    // --- 3D CARDS & LIVE TABLE BETS (DRAGON TIGER & ANDAR BAHAR) ---
+    const RANKS = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
+    const SUITS = [
+      { sym: "♠", red: false },
+      { sym: "♣", red: false },
+      { sym: "♥", red: true },
+      { sym: "♦", red: true }
+    ];
+
+    function randomCard() {
+      const rIdx = Math.floor(Math.random() * RANKS.length);
+      const s = SUITS[Math.floor(Math.random() * SUITS.length)];
+      return { rank: RANKS[rIdx], value: rIdx + 1, suit: s.sym, red: s.red };
+    }
+
+    function setCardFace(frontEl, card) {
+      frontEl.classList.toggle("red-suit", !!card.red);
+      frontEl.querySelectorAll(".dt-rank, .ab-rank").forEach(el => { el.textContent = card.rank; });
+      frontEl.querySelectorAll(".dt-suit, .ab-suit").forEach(el => { el.textContent = card.suit; });
+    }
+
+    function renderLiveTableBets(containerId) {
+      const names = ["Aamir_G", "Nadia_S", "Usman_K", "Zoya_T", "Hamza_B", "Maham_R"];
+      const sides = ["Dragon", "Tiger", "Tie"];
+      const box = document.getElementById(containerId);
+      if (!box) return;
+      const rows = Array.from({ length: 6 }, () => {
+        const who = names[Math.floor(Math.random() * names.length)];
+        const side = containerId.startsWith("ab")
+          ? (Math.random() < 0.5 ? "Andar" : "Bahar")
+          : sides[Math.floor(Math.random() * sides.length)];
+        const amt = [100, 250, 500, 1000, 1500][Math.floor(Math.random() * 5)];
+        return `<div class="flex items-center justify-between py-2 px-3 rounded-xl bg-slate-900/80 border border-slate-800/80">
+          <span class="text-slate-200 font-medium">${who} <span class="text-cyan-400">(${side})</span></span>
+          <span class="font-display font-bold text-emerald-300">Rs. ${amt}</span>
+        </div>`;
+      });
+      box.innerHTML = rows.join("");
+    }
+
+    function selectDtSide(side) {
+      dtSelectedSide = side;
+      document.querySelectorAll(".dt-pick").forEach(btn => {
+        btn.className = "dt-pick py-3.5 px-2 rounded-2xl bg-slate-800/80 border-2 border-transparent text-slate-200 font-bold text-xs sm:text-sm";
+      });
+      const active = document.getElementById("dtPick-" + side);
+      if (active) active.className = "dt-pick py-3.5 px-2 rounded-2xl bg-cyan-500/20 border-2 border-cyan-400 text-white font-bold text-xs sm:text-sm";
+    }
+
+    function playDragonTiger() {
+      const user = getCurrentUser();
+      if (!placeArcadeStake(user, currentBet, "Dragon Tiger")) return;
+
+      const dCardEl = document.getElementById("dtDragonCard");
+      const tCardEl = document.getElementById("dtTigerCard");
+      dCardEl.classList.remove("is-flipped");
+      tCardEl.classList.remove("is-flipped");
+
+      const winBias = (Number(state.gameSettings?.dtWinRate) || 44) / 100;
+      let dragonCard = randomCard();
+      let tigerCard = randomCard();
+
+      // Nudge cards toward or away from selected side based on admin win rate
+      if (dtSelectedSide === "dragon" && Math.random() < winBias && dragonCard.value <= tigerCard.value) {
+        dragonCard = { ...dragonCard, rank: "K", value: 13 };
+        tigerCard = { ...tigerCard, rank: "6", value: 6 };
+      } else if (dtSelectedSide === "tiger" && Math.random() < winBias && tigerCard.value <= dragonCard.value) {
+        tigerCard = { ...tigerCard, rank: "A", value: 14 };
+        dragonCard = { ...dragonCard, rank: "7", value: 7 };
+      }
+
+      setCardFace(document.getElementById("dtDragonFront"), dragonCard);
+      setCardFace(document.getElementById("dtTigerFront"), tigerCard);
+
+      setTimeout(() => dCardEl.classList.add("is-flipped"), 140);
+      setTimeout(() => tCardEl.classList.add("is-flipped"), 340);
+
+      setTimeout(() => {
+        let winner = "tie";
+        if (dragonCard.value > tigerCard.value) winner = "dragon";
+        else if (tigerCard.value > dragonCard.value) winner = "tiger";
+
+        const outcomeEl = document.getElementById("dtOutcomeText");
+        if (winner === dtSelectedSide) {
+          const mult = winner === "tie" ? 8.0 : 1.95;
+          const payout = Number((currentBet * mult).toFixed(2));
+          outcomeEl.textContent = `${winner.toUpperCase()} Wins! +${formatPKR(payout)}`;
+          settleArcadeWin(user, payout, "Dragon Tiger");
+          showToast("Dragon Tiger Win!", `Won ${formatPKR(payout)}!`, "fa-dragon");
+        } else {
+          outcomeEl.textContent = `Winner: ${winner.toUpperCase()}`;
+          showToast("Round Complete", `${winner.toUpperCase()} took the round.`, "fa-circle-info");
         }
+        renderLiveTableBets("dtLiveBets");
+        saveState();
+        renderAll();
+      }, 720);
+    }
 
-        function updateWalletUI() {
-            const total = getTotalPlayableBalance();
-            document.getElementById("assetDisplay").innerText = total.toFixed(2);
-            document.getElementById("withdrawableBalanceDisplay").innerText = withdrawableBalance.toFixed(2);
-            document.getElementById("bonusBalanceDisplay").innerText = bonusBalance.toFixed(2);
-            document.getElementById("hubSharedBalanceLbl").innerText = total.toFixed(2);
+    function selectAbSide(side) {
+      abSelectedSide = side;
+      document.querySelectorAll(".ab-pick").forEach(btn => {
+        btn.className = "ab-pick py-3.5 rounded-2xl bg-slate-800/80 border-2 border-transparent text-slate-200 font-bold text-sm";
+      });
+      const active = document.getElementById("abPick-" + side);
+      if (active) active.className = "ab-pick py-3.5 rounded-2xl bg-cyan-500/20 border-2 border-cyan-400 text-white font-bold text-sm";
+    }
+
+    function playAndarBahar() {
+      const user = getCurrentUser();
+      if (!placeArcadeStake(user, currentBet, "Andar Bahar")) return;
+
+      const jokerCard = randomCard();
+      const jokerEl = document.getElementById("abJokerCard");
+      const andarLane = document.getElementById("abAndarLane");
+      const baharLane = document.getElementById("abBaharLane");
+      jokerEl.classList.remove("is-flipped");
+      andarLane.innerHTML = "";
+      baharLane.innerHTML = "";
+
+      setCardFace(document.getElementById("abJokerFront"), jokerCard);
+      setTimeout(() => jokerEl.classList.add("is-flipped"), 140);
+
+      const winBias = (Number(state.gameSettings?.abWinRate) || 45) / 100;
+      const winningSide = Math.random() < winBias ? abSelectedSide : (abSelectedSide === "andar" ? "bahar" : "andar");
+
+      // Deal a few non-matching cards then land on winningSide
+      const steps = [
+        { side: "andar", card: randomCard() },
+        { side: "bahar", card: randomCard() },
+        { side: winningSide, card: { ...jokerCard, suit: jokerCard.red ? "♠" : "♥", red: !jokerCard.red } }
+      ];
+
+      steps.forEach((step, i) => {
+        setTimeout(() => {
+          const chip = document.createElement("span");
+          chip.className = `px-2.5 py-1 rounded-lg text-xs font-bold bg-white ${step.card.red ? "text-rose-600" : "text-slate-900"} shadow`;
+          chip.textContent = `${step.card.rank}${step.card.suit}`;
+          if (step.side === "andar") andarLane.appendChild(chip);
+          else baharLane.appendChild(chip);
+        }, 420 + i * 320);
+      });
+
+      setTimeout(() => {
+        const outcomeEl = document.getElementById("abOutcomeText");
+        if (winningSide === abSelectedSide) {
+          const mult = winningSide === "bahar" ? 1.95 : 1.90;
+          const payout = Number((currentBet * mult).toFixed(2));
+          outcomeEl.textContent = `Matched on ${winningSide.toUpperCase()}! +${formatPKR(payout)}`;
+          settleArcadeWin(user, payout, "Andar Bahar");
+          showToast("Andar Bahar Win!", `Won ${formatPKR(payout)}!`, "fa-trophy");
+        } else {
+          outcomeEl.textContent = `Matched on ${winningSide.toUpperCase()}`;
+          showToast("Round Complete", `Matched on ${winningSide.toUpperCase()}.`, "fa-circle-info");
         }
+        renderLiveTableBets("abLiveBets");
+        saveState();
+        renderAll();
+      }, 1480);
+    }
 
-        window.toggleAppColorTheme = function() {
-            const html = document.documentElement;
-            html.setAttribute("data-theme", html.getAttribute("data-theme") === "dark" ? "light" : "dark");
-        };
+    // --- 5x5 MINES ---
+    let minesRound = {
+      active: false,
+      stake: 0,
+      mineCount: 3,
+      minePositions: new Set(),
+      revealed: new Set(),
+      multiplier: 1.0
+    };
 
-        window.routeToView = function(pageId, navId) {
-            document.querySelectorAll
+    function resetMinesPreview() {
+      minesRound.active = false;
+      minesRound.revealed.clear();
+      minesRound.multiplier = 1.0;
+      document.getElementById("minesStartBtn").disabled = false;
+      document.getElementById("minesCashoutBtn").disabled = true;
+      updateMinesPayoutUI();
+
+      const grid = document.getElementById("minesGrid");
+      grid.innerHTML = Array.from({ length: 25 }, (_, i) => `
+        <button onclick="clickMineTile(${i})" class="mine-tile aspect-square rounded-2xl bg-slate-900/90 border border-slate-700/80 hover:border-cyan-400/50 flex items-center justify-center text-lg font-bold text-slate-500 transition">
+          <i class="fa-solid fa-diamond text-xs opacity-35"></i>
+        </button>
+      `).join("");
+    }
+
+    function startMinesRound() {
+      const user = getCurrentUser();
+      const count = Number(document.getElementById("minesCountSelect").value) || 3;
+      if (!placeArcadeStake(user, currentBet, `Mines (${count})`)) return;
+
+      const mines = new Set();
+      while (mines.size < count) {
+        mines.add(Math.floor(Math.random() * 25));
+      }
+
+      minesRound = {
+        active: true,
+        stake: currentBet,
+        mineCount: count,
+        minePositions: mines,
+        revealed: new Set(),
+        multiplier: 1.0
+      };
+
+      document.getElementById("minesStartBtn").disabled = true;
+      document.getElementById("minesCashoutBtn").disabled = false;
+      resetMinesTilesVisual();
+      updateMinesPayoutUI();
+      saveState();
+      renderAll();
+    }
+
+    function resetMinesTilesVisual() {
+      document.querySelectorAll(".mine-tile").forEach(btn => {
+        btn.disabled = false;
+        btn.className = "mine-tile aspect-square rounded-2xl bg-slate-900/90 border border-slate-700/80 hover:border-cyan-400/50 flex items-center justify-center text-lg font-bold text-slate-400 transition";
+        btn.innerHTML = '<i class="fa-solid fa-diamond text-xs opacity-40"></i>';
+      });
+    }
+
+    function clickMineTile(idx) {
+      if (!minesRound.active || minesRound.revealed.has(idx)) return;
+      const tiles = document.querySelectorAll(".mine-tile");
+      const tile = tiles[idx];
+
+      if (minesRound.minePositions.has(idx)) {
+        // Hit a mine
+        minesRound.active = false;
+        tile.className = "mine-tile aspect-square rounded-2xl bg-rose-500/25 border-2 border-rose-500 flex items-center justify-center text-rose-400 text-xl";
+        tile.innerHTML = '<i class="fa-solid fa-bomb"></i>';
+        document.getElementById("minesStartBtn").disabled = false;
+        document.getElementById("minesCashoutBtn").disabled = true;
+        showToast("Boom! Mine Hit", "Round ended. Better luck on the next grid!", "fa-bomb");
+        return;
+      }
+
+      minesRound.revealed.add(idx);
+      const edge = Number(state.gameSettings?.minesEdge) || 6;
+      const safeCount = minesRound.revealed.size;
+      const riskFactor = 1 + (minesRound.mineCount / 22) * safeCount * 0.42;
+      minesRound.multiplier = Number((riskFactor * (1 - edge / 100)).toFixed(2));
+
+      tile.disabled = true;
+      tile.className = "mine-tile aspect-square rounded-2xl bg-emerald-500/20 border-2 border-emerald-400 flex items-center justify-center text-emerald-300 text-xl";
+      tile.innerHTML = '<i class="fa-solid fa-gem"></i>';
+      updateMinesPayoutUI();
+    }
+
+    function updateMinesPayoutUI() {
+      const payout = minesRound.active ? Number((minesRound.stake * minesRound.multiplier).toFixed(2)) : 0;
+      document.getElementById("minesMultiplierDisplay").textContent = minesRound.multiplier.toFixed(2) + "x";
+      document.getElementById("minesPayoutDisplay").textContent = formatPKR(payout);
+      document.getElementById("minesGemsCount").textContent = String(minesRound.revealed.size);
+    }
+
+    function cashoutMinesRound() {
+      if (!minesRound.active || minesRound.revealed.size === 0) return;
+      const user = getCurrentUser();
+      const payout = Number((minesRound.stake * minesRound.multiplier).toFixed(2));
+      minesRound.active = false;
+      document.getElementById("minesStartBtn").disabled = false;
+      document.getElementById("minesCashoutBtn").disabled = true;
+      settleArcadeWin(user, payout, "5x5 Mines");
+      saveState();
+      renderAll();
+      showToast("Mines Cashed Out!", `Collected ${formatPKR(payout)} at ${minesRound.multiplier.toFixed(2)}x!`, "fa-gem");
+    }
+
+    // -----------------------------------------------------------------------
+    // 10. INFO HUB TABS & ADMIN ACTIONS
+    // -----------------------------------------------------------------------
+    function switchInfoTab(tabName) {
+      ["overview", "rules", "privacy", "faq"].forEach(t => {
+        document.getElementById("infoContent-" + t).classList.toggle("hidden", t !== tabName);
+        const btn = document.getElementById("infoTab-" + t);
+        btn.className = t === tabName
+          ? "info-tab px-4 py-2 rounded-xl text-xs font-bold btn-cyan"
+          : "info-tab px-4 py-2 rounded-xl text-xs font-bold bg-slate-800 text-slate-300";
+      });
+    }
+
+    function syncAdminInputs() {
+      const gs = state.gameSettings || {};
+      document.getElementById("adminAviatorEdge").value = gs.aviatorEdge ?? 8;
+      document.getElementById("adminDtWinRate").value = gs.dtWinRate ?? 44;
+      document.getElementById("adminAbWinRate").value = gs.abWinRate ?? 45;
+      document.getElementById("adminMinesEdge").value = gs.minesEdge ?? 6;
+      if (state.broadcast?.message) {
+        document.getElementById("adminBroadcastInput").value = state.broadcast.message;
+      }
+    }
+
+    function saveAdminGameSettings() {
+      state.gameSettings = {
+        aviatorEdge: Number(document.getElementById("adminAviatorEdge").value) || 8,
+        dtWinRate: Number(document.getElementById("adminDtWinRate").value) || 44,
+        abWinRate: Number(document.getElementById("adminAbWinRate").value) || 45,
+        minesEdge: Number(document.getElementById("adminMinesEdge").value) || 6
+      };
+      saveState();
+      showToast("Settings Saved", "Arcade house-edge & win settings updated.", "fa-sliders");
+    }
+
+    function createAdminPromoCode() {
+      const code = document.getElementById("newPromoCode").value.trim().toUpperCase();
+      const amount = Number(document.getElementById("newPromoAmount").value);
+      const maxRedemptions = Number(document.getElementById("newPromoMaxUsers").value) || 500;
+      if (!code || !amount || amount <= 0) {
+        showToast("Missing Fields", "Enter a code and positive reward amount.", "fa-circle-exclamation");
+        return;
+      }
+      state.promoCodes[code] = {
+        code,
+        amount,
+        maxRedemptions,
+        redeemedBy: state.promoCodes[code]?.redeemedBy || {}
+      };
+      document.getElementById("newPromoCode").value = "";
+      document.getElementById("newPromoAmount").value = "";
+      saveState();
+      renderAdminQueues();
+      showToast("Promo Created", `Code ${code} (${formatPKR(amount)}) is live.`, "fa-ticket");
+    }
+
+    function publishBroadcast() {
+      const msg = document.getElementById("adminBroadcastInput").value.trim();
+      if (!msg) return;
+      state.broadcast = { active: true, message: msg };
+      saveState();
+      renderAll();
+      showToast("Broadcast Live", "Banner published to users.", "fa-bullhorn");
+    }
+
+    function clearBroadcast() {
+      state.broadcast = { active: false, message: "" };
+      document.getElementById("adminBroadcastInput").value = "";
+      saveState();
+      renderAll();
+    }
+
+    function renderAdminQueues() {
+      const promoBox = document.getElementById("adminPromoList");
+      const codes = Object.values(state.promoCodes || {});
+      promoBox.innerHTML = codes.map(p => {
+        const used = Object.keys(p.redeemedBy || {}).length;
+        return `<div class="flex items-center justify-between px-3 py-2 rounded-xl bg-slate-900/90 border border-slate-800">
+          <span class="font-bold text-cyan-300">${escapeHtml(p.code)}</span>
+          <span class="text-slate-300">${formatPKR(p.amount)} • ${used}/${p.maxRedemptions || "∞"} claimed</span>
+        </div>`;
+      }).join("");
+
+      const queueBox = document.getElementById("adminWalletQueue");
+      const pending = state.walletRequests.filter(r => r.status === "pending");
+      if (pending.length === 0) {
+        queueBox.innerHTML = '<p class="text-slate-400">No pending requests.</p>';
+        return;
+      }
+      queueBox.innerHTML = pending.map(r => `
+        <div class="rounded-xl bg-slate-900/90 border border-slate-800 p-3.5 flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <span class="font-bold uppercase text-white">${r.type}</span> • <span class="text-emerald-300 font-bold">${formatPKR(r.amount)}</span>
+            <div class="text-[11px] text-slate-400">${escapeHtml(r.userName)} (${escapeHtml(r.userEmail)}) • ${r.method}</div>
+          </div>
+          <div class="flex gap-2">
+            <button onclick="resolveWalletRequest('${r.id}', 'approved')" class="px-3 py-1.5 rounded-lg bg-emerald-500 text-slate-950 font-bold">Approve</button>
+            <button onclick="resolveWalletRequest('${r.id}', 'rejected')" class="px-3 py-1.5 rounded-lg bg-rose-500/20 text-rose-300 font-bold">Reject</button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function resolveWalletRequest(reqId, decision) {
+      const req = state.walletRequests.find(r => r.id === reqId);
+      if (!req || req.status !== "pending") return;
+      req.status = decision;
+      const targetUser = state.users[req.uid];
+
+      if (targetUser) {
+        if (req.type === "deposit" && decision === "approved") {
+          targetUser.balance += req.amount;
+          addLedgerEntry(targetUser, `Approved Deposit (${req.method})`, req.amount, "credit");
+          pushNotification(targetUser, "Deposit Approved", `${formatPKR(req.amount)} added to your wallet.`, "success");
+        } else if (req.type === "withdraw" && decision === "rejected") {
+          targetUser.balance += req.amount; // Refund reserved balance
+          addLedgerEntry(targetUser, `Refunded Rejected Withdrawal`, req.amount, "credit");
+          pushNotification(targetUser, "Withdrawal Refunded", `${formatPKR(req.amount)} returned to your wallet.`, "warning");
+        } else {
+          pushNotification(targetUser, `Request ${decision.toUpperCase()}`, `Your ${req.type} of ${formatPKR(req.amount)} was ${decision}.`, "info");
+        }
+      }
+
+      saveState();
+      renderAll();
+      showToast("Request Updated", `Marked as ${decision}.`, "fa-check-double");
+    }
+
+    function escapeHtml(str) {
+      return String(str || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    // Boot session if already signed in
+    if (state.sessionUser && state.users[state.sessionUser.uid]) {
+      enterApp();
+    }
+  </script>
+</body>
+</html>
