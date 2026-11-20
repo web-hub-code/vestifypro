@@ -1,323 +1,1185 @@
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VESTIFY PRO | Cloud Mining &amp; Live Casino Hub</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vestify Pro — Ultra Modern Platform</title>
+  <style>
+    :root {
+      --bg: #070b14;
+      --surface: rgba(17, 24, 39, 0.78);
+      --surface-2: rgba(30, 41, 59, 0.72);
+      --border: rgba(148, 163, 184, 0.16);
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-2: #818cf8;
+      --success: #10b981;
+      --danger: #f43f5e;
+      --warn: #f59e0b;
+      --radius: 18px;
+      --shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+    }
 
-    <style>
-        :root {
-            --bg-body: #050d1a;
-            --bg-header: rgba(8, 19, 38, 0.9);
-            --bg-card: rgba(13, 28, 54, 0.78);
-            --bg-card-solid: #0b182e;
-            --bg-sub: rgba(7, 17, 34, 0.85);
-            --text-main: #f1f5f9;
-            --text-muted: #94a3b8;
-            --border-color: rgba(56, 189, 248, 0.18);
-            --sky-primary: #0ea5e9;
-            --sky-bright: #38bdf8;
-            --sky-glow: rgba(14, 165, 233, 0.35);
-            --glow-1: rgba(14, 165, 233, 0.14);
-            --glow-2: rgba(2, 132, 199, 0.12);
-        }
+    body[data-theme="emerald"] {
+      --bg: #05110e;
+      --surface: rgba(11, 31, 26, 0.8);
+      --surface-2: rgba(17, 49, 41, 0.75);
+      --accent: #10b981;
+      --accent-2: #34d399;
+    }
 
-        [data-theme="light"] {
-            --bg-body: #eef7ff;
-            --bg-header: rgba(255, 255, 255, 0.92);
-            --bg-card: rgba(255, 255, 255, 0.92);
-            --bg-card-solid: #ffffff;
-            --bg-sub: #e0f2fe;
-            --text-main: #0c2340;
-            --text-muted: #476282;
-            --border-color: rgba(14, 165, 233, 0.25);
-            --sky-primary: #0284c7;
-            --sky-bright: #0ea5e9;
-            --sky-glow: rgba(2, 132, 199, 0.25);
-            --glow-1: rgba(14, 165, 233, 0.12);
-            --glow-2: rgba(56, 189, 248, 0.12);
-        }
+    body[data-theme="cyber"] {
+      --bg: #090614;
+      --surface: rgba(21, 14, 42, 0.82);
+      --surface-2: rgba(36, 23, 70, 0.75);
+      --accent: #e879f9;
+      --accent-2: #22d3ee;
+    }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
+    body[data-theme="light"] {
+      --bg: #f1f5f9;
+      --surface: rgba(255, 255, 255, 0.86);
+      --surface-2: rgba(241, 245, 249, 0.9);
+      --border: rgba(15, 23, 42, 0.12);
+      --text: #0f172a;
+      --muted: #475569;
+      --accent: #0284c7;
+      --accent-2: #4f46e5;
+      --shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+    }
 
-        body {
-            background-color: var(--bg-body);
-            color: var(--text-main);
-            min-height: 100vh;
-            padding-bottom: 100px;
-            overflow-x: hidden;
-            position: relative;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Inter, system-ui, -apple-system, sans-serif; }
 
-        .bg-glow-1 { position: fixed; top: -150px; left: -150px; width: 380px; height: 380px; background: radial-gradient(circle, var(--glow-1), transparent 70%); pointer-events: none; z-index: 0; }
-        .bg-glow-2 { position: fixed; bottom: -150px; right: -150px; width: 420px; height: 420px; background: radial-gradient(circle, var(--glow-2), transparent 70%); pointer-events: none; z-index: 0; }
+    body {
+      background:
+        radial-gradient(circle at 12% 10%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 36%),
+        radial-gradient(circle at 88% 18%, color-mix(in srgb, var(--accent-2) 20%, transparent), transparent 40%),
+        var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding-bottom: 88px;
+      transition: background 0.3s ease, color 0.25s ease;
+    }
 
-        .vestify-header { background: var(--bg-header); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border-color); padding: 12px 16px; position: sticky; top: 0; z-index: 90; }
-        .brand-row { display: flex; justify-content: space-between; align-items: center; }
-        .logo-block { display: flex; align-items: center; gap: 10px; cursor: pointer; }
-        .logo-icon { width: 38px; height: 38px; background: linear-gradient(135deg, #38bdf8, #0284c7); border-radius: 11px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 18px var(--sky-glow); color: #ffffff; font-size: 18px; }
-        .logo-text h1 { font-size: 18px; font-weight: 800; letter-spacing: 0.4px; color: var(--text-main); }
+    .container { max-width: 1280px; margin: 0 auto; padding: 18px; }
 
-        .icon-action-btn {
-            position: relative;
-            background: var(--bg-sub);
-            border: 1px solid var(--border-color);
-            color: var(--sky-bright);
-            width: 34px;
-            height: 34px;
-            border-radius: 10px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 14px;
-            transition: transform 0.15s ease;
-        }
-        .icon-action-btn:active { transform: scale(0.94); }
+    /* Broadcast Banner */
+    .broadcast-bar {
+      background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 24%, transparent), color-mix(in srgb, var(--accent-2) 24%, transparent));
+      border: 1px solid var(--border);
+      backdrop-filter: blur(14px);
+      border-radius: 14px;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+      font-size: 0.9rem;
+    }
 
-        .notif-badge-dot {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            min-width: 17px;
-            height: 17px;
-            border-radius: 99px;
-            background: #ef4444;
-            color: #fff;
-            font-size: 9px;
-            font-weight: 800;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0 4px;
-            box-shadow: 0 2px 8px rgba(239, 68, 68, 0.5);
-        }
+    /* Topbar */
+    .topbar {
+      position: sticky;
+      top: 10px;
+      z-index: 40;
+      background: var(--surface);
+      backdrop-filter: blur(18px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 18px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      box-shadow: var(--shadow);
+      margin-bottom: 18px;
+    }
 
-        .notif-drawer {
-            position: fixed;
-            top: 64px;
-            right: 12px;
-            width: 320px;
-            max-width: calc(100vw - 24px);
-            background: var(--bg-card-solid);
-            border: 1px solid var(--border-color);
-            border-radius: 18px;
-            box-shadow: 0 18px 42px rgba(0, 0, 0, 0.55);
-            z-index: 9998;
-            display: none;
-            overflow: hidden;
-        }
-        .notif-drawer.open { display: block; }
-        .notif-drawer-header {
-            padding: 12px 14px;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 12px;
-            font-weight: 800;
-        }
-        .notif-list-scroll { max-height: 290px; overflow-y: auto; padding: 8px; display: flex; flex-direction: column; gap: 6px; }
-        .notif-item-card {
-            background: var(--bg-sub);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 9px 11px;
-            font-size: 11px;
-            cursor: pointer;
-            transition: opacity 0.2s;
-        }
-        .notif-item-card.unread { border-left: 3px solid var(--sky-primary); }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.15rem; letter-spacing: -0.02em; }
+    .brand-badge {
+      width: 36px; height: 36px; border-radius: 12px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      display: grid; place-items: center; color: #fff; font-weight: 900;
+    }
 
-        .live-social-ticker { background: rgba(14, 165, 233, 0.08); border-bottom: 1px solid var(--border-color); padding: 6px 16px; font-size: 11px; color: var(--sky-bright); font-weight: 600; display: flex; align-items: center; gap: 8px; overflow: hidden; }
-        .broadcast-ticker-banner { background: linear-gradient(90deg, rgba(14, 165, 233, 0.16), rgba(56, 189, 248, 0.08)); border-bottom: 1px solid var(--border-color); padding: 9px 16px; display: flex; align-items: center; gap: 10px; }
+    .toolbar-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
 
-        .stats-dashboard { margin: 16px; background: var(--bg-card); backdrop-filter: blur(14px); border: 1px solid var(--border-color); border-radius: 22px; padding: 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); position: relative; overflow: hidden; }
-        .live-tag { background: rgba(14, 165, 233, 0.14); color: var(--sky-bright); border: 1px solid var(--border-color); font-size: 10px; padding: 3px 9px; border-radius: 20px; font-weight: 700; display: inline-flex; align-items: center; gap: 5px; }
+    .btn, select, input, textarea {
+      background: var(--surface-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 9px 13px;
+      font-size: 0.88rem;
+      outline: none;
+      transition: transform 0.14s ease, border-color 0.2s ease, background 0.2s ease;
+    }
 
-        .profile-header-box { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; margin-top: 8px; }
-        .profile-avatar-container { position: relative; width: 52px; height: 52px; cursor: pointer; }
-        .profile-avatar-img { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; border: 2px solid var(--sky-primary); box-shadow: 0 0 15px var(--sky-glow); }
-        .profile-avatar-upload-icon { position: absolute; bottom: -2px; right: -2px; background: var(--sky-primary); color: #fff; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; }
+    .btn { cursor: pointer; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
+    .btn:hover { transform: translateY(-1px); border-color: var(--accent); }
+    .btn:active { transform: scale(0.98); }
+    .btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #fff; border: none; }
+    .btn-success { background: rgba(16, 185, 129, 0.18); border-color: rgba(16, 185, 129, 0.45); color: #34d399; }
+    .btn-danger { background: rgba(244, 63, 94, 0.18); border-color: rgba(244, 63, 94, 0.45); color: #fb7185; }
+    .btn-sm { padding: 6px 10px; font-size: 0.8rem; border-radius: 9px; }
 
-        .wallet-split-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
-        .wallet-sub-box { background: var(--bg-sub); border: 1px solid var(--border-color); border-radius: 14px; padding: 10px; text-align: left; }
+    /* Bento Grid */
+    .bento { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; margin-bottom: 18px; }
+    .card {
+      background: var(--surface);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+    .col-12 { grid-column: span 12; }
+    .col-8 { grid-column: span 8; }
+    .col-6 { grid-column: span 6; }
+    .col-4 { grid-column: span 4; }
+    .col-3 { grid-column: span 3; }
 
-        .quick-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 0 16px 18px 16px; }
-        .action-btn { background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-main); padding: 12px 6px; border-radius: 16px; font-size: 11px; font-weight: 700; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 5px; transition: all 0.2s ease; }
-        .action-btn:active { transform: scale(0.95); }
-        .action-btn i { font-size: 17px; }
-        .btn-deposit i { color: #0ea5e9; }
-        .btn-withdraw i { color: #38bdf8; }
-        .btn-transfer i { color: #0284c7; }
+    @media (max-width: 960px) {
+      .col-8, .col-6, .col-4, .col-3 { grid-column: span 12; }
+    }
 
-        .plan-tabs-row { display: flex; gap: 8px; margin: 0 16px 14px 16px; }
-        .plan-tab-trigger { flex: 1; background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-muted); padding: 9px; border-radius: 12px; font-size: 11px; font-weight: 700; text-align: center; cursor: pointer; transition: all 0.2s ease; }
-        .plan-tab-trigger.active-tab { background: linear-gradient(135deg, #0ea5e9, #0284c7); color: #ffffff; border-color: #38bdf8; box-shadow: 0 4px 14px var(--sky-glow); }
+    .kpi-label { color: var(--muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em; }
+    .kpi-val { font-size: 1.65rem; font-weight: 800; margin-top: 6px; }
+    .kpi-sub { font-size: 0.8rem; color: var(--success); margin-top: 4px; }
 
-        .plans-grid { display: none; grid-template-columns: 1fr; gap: 12px; margin: 0 16px 24px 16px; }
-        .plans-grid.active-grid { display: grid; }
+    .section-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .muted { color: var(--muted); font-size: 0.86rem; }
 
-        .plan-card { background: var(--bg-card); backdrop-filter: blur(12px); border: 1px solid var(--border-color); border-radius: 18px; padding: 14px; display: flex; align-items: center; justify-content: space-between; transition: transform 0.2s; }
-        .plan-node-img { width: 48px; height: 48px; border-radius: 12px; object-fit: cover; margin-right: 12px; border: 1px solid var(--border-color); }
-        .plan-details { flex: 1; }
-        .plan-details h4 { font-size: 13.5px; font-weight: 700; color: var(--text-main); margin-bottom: 3px; }
-        .plan-details p { font-size: 11px; color: var(--text-muted); }
-        .plan-details span { color: var(--sky-bright); font-weight: 700; }
+    /* Tabs */
+    .page { display: none; animation: fadeIn 0.22s ease; }
+    .page.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 
-        .buy-plan-btn { background: linear-gradient(135deg, #0ea5e9, #0284c7); color: #ffffff; border: none; padding: 9px 14px; border-radius: 11px; font-size: 11.5px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 14px var(--sky-glow); transition: transform 0.15s; }
-        .buy-plan-btn:active { transform: scale(0.94); }
-        .buy-plan-btn:disabled { opacity: 0.45; cursor: not-allowed; box-shadow: none; }
+    .bottom-nav {
+      position: fixed;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 45;
+      background: var(--surface);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 6px;
+      display: flex;
+      gap: 4px;
+      box-shadow: var(--shadow);
+      max-width: 96vw;
+      overflow-x: auto;
+    }
 
-        .salary-bar-container { width: 100%; height: 8px; background: var(--bg-sub); border-radius: 10px; overflow: hidden; margin-top: 8px; }
-        .salary-bar-fill { height: 100%; background: linear-gradient(90deg, #0ea5e9, #38bdf8); width: 0%; transition: width 0.5s ease; }
+    .nav-item {
+      border: none; background: transparent; color: var(--muted);
+      padding: 9px 14px; border-radius: 14px; cursor: pointer;
+      font-weight: 600; font-size: 0.84rem; white-space: nowrap;
+    }
+    .nav-item.active { background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #fff; }
 
-        .spin-box-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; padding: 18px; text-align: center; margin-bottom: 24px; }
-        .wheel-outer { width: 120px; height: 120px; border-radius: 50%; border: 4px solid var(--sky-primary); margin: 14px auto; display: flex; align-items: center; justify-content: center; background: var(--bg-sub); box-shadow: 0 0 25px var(--sky-glow); transition: transform 3s cubic-bezier(0.17, 0.67, 0.12, 0.99); font-weight: 800; }
+    /* Grid Helpers */
+    .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    @media (max-width: 720px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
 
-        .history-card { background: var(--bg-card); border: 1px solid var(--border-color); padding: 13px; border-radius: 14px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
-        .info-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 16px; margin-bottom: 14px; font-size: 12px; line-height: 1.6; }
-        .info-card h4 { color: var(--sky-bright); margin-bottom: 8px; font-size: 14px; }
+    .game-box {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+    }
 
-        .info-photo-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
-        .info-photo-strip img { width: 100%; height: 66px; object-fit: cover; border-radius: 10px; border: 1px solid var(--border-color); }
+    .mines-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin: 12px 0;
+    }
+    .mine-cell {
+      aspect-ratio: 1;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    .mine-cell.safe { background: rgba(16, 185, 129, 0.25); border-color: #10b981; color: #34d399; }
+    .mine-cell.boom { background: rgba(244, 63, 94, 0.3); border-color: #f43f5e; color: #fb7185; }
 
-        .app-view-page { display: none; padding: 0 16px; }
-        .app-view-page.active-page { display: block; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--border); }
+    th { color: var(--muted); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; }
 
-        /* LONG SCROLLABLE AUTHENTICATION SCREEN */
-        #authScreen {
-            position: fixed;
-            inset: 0;
-            background: var(--bg-body);
-            z-index: 99999;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            padding: 20px 16px 60px 16px;
-            overflow-y: auto;
-        }
-        .auth-live-payout-strip {
-            width: 100%;
-            max-width: 440px;
-            background: rgba(14, 165, 233, 0.12);
-            border: 1px solid rgba(56, 189, 248, 0.3);
-            border-radius: 99px;
-            padding: 6px 12px;
-            font-size: 10.5px;
-            font-weight: 700;
-            color: #38bdf8;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 12px;
-        }
-        .pulse-dot { width: 7px; height: 7px; border-radius: 50%; background: #10b981; box-shadow: 0 0 8px #10b981; flex-shrink: 0; }
+    .pill {
+      display: inline-block; padding: 3px 9px; border-radius: 999px;
+      font-size: 0.74rem; font-weight: 700;
+      background: rgba(56, 189, 248, 0.15); color: var(--accent);
+    }
+    .pill-ok { background: rgba(16, 185, 129, 0.16); color: #34d399; }
+    .pill-warn { background: rgba(245, 158, 11, 0.18); color: #fbbf24; }
+    .pill-bad { background: rgba(244, 63, 94, 0.18); color: #fb7185; }
 
-        .auth-container {
-            background: rgba(11, 24, 46, 0.95);
-            border: 1px solid rgba(56, 189, 248, 0.25);
-            border-radius: 24px;
-            padding: 20px;
-            width: 100%;
-            max-width: 440px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.55);
-            color: #f1f5f9;
-        }
-        .auth-hero-banner {
-            position: relative;
-            width: 100%;
-            height: 145px;
-            border-radius: 16px;
-            overflow: hidden;
-            margin-bottom: 12px;
-            border: 1px solid rgba(56, 189, 248, 0.3);
-        }
-        .auth-hero-banner img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.62); }
-        .auth-hero-caption { position: absolute; inset: 0; padding: 14px; display: flex; flex-direction: column; justify-content: flex-end; background: linear-gradient(180deg, transparent, rgba(5, 13, 26, 0.92)); text-align: left; }
+    /* Modal */
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(6px); display: none; place-items: center; z-index: 70; padding: 16px;
+    }
+    .modal-backdrop.open { display: grid; }
+    .modal-card { width: 100%; max-width: 540px; max-height: 86vh; overflow-y: auto; }
 
-        .auth-stats-bar {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            background: rgba(7, 17, 34, 0.85);
-            border: 1px solid rgba(56, 189, 248, 0.2);
-            border-radius: 14px;
-            padding: 10px 8px;
-            margin-bottom: 14px;
-            text-align: center;
-        }
-        .auth-stat-item b { font-size: 13px; color: #38bdf8; display: block; }
-        .auth-stat-item span { font-size: 9.5px; color: #94a3b8; }
+    .toast-wrap { position: fixed; top: 76px; right: 18px; z-index: 90; display: flex; flex-direction: column; gap: 8px; }
+    .toast {
+      background: var(--surface); border: 1px solid var(--border); backdrop-filter: blur(14px);
+      padding: 11px 15px; border-radius: 13px; box-shadow: var(--shadow); font-size: 0.86rem;
+    }
+  </style>
+</head>
+<body data-theme="dark">
+  <div class="toast-wrap" id="toastWrap"></div>
 
-        .auth-showcase-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: 16px;
-            text-align: left;
-        }
-        .auth-showcase-card {
-            background: rgba(7, 17, 34, 0.85);
-            border: 1px solid rgba(56, 189, 248, 0.2);
-            border-radius: 14px;
-            overflow: hidden;
-        }
-        .auth-showcase-card img { width: 100%; height: 82px; object-fit: cover; display: block; }
-        .auth-showcase-card div { padding: 8px; }
-        .auth-showcase-card b { font-size: 11px; color: #f1f5f9; display: block; }
-        .auth-showcase-card span { font-size: 9.5px; color: #94a3b8; line-height: 1.3; display: block; margin-top: 2px; }
+  <div class="container">
+    <!-- Broadcast Banner -->
+    <div class="broadcast-bar" id="broadcastBar">
+      <div id="broadcastText">🚀 <strong>Vestify Pro Ultra</strong> is live — Dual Wallets, 4 Instant Games, ROI Simulator & Full Admin Control Center!</div>
+      <button class="btn btn-sm" onclick="dismissBroadcast()">Dismiss</button>
+    </div>
 
-        .auth-trust-section {
-            margin-top: 16px;
-            background: rgba(14, 165, 233, 0.08);
-            border: 1px solid rgba(56, 189, 248, 0.25);
-            border-radius: 16px;
-            padding: 12px;
-            text-align: left;
-        }
-        .auth-trust-row { display: flex; align-items: flex-start; gap: 8px; font-size: 10.5px; color: #cbd5e1; margin-top: 7px; line-height: 1.4; }
+    <!-- Top Navigation -->
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-badge">VP</div>
+        <div>
+          <div>Vestify Pro <span class="pill">ULTRA</span></div>
+          <div class="muted" style="font-size:0.74rem;" id="streakLabel">🔥 5-Day Streak • VIP Tier II</div>
+        </div>
+      </div>
 
-        .auth-tabs { display: flex; gap: 10px; margin-bottom: 15px; }
-        .auth-tab-btn { flex: 1; padding: 10px; border-radius: 12px; border: 1px solid rgba(56, 189, 248, 0.25); background: transparent; color: #94a3b8; font-weight: 700; cursor: pointer; font-size: 12px; }
-        .auth-tab-btn.active { background: linear-gradient(135deg, #0ea5e9, #0284c7); color: #ffffff; border: none; }
+      <div class="toolbar-actions">
+        <button class="btn btn-sm" onclick="openModal('searchModal')">🔍 Search (Ctrl+K)</button>
+        <select id="themeSelect" onchange="setTheme(this.value)" title="Theme Preset">
+          <option value="dark">🌙 Sky Dark</option>
+          <option value="light">☀️ Sky Light</option>
+          <option value="emerald">🌿 Emerald Pro</option>
+          <option value="cyber">⚡ Cyber Neon</option>
+        </select>
+        <button class="btn btn-sm" id="soundBtn" onclick="toggleSound()">🔊 SFX On</button>
+        <button class="btn btn-sm" onclick="openModal('inboxModal')">🔔 Inbox (<span id="unreadCount">2</span>)</button>
+        <select id="roleSwitcher" onchange="switchRole(this.value)" title="Switch Preview Role">
+          <option value="user">👤 User Mode</option>
+          <option value="admin">🛡️ Super Admin Mode</option>
+        </select>
+      </div>
+    </header>
 
-        .google-auth-btn { background: #ffffff; color: #0f172a; width: 100%; padding: 11px; border-radius: 12px; border: none; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; margin-top: 10px; font-size: 12px; }
+    <!-- ================= PAGE 1: DASHBOARD & ROI ================= -->
+    <section class="page active" id="page-dashboard">
+      <div class="bento">
+        <div class="card col-3">
+          <div class="kpi-label">Withdrawable Cash</div>
+          <div class="kpi-val" id="kpiCash">PKR 12,450</div>
+          <div class="kpi-sub">+18.4% this week</div>
+        </div>
+        <div class="card col-3">
+          <div class="kpi-label">Bonus / Play Wallet</div>
+          <div class="kpi-val" id="kpiBonus">PKR 3,200</div>
+          <div class="kpi-sub">Usable in Mini-Games</div>
+        </div>
+        <div class="card col-3">
+          <div class="kpi-label">Active Nodes & Yield</div>
+          <div class="kpi-val" id="kpiNodes">3 Active</div>
+          <div class="kpi-sub" id="kpiDailyYield">Est. +PKR 640 / day</div>
+        </div>
+        <div class="card col-3">
+          <div class="kpi-label">VIP Spin Progress</div>
+          <div class="kpi-val" id="kpiSpin">PKR 2,850 / 5,000</div>
+          <div class="kpi-sub">57% toward Free VIP Spin</div>
+        </div>
 
-        #secretAdminScreen { position: fixed; inset: 0; background: rgba(3, 10, 22, 0.96); backdrop-filter: blur(12px); z-index: 100000; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 20px; overflow-y: auto; }
-        .admin-container { background: #071326; border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 24px; padding: 22px; width: 100%; max-width: 520px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.7); color: #f1f5f9; }
+        <!-- Quick Wallet & Promo -->
+        <div class="card col-6">
+          <div class="section-title">
+            <span>💳 Instant Wallet Actions</span>
+            <span class="pill" id="autoReinvestPill">Auto-Reinvest: OFF</span>
+          </div>
+          <div class="grid-2" style="margin-bottom:12px;">
+            <div>
+              <label class="muted">Amount (PKR)</label>
+              <input type="number" id="txAmount" value="1000" min="50" style="width:100%; margin-top:4px;" />
+            </div>
+            <div>
+              <label class="muted">Method / TID or Wallet</label>
+              <input type="text" id="txMeta" placeholder="JazzCash / TID-98412" style="width:100%; margin-top:4px;" />
+            </div>
+          </div>
+          <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px;">
+            <button class="btn btn-primary" onclick="submitDeposit()">+ Request Deposit</button>
+            <button class="btn btn-success" onclick="submitWithdraw()">↑ Request Withdraw</button>
+            <button class="btn" onclick="toggleAutoReinvest()">♻️ Toggle Auto-Reinvest</button>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <input type="text" id="promoInput" placeholder="Enter Promo Code (try VIP100)" style="flex:1;" />
+            <button class="btn btn-primary" onclick="redeemPromo()">Redeem</button>
+          </div>
+        </div>
 
-        .modal-input { width: 100%; padding: 11px 14px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-sub); color: var(--text-main); font-size: 12.5px; outline: none; margin-top: 10px; }
+        <!-- ROI & Compounding Calculator -->
+        <div class="card col-6">
+          <div class="section-title">
+            <span>📈 Interactive ROI & Compounding Simulator</span>
+            <span class="pill">Planner</span>
+          </div>
+          <div class="grid-3" style="margin-bottom:12px;">
+            <div>
+              <label class="muted">Investment (PKR)</label>
+              <input type="number" id="roiPrincipal" value="5000" min="100" oninput="calcROI()" style="width:100%; margin-top:4px;" />
+            </div>
+            <div>
+              <label class="muted">Daily Rate (%)</label>
+              <input type="number" id="roiRate" value="3.5" step="0.5" min="0.1" oninput="calcROI()" style="width:100%; margin-top:4px;" />
+            </div>
+            <div>
+              <label class="muted">Duration (Days)</label>
+              <input type="number" id="roiDays" value="30" min="1" max="365" oninput="calcROI()" style="width:100%; margin-top:4px;" />
+            </div>
+          </div>
+          <div class="game-box" id="roiOutput">
+            <div><strong>Projected Final Balance:</strong> <span id="roiFinal" style="color:var(--success); font-weight:800;">PKR 14,033</span></div>
+            <div class="muted" id="roiProfit">Net Profit: +PKR 9,033 (Compound Daily)</div>
+          </div>
+        </div>
 
-        /* AVIATOR MODULE */
-        .aviator-wrap { display: flex; flex-direction: column; gap: 12px; padding-top: 14px; }
-        .aviator-topbar { display: flex; justify-content: space-between; align-items: center; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 10px 14px; }
-        .aviator-status-pill { font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 99px; letter-spacing: 0.4px; }
-        .aviator-status-open { background: rgba(16, 185, 129, 0.16); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.35); }
-        .aviator-status-closed { background: rgba(234, 179, 8, 0.18); color: #eab308; border: 1px solid rgba(234, 179, 8, 0.4); }
-        .aviator-status-crashed { background: rgba(239, 68, 68, 0.18); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.4); }
+        <!-- Cloud Nodes Marketplace -->
+        <div class="card col-12">
+          <div class="section-title">
+            <span>⚡ Cloud Mining & Yield Nodes</span>
+            <span class="muted">Activate nodes using Cash or Bonus balance</span>
+          </div>
+          <div class="grid-3" id="nodesList"></div>
+        </div>
+      </div>
+    </section>
 
-        .aviator-icon-btn { background: var(--bg-sub); border: 1px solid var(--border-color); color: var(--text-main); width: 32px; height: 32px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; font-size: 13px; }
+    <!-- ================= PAGE 2: ALL GAMES ARENA ================= -->
+    <section class="page" id="page-games">
+      <div class="bento">
+        <!-- Aviator Quick Engine -->
+        <div class="card col-6">
+          <div class="section-title">
+            <span>✈️ Aviator Crash</span>
+            <span class="pill" id="aviatorStatusPill">Ready</span>
+          </div>
+          <p class="muted" style="margin-bottom:10px;">Place a bet, launch the multiplier, and cash out before it flies away.</p>
+          <div style="display:flex; gap:8px; margin-bottom:10px;">
+            <input type="number" id="aviatorBet" value="200" min="10" style="width:120px;" />
+            <input type="number" id="aviatorTarget" value="1.85" step="0.05" min="1.05" style="width:120px;" title="Auto Cashout Multiplier" />
+            <button class="btn btn-primary" onclick="playAviator()">Launch & Cashout</button>
+          </div>
+          <div class="game-box" id="aviatorResult">Last round: Waiting for launch...</div>
+        </div>
 
-        .aviator-stage { position: relative; width: 100%; height: 225px; border-radius: 22px; overflow: hidden; background: radial-gradient(circle at 30% 20%, #2a0a0e 0%, #140508 65%, #090204 100%); border: 1px solid rgba(239, 68, 68, 0.32); box-shadow: inset 0 0 40px rgba(239, 68, 68, 0.14); }
-        .aviator-grid-bg { position: absolute; inset: 0; background-image: linear-gradient(rgba(239, 68, 68, 0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(239, 68, 68, 0.08) 1px, transparent 1px); background-size: 28px 28px; pointer-events: none; }
+        <!-- Dragon Tiger -->
+        <div class="card col-6">
+          <div class="section-title">
+            <span>🐉 Dragon vs Tiger 🐯</span>
+            <span class="pill" id="dtStatusPill">Instant Card</span>
+          </div>
+          <p class="muted" style="margin-bottom:10px;">Pick Dragon (1.95x), Tiger (1.95x), or Tie (8x payout).</p>
+          <div style="display:flex; gap:8px; margin-bottom:10px;">
+            <input type="number" id="dtBet" value="150" min="10" style="width:120px;" />
+            <select id="dtSide">
+              <option value="Dragon">Dragon</option>
+              <option value="Tiger">Tiger</option>
+              <option value="Tie">Tie (8x)</option>
+            </select>
+            <button class="btn btn-primary" onclick="playDragonTiger()">Deal Cards</button>
+          </div>
+          <div class="game-box" id="dtResult">Last deal: Ready to draw.</div>
+        </div>
 
-        .aviator-countdown-bar-wrap { width: 160px; height: 6px; background: rgba(255,255,255,0.12); border-radius: 99px; overflow: hidden; margin-top: 8px; }
-        .aviator-countdown-bar-fill { height: 100%; width: 100%; background: linear-gradient(90deg, #ef4444, #f87171, #10b981); transition: width 0.1s linear; }
+        <!-- Andar Bahar -->
+        <div class="card col-6">
+          <div class="section-title">
+            <span>🃏 Andar Bahar</span>
+            <span class="pill" id="abStatusPill">Classic</span>
+          </div>
+          <p class="muted" style="margin-bottom:10px;">Match the joker card on either Andar or Bahar side.</p>
+          <div style="display:flex; gap:8px; margin-bottom:10px;">
+            <input type="number" id="abBet" value="150" min="10" style="width:120px;" />
+            <select id="abSide">
+              <option value="Andar">Andar</option>
+              <option value="Bahar">Bahar</option>
+            </select>
+            <button class="btn btn-primary" onclick="playAndarBahar()">Draw Round</button>
+          </div>
+          <div class="game-box" id="abResult">Last round: Ready to play.</div>
+        </div>
 
-        .aviator-panels-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
-        @media (min-width: 768px) { .aviator-panels-grid { grid-template-columns: 1fr 1fr; } }
-        .aviator-bet-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
-        .aviator-quick-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
-        .aviator-chip-btn { background: var(--bg-sub); border: 1px solid var(--border-color); color: var(--text-main); padding: 7px 4px; border-radius: 10px; font-size: 11px; font-weight: 700; cursor: pointer; transition: all 0.15s; }
-        .aviator-chip-btn:hover { border-color: #ef4444; color: #f87171; }
+        <!-- Mines 5x5 -->
+        <div class="card col-6">
+          <div class="section-title">
+            <span>💎 Mines (5×5 Grid)</span>
+            <span class="pill" id="minesMultPill">1.00x</span>
+          </div>
+          <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+            <input type="number" id="minesBet" value="100" min="10" style="width:105px;" />
+            <select id="minesCount">
+              <option value="3">3 Mines</option>
+              <option value="5" selected>5 Mines</option>
+              <option value="10">10 Mines</option>
+            </select>
+            <button class="btn btn-primary btn-sm" onclick="startMines()">Start Game</button>
+            <button class="btn btn-success btn-sm" onclick="cashoutMines()">Cashout</button>
+          </div>
+          <div class="mines-grid" id="minesGrid"></div>
+          <div class="muted" id="minesStatus">Click "Start Game" to reveal gems.</div>
+        </div>
 
-        .auto-controls-box { background: var(--bg-sub); border: 1px solid var(--border-color); border-radius: 12px; padding: 8px 10px; display: flex; flex-direction: column; gap: 8px; font-size: 11px; }
-        .auto-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
-        .auto-mini-inp
+        <!-- Game History & Stats -->
+        <div class="card col-12">
+          <div class="section-title">
+            <span>📊 Live Game History & Win Analytics</span>
+            <select id="gameFilter" onchange="renderGameHistory()">
+              <option value="ALL">All Games</option>
+              <option value="Aviator">Aviator</option>
+              <option value="DragonTiger">Dragon Tiger</option>
+              <option value="AndarBahar">Andar Bahar</option>
+              <option value="Mines">Mines</option>
+            </select>
+          </div>
+          <div style="overflow-x:auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Time</th>
+                  <th>Game</th>
+                  <th>Round ID</th>
+                  <th>Bet</th>
+                  <th>Outcome</th>
+                  <th>Payout</th>
+                </tr>
+              </thead>
+              <tbody id="gameHistoryBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PAGE 3: NETWORK & QUESTS ================= -->
+    <section class="page" id="page-network">
+      <div class="bento">
+        <div class="card col-6">
+          <div class="section-title"><span>🤝 Multi-Tier Referral Network</span><span class="pill">10% / 3% / 1%</span></div>
+          <p class="muted" style="margin-bottom:10px;">Share your referral code and earn commissions across three levels.</p>
+          <div style="display:flex; gap:8px; margin-bottom:14px;">
+            <input type="text" id="refLinkInput" value="https://vestifypro.app/?ref=NAZIM77" readonly style="flex:1;" />
+            <button class="btn btn-primary" onclick="copyRef()">Copy Link</button>
+          </div>
+          <div class="grid-3">
+            <div class="game-box"><strong>Tier 1 (10%)</strong><span class="muted">14 Members • PKR 4,200</span></div>
+            <div class="game-box"><strong>Tier 2 (3%)</strong><span class="muted">29 Members • PKR 1,890</span></div>
+            <div class="game-box"><strong>Tier 3 (1%)</strong><span class="muted">51 Members • PKR 740</span></div>
+          </div>
+        </div>
+
+        <div class="card col-6">
+          <div class="section-title"><span>🏆 Daily Quests & Achievements</span><span class="pill">Rewards</span></div>
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <div class="game-box" style="flex-direction:row; align-items:center;">
+              <div><strong>Play 3 Mini-Games Today</strong><div class="muted">Reward: +PKR 150 Bonus</div></div>
+              <button class="btn btn-success btn-sm" onclick="claimQuest('Play 3 Mini-Games', 150)">Claim</button>
+            </div>
+            <div class="game-box" style="flex-direction:row; align-items:center;">
+              <div><strong>Activate Any Cloud Node</strong><div class="muted">Reward: +PKR 250 Bonus</div></div>
+              <button class="btn btn-success btn-sm" onclick="claimQuest('Node Boost', 250)">Claim</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card col-12">
+          <div class="section-title"><span>🧾 Transactions Ledger</span></div>
+          <div style="overflow-x:auto;">
+            <table>
+              <thead>
+                <tr><th>ID</th><th>Type</th><th>Amount</th><th>Details</th><th>Status</th></tr>
+              </thead>
+              <tbody id="txBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PAGE 4: SUPER ADMIN CONTROL CENTER ================= -->
+    <section class="page" id="page-admin">
+      <div class="bento">
+        <div class="card col-12">
+          <div class="section-title">
+            <span>🛡️ Super Admin Command Center (Unlimited Controls)</span>
+            <span class="pill pill-warn">Admin Privileges Active</span>
+          </div>
+          <p class="muted">Tune game engines, manage users & balances, approve/reject finance requests, issue promo codes, broadcast notices, and audit every action.</p>
+        </div>
+
+        <!-- Game Engine Controls -->
+        <div class="card col-6">
+          <div class="section-title"><span>🎮 Game Engine & RTP Controller</span></div>
+          <div style="display:flex; flex-direction:column; gap:10px;" id="adminGameControls"></div>
+          <button class="btn btn-primary" style="margin-top:12px;" onclick="saveAdminGameSettings()">Save All Game Rules</button>
+        </div>
+
+        <!-- User 360 Inspector & Balance/Node Actions -->
+        <div class="card col-6">
+          <div class="section-title"><span>👤 360° User Inspector & Adjustments</span></div>
+          <div style="display:flex; gap:8px; margin-bottom:10px;">
+            <select id="adminUserSelect" onchange="renderAdminUserDetail()" style="flex:1;"></select>
+            <button class="btn btn-sm" onclick="toggleUserFreeze()">Freeze / Unfreeze</button>
+          </div>
+          <div class="game-box" id="adminUserCard" style="margin-bottom:10px;"></div>
+          <div class="grid-2">
+            <input type="number" id="adminAdjAmount" placeholder="Adjust Cash (+/- PKR)" />
+            <input type="text" id="adminAdjReason" placeholder="Audit reason (required)" />
+          </div>
+          <div style="display:flex; gap:8px; margin-top:10px;">
+            <button class="btn btn-success btn-sm" onclick="adminAdjustBalance(1)">+ Credit Cash</button>
+            <button class="btn btn-danger btn-sm" onclick="adminAdjustBalance(-1)">- Debit Cash</button>
+            <button class="btn btn-sm" onclick="adminGrantNode()">+ Grant Free Node</button>
+          </div>
+        </div>
+
+        <!-- Finance Queue -->
+        <div class="card col-12">
+          <div class="section-title"><span>💰 Deposit & Withdrawal Approval Queue</span></div>
+          <div style="overflow-x:auto;">
+            <table>
+              <thead>
+                <tr><th>TX ID</th><th>User</th><th>Type</th><th>Amount</th><th>Info</th><th>Status</th><th>Actions</th></tr>
+              </thead>
+              <tbody id="adminTxBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Promo Codes & Broadcast -->
+        <div class="card col-6">
+          <div class="section-title"><span>🎟️ Promo Code Generator</span></div>
+          <div class="grid-3" style="margin-bottom:10px;">
+            <input type="text" id="newPromoCode" placeholder="Code (e.g. MEGA500)" />
+            <input type="number" id="newPromoValue" placeholder="Bonus PKR" value="250" />
+            <input type="number" id="newPromoLimit" placeholder="Max Uses" value="50" />
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="createPromoCode()">Create Promo Code</button>
+          <div id="promoList" class="muted" style="margin-top:10px;"></div>
+        </div>
+
+        <div class="card col-6">
+          <div class="section-title"><span>📣 Global Broadcast & Audit Log</span></div>
+          <div style="display:flex; gap:8px; margin-bottom:12px;">
+            <input type="text" id="broadcastInput" placeholder="Write announcement for all users..." style="flex:1;" />
+            <button class="btn btn-primary btn-sm" onclick="publishBroadcast()">Publish</button>
+          </div>
+          <div class="muted" style="margin-bottom:6px;"><strong>Recent Admin Audit Log:</strong></div>
+          <div id="auditLogList" style="max-height:140px; overflow-y:auto; font-size:0.82rem;"></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <button class="nav-item active" data-page="dashboard" onclick="goPage('dashboard', this)">🏠 Dashboard</button>
+    <button class="nav-item" data-page="games" onclick="goPage('games', this)">🎮 Games Arena</button>
+    <button class="nav-item" data-page="network" onclick="goPage('network', this)">🌐 Network & Quests</button>
+    <button class="nav-item" data-page="admin" id="adminNavBtn" onclick="goPage('admin', this)">🛡️ Admin Panel</button>
+  </nav>
+
+  <!-- Search Modal -->
+  <div class="modal-backdrop" id="searchModal" onclick="if(event.target===this)closeModal('searchModal')">
+    <div class="card modal-card">
+      <div class="section-title"><span>🔍 Quick Command Search</span><button class="btn btn-sm" onclick="closeModal('searchModal')">✕</button></div>
+      <input type="text" id="quickSearchInput" placeholder="Jump to Aviator, Mines, ROI, Admin, Users..." oninput="runQuickSearch(this.value)" style="width:100%; margin-bottom:10px;" />
+      <div id="quickSearchResults" style="display:flex; flex-direction:column; gap:8px;"></div>
+    </div>
+  </div>
+
+  <!-- Inbox Modal -->
+  <div class="modal-backdrop" id="inboxModal" onclick="if(event.target===this)closeModal('inboxModal')">
+    <div class="card modal-card">
+      <div class="section-title"><span>🔔 Notification Inbox</span><button class="btn btn-sm" onclick="closeModal('inboxModal')">✕</button></div>
+      <div id="inboxList" style="display:flex; flex-direction:column; gap:8px;"></div>
+    </div>
+  </div>
+
+  <script>
+    const state = {
+      role: "user",
+      sound: true,
+      autoReinvest: false,
+      cash: 12450,
+      bonus: 3200,
+      spinProgress: 2850,
+      nodes: [
+        { id: "n1", name: "Pod Alpha", price: 1500, daily: 120, days: 15, active: true },
+        { id: "n2", name: "Rig Stratum", price: 4500, daily: 390, days: 20, active: true },
+        { id: "n3", name: "Matrix Overdrive", price: 10000, daily: 950, days: 30, active: false }
+      ],
+      gamesConfig: {
+        Aviator: { enabled: true, houseEdge: 4, minBet: 10, maxBet: 25000 },
+        DragonTiger: { enabled: true, houseEdge: 3, minBet: 10, maxBet: 20000 },
+        AndarBahar: { enabled: true, houseEdge: 3.5, minBet: 10, maxBet: 20000 },
+        Mines: { enabled: true, houseEdge: 4, minBet: 10, maxBet: 15000 }
+      },
+      users: [
+        { id: "u1", name: "Muhammad Nazim (@nazim)", cash: 12450, bonus: 3200, nodes: 2, frozen: false, tier: "VIP II" },
+        { id: "u2", name: "Ali Raza (@aliraza)", cash: 6800, bonus: 900, nodes: 1, frozen: false, tier: "VIP I" },
+        { id: "u3", name: "Sara Khan (@sarak)", cash: 21300, bonus: 1500, nodes: 3, frozen: false, tier: "VIP III" }
+      ],
+      txs: [
+        { id: "TX-101", user: "Muhammad Nazim", type: "Deposit", amount: 5000, info: "JazzCash • TID-7741", status: "Approved" },
+        { id: "TX-102", user: "Ali Raza", type: "Withdraw", amount: 2200, info: "EasyPaisa • 0300-1122334", status: "Pending" },
+        { id: "TX-103", user: "Sara Khan", type: "Deposit", amount: 10000, info: "Bank Transfer • TID-8892", status: "Pending" }
+      ],
+      gameHistory: [
+        { time: "Just now", game: "Aviator", round: "#AV-904", bet: 200, outcome: "Win (1.85x)", payout: 370 },
+        { time: "2m ago", game: "DragonTiger", round: "#DT-312", bet: 150, outcome: "Win (Dragon)", payout: 292 }
+      ],
+      promos: {
+        VIP100: { value: 100, remaining: 25 },
+        PRO250: { value: 250, remaining: 10 }
+      },
+      inbox: [
+        { text: "✅ Deposit TX-101 of PKR 5,000 was approved.", unread: true },
+        { text: "🎁 Promo code VIP100 gives +PKR 100 bonus balance.", unread: true }
+      ],
+      auditLogs: [
+        "System initialized with Ultra feature set.",
+        "Admin reviewed TX-101 (Approved)."
+      ],
+      mines: { active: false, bet: 0, count: 5, bombs: [], revealed: [], mult: 1 }
+    };
+
+    function fmt(n) { return "PKR " + Math.round(n).toLocaleString(); }
+
+    function beep(freq = 660, duration = 0.08) {
+      if (!state.sound) return;
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.value = freq;
+        gain.gain.value = 0.06;
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + duration);
+      } catch (_) {}
+    }
+
+    function toast(msg) {
+      const el = document.createElement("div");
+      el.className = "toast";
+      el.textContent = msg;
+      document.getElementById("toastWrap").appendChild(el);
+      beep(740, 0.07);
+      setTimeout(() => el.remove(), 3200);
+    }
+
+    function addAudit(entry) {
+      state.auditLogs.unshift(`[${new Date().toLocaleTimeString()}] ${entry}`);
+      renderAuditLogs();
+    }
+
+    function pushInbox(text) {
+      state.inbox.unshift({ text, unread: true });
+      renderInbox();
+    }
+
+    function setTheme(theme) {
+      document.body.setAttribute("data-theme", theme);
+      toast("Theme switched to " + theme);
+    }
+
+    function toggleSound() {
+      state.sound = !state.sound;
+      document.getElementById("soundBtn").textContent = state.sound ? "🔊 SFX On" : "🔇 SFX Off";
+      toast(state.sound ? "Sound effects enabled" : "Sound effects muted");
+    }
+
+    function dismissBroadcast() {
+      document.getElementById("broadcastBar").style.display = "none";
+    }
+
+    function publishBroadcast() {
+      const val = document.getElementById("broadcastInput").value.trim();
+      if (!val) return;
+      document.getElementById("broadcastText").innerHTML = "📣 <strong>Announcement:</strong> " + val;
+      document.getElementById("broadcastBar").style.display = "flex";
+      document.getElementById("broadcastInput").value = "";
+      addAudit("Published global broadcast: " + val);
+      toast("Broadcast published!");
+    }
+
+    function switchRole(role) {
+      state.role = role;
+      toast(role === "admin" ? "Switched to Super Admin Mode" : "Switched to User Mode");
+      if (role === "admin") {
+        const btn = document.getElementById("adminNavBtn");
+        goPage("admin", btn);
+      }
+    }
+
+    function goPage(page, btn) {
+      document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+      document.getElementById("page-" + page).classList.add("active");
+      document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
+      if (btn) btn.classList.add("active");
+    }
+
+    function openModal(id) {
+      document.getElementById(id).classList.add("open");
+      if (id === "searchModal") {
+        document.getElementById("quickSearchInput").value = "";
+        runQuickSearch("");
+      }
+    }
+    function closeModal(id) { document.getElementById(id).classList.remove("open"); }
+
+    document.addEventListener("keydown", e => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        openModal("searchModal");
+      }
+    });
+
+    function runQuickSearch(q) {
+      const items = [
+        { label: "🏠 Dashboard & ROI Simulator", page: "dashboard" },
+        { label: "✈️ Aviator Crash Game", page: "games" },
+        { label: "🐉 Dragon Tiger Game", page: "games" },
+        { label: "🃏 Andar Bahar Game", page: "games" },
+        { label: "💎 Mines 5x5 Game", page: "games" },
+        { label: "🤝 Referral Network & Quests", page: "network" },
+        { label: "🛡️ Super Admin Control Panel", page: "admin" }
+      ].filter(x => x.label.toLowerCase().includes(q.toLowerCase()));
+
+      document.getElementById("quickSearchResults").innerHTML = items.map(it =>
+        `<button class="btn" style="justify-content:flex-start;" onclick="closeModal('searchModal'); goPage('${it.page}', document.querySelector('[data-page=${it.page}]'))">${it.label}</button>`
+      ).join("");
+    }
+
+    function renderKPIs() {
+      document.getElementById("kpiCash").textContent = fmt(state.cash);
+      document.getElementById("kpiBonus").textContent = fmt(state.bonus);
+      const activeNodes = state.nodes.filter(n => n.active);
+      const dailyYield = activeNodes.reduce((s, n) => s + n.daily, 0);
+      document.getElementById("kpiNodes").textContent = activeNodes.length + " Active";
+      document.getElementById("kpiDailyYield").textContent = `Est. +${fmt(dailyYield)} / day`;
+      document.getElementById("kpiSpin").textContent = `${fmt(state.spinProgress)} / 5,000`;
+      state.users[0].cash = state.cash;
+      state.users[0].bonus = state.bonus;
+    }
+
+    function calcROI() {
+      const p = Math.max(0, Number(document.getElementById("roiPrincipal").value) || 0);
+      const r = Math.max(0, Number(document.getElementById("roiRate").value) || 0) / 100;
+      const d = Math.max(1, Math.min(365, Number(document.getElementById("roiDays").value) || 1));
+      const finalVal = p * Math.pow(1 + r, d);
+      const profit = finalVal - p;
+      document.getElementById("roiFinal").textContent = fmt(finalVal);
+      document.getElementById("roiProfit").textContent = `Net Profit: +${fmt(profit)} over ${d} days`;
+    }
+
+    function toggleAutoReinvest() {
+      state.autoReinvest = !state.autoReinvest;
+      document.getElementById("autoReinvestPill").textContent = "Auto-Reinvest: " + (state.autoReinvest ? "ON" : "OFF");
+      toast("Auto-Reinvest " + (state.autoReinvest ? "enabled" : "disabled"));
+    }
+
+    function submitDeposit() {
+      const amt = Number(document.getElementById("txAmount").value);
+      const info = document.getElementById("txMeta").value.trim() || "Manual Deposit";
+      if (!amt || amt < 50) return toast("Enter at least PKR 50");
+      const id = "TX-" + Math.floor(1000 + Math.random() * 9000);
+      state.txs.unshift({ id, user: "Muhammad Nazim", type: "Deposit", amount: amt, info, status: "Pending" });
+      renderTx();
+      toast(`Deposit request ${id} submitted for approval`);
+    }
+
+    function submitWithdraw() {
+      const amt = Number(document.getElementById("txAmount").value);
+      const info = document.getElementById("txMeta").value.trim() || "EasyPaisa Account";
+      if (!amt || amt < 100) return toast("Minimum withdrawal is PKR 100");
+      if (amt > state.cash) return toast("Insufficient withdrawable cash");
+      state.cash -= amt;
+      const id = "TX-" + Math.floor(1000 + Math.random() * 9000);
+      state.txs.unshift({ id, user: "Muhammad Nazim", type: "Withdraw", amount: amt, info, status: "Pending" });
+      renderKPIs();
+      renderTx();
+      toast(`Withdrawal ${id} queued`);
+    }
+
+    function redeemPromo() {
+      const code = document.getElementById("promoInput").value.trim().toUpperCase();
+      const promo = state.promos[code];
+      if (!promo || promo.remaining <= 0) return toast("Invalid or expired promo code");
+      promo.remaining--;
+      state.bonus += promo.value;
+      document.getElementById("promoInput").value = "";
+      renderKPIs();
+      renderPromos();
+      pushInbox(`🎉 Redeemed ${code}: +${fmt(promo.value)} added to Bonus Wallet.`);
+      toast(`+${fmt(promo.value)} Bonus credited!`);
+    }
+
+    function renderNodes() {
+      document.getElementById("nodesList").innerHTML = state.nodes.map(n => `
+        <div class="game-box">
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <strong>${n.name}</strong>
+              <span class="pill ${n.active ? "pill-ok" : ""}">${n.active ? "Active" : "Available"}</span>
+            </div>
+            <div class="muted" style="margin-top:6px;">Price: ${fmt(n.price)} • Yield: +${fmt(n.daily)}/day • ${n.days}d</div>
+          </div>
+          <button class="btn ${n.active ? "btn-sm" : "btn-primary btn-sm"}" onclick="buyNode('${n.id}')">
+            ${n.active ? "Renew / Boost" : "Activate Node"}
+          </button>
+        </div>
+      `).join("");
+    }
+
+    function buyNode(id) {
+      const node = state.nodes.find(x => x.id === id);
+      if (!node) return;
+      if (state.bonus >= node.price) state.bonus -= node.price;
+      else if (state.cash >= node.price) state.cash -= node.price;
+      else return toast("Not enough balance to activate " + node.name);
+      node.active = true;
+      renderKPIs();
+      renderNodes();
+      toast(`${node.name} activated!`);
+    }
+
+    function spendForGame(amount, gameName) {
+      const cfg = state.gamesConfig[gameName];
+      if (!cfg.enabled) { toast(`${gameName} is currently under maintenance`); return false; }
+      if (amount < cfg.minBet || amount > cfg.maxBet) {
+        toast(`Bet must be between ${fmt(cfg.minBet)} and ${fmt(cfg.maxBet)}`);
+        return false;
+      }
+      if (state.bonus >= amount) state.bonus -= amount;
+      else if (state.cash >= amount) state.cash -= amount;
+      else { toast("Insufficient balance"); return false; }
+      state.spinProgress += Math.round(amount * 0.25);
+      if (state.spinProgress >= 5000) {
+        state.spinProgress -= 5000;
+        state.bonus += 500;
+        pushInbox("🎡 VIP 5,000 milestone reached! Awarded +PKR 500 Bonus.");
+      }
+      renderKPIs();
+      return true;
+    }
+
+    function logGame(game, bet, outcome, payout) {
+      state.gameHistory.unshift({
+        time: "Just now",
+        game,
+        round: "#" + Math.floor(100 + Math.random() * 899),
+        bet,
+        outcome,
+        payout
+      });
+      if (payout > 0) state.cash += payout;
+      renderKPIs();
+      renderGameHistory();
+    }
+
+    function playAviator() {
+      const bet = Number(document.getElementById("aviatorBet").value);
+      const target = Math.max(1.05, Number(document.getElementById("aviatorTarget").value) || 1.5);
+      if (!spendForGame(bet, "Aviator")) return;
+      const edgeFactor = 1 - state.gamesConfig.Aviator.houseEdge / 100;
+      const crashPoint = Number(Math.max(1.01, (0.99 / Math.max(0.05, Math.random())) * edgeFactor).toFixed(2));
+      const won = crashPoint >= target;
+      const payout = won ? Math.round(bet * target) : 0;
+      logGame("Aviator", bet, won ? `Cashed @ ${target}x (Crash ${crashPoint}x)` : `Flew away @ ${crashPoint}x`, payout);
+      document.getElementById("aviatorResult").innerHTML = won
+        ? `<span style="color:var(--success); font-weight:700;">Won ${fmt(payout)}!</span> Crash was ${crashPoint}x (Target ${target}x)`
+        : `<span style="color:var(--danger); font-weight:700;">Crashed at ${crashPoint}x</span> before your ${target}x target`;
+    }
+
+    function playDragonTiger() {
+      const bet = Number(document.getElementById("dtBet").value);
+      const side = document.getElementById("dtSide").value;
+      if (!spendForGame(bet, "DragonTiger")) return;
+      const d = Math.floor(1 + Math.random() * 13);
+      const t = Math.floor(1 + Math.random() * 13);
+      const winner = d > t ? "Dragon" : t > d ? "Tiger" : "Tie";
+      const mult = winner === "Tie" ? 8 : 1.95;
+      const won = side === winner;
+      const payout = won ? Math.round(bet * mult) : 0;
+      logGame("DragonTiger", bet, won ? `Won (${winner})` : `Lost (${winner})`, payout);
+      document.getElementById("dtResult").innerHTML = `Dragon: <strong>${d}</strong> vs Tiger: <strong>${t}</strong> → Winner: <strong>${winner}</strong> • ${won ? `<span style="color:var(--success)">+${fmt(payout)}</span>` : `<span style="color:var(--danger)">-${fmt(bet)}</span>`}`;
+    }
+
+    function playAndarBahar() {
+      const bet = Number(document.getElementById("abBet").value);
+      const side = document.getElementById("abSide").value;
+      if (!spendForGame(bet, "AndarBahar")) return;
+      const winner = Math.random() < 0.5 ? "Andar" : "Bahar";
+      const won = side === winner;
+      const payout = won ? Math.round(bet * 1.9) : 0;
+      logGame("AndarBahar", bet, won ? `Matched ${winner}` : `Landed ${winner}`, payout);
+      document.getElementById("abResult").innerHTML = `Matched on <strong>${winner}</strong> • ${won ? `<span style="color:var(--success)">Won ${fmt(payout)}</span>` : `<span style="color:var(--danger)">No match</span>`}`;
+    }
+
+    function startMines() {
+      const bet = Number(document.getElementById("minesBet").value);
+      const count = Number(document.getElementById("minesCount").value);
+      if (!spendForGame(bet, "Mines")) return;
+      const bombs = new Set();
+      while (bombs.size < count) bombs.add(Math.floor(Math.random() * 25));
+      state.mines = { active: true, bet, count, bombs: [...bombs], revealed: [], mult: 1.05 };
+      renderMines();
+      document.getElementById("minesStatus").textContent = `Active! Pick safe tiles (${count} mines hidden).`;
+    }
+
+    function renderMines() {
+      const grid = document.getElementById("minesGrid");
+      grid.innerHTML = "";
+      for (let i = 0; i < 25; i++) {
+        const btn = document.createElement("button");
+        btn.className = "mine-cell";
+        const isRev = state.mines.revealed.includes(i);
+        const isBomb = state.mines.bombs.includes(i);
+        if (isRev && !isBomb) { btn.classList.add("safe"); btn.textContent = "💎"; }
+        else if (!state.mines.active && isBomb) { btn.classList.add("boom"); btn.textContent = "💣"; }
+        else btn.textContent = "•";
+        btn.onclick = () => clickMine(i);
+        grid.appendChild(btn);
+      }
+      document.getElementById("minesMultPill").textContent = state.mines.mult.toFixed(2) + "x";
+    }
+
+    function clickMine(idx) {
+      if (!state.mines.active || state.mines.revealed.includes(idx)) return;
+      if (state.mines.bombs.includes(idx)) {
+        state.mines.active = false;
+        renderMines();
+        logGame("Mines", state.mines.bet, "Hit Mine", 0);
+        document.getElementById("minesStatus").innerHTML = `<span style="color:var(--danger)">💥 Boom! You hit a mine.</span>`;
+        return;
+      }
+      state.mines.revealed.push(idx);
+      state.mines.mult = Number((state.mines.mult * (1 + state.mines.count * 0.06)).toFixed(2));
+      renderMines();
+      document.getElementById("minesStatus").textContent = `Safe! Current payout: ${fmt(state.mines.bet * state.mines.mult)}`;
+    }
+
+    function cashoutMines() {
+      if (!state.mines.active) return toast("Start a Mines round first");
+      const payout = Math.round(state.mines.bet * state.mines.mult);
+      state.mines.active = false;
+      renderMines();
+      logGame("Mines", state.mines.bet, `Cashed @ ${state.mines.mult}x`, payout);
+      document.getElementById("minesStatus").innerHTML = `<span style="color:var(--success)">💎 Cashed out ${fmt(payout)}!</span>`;
+    }
+
+    function renderGameHistory() {
+      const filter = document.getElementById("gameFilter").value;
+      const rows = state.gameHistory.filter(h => filter === "ALL" || h.game === filter);
+      document.getElementById("gameHistoryBody").innerHTML = rows.map(r => `
+        <tr>
+          <td>${r.time}</td>
+          <td><span class="pill">${r.game}</span></td>
+          <td>${r.round}</td>
+          <td>${fmt(r.bet)}</td>
+          <td>${r.outcome}</td>
+          <td><strong>${r.payout > 0 ? fmt(r.payout) : "-"}</strong></td>
+        </tr>
+      `).join("");
+    }
+
+    function renderTx() {
+      document.getElementById("txBody").innerHTML = state.txs.map(t => `
+        <tr>
+          <td>${t.id}</td>
+          <td>${t.type}</td>
+          <td>${fmt(t.amount)}</td>
+          <td>${t.info}</td>
+          <td><span class="pill ${t.status === "Approved" ? "pill-ok" : t.status === "Rejected" ? "pill-bad" : "pill-warn"}">${t.status}</span></td>
+        </tr>
+      `).join("");
+
+      document.getElementById("adminTxBody").innerHTML = state.txs.map((t, idx) => `
+        <tr>
+          <td>${t.id}</td>
+          <td>${t.user}</td>
+          <td>${t.type}</td>
+          <td>${fmt(t.amount)}</td>
+          <td>${t.info}</td>
+          <td><span class="pill ${t.status === "Approved" ? "pill-ok" : t.status === "Rejected" ? "pill-bad" : "pill-warn"}">${t.status}</span></td>
+          <td>
+            <button class="btn btn-success btn-sm" onclick="decideTx(${idx}, 'Approved')">Approve</button>
+            <button class="btn btn-danger btn-sm" onclick="decideTx(${idx}, 'Rejected')">Reject</button>
+          </td>
+        </tr>
+      `).join("");
+    }
+
+    function decideTx(idx, decision) {
+      const tx = state.txs[idx];
+      if (!tx) return;
+      tx.status = decision;
+      if (decision === "Approved" && tx.type === "Deposit" && tx.user === "Muhammad Nazim") {
+        state.cash += tx.amount;
+      } else if (decision === "Rejected" && tx.type === "Withdraw" && tx.user === "Muhammad Nazim") {
+        state.cash += tx.amount;
+      }
+      addAudit(`${decision} ${tx.type} ${tx.id} (${fmt(tx.amount)}) for ${tx.user}`);
+      pushInbox(`${tx.type} ${tx.id} was marked ${decision} by Admin.`);
+      renderKPIs();
+      renderTx();
+      toast(`${tx.id} → ${decision}`);
+    }
+
+    function renderAdminGameControls() {
+      document.getElementById("adminGameControls").innerHTML = Object.entries(state.gamesConfig).map(([name, cfg]) => `
+        <div class="game-box" style="flex-direction:row; flex-wrap:wrap; align-items:center; justify-content:space-between;">
+          <div>
+            <strong>${name}</strong>
+            <div class="muted">Edge: ${cfg.houseEdge}% • Range: ${cfg.minBet}–${cfg.maxBet}</div>
+          </div>
+          <div style="display:flex; gap:6px; align-items:center;">
+            <input type="number" id="edge_${name}" value="${cfg.houseEdge}" style="width:70px;" title="House Edge %" />
+            <label class="muted" style="display:flex; align-items:center; gap:4px;">
+              <input type="checkbox" id="en_${name}" ${cfg.enabled ? "checked" : ""} /> Active
+            </label>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function saveAdminGameSettings() {
+      Object.keys(state.gamesConfig).forEach(name => {
+        state.gamesConfig[name].houseEdge = Number(document.getElementById("edge_" + name).value) || 3;
+        state.gamesConfig[name].enabled = document.getElementById("en_" + name).checked;
+      });
+      addAudit("Updated game house-edge & active states.");
+      toast("Game settings saved!");
+    }
+
+    function renderAdminUsers() {
+      const sel = document.getElementById("adminUserSelect");
+      sel.innerHTML = state.users.map((u, i) => `<option value="${i}">${u.name}</option>`).join("");
+      renderAdminUserDetail();
+    }
+
+    function renderAdminUserDetail() {
+      const idx = Number(document.getElementById("adminUserSelect").value) || 0;
+      const u = state.users[idx];
+      document.getElementById("adminUserCard").innerHTML = `
+        <div><strong>${u.name}</strong> • <span class="pill">${u.tier}</span> • <span class="pill ${u.frozen ? "pill-bad" : "pill-ok"}">${u.frozen ? "Frozen" : "Active"}</span></div>
+        <div class="muted" style="margin-top:6px;">Cash: ${fmt(u.cash)} | Bonus: ${fmt(u.bonus)} | Active Nodes: ${u.nodes}</div>
+      `;
+    }
+
+    function toggleUserFreeze() {
+      const idx = Number(document.getElementById("adminUserSelect").value) || 0;
+      state.users[idx].frozen = !state.users[idx].frozen;
+      renderAdminUserDetail();
+      addAudit(`Toggled freeze state for ${state.users[idx].name}`);
+      toast("User account status updated");
+    }
+
+    function adminAdjustBalance(sign) {
+      const idx = Number(document.getElementById("adminUserSelect").value) || 0;
+      const amt = Math.abs(Number(document.getElementById("adminAdjAmount").value) || 0) * sign;
+      const reason = document.getElementById("adminAdjReason").value.trim() || "Admin manual adjustment";
+      if (!amt) return toast("Enter adjustment amount");
+      state.users[idx].cash = Math.max(0, state.users[idx].cash + amt);
+      if (idx === 0) state.cash = state.users[0].cash;
+      document.getElementById("adminAdjAmount").value = "";
+      renderKPIs();
+      renderAdminUserDetail();
+      addAudit(`Adjusted ${state.users[idx].name} by ${amt >= 0 ? "+" : ""}${fmt(amt)} (${reason})`);
+      toast("Balance adjusted & logged");
+    }
+
+    function adminGrantNode() {
+      const idx = Number(document.getElementById("adminUserSelect").value) || 0;
+      state.users[idx].nodes += 1;
+      renderAdminUserDetail();
+      addAudit(`Granted +1 cloud node to ${state.users[idx].name}`);
+      toast("Free node granted!");
+    }
+
+    function createPromoCode() {
+      const code = document.getElementById("newPromoCode").value.trim().toUpperCase();
+      const val = Number(document.getElementById("newPromoValue").value) || 100;
+      const lim = Number(document.getElementById("newPromoLimit").value) || 20;
+      if (!code) return toast("Enter a promo code name");
+      state.promos[code] = { value: val, remaining: lim };
+      document.getElementById("newPromoCode").value = "";
+      renderPromos();
+      addAudit(`Created promo code ${code} (+${fmt(val)}, ${lim} uses)`);
+      toast(`Promo ${code} created!`);
+    }
+
+    function renderPromos() {
+      document.getElementById("promoList").innerHTML = Object.entries(state.promos)
+        .map(([k, v]) => `<span class="pill" style="margin-right:6px;">${k}: +${fmt(v.value)} (${v.remaining} left)</span>`)
+        .join("");
+    }
+
+    function renderInbox() {
+      const unread = state.inbox.filter(x => x.unread).length;
+      document.getElementById("unreadCount").textContent = unread;
+      document.getElementById("inboxList").innerHTML = state.inbox.map(x =>
+        `<div class="game-box">${x.text}</div>`
+      ).join("");
+    }
+
+    function renderAuditLogs() {
+      document.getElementById("auditLogList").innerHTML = state.auditLogs.map(l =>
+        `<div style="padding:5px 0; border-bottom:1px solid var(--border);">${l}</div>`
+      ).join("");
+    }
+
+    function claimQuest(name, reward) {
+      state.bonus += reward;
+      renderKPIs();
+      toast(`Claimed "${name}" → +${fmt(reward)} Bonus!`);
+    }
+
+    function copyRef() {
+      navigator.clipboard?.writeText(document.getElementById("refLinkInput").value);
+      toast("Referral link copied!");
+    }
+
+    // Initial Boot
+    calcROI();
+    renderKPIs();
+    renderNodes();
+    renderGameHistory();
+    renderTx();
+    renderAdminGameControls();
+    renderAdminUsers();
+    renderPromos();
+    renderInbox();
+    renderAuditLogs();
+  </script>
+</body>
+</html>
